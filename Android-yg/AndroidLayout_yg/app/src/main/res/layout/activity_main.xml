@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/start_service"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/start_service"
+        android:onClick="invoke"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_jump"
+        android:onClick="jump"/>
+
+    <Button
+        android:id="@+id/linear_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/start_linear_layout"/>
+
+    <Button
+        android:id="@+id/table_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_table_layout"/>
+
+    <Button
+        android:id="@+id/relative_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/start_relative_layout"/>
+
+    <!--资源选择器示例-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="资源选择器"
+        android:background="@drawable/selector"/>
+
+    <!--布局形状-->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="资源选择器"
+        android:background="@drawable/shape"/>
+
+
+</LinearLayout>
