@@ -14,4 +14,9 @@
         <attr name="default_size" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="CustomizeViewGroup">
+
+
+    </declare-styleable>
+
 </resources>
