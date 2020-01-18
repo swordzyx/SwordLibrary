@@ -8,4 +8,8 @@
     <string name="db_delete">删除数据</string>
     <string name="db_update">修改数据</string>
     <string name="db_query">查询数据</string>
+    <string name="hint_name">姓名</string>
+    <string name="hint_sex">性别</string>
+    <string name="hint_age">年龄</string>
+    <string name="hint_tel">电话</string>
 </resources>

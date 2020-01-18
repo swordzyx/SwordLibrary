@@ -1,0 +1,142 @@
+package blog.zero.com.contentproviderdemo;
+
+import android.content.ContentProviderOperation;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.OperationApplicationException;
+import android.database.Cursor;
+import android.os.RemoteException;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CursorAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
+import java.util.ArrayList;
+
+import blog.zero.com.contentproviderdemo.entity.User;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String TAG = "MainActivity";
+    
+    EditText nameEditText = null;
+    EditText sexEditText = null;
+    EditText ageEditText = null;
+    EditText telEditText = null;
+    ListView listView = null;
+
+    CursorAdapter cursorAdapter = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initView();
+        initData();
+    }
+
+    private void initView() {
+        nameEditText = findViewById(R.id.edit_name);
+        sexEditText = findViewById(R.id.edit_sex);
+        ageEditText = findViewById(R.id.edit_age);
+        telEditText = findViewById(R.id.edit_tel);
+
+        listView = findViewById(R.id.user_list);
+    }
+
+    private void initData(){
+        ContentResolver resolver = getContentResolver();
+        ContentProviderOperation.Builder builder;
+
+        User user = new User("star", "女", 21, "123356");
+        User user1 = new User("dk", "女", 23, "123356");
+
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
+        operations.add(getOperation(user));
+        operations.add(getOperation(user1));
+
+        try {
+            resolver.applyBatch(Consts.AUTHORITY, operations);
+        } catch (OperationApplicationException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.button_insert:
+                insertUser();
+                break;
+            case R.id.button_delete:
+                deleteUser();
+                break;
+            case R.id.button_update:
+                updateUser();
+                break;
+            case R.id.button_query:
+                queryUser();
+                break;
+        }
+    }
+
+    private void queryUser() {
+        String[] projection = {"name", "sex", "age", "tel"};
+        String selection = "name=?,sex=?";
+        String []selectionArgs = {"silence", "男"};
+        int []listItems = {R.id.user_name, R.id.user_sex, R.id.user_age, R.id.user_tel};
+
+        ContentResolver resolver = getContentResolver();
+        Cursor cursor = resolver.query(Consts.USER_URI, projection, selection, selectionArgs, null);
+
+        cursorAdapter = new SimpleCursorAdapter(
+                getApplicationContext(),
+                R.layout.list_user,
+                cursor,
+                projection,
+                listItems);
+        listView.setAdapter(cursorAdapter);
+    }
+
+    private void updateUser() {
+        Log.d(TAG, "update");
+    }
+
+    private void deleteUser() {
+    }
+
+    private void insertUser(){
+        String name = nameEditText.getText().toString();
+        String sex = sexEditText.getText().toString();
+        int age = Integer.parseInt(ageEditText.getText().toString());
+        String tel = telEditText.getText().toString();
+
+
+        ContentResolver resolver = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("sex", sex);
+        values.put("age", age);
+        values.put("tel", tel);
+        resolver.insert(Consts.USER_URI, values);
+    }
+
+    private ContentProviderOperation getOperation(User user){
+        ContentProviderOperation operation = null;
+        operation = ContentProviderOperation.newInsert(Consts.USER_URI)
+                .withValue("name", user.name)
+                .withValue("sex", user.sex)
+                .withValue("age", user.age)
+                .withValue("tel", user.tel)
+                .build();
+        return operation;
+    }
+}

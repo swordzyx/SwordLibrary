@@ -10,7 +10,7 @@
         android:id="@+id/btn_custom_view_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="自定义ViewGroup"/>
+        android:text="自定义ViewGroup" />
 
     <Button
         android:id="@+id/btn_clock_activity"
