@@ -10,7 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".FirstActivity"></activity>
+        <activity android:name=".FirstActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity=":firstActivity"></activity>
         <activity android:name=".MainActivity"
             android:launchMode="standard">
             <intent-filter>
