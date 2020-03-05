@@ -9,18 +9,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".FirstActivity"
+        <activity android:name=".parent.ParentActivity"></activity>
+        <activity
+            android:name=".activity.FirstActivity"
             android:launchMode="singleTask"
-            android:taskAffinity=":firstActivity"></activity>
-        <activity android:name=".MainActivity"
-            android:launchMode="standard">
+            android:taskAffinity=":firstActivity" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="standard" />
+
+
+        <activity android:name=".service.ServiceActivity" />
+        <activity android:name=".IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.MyService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
