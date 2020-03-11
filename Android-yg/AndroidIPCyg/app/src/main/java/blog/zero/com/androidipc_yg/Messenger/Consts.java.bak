@@ -1,0 +1,5 @@
+package blog.zero.com.androidipc_yg.Messenger;
+
+public class Consts {
+    static final int MSG_FROM_CLIENT = 0;
+}

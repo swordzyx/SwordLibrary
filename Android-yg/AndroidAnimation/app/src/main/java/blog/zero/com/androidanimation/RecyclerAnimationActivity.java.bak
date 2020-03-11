@@ -1,0 +1,20 @@
+package blog.zero.com.androidanimation;
+
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
+public class RecyclerAnimationActivity extends AppCompatActivity {
+    RecyclerView recyclerView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recycler_animation);
+
+        //编造示例太麻烦，之后如果用上了在补上吧。
+        recyclerView = (RecyclerView)findViewById(R.id.recycler);
+//        recyclerView.setAdapter();
+    }
+}

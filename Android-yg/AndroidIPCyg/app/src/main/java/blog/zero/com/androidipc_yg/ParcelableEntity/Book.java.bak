@@ -1,0 +1,35 @@
+package blog.zero.com.androidipc_yg.ParcelableEntity;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Book implements Parcelable {
+    public String bookName;
+    public int bookId;
+
+    public Book(String bookName, int bookId){
+        this.bookName = bookName;
+        this.bookId = bookId;
+    }
+
+    public int describeContents(){
+        return 0;
+    }
+
+    public void writeToParcel(Parcel in, int flag){
+        in.writeString(bookName);
+        in.writeInt(bookId);
+    }
+
+    public static final Parcelable.Creator<Book> CREATOR = new Parcelable.Creator<Book>(){
+        public Book createFromParcel(Parcel in){
+            Book book = new Book(in.readString(), in.readInt());
+            return book;
+        }
+
+        public Book[] newArray(int size){
+            Book[] books = new Book[size];
+            return books;
+        }
+    };
+}

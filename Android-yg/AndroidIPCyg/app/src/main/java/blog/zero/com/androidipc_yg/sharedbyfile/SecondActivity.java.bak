@@ -1,0 +1,52 @@
+package blog.zero.com.androidipc_yg.sharedbyfile;
+
+import android.os.Bundle;
+import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+import blog.zero.com.androidipc_yg.R;
+import blog.zero.com.androidipc_yg.SerialzableEntity.User;
+import blog.zero.com.androidipc_yg.util.Consts;
+
+public class SecondActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_second);
+    }
+
+    public void recoverFromFile(){
+        new Thread(){
+            @Override
+            public void run(){
+                User user = null;
+                ObjectInputStream inputStream = null;
+                File cacheFile = new File(Consts.CACHE_FILE);
+                try {
+                    inputStream = new ObjectInputStream(new FileInputStream(cacheFile));
+                    user = (User)inputStream.readObject();
+                    Log.d("IPCByFile", "user: "+user);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }finally{
+                    if (inputStream != null){
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }.start();
+    }
+}

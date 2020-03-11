@@ -1,0 +1,21 @@
+package blog.zero.com.androidanimation;
+
+import android.view.View;
+
+//视图包装器
+public class ViewWrapper {
+    public View view;
+
+    public ViewWrapper(View view) {
+        this.view = view;
+    }
+
+    public int getHeight(){
+        return view.getLayoutParams().height;
+    }
+
+    public void setHeight(int height){
+        view.getLayoutParams().height = height;
+        view.requestLayout();
+    }
+}

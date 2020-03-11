@@ -1,0 +1,23 @@
+package blog.zero.com.androidlayout_yg.launchmode;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import blog.zero.com.androidlayout_yg.R;
+
+public class ActivitySingleTop extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_single_top);
+    }
+
+    public void jump(View view){
+        Intent intent = new Intent(ActivitySingleTop.this, ActivitySingleTop.class);
+        startActivity(intent);
+    }
+}

@@ -1,0 +1,40 @@
+package blog.zero.com.androidipc_yg.SerialzableEntity;
+
+import android.util.Log;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    public static final String TAG = "User";
+    public static final long serialVersionUID = 519067123721295773L;
+
+    private transient String flag;//该参数不会被序列化
+    private int userID;
+    private String userName;
+    private boolean isMale;
+
+    public User(int id, String name, boolean isMale){
+
+        this.flag = "serialze";
+        this.userID = id;
+        this.userName = name;
+        this.isMale = isMale;
+    }
+
+    //自定义序列化方法
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        Log.d(TAG, "自定义序列化");
+    }
+
+    //自定义反序列化方法
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException{
+        Log.d(TAG, "自定义反序列化");
+    }
+
+    public String toString(){
+        return "id="+userID + "--userName=" + userName + "--isMale=" + isMale;
+    }
+}

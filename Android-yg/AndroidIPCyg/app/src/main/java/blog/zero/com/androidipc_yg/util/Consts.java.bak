@@ -1,0 +1,8 @@
+package blog.zero.com.androidipc_yg.util;
+
+public class Consts {
+    //父目录
+    public static final String CACHE_2_FILE = "";
+    //缓存文件目录
+    public static final String CACHE_FILE = "";
+}

@@ -1,0 +1,47 @@
+package blog.zero.com.androidnetwork;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+public class EchoClient {
+    private final Socket mSocket;
+
+    public EchoClient(String host, int port) throws IOException {
+        // 创建 socket 并连接服务器
+        mSocket = new Socket(host, port);
+    }
+
+    public void run() throws IOException {
+        // 和服务端进行通信
+        // lambda
+        Thread readerThread = new Thread(){
+            @Override
+            public void run(){
+                readResponse();
+            }
+        };
+        readerThread.start();
+
+        OutputStream out = mSocket.getOutputStream();
+        byte[] buffer = new byte[1024];
+        int n;
+        while ((n = System.in.read(buffer)) > 0) {
+            out.write(buffer, 0, n);
+        }
+    }
+
+    private void readResponse() {
+        try {
+            InputStream in = mSocket.getInputStream();
+            byte[] buffer = new byte[1024];
+            int n;
+            while ((n = in.read(buffer)) > 0) {
+                System.out.write(buffer, 0, n);
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

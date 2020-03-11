@@ -1,0 +1,46 @@
+package blog.zero.com.androidipc_yg.ParcelableEntity;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
+    public int userID;
+    public String userName;
+    public boolean isMale;
+
+    public Book book;
+
+    public User(int id, String name, boolean isMale, Book book){
+        this.userID = id;
+        this.userName = name;
+        this.isMale = isMale;
+        this.book = book;
+    }
+
+    public int describeContents(){
+        return 0;
+    }
+
+    public void writeToParcel(Parcel in, int flag){
+        in.writeInt(userID);
+        in.writeString(userName);
+        in.writeInt(isMale?1:0);
+        in.writeParcelable(book, 0);
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>(){
+        public User createFromParcel(Parcel out){
+            int userID = out.readInt();
+            String userName = out.readString();
+            boolean isMale = out.readInt() == 1 ? true:false;
+            //要传递当前线程的上下文类加载器
+            Book book = out.readParcelable(Thread.currentThread().getContextClassLoader());
+            User user = new User(userID, userName, isMale, book);
+            return user;
+        }
+
+        public User[] newArray(int size){
+            return new User[size];
+        }
+    };
+}

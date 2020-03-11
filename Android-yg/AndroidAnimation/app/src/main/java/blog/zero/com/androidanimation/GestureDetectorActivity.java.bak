@@ -1,0 +1,52 @@
+package blog.zero.com.androidanimation;
+
+import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class GestureDetectorActivity extends AppCompatActivity {
+    ImageView image;
+    Button button;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_gesture_detector);
+
+        image = (ImageView) findViewById(R.id.image);
+        button = (Button) findViewById(R.id.button);
+
+        GestureDetector.SimpleOnGestureListener onSimpleListener = new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onDoubleTap(MotionEvent e){
+                Toast.makeText(GestureDetectorActivity.this, "双击666", Toast.LENGTH_SHORT).show();
+                return super.onDoubleTap(e);
+            }
+        };
+        final GestureDetector detector = new GestureDetector(this, onSimpleListener);
+
+        // 3.给监听器设置数据源
+        image.setClickable(true);
+        image.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return detector.onTouchEvent(motionEvent);
+            }
+        });
+
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return detector.onTouchEvent(motionEvent);
+            }
+        });
+
+    }
+}

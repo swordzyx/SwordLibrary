@@ -1,0 +1,22 @@
+package blog.zero.com.androidipc_yg;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import blog.zero.com.androidipc_yg.binder.manager.BookManagerImpl;
+
+public class BookManagerTest {
+    BookManagerImpl bookManager = null;
+
+
+
+    @BeforeClass
+    public void bindService(){
+//        bookManager = BookManagerImpl.asInterface()
+    }
+
+    @Test
+    public void addBookTest(){
+
+    }
+}

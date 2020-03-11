@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include <string.h>
+#include "blog_zero_com_mp3encoder_Mp3Encoder.h"
+
+#define LOG_TAG "Mp3Encoder"
+#define LOGI(...) __android_log_printf(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
+using namespace std;
+
+JNIEXPORT void JNICALL Java_blog_zero_com_mp3encoder_Mp3Encoder_encode(JNIEnv *env, jobject obj){
+    LOGI("encoder encode");
+}
+

@@ -1,0 +1,20 @@
+package blog.zero.com.androidipc_yg.binder.manager;
+
+
+import android.os.IBinder;
+import android.os.IInterface;
+import android.os.RemoteException;
+
+import java.util.List;
+
+import blog.zero.com.androidipc_yg.binder.aidl.Book;
+
+public interface IBookManager extends IInterface {
+    public final String DESCRIPTOR = "blog.zero.com.androidipc_yg.binder.manager.IBookManager";
+
+    public final int TRANSACTION_getBookList = IBinder.FIRST_CALL_TRANSACTION + 0;
+    public final int TRANSACTION_addBook = IBinder.FIRST_CALL_TRANSACTION + 1;
+
+    public List<Book> getBookList() throws RemoteException;
+    public void addBook(Book book) throws RemoteException;
+}

@@ -1,0 +1,92 @@
+package blog.zero.com.contentproviderdemo.builder;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class SelectionBuilder {
+    static final String TAG = "SelectionBuilder";
+    private StringBuilder builder;
+    private ArrayList<String> mSelectionArgs;
+    private String mTable = null;
+
+
+    public SelectionBuilder(){
+        builder = new StringBuilder();
+    }
+
+    public SelectionBuilder where(String selection, String ...selectionArgs){
+        if(TextUtils.isEmpty(selection)){
+            if(selectionArgs != null && selectionArgs.length > 0){
+                throw new IllegalArgumentException("valid selection required when including arguments=");
+            }
+        }
+
+        if(builder.length() > 0){
+            builder.append(" AND ");
+        }
+
+        builder.append("(" + selection + ")");
+        if(selectionArgs != null){
+            Collections.addAll(mSelectionArgs, selectionArgs);
+        }
+        return this;
+    }
+
+    public SelectionBuilder table(String tableName){
+        assert tableName != null;
+        mTable = tableName;
+        return this;
+    }
+
+    private String getSelection(){
+        return builder.toString();
+    }
+
+    private String[] getSelectionArgs(){
+        return mSelectionArgs.toArray(new String[mSelectionArgs.size()]);
+    }
+
+    public int delete(SQLiteDatabase db){
+        assertTable();
+        int deleteRow = 0;
+        if(builder != null && builder.length() > 0){
+            Log.d(TAG, "delete data from table: " + mTable);
+            deleteRow = db.delete(mTable, getSelection(), getSelectionArgs());
+        }
+        return deleteRow;
+    }
+
+    public int update(SQLiteDatabase db, ContentValues values){
+        assertTable();
+        if(values == null){
+            return -1;
+        }
+        int result = db.update(mTable, values, getSelection(), getSelectionArgs());
+        return result;
+    }
+
+    public Cursor query(SQLiteDatabase db, String[] columns, String orderBy){
+        return query(db, columns, null, null, orderBy, null);
+    }
+
+    private Cursor query(SQLiteDatabase db, String[] columns, String groupBy, String having, String orderBy, String limit){
+        assertTable();
+        return db.query(mTable, columns, getSelection(), getSelectionArgs(), groupBy, having, orderBy, limit);
+    }
+
+    private void assertTable(){
+        if (mTable == null){
+            throw new IllegalStateException("valid table");
+        }
+    }
+
+    public void printSQL(){
+        Log.d(TAG, getSelection() + " : " + getSelectionArgs().toString());
+    }
+}

@@ -1,0 +1,31 @@
+package blog.zero.com.androidnetwork;
+
+import android.os.Bundle;
+import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+
+public class MainActivity extends AppCompatActivity {
+    private Handler mWriterHandler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        EchoServer server = null;
+        try {
+            server = new EchoServer(9877);
+            server.run();
+
+            // 由于服务端运行在同一主机，这里我们使用 localhost
+            EchoClient client = new EchoClient("localhost", 9877);
+            client.run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+}

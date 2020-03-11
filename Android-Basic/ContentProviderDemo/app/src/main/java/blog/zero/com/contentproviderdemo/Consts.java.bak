@@ -1,0 +1,18 @@
+package blog.zero.com.contentproviderdemo;
+
+import android.net.Uri;
+
+public class Consts {
+    public static final boolean DEBUG = false;
+
+    public static final Uri USER_URI = Uri.parse("content://blog.zero.com.contentproviderdemo.provider/user");
+    public static final String AUTHORITY = "blog.zero.com.contentproviderdemo.provider";
+
+    public static final class USER{
+        String ID = "_ID";
+        String NAME = "name";
+        String SEX = "sex";
+        String AGE = "age";
+        String TEL = "tel";
+    }
+}
