@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">AndroidLayout_yg</string>
-
-    <string name="start_service">启动服务</string>
-    <string name="start_jump">跳转</string>
-    <string name="start_linear_layout">线性布局</string>
-    <string name="start_table_layout">表格布局</string>
-    <string name="start_relative_layout">相对布局</string>
-</resources>
