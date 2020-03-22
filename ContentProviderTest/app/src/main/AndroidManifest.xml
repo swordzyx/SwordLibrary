@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="blog.zero.com.contentprovidertest.provider"
+            android:name=".provider.TestContentProvider"
+            android:exported="true" />
     </application>
 
 </manifest>
