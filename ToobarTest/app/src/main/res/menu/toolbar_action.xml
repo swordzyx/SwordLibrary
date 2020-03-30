@@ -6,5 +6,11 @@
         android:icon="@drawable/toolbar_search"
         app:showAsAction="ifRoom"
         android:visible="true"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search"/>
+    <item android:id="@+id/share_data"
+        android:icon="@drawable/toolbar_share"
+        app:showAsAction="ifRoom"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
+        android:title="@string/share"/>
 </menu>
