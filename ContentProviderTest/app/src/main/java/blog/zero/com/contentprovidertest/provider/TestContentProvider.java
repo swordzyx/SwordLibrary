@@ -10,10 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class TestContentProvider extends ContentProvider {
+    final static String AUTHORITY = "blog.zero.com.contentprovidertest.provider";
     final static UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        matcher.addURI("blog.zero.com.contentprovidertest.provider", "table1", 1);
+        matcher.addURI(AUTHORITY, "table1", 1);
+        matcher.addURI(AUTHORITY, "table1/#", 2); //这个 Uri 模式就表示请求的数据为 table1 中的某一行数据。
     }
 
     @Override
@@ -24,6 +26,12 @@ public class TestContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        switch (matcher.match(uri)){
+            case 1:
+                break;
+            case 2:
+                break;
+        }
         return null;
     }
 
