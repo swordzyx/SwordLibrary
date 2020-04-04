@@ -21,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.homepage);
+        setSupportActionBar(toolbar);
+
     }
 
     @Override
