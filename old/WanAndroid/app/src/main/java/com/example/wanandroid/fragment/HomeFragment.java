@@ -24,7 +24,7 @@ public class HomeFragment extends BaseFragment {
     static boolean loadComplete = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup viewGroup, Bundle saveInstanceState){
-        View view = inflater.inflate(R.layout.frag_home, viewGroup);
+        View view = inflater.inflate(R.layout.frag_home, viewGroup, false);
         mView = view;
         initBanner();
 
@@ -58,9 +58,12 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initPicture() {
-        picList.add(R.mipmap.test_picture1);
-        picList.add(R.mipmap.test_picture2);
-        picList.add(R.mipmap.test_picture3);
+        if (picList.size() <=0 ){
+            picList.add(R.mipmap.test_picture1);
+            picList.add(R.mipmap.test_picture2);
+            picList.add(R.mipmap.test_picture3);
+        }
+
     }
 
 
@@ -72,8 +75,7 @@ public class HomeFragment extends BaseFragment {
             View view = LayoutInflater.from(context).inflate(R.layout.screen_slide_pager, null);
             ImageView imageView = view.findViewById(R.id.pager_image);
 
-            RequestOptions options = new RequestOptions().override(40, 30).centerCrop().skipMemoryCache(true);
-            Glide.with(context).load(data).apply(options).into(imageView);
+            Glide.with(context).load(data).into(imageView);
             return view;
         }
 
