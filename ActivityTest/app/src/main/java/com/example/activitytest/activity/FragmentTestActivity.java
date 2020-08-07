@@ -23,7 +23,7 @@ public class FragmentTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fragment_test);
     }
 
-    public class TitleFragments extends ListFragment{
+    public static class TitleFragments extends ListFragment{
         boolean dualPane;
         int curPosition;
         @Override
@@ -34,7 +34,7 @@ public class FragmentTestActivity extends AppCompatActivity {
 
             View detailsFrame = getActivity().findViewById(R.id.details);
 
-            dualPane = detailsFrame != null || detailsFrame.getVisibility() == View.VISIBLE;
+            dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
 
             if (saveInstanceState != null){
                 curPosition = saveInstanceState.getInt("curPosition", 0);
@@ -46,11 +46,24 @@ public class FragmentTestActivity extends AppCompatActivity {
             }
         }
 
+        @Override
+        public void onSaveInstanceState(Bundle outState){
+            super.onSaveInstanceState(outState);
+            outState.putInt("curPosition", curPosition);
+        }
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id){
+            curPosition = position;
+            showDetails(position);
+        }
+
+
         public void showDetails(int position){
             if (dualPane){
                 getListView().setItemChecked(position, true);
 
-                DetailsFragment details = (DetailsFragment)getSupportFragmentManager().findFragmentById(R.id.details);
+                DetailsFragment details = (DetailsFragment)getActivity().getSupportFragmentManager().findFragmentById(R.id.details);
                 if (details == null || details.getShowIndex() != position){
                     DetailsFragment f = DetailsFragment.getInstance(position);
 
@@ -63,7 +76,7 @@ public class FragmentTestActivity extends AppCompatActivity {
                 }
 
             }else{
-                Intent intent = new Intent(FragmentTestActivity.this, DetailActivity.class);
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("position", position);
                 getContext().startActivity(intent);
             }
