@@ -9,12 +9,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.SharedElementCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.transitionpratice.MainActivity;
 import com.example.transitionpratice.R;
 import com.example.transitionpratice.adapter.GridAdapter;
+
+import java.util.List;
+import java.util.Map;
 
 public class GridFramgment extends Fragment {
     RecyclerView recyclerView;
@@ -43,7 +47,7 @@ public class GridFramgment extends Fragment {
             @Override
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
                 recyclerView.removeOnLayoutChangeListener(this);
-                RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+                final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
                 View v = layoutManager.findViewByPosition(MainActivity.curPosition);
 
                 if (v == null || layoutManager.isViewPartiallyVisible(v, false, true)){
@@ -57,7 +61,22 @@ public class GridFramgment extends Fragment {
     private void prepareTransition() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setExitTransition(TransitionInflater.from(getContext()).inflateTransition(R.transition.grid_exit));
+
+            setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(MainActivity.curPosition);
+
+                    if (viewHolder == null){
+                        return ;
+                    }
+
+                    sharedElements.put(names.get(0), viewHolder.itemView.findViewById(R.id.card_image));
+                }
+            });
         }
+
+
     }
 
 
