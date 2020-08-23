@@ -90,6 +90,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridViewHolder
                         .replace(R.id.frame_layout, imagePagerFragment, ImagePagerFragment.class.getSimpleName())
                         .addToBackStack(null)
                         .commit();
+
             }
         }
     }
