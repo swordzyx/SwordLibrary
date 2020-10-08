@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">ToolbarTest</string>
-
-    <string name="search">search</string>
-    <string name="homepage">首页</string>
-    <string name="share">share</string>
-</resources>
