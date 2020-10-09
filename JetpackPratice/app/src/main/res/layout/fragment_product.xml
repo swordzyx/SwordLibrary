@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/loading_comments_tv"
+            android:text="@string/loading_comments"
+            app:visibleGone="false"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/comments_list_wrapper">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comment_list"
+                android:contentDescription="@string/cd_comments_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager"
+                app:visibleGone="false"/>
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
