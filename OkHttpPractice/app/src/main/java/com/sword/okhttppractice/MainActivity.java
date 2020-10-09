@@ -6,8 +6,10 @@ import android.os.Bundle;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 
+import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -17,7 +19,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-    String url = "http://api.github.com/users/zerolans/repos"
+    String url = "http://api.github.com/users/zerolans/repos";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getFromUrl(String url) {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder().build();
 
-            Request request = Request.Builder()
-                    .url(url)
-                    .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
 
         client.newCall(request).enqueue(new Callback() {
                 @Override
@@ -70,5 +72,14 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(response.body().toString());
             }
         });
+    }
+
+    public void cacheTest(String url) {
+        File directory = new File(getCacheDir(), "http_cache");
+        int maxSize = 50 * 1024 * 1024;
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cache(new Cache(directory, maxSize))
+                .build();
     }
 }
