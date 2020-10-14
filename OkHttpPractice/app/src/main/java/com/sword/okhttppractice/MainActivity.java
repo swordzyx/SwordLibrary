@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    System.out.println("failed~~~");
-                }
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("failed~~~");
+            }
 
                 @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
