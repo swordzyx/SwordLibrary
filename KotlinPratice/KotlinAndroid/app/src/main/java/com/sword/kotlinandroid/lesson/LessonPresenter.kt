@@ -1,6 +1,5 @@
 package com.sword.kotlinandroid.lesson
 
-import android.app.Activity
 import com.google.gson.reflect.TypeToken
 import com.sword.base.core.EntityCallback
 import com.sword.base.core.HttpClient
@@ -11,9 +10,9 @@ import java.lang.reflect.Type
 class LessonPresenter {
     private val LESSION_PATH = "lessons"
 
-    private lateinit var activity: Activity
+    private var activity: LessonActivity
 
-    constructor(activity: Activity) {
+    constructor(activity: LessonActivity) {
         this.activity = activity
     }
 
@@ -29,10 +28,23 @@ class LessonPresenter {
             }
 
             override fun onSuccess(entity: List<Lesson>) {
-
+                //通过 this@类名 获取该类名的引用，这里的 this@LessonPresenter 就是获取 LessonPresenter 的引用
+                this@LessonPresenter.lessons = entity as ArrayList<Lesson>
+                activity.runOnUiThread {
+                    activity.showResult(lessons)
+                }
             }
         })
 
+    }
+
+    fun showPlayback() {
+        val playbackLessons: ArrayList<Lesson> = ArrayList()
+        for (lesson in lessons) {
+            if (lesson.state == Lesson.State.PLAYBACK) {
+                playbackLessons.add(lesson)
+            }
+        }
     }
 
 

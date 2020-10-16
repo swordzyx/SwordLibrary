@@ -23,9 +23,9 @@ class Lesson {
         abstract fun stateName(): String
     }
 
-    private var date: String? = null
-    private var content: String? = null
-    private var state: State? = null
+    var date: String? = null
+    var content: String? = null
+    var state: State? = null
 
     constructor(data: String?, content: String?, state: State?) {
         this.date = data
