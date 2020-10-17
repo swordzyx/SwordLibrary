@@ -1,5 +1,6 @@
 package com.sword.kotlinandroid.lesson
 
+import android.util.Log
 import com.google.gson.reflect.TypeToken
 import com.sword.base.core.EntityCallback
 import com.sword.base.core.HttpClient
@@ -20,6 +21,7 @@ class LessonPresenter {
     private val type: Type = object: TypeToken<List<Lesson>>() {}.type
 
     fun fetchData() {
+        Log.d("SWROD", "fetchData")
         HttpClient.get(LESSION_PATH, type, object : EntityCallback<List<Lesson>> {
             override fun onFailure(messge: String?) {
                 activity.runOnUiThread {

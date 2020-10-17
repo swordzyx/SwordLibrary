@@ -57,7 +57,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
 
-        <com.example.app.widget.CodeView
+        <com.sword.kotlinandroid.widget.CodeView
             android:id="@+id/code_view"
             android:layout_margin="8dp"
             android:layout_width="80dp"
