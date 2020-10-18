@@ -6,10 +6,7 @@ import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 
 
-abstract class BaseViewHolder: RecyclerView.ViewHolder {
-
-    constructor(itemView: View) : super(itemView)
-
+abstract class BaseViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val viewHashMap: HashMap<Int, View?> = HashMap()
 
     protected fun <T: View?> getView(@IdRes id: Int): T?{

@@ -1,11 +1,13 @@
 package com.sword.kotlinandroid
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.sword.base.utils.CacheUtils
 import com.sword.base.utils.toast
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         if (v is CodeView) {
             v.updateCode()
@@ -67,11 +70,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun verify(user: User): Boolean {
-        if (user.username != null && user.username!!.length < 4) {
+        if(user.username?.length?:0 < 4){
             toast("用户名不合法")
             return false
         }
-        if(user.password != null && user.password!!.length < 4) {
+
+        if (user.password?.length?:0 < 4) {
             toast("密码不合法")
             return false
         }

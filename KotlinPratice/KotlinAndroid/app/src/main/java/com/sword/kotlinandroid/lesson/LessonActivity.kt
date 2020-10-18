@@ -16,46 +16,44 @@ import com.sword.base.core.BasevView
 import com.sword.kotlinandroid.R
 import com.sword.kotlinandroid.entity.Lesson
 
-class LessonActivity : AppCompatActivity(), BasevView<LessonPresenter>, Toolbar.OnMenuItemClickListener {
-    private val lessonPresenter: LessonPresenter = LessonPresenter(this)
-
+class LessonActivity() : AppCompatActivity(), BasevView<LessonPresenter>, Toolbar.OnMenuItemClickListener {
     private val lessonAdapter: LessonAdapter = LessonAdapter()
 
-    private lateinit var refreshLayout: SwipeRefreshLayout
+    override val presenter: LessonPresenter by lazy {
+        LessonPresenter(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("SWORD", "LessonActivity----onCreate")
         setContentView(R.layout.activity_lesson)
 
-        var toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.inflateMenu(R.menu.menu_lesson)
-        toolbar.setOnMenuItemClickListener(this)
-
-        val recyclerView: RecyclerView = findViewById(R.id.list)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = lessonAdapter
-        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
-
-        refreshLayout = findViewById(R.id.swipe_refresh_layout)
-        refreshLayout.setOnRefreshListener {
-            lessonPresenter.fetchData()
+        findViewById<Toolbar>(R.id.toolbar).run{
+            inflateMenu(R.menu.menu_lesson)
+            setOnMenuItemClickListener(this@LessonActivity)
         }
-        refreshLayout.isRefreshing = true
 
-        lessonPresenter.fetchData()
+
+        findViewById<RecyclerView>(R.id.list).run {
+            layoutManager = LinearLayoutManager(this@LessonActivity)
+            adapter = lessonAdapter
+            addItemDecoration(DividerItemDecoration(this@LessonActivity, LinearLayout.VERTICAL))
+        }
+
+        findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout).run {
+            setOnRefreshListener { presenter.fetchData() }
+            isRefreshing = true
+        }
+
+        presenter.fetchData()
     }
 
-    fun showResult(lessons: ArrayList<Lesson>) {
+    fun showResult(lessons: List<Lesson>) {
         lessonAdapter.updateAndNotify(lessons)
     }
 
-    override fun getPresenter(): LessonPresenter {
-        return lessonPresenter
-    }
-
     override fun onMenuItemClick(item: MenuItem?): Boolean {
-        lessonPresenter.showPlayback()
+        presenter.showPlayback()
         return false
     }
 }

@@ -14,26 +14,17 @@ import com.sword.base.utils.dp2px
 import com.sword.kotlinandroid.R
 import java.util.*
 
-class CodeView: AppCompatTextView {
-    @RequiresApi(Build.VERSION_CODES.M)
-    constructor(context: Context): this(context, null)
+@RequiresApi(Build.VERSION_CODES.M)
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    constructor(context: Context, attr: AttributeSet?): super(context, attr) {
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
-        gravity = Gravity.CENTER
-        setBackgroundColor(getContext().getColor(R.color.colorPrimary))
-        setTextColor(Color.WHITE)
+class CodeView @JvmOverloads constructor(context: Context, attr: AttributeSet? = null): AppCompatTextView(context, attr){
 
-        paint.isAntiAlias = true
-        paint.style = Paint.Style.STROKE
-        paint.color = getContext().getColor(R.color.colorAccent)
-        paint.strokeWidth = dp2px(6f)
-
-        updateCode()
+    private val paint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.STROKE
+        color = getContext().getColor(R.color.colorAccent)
+        strokeWidth = 6f.dp2px()
     }
 
-    private val paint = Paint()
     private var codeList = arrayOf(
             "kotlin",
             "android",
@@ -44,6 +35,17 @@ class CodeView: AppCompatTextView {
             "retrofit",
             "tcp/ip"
     )
+
+    init {
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+        gravity = Gravity.CENTER
+        setBackgroundColor(getContext().getColor(R.color.colorPrimary))
+        setTextColor(Color.WHITE)
+
+        updateCode()
+    }
+
+
 
     fun updateCode() {
         val random = Random().nextInt(codeList.size)

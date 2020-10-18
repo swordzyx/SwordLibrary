@@ -5,11 +5,9 @@ import android.content.Context
 
 class BaseApplication: Application() {
     companion object {
-        private lateinit var currentApplication: Context
-
-        fun currentApplication(): Context {
-            return currentApplication
-        }
+        @get:JvmName("currentApplication")
+        lateinit var currentApplication: Context
+            private set
     }
     override fun onCreate() {
         super.onCreate()
