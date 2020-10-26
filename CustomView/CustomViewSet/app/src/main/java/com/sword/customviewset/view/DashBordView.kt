@@ -21,25 +21,31 @@ class DashBordView (context: Context, attribute: AttributeSet) : View(context, a
     private val path = Path()
     private val phaseCount = 20
     private lateinit var effect: PathDashPathEffect
-    private val pointerLength = 15f.px
+    private val pointerLength = 80f.px
     private val redius = 100f.px
-    private val dash: Path = Path()
+    private val dash = Path()
+    private val DASH_WIDTH = 2f.px
+    private val DASH_LENGTH = 10f.px
     val curValue = 5
 
 
     init {
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 3f.px
+        //CCW 为逆时针的意思
+        dash.addRect(0f, 0f, DASH_WIDTH, DASH_LENGTH, Path.Direction.CCW)
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         path.reset()
+
         //往路径中添加一个弧
         path.addArc(-redius, -redius, redius, redius, startAngle, sweepAngle)
         val pathMesure = PathMeasure(path, false)
+
         //添加一个特效
-        effect = PathDashPathEffect(dash, pathMesure.length/(phaseCount+1), 0f, PathDashPathEffect.Style.ROTATE)
+        effect = PathDashPathEffect(dash, (pathMesure.length-DASH_WIDTH)/(phaseCount), 0f, PathDashPathEffect.Style.ROTATE)
     }
 
 
@@ -53,19 +59,17 @@ class DashBordView (context: Context, attribute: AttributeSet) : View(context, a
 
         //画刻度
         paint.pathEffect = effect
-        canvas?.drawPath(dash, paint)
+        canvas?.drawPath(path, paint)
         paint.pathEffect = null
 
         //画指针
-        canvas?.drawLine(0f, 0F, pointerLength*sin(calculatePointerRadians()).toFloat(),
-                pointerLength*cos(Math.toRadians(calculatePointerRadians())).toFloat(), paint)
+        canvas?.drawLine(0f, 0F, pointerLength*cos(calculatePointerRadians()).toFloat(),
+                pointerLength*sin(calculatePointerRadians()).toFloat(), paint)
     }
 
-
     //当前指针的弧度
-    private fun calculatePointerRadians() = Math.toRadians((OPEN_ANGLE + 90 + curValue * (sweepAngle/20)).toDouble())
+    private fun calculatePointerRadians() = Math.toRadians((startAngle + (curValue) * (sweepAngle/20f)).toDouble())
 
-    val Float.px
-        get() = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, Resources.getSystem().displayMetrics)
+
 
 }
