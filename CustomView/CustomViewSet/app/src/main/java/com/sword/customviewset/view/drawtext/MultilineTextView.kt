@@ -14,15 +14,15 @@ class MultilineTextView(context: Context, attrs: AttributeSet): View(context, at
         textSize = 15.dp
         textAlign = Paint.Align.LEFT
     }
-    val fontMetrics = Paint.FontMetrics()
+    private val fontMetrics = Paint.FontMetrics()
     private var count = 0
     private var start = 0
     private val IMAGE_SIZE = 70.dp
     private val IMAGE_PADDING = 50.dp
     private val bitmap = getBitmap(IMAGE_SIZE.dp)
 //    private val rect = Rect()
-    var verticalOffset = 0f
-    var textWidth: Float = 0.0f
+private var verticalOffset = 0f
+    private var textWidth: Float = 0.0f
 
 
     override fun onDraw(canvas: Canvas) {
@@ -34,10 +34,10 @@ class MultilineTextView(context: Context, attrs: AttributeSet): View(context, at
 //        var verticalOffset = -rect.top.toFloat()
 
         while(start < text.length) {
-            if ((verticalOffset+fontMetrics.bottom) >= IMAGE_PADDING && (verticalOffset + fontMetrics.top) <= (IMAGE_PADDING + bitmap.height)){
-                textWidth = (width - bitmap.width.toFloat())
+            textWidth = if ((verticalOffset+fontMetrics.bottom) >= IMAGE_PADDING && (verticalOffset + fontMetrics.top) <= (IMAGE_PADDING + bitmap.height)){
+                (width - bitmap.width.toFloat())
             } else {
-                textWidth = width.toFloat()
+                width.toFloat()
             }
             count = paint.breakText(text, start, text.length, true, textWidth, floatArrayOf(0f))
             canvas.drawText(text, start, start + count, 0f, verticalOffset, paint)
