@@ -13,6 +13,7 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var camera = Camera().apply {
         //围绕 x 为中心轴旋转 30 度，原点为轴心
         rotateX(30f)
+        setLocation(0f, 0f, -6*resources.displayMetrics.density)
     }
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
@@ -21,7 +22,9 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         //上半部分
         canvas.save()
         canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2 , BITMAP_PADDING + BITMAP_SIZE/2)
-        canvas.clipRect(-BITMAP_SIZE/2, -BITMAP_SIZE/2, BITMAP_SIZE/2, 0f)
+        canvas.rotate(-30f)
+        canvas.clipRect(-BITMAP_SIZE, -BITMAP_SIZE, BITMAP_SIZE, 0f)
+        canvas.rotate(30f)
         canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2), -(BITMAP_PADDING + BITMAP_SIZE/2))
         canvas.drawBitmap(getAvator(BITMAP_SIZE.toInt()), BITMAP_PADDING, BITMAP_PADDING, paint)
         canvas.restore()
@@ -29,9 +32,12 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         //下半部分
         canvas.save()
         canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2, BITMAP_PADDING + BITMAP_SIZE/2)
+        canvas.rotate(-30f)
         camera.applyToCanvas(canvas)
-        canvas.clipRect(-BITMAP_SIZE/2, 0f, BITMAP_SIZE/2, BITMAP_SIZE/2)
+        canvas.clipRect(-BITMAP_SIZE, 0f, BITMAP_SIZE, BITMAP_SIZE)
+        canvas.rotate(30f)
         canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2 ), -(BITMAP_PADDING + BITMAP_SIZE/2))
+        canvas.drawBitmap(getAvator(BITMAP_SIZE.toInt()), BITMAP_PADDING, BITMAP_PADDING, paint)
         canvas.restore()
     }
 
