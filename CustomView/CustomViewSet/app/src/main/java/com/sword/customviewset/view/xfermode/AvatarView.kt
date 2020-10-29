@@ -10,21 +10,22 @@ import com.sword.customviewset.R
 import com.sword.customviewset.view.px
 
 class AvatarView(context: Context, attrs: AttributeSet) : View(context, attrs){
+    var radius = 200f.px
+
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val PADDING = 20f.px
-    private val IMAGE_WIDTH = 200f.px
     private var bounds: RectF
     private val XFERMODE = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     private lateinit var avatar : Bitmap
     private var offset: Float = 0f
 
     init {
-        bounds = RectF(PADDING, PADDING, PADDING + IMAGE_WIDTH, PADDING + IMAGE_WIDTH)
+        bounds = RectF(PADDING, PADDING, PADDING + radius, PADDING + radius)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        avatar = getAvatar(IMAGE_WIDTH)
-        offset = (avatar.width - IMAGE_WIDTH) / 2
+        avatar = getAvatar(radius)
+        offset = (avatar.width - radius) / 2
     }
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)

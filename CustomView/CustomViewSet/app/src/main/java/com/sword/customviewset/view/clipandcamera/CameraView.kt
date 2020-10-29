@@ -8,11 +8,26 @@ import com.sword.customviewset.R
 import com.sword.customviewset.view.dp
 
 class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
+    var topRotation = 0f
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var bottomRotation = 30f
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var divideRotation = 0f
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     private val BITMAP_SIZE = 200.dp
     private val BITMAP_PADDING = 100.dp
     private var camera = Camera().apply {
         //围绕 x 为中心轴旋转 30 度，原点为轴心
-        rotateX(30f)
         setLocation(0f, 0f, -6*resources.displayMetrics.density)
     }
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -22,9 +37,13 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         //上半部分
         canvas.save()
         canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2 , BITMAP_PADDING + BITMAP_SIZE/2)
-        canvas.rotate(-30f)
+        canvas.rotate(-divideRotation)
+        camera.save()
+        camera.rotateX(topRotation)
+        camera.applyToCanvas(canvas)
+        camera.restore()
         canvas.clipRect(-BITMAP_SIZE, -BITMAP_SIZE, BITMAP_SIZE, 0f)
-        canvas.rotate(30f)
+        canvas.rotate(divideRotation)
         canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2), -(BITMAP_PADDING + BITMAP_SIZE/2))
         canvas.drawBitmap(getAvator(BITMAP_SIZE.toInt()), BITMAP_PADDING, BITMAP_PADDING, paint)
         canvas.restore()
@@ -32,10 +51,13 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         //下半部分
         canvas.save()
         canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2, BITMAP_PADDING + BITMAP_SIZE/2)
-        canvas.rotate(-30f)
+        canvas.rotate(-divideRotation)
+        camera.save()
+        camera.rotateX(bottomRotation)
         camera.applyToCanvas(canvas)
+        canvas.restore()
         canvas.clipRect(-BITMAP_SIZE, 0f, BITMAP_SIZE, BITMAP_SIZE)
-        canvas.rotate(30f)
+        canvas.rotate(divideRotation)
         canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2 ), -(BITMAP_PADDING + BITMAP_SIZE/2))
         canvas.drawBitmap(getAvator(BITMAP_SIZE.toInt()), BITMAP_PADDING, BITMAP_PADDING, paint)
         canvas.restore()
