@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.graphics.withSave
 import com.sword.customviewset.R
 import com.sword.customviewset.view.dp
 
@@ -35,36 +36,35 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onDraw(canvas: Canvas) {
         //上半部分
-        canvas.save()
-        canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2 , BITMAP_PADDING + BITMAP_SIZE/2)
-        canvas.rotate(-divideRotation)
-        camera.save()
-        camera.rotateX(topRotation)
-        camera.applyToCanvas(canvas)
-        camera.restore()
-        canvas.clipRect(-BITMAP_SIZE, -BITMAP_SIZE, BITMAP_SIZE, 0f)
-        canvas.rotate(divideRotation)
-        canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2), -(BITMAP_PADDING + BITMAP_SIZE/2))
-        canvas.drawBitmap(getAvator(BITMAP_SIZE.toInt()), BITMAP_PADDING, BITMAP_PADDING, paint)
-        canvas.restore()
+        canvas.withSave {
+            canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2 , BITMAP_PADDING + BITMAP_SIZE/2)
+            canvas.rotate(-divideRotation)
+            camera.save()
+            camera.rotateX(topRotation)
+            camera.applyToCanvas(canvas)
+            camera.restore()
+            canvas.clipRect(-BITMAP_SIZE, -BITMAP_SIZE, BITMAP_SIZE, 0f)
+            canvas.rotate(divideRotation)
+            canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2), -(BITMAP_PADDING + BITMAP_SIZE/2))
+        }
 
         //下半部分
-        canvas.save()
-        canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2, BITMAP_PADDING + BITMAP_SIZE/2)
-        canvas.rotate(-divideRotation)
-        camera.save()
-        camera.rotateX(bottomRotation)
-        camera.applyToCanvas(canvas)
-        canvas.restore()
-        canvas.clipRect(-BITMAP_SIZE, 0f, BITMAP_SIZE, BITMAP_SIZE)
-        canvas.rotate(divideRotation)
-        canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2 ), -(BITMAP_PADDING + BITMAP_SIZE/2))
-        canvas.drawBitmap(getAvator(BITMAP_SIZE.toInt()), BITMAP_PADDING, BITMAP_PADDING, paint)
-        canvas.restore()
+        canvas.withSave {
+            canvas.translate(BITMAP_PADDING + BITMAP_SIZE/2, BITMAP_PADDING + BITMAP_SIZE/2)
+            canvas.rotate(-divideRotation)
+            camera.save()
+            camera.rotateX(bottomRotation)
+            camera.applyToCanvas(canvas)
+            canvas.restore()
+            canvas.clipRect(-BITMAP_SIZE, 0f, BITMAP_SIZE, BITMAP_SIZE)
+            canvas.rotate(divideRotation)
+            canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE/2 ), -(BITMAP_PADDING + BITMAP_SIZE/2))
+            canvas.drawBitmap(getAvator(BITMAP_SIZE.toInt()), BITMAP_PADDING, BITMAP_PADDING, paint)
+        }
     }
 
-    fun getAvator(width: Int, resId: Int = R.drawable.avatar_rengwuxian): Bitmap {
-        var options = BitmapFactory.Options()
+    private fun getAvator(width: Int, resId: Int = R.drawable.avatar_rengwuxian): Bitmap {
+        val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeResource(resources, resId, options)
         options.inJustDecodeBounds = false
