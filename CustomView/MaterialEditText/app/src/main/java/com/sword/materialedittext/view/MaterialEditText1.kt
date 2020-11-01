@@ -47,6 +47,7 @@ class MaterialEditText1(context: Context, attrs: AttributeSet): AppCompatEditTex
 
     init {
         /*
+        * //runtime_symbol_list/debug/R.txt
         * MaterialEditText1 是一个数组，里面保存了该自定义组件中的所有的属性 ID
         * int[] styleable MaterialEditText1 { 0x7f030330 }
         * int styleable MaterialEditText1_useFloatingLabel 0
