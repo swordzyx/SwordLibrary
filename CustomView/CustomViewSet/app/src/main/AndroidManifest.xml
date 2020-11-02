@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomViewSet">
+        <activity android:name=".LayoutLayout"></activity>
         <activity android:name=".LayoutSizeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,9 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
-        <activity android:name=".AnimatorActivity"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".AnimatorActivity" />
     </application>
 
 </manifest>
