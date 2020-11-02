@@ -44,7 +44,8 @@ class CustomDrawTextView(context: Context, attrs: AttributeSet) : View(context, 
         paint.style = Paint.Style.FILL
         //参数：文本， 基准线 x 值， 基准线 y 值，画笔
         paint.getFontMetrics(fontMetrics)
-        canvas.drawText("abac", 0f, -(fontMetrics.ascent + fontMetrics.descent) / 2, paint)
+        //-(fontMetrics.ascent + fontMetrics.descent) / 2
+        canvas.drawText("abac", 0f, 0f, paint)
 
         //绘制文字
         canvas.translate((-width/2).toFloat(), (-height/2).toFloat())
