@@ -9,16 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomViewSet">
-        <activity android:name=".LayoutLayout">
+        <activity android:name=".ViewDrawAnalyse"></activity>
+
+        <activity android:name=".LayoutLayout"></activity>
+
+        <activity android:name=".LayoutSizeActivity"></activity>
+
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LayoutSizeActivity">
-        </activity>
-        <activity android:name=".MainActivity"></activity>
+
         <activity android:name=".AnimatorActivity" />
     </application>
 
