@@ -1,5 +1,6 @@
 package com.sword.customviewset.scaleimageview
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,14 +10,19 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.widget.OverScroller
 import androidx.core.graphics.scale
 import androidx.core.view.GestureDetectorCompat
+import androidx.core.view.ViewCompat
 import com.sword.customviewset.R
 import com.sword.customviewset.view.dp
+import java.lang.Math.max
+import java.lang.Math.min
 
 private val IMAGE_SIZE = 300.dp.toInt()
+private const val EXTRA_SCALE_FACTOR = 1.5f
 
-class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs), GestureDetector.OnGestureListener {
+class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs), GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, Runnable {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var big = false
     private val bitmap = getAvatar(IMAGE_SIZE)
@@ -24,29 +30,51 @@ class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs
     private var smallscale = 0f
     private var originaloffsetX = 0f
     private var originaloffsetY = 0f
+    private var offsetX = 0f
+    private var offsetY = 0f
+    private var curScale = 0f
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    private lateinit var animator: ObjectAnimator
     private val gestureDetector =  GestureDetectorCompat(context, this)
+
+    //用于自动计算滑动的偏移
+    private val scroller = OverScroller(context)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         //初始偏移应该在 View 的大小发生改变的时候初始化
         originaloffsetX = (width - bitmap.width) / 2f
         originaloffsetY = (height - bitmap.height) / 2f
 
+
         if (bitmap.width/width.toFloat() > bitmap.height/height.toFloat()){
             smallscale = (width / bitmap.width.toFloat())
-            bigscale = (height / bitmap.height.toFloat())
+            bigscale = (height / bitmap.height.toFloat()) * EXTRA_SCALE_FACTOR
         } else {
             smallscale = (height / bitmap.height.toFloat())
-            bigscale = (width / bitmap.width.toFloat())
+            bigscale = (width / bitmap.width.toFloat()) * EXTRA_SCALE_FACTOR
         }
+        curScale = smallscale
+
+        animator = ObjectAnimator.ofFloat(this, "curScale", smallscale, bigscale)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return gestureDetector.onTouchEvent(event)
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.scale(bigscale, bigscale, width/2f, height/2f)
+        val scaleFraction = (curScale - smallscale) / (bigscale - smallscale)
+        canvas.translate(offsetX * scaleFraction, offsetY * scaleFraction)
+        canvas.scale(curScale, curScale, width/2f, height/2f)
         canvas.drawBitmap(bitmap, originaloffsetX, originaloffsetY, paint)
     }
 
     fun getAvatar(size: Int, resId: Int = R.drawable.avatar_rengwuxian):Bitmap {
-        var option = BitmapFactory.Options();
+        var option = BitmapFactory.Options()
         option.inJustDecodeBounds = true
         BitmapFactory.decodeResource(resources, resId, option)
         option.inJustDecodeBounds = false
@@ -69,9 +97,15 @@ class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs
         return false
     }
 
-    //滑动时触发，对应 onTouchEvent 中的 move 事件
+    //滑动时触发，对应 onTouchEvent 中的 move 事件，这里的 distance 是旧的值减去新值的结果
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-
+        if (big) {
+            offsetX -= distanceX
+            offsetY -= distanceY
+            fixOffsets()
+            invalidate()
+        }
+        return false
     }
 
     //长按时触发
@@ -80,6 +114,49 @@ class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs
 
     //漂移时触发
     override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+        if (big) {
+            scroller.fling(offsetX.toInt(), offsetY.toInt(), velocityX.toInt(), velocityY.toInt(), (-(bitmap.width * bigscale - width) / 2).toInt(), ((bitmap.width * bigscale - width) / 2).toInt(), (- (bitmap.height * bigscale - height) / 2).toInt(), ((bitmap.height * bigscale - height) / 2).toInt())
+            //postOnAnimation 和 post 都是会将传入的 Runnable 放到主线程中去执行，但是不同的是 post 是马上执行，而 postOnAnimation 则是放到下一帧执行。不过 View 中的 postOnAnimation API 版本比较高，因此需要使用 ViewCompat 中的 postOnAnimation 方法
+            ViewCompat.postOnAnimation(this, this)
+        }
         return false
+    }
+
+    //单击触发，这个方法会在确认不是双击之后才会触发，一般是按下抬起之后 400ms 之内如果再没有触发 down 事件，则会认为是单击，也就是说按下抬起，还要再等待 400ms 之后才会触发此方法
+    override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        return false
+    }
+
+    //双击时触发
+    override fun onDoubleTap(e: MotionEvent?): Boolean {
+        big = !big
+        if (big) {
+            animator.start()
+        }else{
+            animator.reverse()
+        }
+        return true
+    }
+
+    //双击中第一按下抬起，第二次按下后若触发了其他事件则会触发。
+    override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
+        return false
+    }
+
+    private fun fixOffsets() {
+        //画布已经被放大了，因此对应的图片宽高也应该乘以放大的比例。
+        offsetX = min(offsetX, (bitmap.width * bigscale - width) / 2f)
+        offsetX = max(offsetX, - (bitmap.width * bigscale - width) / 2f)
+        offsetY = min(offsetY, (bitmap.height * bigscale - height) / 2f)
+        offsetY = max(offsetY, -(bitmap.height * bigscale - height) / 2f)
+    }
+
+    override fun run() {
+        if (scroller.computeScrollOffset()) {
+            offsetX = scroller.currX.toFloat()
+            offsetY = scroller.currY.toFloat()
+            invalidate()
+            ViewCompat.postOnAnimation(this, this)
+        }
     }
 }
