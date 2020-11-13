@@ -44,7 +44,7 @@ class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs
     private val scaleDetectorListener = ScaleDetectorListener()
     private val scaleDetector = ScaleGestureDetector(context, scaleDetectorListener)
 
-    private lateinit var animator: ObjectAnimator
+    private var animator = ObjectAnimator.ofFloat(this, "curScale", smallscale, bigscale)
     private val gestureDetector =  GestureDetectorCompat(context, customGestureListener)
 
     //用于自动计算滑动的偏移
@@ -65,11 +65,15 @@ class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs
         }
         curScale = smallscale
 
-        animator = ObjectAnimator.ofFloat(this, "curScale", smallscale, bigscale)
+        animator.setFloatValues(smallscale, bigscale)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return gestureDetector.onTouchEvent(event)
+        scaleDetector.onTouchEvent(event)
+        if (!scaleDetector.isInProgress){
+            gestureDetector.onTouchEvent(event)
+        }
+        return true
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -177,19 +181,23 @@ class ScaleImageView(context: Context, attrs: AttributeSet): View(context, attrs
     inner class ScaleDetectorListener : ScaleGestureDetector.OnScaleGestureListener {
         //双指在屏幕上缩放时调用
         override fun onScale(detector: ScaleGestureDetector): Boolean {
-            //onScale 返回 ture，则scaleFactor是这一次的缩放比例与上一次记录的缩放比例的比值
-            val tempScale = detector.scaleFactor
-            if (curScale < smallscale || curScale > bigscale) {
+            //可以认为在 ScaleGestureDetector 中是有一个容器保存每一次的缩放比例，如果 onScale 返回 false，则表示不消费此次缩放事件，这一次的缩放值就不会记录
+            //如果 onScale 返回 true，则表示消费，这一次的缩放值就会被记录
+            //detector.scaleFactor 获取的其实就是此次缩放值与上一次记录在容器中的缩放值得比值。因此，若 onScale 从一开始就一直返回 false，detector.scaleFactor 获取得就是当前缩放值与初始值得比值。
+            val tempCurScale = curScale * detector.scaleFactor
+            if (tempCurScale < smallscale || tempCurScale > bigscale) {
                 return false
             } else {
                 curScale *= detector.scaleFactor
-
             }
             return true
         }
 
         //双指放在屏幕上，开始缩放时调用
-        override fun onScaleBegin(detector: ScaleGestureDetector?): Boolean {
+        override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
+            offsetX = (detector.focusX - width / 2f) * (1 - bigscale/smallscale)
+            offsetY = (detector.focusY - height / 2f) * (1 - bigscale/smallscale)
+            fixOffsets()
             return true
         }
         //结束缩放时调用
