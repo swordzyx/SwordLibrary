@@ -20,6 +20,9 @@
         <activity android:name=".AnimatorActivity" />
 
         <activity android:name=".ScaleImageViewActivity">
+        </activity>
+
+        <activity android:name=".multitouchview.MultiTouchViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
