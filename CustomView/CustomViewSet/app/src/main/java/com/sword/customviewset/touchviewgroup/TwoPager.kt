@@ -16,6 +16,7 @@ class TwoPager(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs
     private var scrolling = false
     private val overScroller: OverScroller = OverScroller(context)
     private val viewConfiguration: ViewConfiguration = ViewConfiguration.get(context)
+    //VelocityTracker 初始化
     private val velocityTracker = VelocityTracker.obtain()
     private var minVelocity = viewConfiguration.scaledMinimumFlingVelocity
     private var maxVelocity = viewConfiguration.scaledMaximumFlingVelocity
@@ -40,8 +41,11 @@ class TwoPager(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+            //每次要重新计算速度的时候要清理一下数据
             velocityTracker.clear()
         }
+        //数据更新，每一次事件的触发都会将该事件更新到 VelocityTracker 数据中，其实就是将事件的坐标添加到 VelocityTracker 中，相当于在每次事件触发时保存当前的位置
+        //等需要获取速度时才会根据之前保存的数据来计算速度。
         velocityTracker.addMovement(event)
         var result = false
         when (event.actionMasked) {
@@ -88,7 +92,7 @@ class TwoPager(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs
                 scrollTo(dx, 0)
             }
             MotionEvent.ACTION_UP -> {//实现手指抬起的时候的惯性滑动
-                //计算当前的速度，第一个参数为单位，表示 1000ms 之内移动的像素数，第二个参数为速度的上限
+                //计算当前的速度，第一个参数为单位，表示 1000ms 之内平均移动的像素数，第二个参数为速度的上限，也就是稍后从 xVelocity 获取的速度不会大于这个上限，即使实际速度是比这个上限大的
                 velocityTracker.computeCurrentVelocity(1000, maxVelocity.toFloat()) // 5m/s 5km/h
                 //获取 x 轴方向上的速度
                 val vx = velocityTracker.xVelocity
@@ -103,8 +107,9 @@ class TwoPager(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs
                     if (vx < 0) 1 else 0
                 }
                 val scrollDistance = if (targetPage == 1) width - scrollX else -scrollX
+                //指定目标位置，实现在到达指定位置时，速度刚好为 0
                 overScroller.startScroll(getScrollX(), 0, scrollDistance, 0)
-                //
+                //将这一帧动画标记为失效，即销毁当前的画面，然后显示下一帧，下一帧到来之时，draw 方法会被调用，draw 方法中会调用 computeScroll()，这是一个系统方法
                 postInvalidateOnAnimation()
             }
         }
@@ -113,8 +118,10 @@ class TwoPager(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs
 
     //invalidate() 会导致 computeScroll() 调用
     override fun computeScroll() {
+        //获取下一次要滑动到的位置，返回一个 boolean ，如果为 true ，则表示动画还未结束
         if (overScroller.computeScrollOffset()) {
             scrollTo(overScroller.currX, overScroller.currY)
+            //postInvalidateOnAnimation 会导致 invalidate() 的调用
             postInvalidateOnAnimation()
         }
     }
