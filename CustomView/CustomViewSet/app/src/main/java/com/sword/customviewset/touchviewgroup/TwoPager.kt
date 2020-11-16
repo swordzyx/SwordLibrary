@@ -23,6 +23,7 @@ class TwoPager(context: Context, attrs: AttributeSet) : ViewGroup(context, attrs
     private var pagingSlop = viewConfiguration.scaledPagingTouchSlop
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        //用同样的大小对每一个子 View 进行测量，这种用法是很不常见的。
         measureChildren(widthMeasureSpec, heightMeasureSpec)
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
