@@ -9,24 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomViewSet">
-        <activity android:name=".ViewDrawAnalyse"></activity>
-
-        <activity android:name=".LayoutLayout"></activity>
-
-        <activity android:name=".LayoutSizeActivity"></activity>
-
-        <activity android:name=".MainActivity" ></activity>
-
-        <activity android:name=".AnimatorActivity" />
-
-        <activity android:name=".ScaleImageViewActivity">
-        </activity>
-
-        <activity android:name=".multitouchview.MultiTouchViewActivity">
+        <!-- View 拖拽-->
+        <activity android:name=".TouchDragActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ViewDrawAnalyse" />
+        <activity android:name=".LayoutLayout" />
+        <activity android:name=".LayoutSizeActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".AnimatorActivity" />
+        <activity android:name=".ScaleImageViewActivity"></activity>
+        <activity android:name=".multitouchview.MultiTouchViewActivity">
+
         </activity>
     </application>
 
