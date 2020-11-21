@@ -17,8 +17,9 @@ class Linear(context: Context, attrs: AttributeSet) : VirtualLayout(context, att
         super.updatePreLayout(container)
         constraintSet.clone(container)
 
+        //通过 ConstraintSet 动态得创建约束，并应用到 ConstraintLayout 中
         val viewIds = referencedIds
-        for (i in 0 until mCount) {
+        for (i in 1 until mCount) {
             val current = viewIds[i]
             val before = viewIds[i - 1]
 
