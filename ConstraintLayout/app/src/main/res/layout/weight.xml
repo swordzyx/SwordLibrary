@@ -20,7 +20,7 @@
         android:id="@+id/view2"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        app:layout_constraintEnd_toStratOf="@id/view3"
+        app:layout_constraintEnd_toStartOf="@id/view3"
         app:layout_constraintStart_toEndOf="@id/view1"
         app:layout_constraintTop_toTopOf="parent"/>
 
