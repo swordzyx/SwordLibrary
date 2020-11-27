@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Transition
+        app:constraintSetEnd="@id/End"
+        app:constraintSetStart="@id/Start"
+        app:duration="1000">
+        <OnClick
+            app:clickAction="jumpToEnd"
+            app:targetId="@+id/fab_favourite"/>
+
+        <OnSwipe
+            app:dragDirection="dragDown"
+            app:touchAnchorSide="bottom"
+            app:touchRegionId="@id/image_film_cover"/>
+
+        <KeyFrameSet>
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="deltaRelative"
+                app:motionTarget="@id/background"
+                app:percentHeight="0"
+                app:percentY="0"/>
+
+            <KeyAttribute
+                android:elevation="12"
+
+        </KeyFrameSet>
+    </Transition>
+</MotionScene>

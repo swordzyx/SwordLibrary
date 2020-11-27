@@ -29,6 +29,4 @@ class ConstraintX1: AppCompatActivity() {
         //将 constraintSet 中保存的约束应用到 view 中。
         constraintSet.applyTo(constraintLayout)
     }
-
-
 }
