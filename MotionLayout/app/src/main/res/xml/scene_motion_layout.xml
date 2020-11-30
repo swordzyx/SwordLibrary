@@ -23,8 +23,48 @@
                 app:percentY="0"/>
 
             <KeyAttribute
-                android:elevation="12"
+                android:elevation="12dp"
+                app:framePosition="0"
+                app:motionTarget="@id/image_film_cover"/>
 
+            <KeyAttribute
+                android:elevation="0dp"
+                app:framePosition="100"
+                app:motionTarget="@id/image_film_cover"/>
+
+            <KeyAttribute
+                android:rotationX="30"
+                app:framePosition="50"
+                app:motionTarget="@id/image_film_cover"/>
+
+            <KeyCycle
+                android:rotation="0"
+                app:framePosition="0"
+                app:motionTarget="@id/fab_favourite"
+                app:wavePeriod="0"
+                app:waveShape="sin"/>
+
+            <KeyCycle
+                android:rotation="180"
+                app:framePosition="50"
+                app:motionTarget="@id/fab_favourite"
+                app:wavePeriod="3"
+                app:waveShape="sin"/>
+
+            <KeyCycle
+                android:rotation="0"
+                app:framePosition="100"
+                app:motionTarget="@id/fab_favourite"
+                app:wavePeriod="0"
+                app:waveShape="sin"/>
         </KeyFrameSet>
     </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/fab_favourite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"/>
+    </ConstraintSet>
 </MotionScene>
