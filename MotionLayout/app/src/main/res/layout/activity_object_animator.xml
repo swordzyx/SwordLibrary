@@ -5,7 +5,18 @@
     android:layout_height="match_parent"
     android:id="@+id/root"
     android:orientation="vertical"
-    xmlns:tools>
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ObjectAnimatorActivity">
+
+    <ImageView
+        android:id="@+id/heart"
+        android:onClick="onClick"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="start"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_heart_24dp"/>
+
 
 
 </FrameLayout>

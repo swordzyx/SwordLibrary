@@ -12,6 +12,9 @@
 
         <activity android:name=".ConstraintSetExample"/>
         <activity android:name=".Go"/>
+        <activity android:name=".MotionActivity"/>
+        <activity android:name=".ObjectAnimatorActivity"/>
+        <activity android:name=".ObjectAnimator2Activity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
