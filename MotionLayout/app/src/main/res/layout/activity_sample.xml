@@ -5,6 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/sample">
+    app:layoutDescription="@xml/sample"
+    tools:context=".SampleActivity">
+
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view"
+        android:src="@drawable/avatar"
+        android:background="@color/colorAccent"
+        tools:ignore="MissingConstraints"/>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
