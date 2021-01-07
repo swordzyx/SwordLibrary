@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetStart="@+id/start"
+        app:constraintSetEnd="@+id/end"
+        app:duration="1000">
+
+        <OnClick
+            app:clickAction="toggle"
+            app:targetId="@id/toggle"/>
+
+        <KeyFrameSet>
+
+            <KeyPosition
+                app:framePosition="50"
+                app:motionTarget="@id/h"
+                app:percentX="1"
+                app:percentY="0"
+                app:keyPositionType="deltaRelative"/>
+
+            <KeyPosition
+                app:framePosition="50"
+                app:motionTarget="@id/e"
+                app:percentX="0.5"
+                app:percentY="-0.5"
+                app:keyPositionType="pathRelative"/>
+
+            <KeyPosition
+                app:framePosition="50"
+                app:motionTarget="@id/n"
+                app:percentX="0.5"
+                app:percentY="0.25"
+                app:keyPositionType="parentRelative"/>
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@+id/h">
+            <Layout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CustomAttribute
+                app:attributeName="textColor"
+                app:customColorValue="@color/textColor"/>
+        </Constraint>
+
+        <Constraint android:id="@+id/e">
+            <Layout
+                app:layout_constraintStart_toStartOf="@id/h"
+                app:layout_constraintTop_toBottomOf="@id/h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CustomAttribute
+                app:attributeName="textColor"
+                app:customColorValue="@color/textColor"/>
+        </Constraint>
+
+        <Constraint android:id="@+id/n">
+            <Layout
+                app:layout_constraintStart_toStartOf="@id/e"
+                app:layout_constraintTop_toBottomOf="@id/e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <CustomAttribute
+                app:attributeName="textColor"
+                app:customColorValue="@color/textColor"/>
+        </Constraint>
+    </ConstraintSet>
+
+</MotionScene>

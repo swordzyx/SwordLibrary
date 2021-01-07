@@ -1,12 +1,31 @@
 package com.sword.motionlayout
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.drawerlayout.widget.DrawerLayout
 
 class WithDrawer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drawer)
+
+        val motionLayout = findViewById<MotionLayout>(R.id.motion_layout)
+        findViewById<DrawerLayout>(R.id.drawer_layout).addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                motionLayout.progress = slideOffset
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+            }
+        })
 
     }
 }
