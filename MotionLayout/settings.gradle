@@ -1,4 +1,3 @@
 include ':example'
-include ':transition'
 include ':app'
 rootProject.name = "MotionLayout"
