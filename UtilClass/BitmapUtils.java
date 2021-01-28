@@ -221,9 +221,125 @@ public class BitmapUtils {
 	public static Bitmap imageZoom(Bitmap bitmap, double maxSize) {
 		// 将bitmap放至数组中，意在获得bitmap的大小（与实际读取的原文件要大）
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		// 格式、质量、输出流
+		bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
+		byte[] b = baos.toByteArray();
+		// 将字节换成KB
+		double mid = b.length / 1024;
+		// 获取bitmap大小 是允许最大大小的多少倍
+		double i = mid / maxSize;
+		// 判断bitmap占用空间是否大于允许最大空间 如果大于则压缩 小于则不压缩
+		doRecycledIfNot(bitmap);
+		if (i < 1) {
+			// 缩放图片 此处用到平方根 将宽度和高度压缩掉对应的平方根倍
+			// （保持宽高不变，缩放后也达到了最大占用空间的大小）
+			return scaleWithWH(bitmap, bitmap.getWidth() / Math.sqrt(i), bitmap.getHeight() / Math.sqrt(i));
+		}
+		return null;
+	}
 
+	/***
+	* 图片缩放
+	*@param bitmap 位图
+	* @param w 新的宽度
+	* @param h 新的高度
+	* @return Bitmap
+	*/
+	public static Bitmap scaleWithWH(Bitmap bitmap, double w, double h) {
+		if (w == 0 || h == 0 || bitmap == null) {
+			return bitmap;
+		} else {
+			int width = bitmap.getWidth();
+			int height = bitmap.getHeight();
+
+			Matrix matrix = new Matrix();
+			float scaleWidth = (float) (w / width);
+			float scaleHeight = (float) (h / height);
+			matrix.postScale(scaleWidth, scaleHeight);
+
+			return Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+		}
+	}
+
+	/**
+	* YUV视频流格式转bitmap
+	* @param data YUV视频流格式
+	* @return width 设置宽度
+	* @return width 设置高度
+	*/
+	public static Bitmap getBitmap(byte[] data, int width, int height) {
+		Bitmap bitmap;
+		YuvImage yuvimage = new YuvImage(data, ImageFormat.NV21, width, height, null);
+
+		//data 是 onPreviewFrame 参数提供
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		yuvimage.compressToJpeg(new Rect(0, 0, yuvimage.getWidth(), yuvimage.getHeight()), 100, baos);
+
+		// 80--JPG图片的质量[0-100],100最高
+		byte[] rawImage = baos.toByteArray();
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		SoftReference<Bitmap>  softRef = new SoftReference<Bitmap> (BitmapFactory.decodeByteArray(rawImage, 0, rawImage.length, options));
+		bitmap = softRef.get();
+		return bitmap;
 	}
 
 
+	/**
+	* 图片路径转bitmap
+	* @param file 图片的绝对路径
+	* @return bitmap
+	*/
+	public static Bitmap getAssetImage(String file) {
+		Bitmap bitmap = null;
+		AssetManager am = mActivity.getAssets();
+		try {
+			InputStream is = am.open(file);
+			bitmap = BitmapFactory.decodeStream(is);
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return bitmap;
+	}
+
+
+	/**
+	* bitmap 保存到指定路径
+	* @param file 图片的绝对路径
+	* @param file 位图
+	* @return bitmap
+	*/
+	public static boolean saveFile(String file, Bitmap bmp) {
+		if(TextUtils.isEmpty(file) || bmp == null) return false;
+		File f = new File(file);
+		if (f.exists()) {
+			f.delete();
+		}else {
+			File p = f.getParentFile();
+			if(!p.exists()) {
+				p.mkdirs();
+			}
+		}
+		try {
+			FileOutputStream out = new FileOutputStream(f);
+			bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	* 回收一个未被回收的Bitmap
+	*@param bitmap
+	*/
+	public static void doRecycledIfNot(Bitmap bitmap) {
+		if (!bitmap.isRecycled()) {
+			bitmap.recycle();
+		}
+	}
 
 }
