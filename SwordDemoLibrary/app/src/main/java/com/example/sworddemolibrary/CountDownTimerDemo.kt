@@ -11,7 +11,7 @@ object CountDownTimerDemo {
         }
 
         override fun onTick(millisUntilFinished: Long) {
-            Log.d(TAG, "倒计时：${millisUntilFinished}s");
+            Log.d(TAG, "倒计时：${millisUntilFinished/1000}s");
         }
     }
 
