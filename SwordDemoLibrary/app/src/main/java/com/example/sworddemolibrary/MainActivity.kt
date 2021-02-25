@@ -20,8 +20,6 @@ class MainActivity : AppCompatActivity() {
 //        CountDownTimerDemo.start()
         //TelephonyManager 信息打印
 //        TelephonyManagerUtil.debug(this)
-
-        TelephonyManagerJavaUtil.debug(this);
     }
 
 }

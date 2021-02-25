@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -25,8 +26,13 @@ public class TelephonyManagerJavaUtil {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static void debug(Context context) {
-        Log.d("sword_debug", "getProviderName: " + getProvidersName(context));
-        Log.d("sword_debug", "getRawDeviceId: " + getRawDeviceId(context));
+        try {
+            Log.d("sword_debug", "getIMEI: " + getIMEI(context));
+            Log.d("sword_debug", "getProviderName: " + getProvidersName(context));
+//            Log.d("sword_debug", "getRawDeviceId: " + getRawDeviceId(context));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static String getProvidersName(Context context) {
@@ -59,8 +65,15 @@ public class TelephonyManagerJavaUtil {
         TelephonyManager telephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
-        checkPermission(context);
-
         return telephony.getDeviceId() + "." + telephony.getLine1Number() + "." + telephony.getSimSerialNumber() + "." + telephony.getSubscriberId() + "." + wifiManager.getConnectionInfo().getMacAddress();
+    }
+
+    public static String getIMEI(Context context){
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        } else {
+            return telephonyManager.getDeviceId();
+        }
     }
 }
