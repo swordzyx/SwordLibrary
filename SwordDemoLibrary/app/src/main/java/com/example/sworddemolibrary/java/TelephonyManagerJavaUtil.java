@@ -1,9 +1,10 @@
-package com.example.sworddemolibrary;
+package com.example.sworddemolibrary.java;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -76,4 +77,6 @@ public class TelephonyManagerJavaUtil {
             return telephonyManager.getDeviceId();
         }
     }
+
+
 }

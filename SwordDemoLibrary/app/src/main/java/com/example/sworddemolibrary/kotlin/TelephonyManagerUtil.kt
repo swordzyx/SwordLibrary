@@ -1,10 +1,9 @@
-package com.example.sworddemolibrary
+package com.example.sworddemolibrary.kotlin
 
 import android.content.Context
 import android.net.wifi.WifiManager
 import android.telephony.TelephonyManager
 import android.util.Log
-import java.util.jar.Manifest
 
 object TelephonyManagerUtil {
     val TAG = "zero_debug"
@@ -13,7 +12,11 @@ object TelephonyManagerUtil {
         val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
         Log.d(TAG, "运营商： " + telephony.simOperatorName)
-        Log.d(TAG, "ProviderName: " + getProvidersName(context))
+        Log.d(
+            TAG, "ProviderName: " + getProvidersName(
+                context
+            )
+        )
     }
 
     fun getProvidersName(context: Context): String? {

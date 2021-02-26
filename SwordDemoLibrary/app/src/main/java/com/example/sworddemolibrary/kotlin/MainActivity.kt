@@ -1,12 +1,10 @@
-package com.example.sworddemolibrary
+package com.example.sworddemolibrary.kotlin
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.telephony.TelephonyManager
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sworddemolibrary.R
 
 class MainActivity : AppCompatActivity() {
     val TAG = "zero"
