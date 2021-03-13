@@ -1,4 +1,4 @@
-package com.example.sworddemolibrary.kotlin
+package com.example.swordlibrary.kotlin
 
 import android.content.Context
 import android.net.wifi.WifiManager

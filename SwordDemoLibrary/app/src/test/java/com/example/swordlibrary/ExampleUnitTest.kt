@@ -1,4 +1,4 @@
-package com.example.sworddemolibrary
+package com.example.swordlibrary
 
 import org.junit.Test
 

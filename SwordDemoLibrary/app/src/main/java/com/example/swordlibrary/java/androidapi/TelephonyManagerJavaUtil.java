@@ -1,10 +1,9 @@
-package com.example.sworddemolibrary.java;
+package com.example.swordlibrary.java.androidapi;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.hardware.SensorManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
@@ -13,8 +12,6 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-
-import java.util.ArrayList;
 
 public class TelephonyManagerJavaUtil {
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -76,6 +73,13 @@ public class TelephonyManagerJavaUtil {
         } else {
             return telephonyManager.getDeviceId();
         }
+    }
+
+    public String getLocals(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        //getNetworkCountryIso 返回与 MCC（Mobile Country Code） 等效的 ISO-3166 alpha-2 国家/地区代码
+        //getSimCountryIso 返回与 SIM 卡运营商所在地区的国家/地区代码等效的 ISO-3166 alpha-2 国家/地区代码
+        return tm.getNetworkCountryIso() + "\n" + tm.getSimCountryIso() ;
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.sworddemolibrary.kotlin
+package com.example.swordlibrary.kotlin
 
 import android.os.CountDownTimer
 import android.util.Log
