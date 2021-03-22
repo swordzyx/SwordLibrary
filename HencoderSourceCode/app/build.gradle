@@ -3,6 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        zerolans {
+            storeFile file('/Users/zhouyanxia/GitCode/zerolans.jks')
+            storePassword 'zerolans'
+            keyAlias 'zero'
+            keyPassword 'zerolans'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -20,6 +28,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.zerolans
+
+        }
+        debug {
+
+        }
+    }
+
+    signingConfigs {
+        release{
+            storeFile file('/Users/zhouyanxia/GitCode/zerolans.jks')
+            storePassword 'zerolans'
+            keyAlias 'zerolans'
+            keyPassword 'zerolans'
         }
     }
 }

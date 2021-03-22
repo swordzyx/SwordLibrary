@@ -6,6 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
+        //定义插件的依赖，此处所定义的依赖将在上面的 repositories 中查找。
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
@@ -22,5 +23,37 @@ allprojects {
 }
 
 task clean(type: Delete) {
+    println '1'
     delete rootProject.buildDir
+    println '2'
+
+    doFirst {
+        println '3-first'
+    }
+    doLast {
+        println '3-last'
+    }
+    doFirst {
+        println '4-first'
+    }
+    doLast {
+        println '4-last'
+    }
+}
+
+task bumpVersion() {
+    doLast {
+        def versionPropsFile = file('version.properties')
+        def versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def codeBumped = versionProps['VERSION_CODE'].toInteger() + 1
+        versionProps['VERSION_CODE'] = codeBumped.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+    }
+}
+
+task bumpVersionAndNotify(dependsOn: bumpVersion) {
+    doLast {
+        println "升级完成"
+    }
 }
