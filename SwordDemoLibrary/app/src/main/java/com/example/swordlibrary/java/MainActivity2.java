@@ -3,6 +3,8 @@ package com.example.swordlibrary.java;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,11 @@ import android.widget.TextView;
 import com.example.swordlibrary.java.androidapi.TelephonyManagerJavaUtil;
 import com.example.swordlibrary.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Locale;
 
 
@@ -24,7 +31,29 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        textView = (TextView)findViewById(R.id.info);
+        /*textView = (TextView)findViewById(R.id.info);
+
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        Log.d("sword", "当前可用堆内存：" + activityManager.getMemoryClass());*/
+
+        new Thread() {
+            @Override
+            public void run() {
+                JSONObject object = new JSONObject();
+                String url = "http://210.59.220.165:21129/json";
+                try {
+                    object.put("name", "sword");
+                    object.put("kdkvndkj", ",dkj");
+                    String result = NetUtil.sendPostByJson(url, object);
+                    Log.e("sword", result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
     }
 
     //打印 Local 信息
