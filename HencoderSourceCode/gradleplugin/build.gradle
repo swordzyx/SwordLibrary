@@ -1,5 +1,27 @@
 apply plugin: 'com.android.library'
 
+
+class ExtensionDemo {
+    def author = "Sword"
+}
+
+class PluginDemo implements Plugin<Project> {
+    @Override
+    void apply(Project target) {
+        //创建扩展对象，create 第二个参数可以是 ExtensionDemo.class，后面的 .class 可以省略
+        def extension = target.extensions.create('sword', ExtensionDemo)
+        target.afterEvaluate {
+            println "Hello ${extension.author}"
+        }
+    }
+}
+
+apply plugin: PluginDemo
+
+sword {
+    author 'zero'
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
