@@ -44,11 +44,42 @@ android {
     }
 }
 
-dependencies {
+dependencies ({
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+})
+
+//定义闭包
+def listSort = {
+    def test = [100, "hello", true]
+    //在 test 末尾添加以为置为 200 的元素
+    test << 200
+    //打印输出
+    println "test: ${test}"
+    def list = [1, 2, 3, 4, 5]
+    //使用默认排序规则进行排序
+    list.sort()
+    println "list: ${list}"
+    //使用自定义规则排序
+    list.sort{a, b ->
+        a == b ? 0 : Math.abs(a) < Math.abs(b) ? 1 : -1}
+    println "list: ${list}"
+}
+
+def listAdd = {
+    def list = [1, 2, 3, 4, 5]
+    list.add(6)
+    println "list add: ${list}"
+    list.leftShift(7)
+    println "list leftShift: ${list}"
+    list << 8
+    println "list << : ${list}"
+}
+
+task list {
+    listAdd()
 }

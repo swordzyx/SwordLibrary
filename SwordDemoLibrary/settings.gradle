@@ -1,2 +1,3 @@
+include ':groovypractice'
 include ':app'
 rootProject.name = "SwordDemoLibrary"
