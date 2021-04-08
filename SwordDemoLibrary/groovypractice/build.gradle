@@ -31,7 +31,25 @@ dependencies {
 
 }
 
+task task1 {
+    doLast {
+        println "task 1"
+    }
+}
 
+task task2{
+    doLast {
+        println "task 2"
+    }
+}
+
+task task3() {
+    doLast {
+        println "task 3"
+    }
+}
+
+task3.dependsOn(task1, task2)
 
 def listAdd() {
     def list = [1, 2, 3, 4, 5]
