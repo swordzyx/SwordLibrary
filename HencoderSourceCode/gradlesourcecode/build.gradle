@@ -1,25 +1,5 @@
-apply plugin: 'com.android.library'
-
-
-class ExtensionDemo {
-    def author = "Sword"
-}
-
-class PluginDemo implements Plugin<Project> {
-    @Override
-    void apply(org.gradle.api.Project target) {
-        //创建扩展对象，create 第二个参数可以是 ExtensionDemo.class，后面的 .class 可以省略
-        def extension = target.extensions.create('sword', ExtensionDemo)
-        target.afterEvaluate {
-            println "Hello ${extension.author}"
-        }
-    }
-}
-
-apply plugin: PluginDemo
-
-sword {
-    author 'zero'
+plugins {
+    id 'com.android.library'
 }
 
 android {
@@ -42,13 +22,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.google.android.material:material:1.2.1'
+    testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    compileOnly 'com.android.tools.build:gradle:4.0.1'
 }
