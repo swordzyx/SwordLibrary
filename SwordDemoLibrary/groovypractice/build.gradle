@@ -1,0 +1,99 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}
+
+task task1 {
+    doLast {
+        println "task 1"
+    }
+}
+
+task task2{
+    doLast {
+        println "task 2"
+    }
+}
+
+task task3() {
+    doLast {
+        println "task 3"
+    }
+}
+
+task3.dependsOn(task1, task2)
+
+def listAdd() {
+    def list = [1, 2, 3, 4, 5]
+    list.add(6)
+    println "list add: ${list}"
+    list.leftShift(7)
+    println "list leftShift: ${list}"
+    list << 8
+    println "list << : ${list}"
+}
+
+def listRemove() {
+    def list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    list.remove(7)//删除索引为 7 的元素
+    println "list remove: ${list}"
+    list.removeAt(7) //删除索引为 7 的元素
+    println "list removeAt: ${list}"
+    list.removeAll { //删除满足指定条件的元素
+        return it%2 == 0
+    }
+    println "list removeAll: ${list}"
+
+
+}
+
+def listFind() {
+    def list = [1, 2, 3, 4, 5, 6]
+    //从左到右，查找 2 的倍数，返回找到的第一个数
+    def result = list.find { return it % 2 == 0}
+    println "find it % 2 == 0: ${result}"
+    //返回所有对 2 取余不为 0 的数。
+    def result2 = list.findAll { return it % 2 != 0}
+    println "findAll it % 2 != 0: ${result2}"
+    //对于 list 中的任意一个元素，如果满足条件（对 2 取余不为 0），返回 true
+    def result3 = list.any { return it % 2 != 0 }
+    println "any it % 2 != 0: ${result3}"
+    //如果 list 中的所有元素满足条件（对 2 取余为 0），返回 true
+    def result4 = list.every { return it % 2 == 0 }
+    println "every it % 2 == 0: ${result4}"
+
+}
+
+task list {
+//    listAdd()
+//    listRemove()
+    listFind()
+}
