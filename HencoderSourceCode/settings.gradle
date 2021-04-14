@@ -1,4 +1,3 @@
-include ':threadsync'
 include ':gradleplugin'
 include ':mylibrary1'
 include ':app'
