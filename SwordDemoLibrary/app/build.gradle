@@ -32,7 +32,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.firebase:firebase-messaging'
-    compileOnly 'com.android.tools.build:gradle:4.0.1'
+    compileOnly 'com.android.tools.build:gradle:3.4.2'
 
     //Google 服务
     implementation 'com.google.android.gms:play-services-base:16.1.0'
