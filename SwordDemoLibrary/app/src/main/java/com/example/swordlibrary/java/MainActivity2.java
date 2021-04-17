@@ -17,13 +17,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Locale;
 
 
 public class MainActivity2 extends AppCompatActivity {
     String text2 = "";
     TextView textView = null;
+    public static String CPUABI = null;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -36,7 +39,7 @@ public class MainActivity2 extends AppCompatActivity {
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         Log.d("sword", "当前可用堆内存：" + activityManager.getMemoryClass());*/
 
-        new Thread() {
+       /* new Thread() {
             @Override
             public void run() {
                 JSONObject object = new JSONObject();
@@ -52,8 +55,29 @@ public class MainActivity2 extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }.start();
+        }.start();*/
 
+       getCPUABI();
+
+    }
+
+
+    public static void getCPUABI() {
+        if (CPUABI == null) {
+            try {
+                String os_cpuabi = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("getprop ro.product.cpu.abi").getInputStream())).readLine();
+                if (os_cpuabi.contains("x86")) {
+                    CPUABI = "x86";
+                } else if (os_cpuabi.contains("armeabi-v7a") || os_cpuabi.contains("arm64-v8a")) {
+                    CPUABI = "armeabi-v7a";
+                } else {
+                    CPUABI = "armeabi";
+                }
+            } catch (Exception e) {
+                CPUABI = "armeabi";
+            }
+            Log.d("sword", CPUABI);
+        }
     }
 
     //打印 Local 信息
