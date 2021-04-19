@@ -113,6 +113,7 @@ public class Main {
         while (true) {
             if (future.isDone()) {
                 try {
+                    //get 是阻塞式的
                     String result = future.get();
                     System.out.println("result: " + result);
                 } catch (InterruptedException | ExecutionException e) {

@@ -68,8 +68,10 @@ public class MainActivity2 extends AppCompatActivity {
                 String os_cpuabi = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("getprop ro.product.cpu.abi").getInputStream())).readLine();
                 if (os_cpuabi.contains("x86")) {
                     CPUABI = "x86";
-                } else if (os_cpuabi.contains("armeabi-v7a") || os_cpuabi.contains("arm64-v8a")) {
+                } else if (os_cpuabi.contains("armeabi-v7a")) {
                     CPUABI = "armeabi-v7a";
+                } else if (os_cpuabi.contains("arm64-v8a")){
+                    CPUABI = "arm64-v8a";
                 } else {
                     CPUABI = "armeabi";
                 }
