@@ -58,6 +58,7 @@ public class MainActivity2 extends AppCompatActivity {
         }.start();*/
 
        getCPUABI();
+        Log.d("sword", "time" + System.currentTimeMillis());
 
     }
 
