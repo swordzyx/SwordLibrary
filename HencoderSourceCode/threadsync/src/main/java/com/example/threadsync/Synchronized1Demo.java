@@ -14,8 +14,8 @@ public class Synchronized1Demo implements TestDemo  {
         new Thread() {
             @Override
             public void run() {
-                while (running.get()) {
-                }
+            while (running.get()) {
+            }
             }
         }.start();
         try {
