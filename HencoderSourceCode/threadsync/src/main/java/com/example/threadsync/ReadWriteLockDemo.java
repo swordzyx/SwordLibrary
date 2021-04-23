@@ -1,6 +1,7 @@
 package com.example.threadsync;
 
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ReadWriteLockDemo implements TestDemo  {
@@ -8,6 +9,17 @@ public class ReadWriteLockDemo implements TestDemo  {
     ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     Lock readLock = lock.readLock();
     Lock writeLock = lock.writeLock();
+
+    public void test() {
+        Lock lock1 = new ReentrantLock();
+        lock1.lock();
+        try {
+            x++;
+        } finally {
+            lock1.unlock();
+        }
+    }
+
 
     private void count() {
         writeLock.lock();

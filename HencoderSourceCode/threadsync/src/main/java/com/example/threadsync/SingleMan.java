@@ -1,7 +1,8 @@
 package com.example.threadsync;
 
 public class SingleMan {
-    //
+    //这里的 volatile 是实现在初始调用 SingleMan 构造方法进行初始化时，只有在构造方法调用完成之后才会将 sInstance 标记为可用状态（即不为 null）
+    //也就是说，如果没有 volatile 关键字，在 SingleMan 还没调用完成时，sInstance 就会被标记为可用状态
     private static volatile SingleMan sInstance;
 
     private SingleMan() {
@@ -39,10 +40,13 @@ public class SingleMan {
     }
 
 
+    //还有一个小问题对象的初始化是一个很复杂的过程，可能会出现，类已经创建了，但是里面的内容还没初始化，即对象正在初始化过程中，但是没有初始化完，但此时该实例在虚拟机中已经被标记为可用了。此时如果有另一个线程来访问 newInstance3 方法，在第一处判 null 会返回 false，该线程就会拿到一个还没有初始化完成的对象去使用，
+    //需要使用 volatile 来修饰 sInstance 成员，这样只有在 SingleMan 初始化完成之后才会将 sInstance 标记为可用。
     static SingleMan newInstance3() {
         //下面的判断是为了让 sInstance 执行初始化之后就不要在进行初始化了。
         if (sInstance == null) {
             synchronized(SingleMan.class) {
+                //这里的判断是为了当有多个线程排队等待创建 SingleMan 时，只有排队的第一个会创建 SingleMan 对象
                 if(sInstance == null) {
                     sInstance = new SingleMan();
                 }
