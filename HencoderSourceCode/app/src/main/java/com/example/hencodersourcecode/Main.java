@@ -1,6 +1,8 @@
 package com.example.hencodersourcecode;
 
 import java.sql.SQLOutput;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +16,9 @@ public class Main {
     public static void main(String[] args) {
 //        thread();
         threadFactory();
+        Map map = new HashMap();
+        HashMap<String, String> hashMap = new HashMap();
+        hashMap.put("1", "sword");
     }
 
     //使用 Thread 定义线程
