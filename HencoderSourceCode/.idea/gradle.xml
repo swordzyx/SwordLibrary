@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/gradleplugin" />
             <option value="$PROJECT_DIR$/gradlesourcecode" />
             <option value="$PROJECT_DIR$/mylibrary1" />
+            <option value="$PROJECT_DIR$/threadandroid" />
             <option value="$PROJECT_DIR$/threadsync" />
           </set>
         </option>
