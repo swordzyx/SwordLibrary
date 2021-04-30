@@ -7,6 +7,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -19,6 +21,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        HandlerThread handlerThread = new HandlerThread("handlerThread");
+        Handler handler = new Handler(handlerThread.getLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+
     }
 
     static class User {
@@ -41,11 +53,13 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
+        //此方法在后台自动执行
         @Override
         protected Object doInBackground(Object[] objects) {
             return null;
         }
 
+        //此方法在启动 AsyncTask 的线程中执行，线程切换是由 AsyncTask 自动完成的。
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
