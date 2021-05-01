@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 include ':threadinteraction'
-=======
 include ':ThreadRxjava'
 include ':threadandroid'
->>>>>>> 8a72a6f8c3c84ff8913114c5eacfefad57ed92bc
 include ':gradlesourcecode'
 include ':threadsync'
 include ':gradleplugin'
