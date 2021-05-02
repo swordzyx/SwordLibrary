@@ -175,4 +175,89 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+
+    //无延迟无后续的操作符事件
+    fun sourceAnalyseSingleMap() {
+        Single.just(1).map {
+             it.toString()
+        }.subscribeOn(Schedulers.io()).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(object: SingleObserver<String>{
+            override fun onSubscribe(d: Disposable?) {
+
+            }
+
+            override fun onSuccess(t: String?) {
+            }
+
+            override fun onError(e: Throwable?) {
+
+            }
+
+        })
+    }
+
+    //有延迟无后续的新创建事件
+    fun sourceAnalyseSingleDelay() {
+        Single.just(1).delay(1, TimeUnit.SECONDS).subscribe(object: SingleObserver<Int> {
+            override fun onSubscribe(d: Disposable?) {
+
+            }
+
+            override fun onSuccess(t: Int?) {
+
+            }
+
+            override fun onError(e: Throwable?) {
+
+            }
+
+        })
+    }
+
+    //有延迟有后续
+    fun sourceAnalyseObserableMap() {
+        //延迟一秒之后，以每秒钟 1 次的频率向下游发送当前时间。
+        Observable.interval(1, 1, TimeUnit.SECONDS).map {
+            it.toString()
+        }.subscribe(object: Observer<String>{
+            override fun onSubscribe(d: Disposable?) {
+
+            }
+
+            override fun onNext(t: String?) {
+
+            }
+
+            override fun onError(e: Throwable?) {
+
+            }
+
+            override fun onComplete() {
+
+            }
+
+        })
+    }
+
+    //有延迟无后续
+    fun sourceAnalyseObserableDelay() {
+        //延迟一秒之后，以每秒钟 1 次的频率向下游发送当前时间。
+        Observable.interval(1, 1, TimeUnit.SECONDS).delay(1, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).subscribe(object: Observer<Long>{
+            override fun onSubscribe(d: Disposable?) {
+
+            }
+
+            override fun onNext(t: Long?) {
+
+            }
+
+            override fun onError(e: Throwable?) {
+
+            }
+
+            override fun onComplete() {
+
+            }
+
+        })
+    }
 }
