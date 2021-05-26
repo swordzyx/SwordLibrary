@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="xlcwsdk_yellow">#FF9C00</color>
+    <color name="xlcwsdk_gray">#CFD0D2</color>
+    <color name="xlcwsdk_red">#F85653</color>
+    <color name="button_background">#F27920</color>
+    <color name="dialog_background_color">#f9fafe</color>
+    <color name="white">#fff</color>
+    <color name="text_hint_color">#D6D6D6</color>
+</resources>
