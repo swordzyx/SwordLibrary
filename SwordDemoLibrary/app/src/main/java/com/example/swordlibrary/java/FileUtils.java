@@ -1,6 +1,9 @@
 package com.example.swordlibrary.java;
 
+import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -30,5 +33,56 @@ public class FileUtils {
         }
 
         return fileInfo.toString();
+    }
+
+
+    public static void getDataDir(Context activity) {
+        String path = "";
+
+        String PACKAGE_NAME = getAppInfo(activity);
+        if (isSdCardExist()) {
+            path = Environment.getExternalStorageDirectory().getPath();
+        } else {
+            path = activity.getFilesDir().getPath();
+        }
+
+        path += "/" + PACKAGE_NAME + "_001";
+
+        File dir = new File(path);
+        Log.d("Sword", "存储目录：" + path);
+    }
+
+    /**
+     * 获取应用包名
+     *
+     * @return
+     */
+    public static String getAppInfo(Context activity) {
+        try {
+            String pkName = activity.getPackageName();
+            String versionName = activity.getPackageManager().getPackageInfo(
+                    pkName, 0).versionName;
+            int versionCode = activity.getPackageManager().getPackageInfo(
+                    pkName, 0).versionCode;
+            return pkName + "_" + versionName + "_" + versionCode;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+
+    /**
+     * 判断SDCard是否存在 [当没有外挂SD卡时，内置ROM也被识别为存在sd卡]
+     *
+     * @return
+     */
+    public static boolean isSdCardExist() {
+        try{
+            return Environment.getExternalStorageState().equals(
+                    Environment.MEDIA_MOUNTED);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 }
