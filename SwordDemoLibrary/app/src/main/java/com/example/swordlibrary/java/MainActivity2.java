@@ -43,7 +43,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         //FileUtils.getDataDir(this);
 
-        AccountMainJava.register(this);
+//        AccountMainJava.register(this);
 
         requestPermission();
     }

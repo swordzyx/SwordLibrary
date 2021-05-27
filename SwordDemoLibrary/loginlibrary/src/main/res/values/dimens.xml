@@ -4,5 +4,5 @@
     <dimen name="dialog_width">924px</dimen>
     <dimen name="dialog_height">652px</dimen>
     <dimen name="logo_margin_top">39px</dimen>
-    <dimen name="register_logo_margin_top">58px</dimen>
+    <dimen name="dialog_title_font_size">22sp</dimen>
 </resources>

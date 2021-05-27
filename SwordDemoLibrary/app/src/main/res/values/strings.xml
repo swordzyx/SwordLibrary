@@ -1,6 +1,8 @@
 <resources>
+
     <string name="app_name">SwordDemoLibrary</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="default_notification_channel_name" translatable="true">SWORD</string>
+
 </resources>

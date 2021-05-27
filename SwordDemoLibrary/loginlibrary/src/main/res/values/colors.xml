@@ -7,4 +7,7 @@
     <color name="dialog_background_color">#f9fafe</color>
     <color name="white">#fff</color>
     <color name="text_hint_color">#D6D6D6</color>
+    <color name="text_color_protocol">#3a3a38</color>
+    <color name="check_box_background_color">#E2E2E4</color>
+    <color name="dialog_title_text_color">#3f4044</color>
 </resources>

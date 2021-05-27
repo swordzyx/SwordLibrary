@@ -10,13 +10,13 @@
         android:id="@+id/logo"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/register_logo_margin_top"
+        android:layout_marginTop="20dp"
         android:scaleType="fitCenter"
         android:src="@drawable/bg_sdk_logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/xlcwsdk_get_make_sure_number_phone_et"/>
 
 
     <EditText
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/edit_text_background"
         android:hint="@string/input_phone_hint"
@@ -41,7 +41,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo" />
 
+    <CheckBox
+        android:id="@+id/regiser_protocol_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="6dp"
+        android:button="@drawable/check_box_background"
+        app:layout_constraintEnd_toStartOf="@id/accept_protocol"
+        app:layout_constraintBottom_toBottomOf="@id/accept_protocol"
+        app:layout_constraintTop_toTopOf="@id/accept_protocol"/>
+
+
     <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/protocol_flow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -59,8 +71,9 @@
         android:layout_height="wrap_content"
         android:text="@string/register_mean_aggren"
         android:textSize="12sp"
+        android:textColor="@color/text_color_protocol"
         app:layout_constraintBottom_toTopOf="@id/xlcwsdk_register_line"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toEndOf="@id/regiser_protocol_checkbox"
         app:layout_constraintRight_toLeftOf="@id/xlcwsdk_register_user_protocol_tv"
         app:layout_constraintTop_toBottomOf="@id/xlcwsdk_register_register_bt" />
 
@@ -70,6 +83,7 @@
         android:layout_height="wrap_content"
         android:text="@string/user_protocol"
         android:textSize="12sp"
+        android:textColor="@color/text_color_protocol"
         app:layout_constraintBottom_toTopOf="@id/xlcwsdk_register_line"
         app:layout_constraintLeft_toRightOf="@id/accept_protocol"
         app:layout_constraintRight_toRightOf="parent"
@@ -122,10 +136,8 @@
 
     <ImageView
         android:id="@+id/xlcwsdk_register_visiter_login_im"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:src="@drawable/sdk_visitor_now"/>
 
 
@@ -133,12 +145,12 @@
         android:id="@+id/xlcwsdk_register_line"
         android:layout_width="1dp"
         android:layout_height="20dp"
-        android:layout_centerInParent="true"
         android:background="@color/xlcwsdk_gray"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/xlcwsdk_register_account_tv"
         app:layout_constraintRight_toLeftOf="@id/xlcwsdk_register_visiter_login_im"
-        app:layout_constraintTop_toBottomOf="@id/xlcwsdk_register_user_protocol_tv" />
+        app:layout_constraintTop_toBottomOf="@id/protocol_flow" />
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/account_login_flow"
@@ -156,8 +168,6 @@
         android:id="@+id/xlcwsdk_register_account_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:text="@string/account_login"
         android:textSize="14sp"
@@ -168,13 +178,9 @@
 
     <ImageView
         android:id="@+id/xlcwsdk_register_account_im"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_centerVertical="true"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_toLeftOf="@id/xlcwsdk_register_account_tv"
         android:src="@drawable/sdk_account_now"/>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

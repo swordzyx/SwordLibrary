@@ -17,7 +17,8 @@ import androidx.fragment.app.FragmentActivity;
 public class AccountMainJava {
 
     public static void register(FragmentActivity activity) {
-        SwordDialogFragment dialogFragment = new SwordDialogFragment(R.layout.xlcwsdk_user_register_dialog_layout, activity);
+
+        SwordDialogFragment dialogFragment = new SwordDialogFragment(R.layout.dialog_input_verify_code, activity);
         dialogFragment.show(activity.getSupportFragmentManager(), "regisger_dialog");
     }
 

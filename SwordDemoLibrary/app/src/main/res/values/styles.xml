@@ -7,6 +7,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="InputEditText">
+        <item name="android:background">@drawable/edit_text_background</item>
+        <item name="android:textColorHint">@color/text_hint_color</item>
+        <item name="android:inputType">phone</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 
     <declare-styleable name="VerifyCodeInputView">
         <attr name="gap" format="integer"/>
