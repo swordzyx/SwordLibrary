@@ -1,19 +1,12 @@
 package com.example.swordlibrary.kotlin
 
-import android.content.Context
-import android.database.DataSetObserver
-import android.media.Image
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.loginlibrary.ListPopupWindowWithEditTextOnly
 import com.example.swordlibrary.R
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
 //        showSpinnerWithEditTextImageView()
 
-        ListPopupWindowWithEditTextOnly().createView(this)
+        ListPopupWindowWithEditTextOnly().initView(this, R.id.popup_list_edit_only)
     }
 
 

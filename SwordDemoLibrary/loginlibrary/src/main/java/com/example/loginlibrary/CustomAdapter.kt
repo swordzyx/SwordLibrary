@@ -1,22 +1,22 @@
-package com.example.swordlibrary.kotlin
+package com.example.loginlibrary
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.example.swordlibrary.R
 
-class CustomAdapter(val context: Context, var dropDownViewId: Int = R.layout.simple_spinner_dropdown, var textViewId: Int = R.id.phone_number_tv): BaseAdapter() {
-    val phoneInfos = arrayOf("181****3573", "181****3573", "181****3573")
+class CustomAdapter(val context: Context, var phoneInfos: Array<String>, var dropDownViewId: Int = R.layout.list_popup_window_item_textview_only, var textViewId: Int = R.id.popup_list_item_textview): BaseAdapter() {
     var onTouchListener: View.OnTouchListener? = null
+    var drawableRight: Drawable? = null
 
     override fun getCount(): Int {
         return phoneInfos.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): Any? {
         return phoneInfos[position]
     }
 
@@ -31,14 +31,20 @@ class CustomAdapter(val context: Context, var dropDownViewId: Int = R.layout.sim
         if (view == null) {
             view = View.inflate(context, dropDownViewId, null)
             viewHolder = ViewHolder(view)
+
+            if (drawableRight != null) {
+                viewHolder.phoneNumber.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableRight, null)
+            }
+
+            if (onTouchListener != null) {
+                Log.d("Sword", "setOnTouchListener popup item")
+                viewHolder.phoneNumber.setOnTouchListener(onTouchListener)
+            }
         } else {
             viewHolder = view.getTag() as ViewHolder
         }
         viewHolder.phoneNumber.text = phoneInfos[position]
-        if (onTouchListener != null) {
-            Log.d("Sword", "setOnTouchListener popup item")
-            viewHolder.phoneNumber.setOnTouchListener(onTouchListener)
-        }
+
         return view
     }
 

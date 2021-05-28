@@ -4,6 +4,6 @@
     android:id="@+id/popup_list_item_textview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:drawableRight="@drawable/bg_sdk_shanchu"
-    android:background="@drawable/edit_text_background"/>
+    android:paddingRight="10dp"
+    style="@style/TextViewStyle"
+    android:clickable="true"/>

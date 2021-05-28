@@ -1,9 +1,10 @@
-include ':threadinteraction'
+/*include ':threadinteraction'
 include ':ThreadRxjava'
 include ':threadandroid'
 include ':gradlesourcecode'
 include ':threadsync'
 include ':gradleplugin'
-include ':mylibrary1'
+include ':mylibrary1'*/
+include ':constraintlayout'
 include ':app'
 rootProject.name = "HencoderSourceCode"

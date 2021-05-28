@@ -3,5 +3,6 @@
     android:id="@+id/popup_list_edit_only"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:drawableRight="@drawable/bg_sdk_shanchu"
+    android:paddingRight="10dp"
+    android:drawableRight="@drawable/bg_sdk_xiala"
     style="@style/InputEditText"/>
