@@ -5,24 +5,14 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <include
         android:id="@+id/back"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/bg_sdk_fanhui"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/image_back"/>
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextViewTitle"
         android:text="@string/verity_dialog_title"
-        android:textSize="@dimen/dialog_title_font_size"
-        android:textColor="@color/dialog_title_text_color"
-        android:textStyle="bold"
         android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

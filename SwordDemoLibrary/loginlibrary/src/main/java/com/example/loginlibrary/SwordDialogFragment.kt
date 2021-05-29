@@ -8,20 +8,33 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 
 class SwordDialogFragment(val resId: Int, val activity: Activity) : DialogFragment() {
+    var dialogWidth: Int = WindowManager.LayoutParams.MATCH_PARENT
+    var dialogHeight: Int = WindowManager.LayoutParams.MATCH_PARENT
+
+
+    constructor(resId: Int, activity: Activity, width: Int, height: Int): this(resId, activity) {
+        dialogWidth = width
+        dialogHeight = height
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(activity)
             .setView(activity.layoutInflater.inflate(resId, null))
             .create()
-
         return dialog
     }
 
-    fun setSize(width: Int, height: Int) {
-        val lp = dialog?.window?.attributes
-        lp?.width = width
-        lp?.height = height
-        dialog?.window?.attributes = lp
+    override fun onResume() {
+        super.onResume()
+
+        setSize(dialogWidth, dialogHeight)
     }
 
+    fun setSize(width: Int?, height: Int?) {
+        val dialog = requireDialog()
+        val lp = dialog.window?.attributes
+        lp?.width = width
+        lp?.height = height
+        dialog.window?.attributes = lp
+    }
 }

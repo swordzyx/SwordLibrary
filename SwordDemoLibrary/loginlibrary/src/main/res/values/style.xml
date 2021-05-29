@@ -11,15 +11,17 @@
     <style name="InputEditText">
         <item name="android:background">@drawable/edit_text_background</item>
         <item name="android:textColorHint">@color/text_hint_color</item>
-        <item name="android:inputType">phone</item>
         <item name="android:maxLines">1</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginRight">30dp</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginTop">20dp</item>
     </style>
 
-    <style name="TextViewStyle">
+    <style name="ListItemTextViewStyle">
         <item name="android:background">@drawable/edit_text_background</item>
         <item name="android:textColorHint">@color/text_hint_color</item>
         <item name="android:maxLines">1</item>
@@ -28,4 +30,35 @@
         <item name="android:paddingBottom">10dp</item>
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="TextViewTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/dialog_title_font_size</item>
+        <item name="android:textColor">@color/dialog_title_text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ButtonEnableStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingRight">50dp</item>
+        <item name="android:paddingLeft">50dp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/button_enable</item>
+
+    </style>
+
+    <style name="LogoStyle">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:src">@drawable/bg_sdk_logo</item>
+        <item name="layout_constraintStart_toStartOf">parent</item>
+        <item name="layout_constraintEnd_toEndOf">parent</item>
+        <item name="layout_constraintTop_toTopOf">parent</item>
+    </style>
+
 </resources>
