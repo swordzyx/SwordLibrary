@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.loginlibrary.ListPopupWindowWithEditTextOnly
 import com.example.swordlibrary.R
 
 class MainActivity : AppCompatActivity() {
@@ -17,14 +16,18 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.layout_spinner_edittext_only)
-
-//        showSpinnerWithEditTextImageView()
-
-        ListPopupWindowWithEditTextOnly().initView(this, R.id.popup_list_edit_only)
+        //Spinner 控件示例
+        setContentView(R.layout.spinner_sample_layout)
+        SpinnerSample(this).spinnerSample()
     }
 
-
+    //EditText 实现编辑框下拉
+    private fun SpinnerWithEditTextOnlu() {
+        //编辑框下拉
+        //setContentView(R.layout.edittext_with_spinner)
+        //编辑框下拉
+        // ListPopupWindowWithEditTextOnly().initView(this, R.id.popup_list_edit_only)
+    }
 
 
     fun deleteToken(view: View) {

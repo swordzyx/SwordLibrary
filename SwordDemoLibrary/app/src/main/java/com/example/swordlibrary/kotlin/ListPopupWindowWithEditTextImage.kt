@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.loginlibrary.CustomAdapter
 import com.example.swordlibrary.R
 
 class ListPopupWindowWithEditTextImage(val phoneInfos: Array<String>) : View.OnClickListener {
@@ -26,7 +25,7 @@ class ListPopupWindowWithEditTextImage(val phoneInfos: Array<String>) : View.OnC
         val phoneInfos = arrayOf("181****3573", "182****3573", "183****3573")
 
         listPopupWindow = ListPopupWindow(context).also { window ->
-            window.setAdapter(CustomAdapter(context, phoneInfos))
+            window.setAdapter(PopupWindowCustomAdapter(context, phoneInfos))
             window.anchorView = linearLayout
             window.isModal = true
             window.setContentWidth(ViewGroup.LayoutParams.MATCH_PARENT)

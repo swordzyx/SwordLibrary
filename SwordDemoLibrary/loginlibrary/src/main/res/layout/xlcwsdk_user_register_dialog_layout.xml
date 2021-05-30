@@ -5,13 +5,9 @@
     android:layout_height="wrap_content"
     android:background="@color/dialog_background_color">
 
-
-    <ImageView
+    <include
         android:id="@+id/logo"
-        style="@style/LogoStyle"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        layout="@layout/image_logo"/>
 
 
     <EditText
@@ -19,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/InputEditText"
+        android:inputType="phone"
         android:hint="@string/input_phone_hint"
         app:layout_constraintBottom_toTopOf="@id/xlcwsdk_register_register_bt"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -36,19 +33,6 @@
         app:layout_constraintTop_toTopOf="@id/accept_protocol"/>
 
 
-    <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/protocol_flow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="35dp"
-        android:layout_marginTop="10dp"
-        app:constraint_referenced_ids="accept_protocol, xlcwsdk_register_user_protocol_tv"
-        app:layout_constraintTop_toBottomOf="@id/xlcwsdk_register_register_bt"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/pass_login_footer_separate_line" />
-
     <TextView
         android:id="@+id/accept_protocol"
         android:layout_width="wrap_content"
@@ -56,7 +40,7 @@
         android:text="@string/register_mean_aggren"
         android:textSize="12sp"
         android:textColor="@color/text_color_protocol"
-        app:layout_constraintBottom_toTopOf="@id/pass_login_footer_separate_line"
+        app:layout_constraintBottom_toBottomOf="@id/protocol_flow"
         app:layout_constraintStart_toEndOf="@id/regiser_protocol_checkbox"
         app:layout_constraintRight_toLeftOf="@id/xlcwsdk_register_user_protocol_tv"
         app:layout_constraintTop_toBottomOf="@id/xlcwsdk_register_register_bt" />
@@ -68,9 +52,9 @@
         android:text="@string/user_protocol"
         android:textSize="12sp"
         android:textColor="@color/text_color_protocol"
-        app:layout_constraintBottom_toTopOf="@id/pass_login_footer_separate_line"
         app:layout_constraintLeft_toRightOf="@id/accept_protocol"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/protocol_flow"
         app:layout_constraintTop_toBottomOf="@id/xlcwsdk_register_register_bt" />
 
     <Button
@@ -89,6 +73,31 @@
 
 
     <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/protocol_flow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="35dp"
+        android:layout_marginTop="10dp"
+        app:constraint_referenced_ids="accept_protocol, xlcwsdk_register_user_protocol_tv"
+        app:layout_constraintTop_toBottomOf="@id/xlcwsdk_register_register_bt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/token_login_footer_separate_line"/>
+
+    <View
+        android:id="@+id/token_login_footer_separate_line"
+        android:layout_width="1dp"
+        android:layout_height="20dp"
+        android:background="@color/xlcwsdk_gray"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintTop_toBottomOf="@id/protocol_flow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent" />
+
+
+    <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/visitor_login_flow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,23 +105,9 @@
         app:flow_horizontalGap="8dp"
         app:constraint_referenced_ids="footer_visitor_login_icon, footer_visitor_login_info"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/pass_login_footer_separate_line"
-        app:layout_constraintTop_toTopOf="@id/pass_login_footer_separate_line"
-        app:layout_constraintBottom_toBottomOf="@id/pass_login_footer_separate_line"/>
-
-    <TextView
-        android:id="@+id/footer_visitor_login_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="0dp"
-        android:layout_toRightOf="@+id/footer_visitor_login_icon"
-        android:text="@string/visitor_login"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toRightOf="@id/footer_visitor_login_icon"
-        app:layout_constraintRight_toRightOf="@id/visitor_login_flow"
-        app:layout_constraintTop_toTopOf="@id/visitor_login_flow"
-        app:layout_constraintBottom_toBottomOf="@id/visitor_login_flow"/>
+        app:layout_constraintLeft_toRightOf="@id/token_login_footer_separate_line"
+        app:layout_constraintTop_toTopOf="@id/token_login_footer_separate_line"
+        app:layout_constraintBottom_toBottomOf="@id/token_login_footer_separate_line"/>
 
     <ImageView
         android:id="@+id/footer_visitor_login_icon"
@@ -120,16 +115,17 @@
         android:layout_height="20dp"
         android:src="@drawable/sdk_visitor_now"/>
 
-
-    <View
-        android:id="@+id/pass_login_footer_separate_line"
-        android:layout_width="1dp"
-        android:layout_height="20dp"
-        android:background="@color/xlcwsdk_gray"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent" />
+    <TextView
+        android:id="@+id/footer_visitor_login_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/visitor_login"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toRightOf="@id/footer_visitor_login_icon"
+        app:layout_constraintRight_toRightOf="@id/visitor_login_flow"
+        app:layout_constraintTop_toTopOf="@id/visitor_login_flow"
+        app:layout_constraintBottom_toBottomOf="@id/visitor_login_flow"/>
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/pass_login_flow"
@@ -139,9 +135,9 @@
         app:flow_horizontalGap="8dp"
         app:constraint_referenced_ids="footer_password_login, footer_password_login_info"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/pass_login_footer_separate_line"
-        app:layout_constraintTop_toTopOf="@id/pass_login_footer_separate_line"
-        app:layout_constraintBottom_toBottomOf="@id/pass_login_footer_separate_line"/>
+        app:layout_constraintRight_toLeftOf="@id/token_login_footer_separate_line"
+        app:layout_constraintTop_toTopOf="@id/token_login_footer_separate_line"
+        app:layout_constraintBottom_toBottomOf="@id/token_login_footer_separate_line"/>
 
     <ImageView
         android:id="@+id/footer_password_login"
@@ -161,6 +157,9 @@
         app:layout_constraintRight_toRightOf="@id/pass_login_flow"
         app:layout_constraintTop_toTopOf="@id/pass_login_flow"
         app:layout_constraintBottom_toBottomOf="@id/pass_login_flow"/>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

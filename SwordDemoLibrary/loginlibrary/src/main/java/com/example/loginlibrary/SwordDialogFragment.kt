@@ -28,6 +28,8 @@ class SwordDialogFragment(val resId: Int, val activity: Activity) : DialogFragme
         super.onResume()
 
         setSize(dialogWidth, dialogHeight)
+
+        //dialog?.apply { SpinnerConfigure(activity, findViewById(R.id.spinner)).spinnerSample() }
     }
 
     fun setSize(width: Int?, height: Int?) {

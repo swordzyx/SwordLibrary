@@ -1,4 +1,4 @@
-package com.example.loginlibrary
+package com.example.swordlibrary.kotlin
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.loginlibrary.R
 
-class CustomAdapter(val context: Context, var phoneInfos: Array<String>, var dropDownViewId: Int = R.layout.list_popup_window_item_textview_only, var textViewId: Int = R.id.popup_list_item_textview): BaseAdapter() {
+class PopupWindowCustomAdapter(val context: Context, var phoneInfos: Array<String>, var dropDownViewId: Int = R.layout.list_popup_window_item_textview_only, var textViewId: Int = R.id.popup_list_item_textview): BaseAdapter() {
     var onTouchListener: View.OnTouchListener? = null
     var drawableRight: Drawable? = null
 

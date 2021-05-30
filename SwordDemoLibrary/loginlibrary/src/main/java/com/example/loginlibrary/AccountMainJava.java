@@ -11,9 +11,16 @@ public class AccountMainJava {
 
     public static void register(FragmentActivity activity) {
 
-        SwordDialogFragment dialogFragment = new SwordDialogFragment(R.layout.xlcwsdk_delete_token_dialog_layout, activity, initWindow(activity)/2, WindowManager.LayoutParams.WRAP_CONTENT);
+        SwordDialogFragment dialogFragment = new SwordDialogFragment(R.layout.xlcwsdk_user_register_dialog_layout, activity, initWindow(activity)/2, WindowManager.LayoutParams.WRAP_CONTENT);
         dialogFragment.show(activity.getSupportFragmentManager(), "regisger_dialog");
-//        setSize(dialogFragment.requireDialog(), initWindow(activity)/2, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //tokenLogin(activity);
+    }
+
+    //token 登录页面
+    public static void tokenLogin(FragmentActivity activity) {
+        SwordDialogFragment dialogFragment = new SwordDialogFragment(R.layout.xlcwsdk_token_login_dialog_layout, activity, initWindow(activity)/2, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialogFragment.show(activity.getSupportFragmentManager(), "regisger_dialog");
     }
 
     public static int initWindow(Context context) {

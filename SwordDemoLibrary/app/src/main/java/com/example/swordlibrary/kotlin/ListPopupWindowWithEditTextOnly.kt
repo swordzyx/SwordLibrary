@@ -1,4 +1,4 @@
-package com.example.loginlibrary
+package com.example.swordlibrary.kotlin
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -13,16 +13,16 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.widget.ListPopupWindow
-import com.example.swordlibrary.kotlin.dp
+import com.example.loginlibrary.R
 
 class ListPopupWindowWithEditTextOnly: View.OnTouchListener{
     var listPopupWindow: ListPopupWindow? = null
     var editText: EditText? = null
 
     fun initView(activity: Activity, editTextId: Int) {
-        val drawableShanchu = getDrawableWithSize(activity, R.drawable.bg_sdk_shanchu_png, false, 20.dp, 20.dp)
+        val drawableShanchu = getDrawableWithSize(activity,
+            R.drawable.bg_sdk_shanchu_png, false, 20.dp, 20.dp)
         val drawableDropdown = getDrawableWithSize(activity, R.drawable.bg_sdk_xiala, true, 20.dp)
-
 
         val phoneInfos = arrayOf("181****3573", "182****3573", "183****3573")
 
@@ -31,7 +31,7 @@ class ListPopupWindowWithEditTextOnly: View.OnTouchListener{
         editText?.setCompoundDrawablesWithIntrinsicBounds(null, null, drawableDropdown, null)
 
         listPopupWindow = ListPopupWindow(activity).also { popupWindow ->
-            popupWindow.setAdapter(CustomAdapter(activity, phoneInfos).apply {
+            popupWindow.setAdapter(PopupWindowCustomAdapter(activity, phoneInfos).apply {
                 onTouchListener = this@ListPopupWindowWithEditTextOnly
                 drawableRight = drawableShanchu
             })

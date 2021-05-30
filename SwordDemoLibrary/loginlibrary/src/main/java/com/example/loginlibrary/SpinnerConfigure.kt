@@ -1,4 +1,4 @@
-package com.example.swordlibrary.kotlin
+package com.example.loginlibrary
 
 import android.app.Activity
 import android.content.Context
@@ -7,20 +7,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.swordlibrary.R
 
-class SpinnerSample(val activity: Activity) {
+class SpinnerConfigure(val activity: Activity, val spinner: Spinner) {
 
     fun spinnerSample() {
 
         val phoneInfos = arrayOf("181****3573", "182****3573", "183****3573")
-        val spinner = activity.findViewById<Spinner>(R.id.spinner)
-        val spinner2 = activity.findViewById<Spinner>(R.id.spinner2)
-
-        /*ArrayAdapter(activity, android.R.layout.simple_spinner_item, phoneInfos).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter = adapter
-        }*/
 
         CustomAdapter(activity, phoneInfos, R.layout.spinner_layout_textview, R.id.popup_list_edit_only).also { adapter ->
             spinner.adapter = adapter
@@ -31,19 +23,7 @@ class SpinnerSample(val activity: Activity) {
 
         ArrayAdapter(activity, R.layout.spinner_layout_textview, phoneInfos).also { adapter ->
             adapter.setDropDownViewResource(R.layout.spinner_layout_textview)
-            spinner2.adapter = adapter
         }
-
-
-        /*ArrayAdapter(activity, R.layout.spinner_layout_edittext_image, R.id.phone_number, phoneInfos).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.spinner_layout_edittext_image)
-            spinner.adapter = adapter
-        }*/
-
-        /*CustomAdapter(activity, R.layout.sample_spinner_item).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown)
-            spinner.adapter = adapter
-        }*/
     }
 
     inner class CustomAdapter(val context: Context, val phoneInfos: Array<String>, var spinnerLayoutId: Int = android.R.layout.simple_spinner_dropdown_item, val spinnerTextViewId: Int = android.R.id.text1 ) : BaseAdapter(), SpinnerAdapter, AdapterView.OnItemSelectedListener {
