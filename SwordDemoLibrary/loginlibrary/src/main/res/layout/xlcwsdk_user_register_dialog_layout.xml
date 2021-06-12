@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/dialog_background_color">
 
-    <include
+    <ImageView
+        style="@style/LogoStyle"
         android:id="@+id/logo"
-        layout="@layout/image_logo"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <EditText
@@ -93,12 +97,12 @@
         android:layout_marginBottom="15dp"
         app:layout_constraintTop_toBottomOf="@id/protocol_flow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        app:layout_constraintRight_toLeftOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/visitor_login_flow"
+        android:id="@+id/footer_visitor_login_flow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -123,12 +127,12 @@
         android:text="@string/visitor_login"
         android:textSize="14sp"
         app:layout_constraintLeft_toRightOf="@id/footer_visitor_login_icon"
-        app:layout_constraintRight_toRightOf="@id/visitor_login_flow"
-        app:layout_constraintTop_toTopOf="@id/visitor_login_flow"
-        app:layout_constraintBottom_toBottomOf="@id/visitor_login_flow"/>
+        app:layout_constraintRight_toRightOf="@id/footer_visitor_login_flow"
+        app:layout_constraintTop_toTopOf="@id/footer_visitor_login_flow"
+        app:layout_constraintBottom_toBottomOf="@id/footer_visitor_login_flow"/>
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/pass_login_flow"
+        android:id="@+id/footer_verify_code_login_flow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -154,12 +158,9 @@
         android:text="@string/account_login"
         android:textSize="14sp"
         app:layout_constraintRight_toLeftOf="@id/footer_password_login"
-        app:layout_constraintRight_toRightOf="@id/pass_login_flow"
-        app:layout_constraintTop_toTopOf="@id/pass_login_flow"
-        app:layout_constraintBottom_toBottomOf="@id/pass_login_flow"/>
-
-
-
+        app:layout_constraintRight_toRightOf="@id/footer_verify_code_login_flow"
+        app:layout_constraintTop_toTopOf="@id/footer_verify_code_login_flow"
+        app:layout_constraintBottom_toBottomOf="@id/footer_verify_code_login_flow"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

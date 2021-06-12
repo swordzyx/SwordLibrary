@@ -16,6 +16,7 @@ import android.view.WindowMetrics;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,6 +29,8 @@ import com.example.swordlibrary.java.androidapi.TelephonyManagerJavaUtil;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Locale;
+import java.util.Random;
+import java.util.UUID;
 
 
 public class MainActivity2 extends AppCompatActivity {
@@ -39,14 +42,48 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.sample);
 
         //FileUtils.getDataDir(this);
 
-        AccountMainJava.register(this);
+        //AccountMainJava.register(this);
+
+        /*AlertDialog dialog = new AlertDialog.Builder(this)
+                .setView(getLayoutInflater().inflate(R.layout.sample, null))
+                .create();
+        dialog.show();*/
 
 
-//        requestPermission();
+        //requestPermission();
+        Log.d("Sword", randomString(14));
+    }
+
+    /**
+     * 生成uuid
+     * */
+    public static String buildUUID() {
+        String uuid = UUID.randomUUID().toString().replaceAll("-","");
+        uuid = uuid + System.currentTimeMillis();
+        return uuid;
+    }
+
+    /**
+     * 生成uuid
+     * */
+    public static String buildUUID(String name) {
+        String uuid = UUID.fromString(name).toString();
+        uuid = uuid + System.currentTimeMillis();
+        return uuid;
+    }
+
+    String s = "qwertyuiopasdfghjklzxcvbnmQWERRTYUIOPASDFGHJKLZXCVBNM1234567890";
+    public String randomString(int count) {
+        Random random = new Random();
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            result.append(s.charAt(random.nextInt(s.length())));
+        }
+        return result.toString();
     }
 
     private void requestPermission() {

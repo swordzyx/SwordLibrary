@@ -4,12 +4,17 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 
 class SwordDialogFragment(val resId: Int, val activity: Activity) : DialogFragment() {
     var dialogWidth: Int = WindowManager.LayoutParams.MATCH_PARENT
     var dialogHeight: Int = WindowManager.LayoutParams.MATCH_PARENT
+    var resumeLitener: ResumeLisenter? = null
+
 
 
     constructor(resId: Int, activity: Activity, width: Int, height: Int): this(resId, activity) {
@@ -19,7 +24,7 @@ class SwordDialogFragment(val resId: Int, val activity: Activity) : DialogFragme
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(activity)
-            .setView(activity.layoutInflater.inflate(resId, null))
+            .setView(requireActivity().layoutInflater.inflate(resId, null))
             .create()
         return dialog
     }
@@ -29,7 +34,10 @@ class SwordDialogFragment(val resId: Int, val activity: Activity) : DialogFragme
 
         setSize(dialogWidth, dialogHeight)
 
-        //dialog?.apply { SpinnerConfigure(activity, findViewById(R.id.spinner)).spinnerSample() }
+        if(resumeLitener != null) {
+            resumeLitener?.onResume(dialog)
+        }
+
     }
 
     fun setSize(width: Int?, height: Int?) {
@@ -39,4 +47,9 @@ class SwordDialogFragment(val resId: Int, val activity: Activity) : DialogFragme
         lp?.height = height
         dialog.window?.attributes = lp
     }
+
+    interface ResumeLisenter {
+        fun onResume(dialog: Dialog?)
+    }
+
 }

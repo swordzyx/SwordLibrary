@@ -5,22 +5,36 @@ import android.content.Context;
 import android.view.Display;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
+
+import org.jetbrains.annotations.Nullable;
 
 public class AccountMainJava {
 
     public static void register(FragmentActivity activity) {
 
-        SwordDialogFragment dialogFragment = new SwordDialogFragment(R.layout.xlcwsdk_user_register_dialog_layout, activity, initWindow(activity)/2, WindowManager.LayoutParams.WRAP_CONTENT);
-        dialogFragment.show(activity.getSupportFragmentManager(), "regisger_dialog");
-
         //tokenLogin(activity);
+        showDialogWithResId(activity, R.layout.xlcwsdk_visitor_switch_alert_dialog_layout);
+    }
+
+    public static void showDialogWithResId(FragmentActivity activity, int resId) {
+        SwordDialogFragment dialogFragment = new SwordDialogFragment(resId, activity, initWindow(activity)/2, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialogFragment.show(activity.getSupportFragmentManager(), "regisger_dialog");
     }
 
     //token 登录页面
     public static void tokenLogin(FragmentActivity activity) {
         SwordDialogFragment dialogFragment = new SwordDialogFragment(R.layout.xlcwsdk_token_login_dialog_layout, activity, initWindow(activity)/2, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialogFragment.setResumeLitener(new SwordDialogFragment.ResumeLisenter() {
+            @Override
+            public void onResume(@Nullable Dialog dialog) {
+
+               new SpinnerConfigure(activity, dialog.findViewById(R.id.spinner)).spinnerSample();
+            }
+        });
         dialogFragment.show(activity.getSupportFragmentManager(), "regisger_dialog");
+
     }
 
     public static int initWindow(Context context) {

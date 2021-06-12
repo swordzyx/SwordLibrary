@@ -4,5 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingRight="10dp"
-    android:drawableRight="@drawable/bg_sdk_shanchu"
-    style="@style/InputEditText"/>
+    android:drawableRight="@drawable/bg_sdk_shanchu" />

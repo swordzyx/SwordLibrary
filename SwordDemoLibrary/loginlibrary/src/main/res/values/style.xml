@@ -29,6 +29,7 @@
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#000</item>
     </style>
 
     <style name="TextViewTitle">
@@ -39,6 +40,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="LogoStyle">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:src">@drawable/bg_sdk_logo</item>
+    </style>
+
+
     <style name="ButtonEnableStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -47,18 +57,7 @@
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">20sp</item>
         <item name="android:background">@drawable/button_enable</item>
-
     </style>
 
-    <style name="LogoStyle">
-        <item name="android:layout_width">200dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:layout_marginTop">20dp</item>
-        <item name="android:scaleType">fitCenter</item>
-        <item name="android:src">@drawable/bg_sdk_logo</item>
-        <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
-    </style>
 
 </resources>

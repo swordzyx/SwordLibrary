@@ -21,4 +21,10 @@
     <string name="pass_setup_input_pass_once">请输入想要设置的密码</string>
     <string name="pass_setup_input_pass_twice">请重复输入想要设置的密码</string>
     <string name="verify_code_login">验证码登录</string>
+    <string name="input_password_hint">请输入密码</string>
+    <string name="alert_title">警告</string>
+    <string name="bind_alert_info">您当前的账号为游客账号，如果您此时选择切换账号会造成此账号的数据丢失，一旦丢失无法找回，建议您先绑定账号之后在进行此操作，您确定要切换账号吗？</string>
+    <string name="switch_option">切 换</string>
+    <string name="bind_option">绑定账号</string>
+    <string name="switch_info">此时切换账号会造成数据永久丢失！您确定切换账号么？</string>
 </resources>

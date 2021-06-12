@@ -7,13 +7,13 @@
     tools:context=".java.MainActivity2"
     android:paddingRight="25dp"
     android:paddingLeft="25dp">
-
+<!--
     <com.example.swordlibrary.view.VerifyCodeInputView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:inputType="number"
         app:borderColor="#B7B7B7"
-        app:gap="40" />
+        app:gap="40" />-->
 
 </LinearLayout>
