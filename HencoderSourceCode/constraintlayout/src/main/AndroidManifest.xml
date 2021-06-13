@@ -21,6 +21,11 @@
         <activity android:name=".GuideLineActivity"></activity>
         <activity android:name=".GroupActivity"></activity>
         <activity android:name=".LayerActivity"></activity>
+        <activity android:name=".CircularRevealActivity"></activity>
+        <activity android:name=".PlaceHolder"></activity>
+        <activity android:name=".ConstraintSetX"></activity>
+        <activity android:name=".LinearActivity"></activity>
+        <activity android:name=".ConstraintSetStart"></activity>
     </application>
 
 </manifest>

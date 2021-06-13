@@ -10,7 +10,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import kotlin.math.hypot
 
 class CircularRevealHelper(context: Context, attrs: AttributeSet) : ConstraintHelper(context, attrs) {
+    
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    //updatePostLayout 方法会在布局加载完成之后回调
     override fun updatePostLayout(container: ConstraintLayout) {
         super.updatePostLayout(container)
 
