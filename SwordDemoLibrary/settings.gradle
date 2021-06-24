@@ -1,4 +1,6 @@
+include ':gradlescript'
 include ':loginlibrary'
-include ':test'//include ':groovypractice'
+include ':test'
+include ':groovypractice'
 include ':app'
 rootProject.name = "SwordDemoLibrary"

@@ -38,7 +38,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.firebase:firebase-messaging'
     implementation project(":loginlibrary")
-//    compileOnly 'com.android.tools.build:gradle:3.4.2'
+//
 
     //Google 服务
     implementation 'com.google.android.gms:play-services-base:16.1.0'
@@ -55,3 +55,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 }
+
+afterEvaluate {
+    def packageTask = this.tasks.findByName("packageRelease")
+
+    this.tasks.all {
+        println "${getName()}"
+    }
+
+}
+

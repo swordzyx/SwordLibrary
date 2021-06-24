@@ -5,6 +5,7 @@ include ':gradlesourcecode'
 include ':threadsync'
 include ':gradleplugin'
 include ':mylibrary1'*/
+include ':io'
 include ':constraintlayout'
 include ':app'
 rootProject.name = "HencoderSourceCode"

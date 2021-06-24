@@ -15,10 +15,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <View
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@color/design_default_color_primary"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintTop_toTopOf="@id/avatar"
+        app:layout_constraintBottom_toBottomOf="@id/avatar"
+        app:layout_constraintVertical_bias="0.3"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="50dp"
         android:background="@color/design_default_color_primary"
         android:textColor="@color/white"
         app:layout_constrainedWidth="true"
