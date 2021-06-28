@@ -1,5 +1,8 @@
 package com.example.io;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -16,10 +19,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.logging.SocketHandler;
 
@@ -32,19 +38,41 @@ public class Main {
         //io5();
         //io6();
         //io7();
-        io8();
+        //io8();
+        io9();
+    }
+
+    @SuppressLint("NewApi")
+    private static void io9() {
+        try {
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            //绑定服务器 ip 及端口，此处使用本机作为测试，填入一个端口即可，默认 IP 为 127.0.0.1
+            //InetSocketAddress 另外一个可以指定 IP 地址的构造方法：public InetSocketAddress(InetAddress addr, int port)
+            serverSocketChannel.bind(new InetSocketAddress(8099));
+            SocketChannel socketChannel = serverSocketChannel.accept();
+            ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+            while (socketChannel.read(byteBuffer) != -1) {
+                byteBuffer.flip();
+                socketChannel.write(byteBuffer);
+                //System.out.println(Charset.defaultCharset().decode(byteBuffer));
+                byteBuffer.clear();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void io8() {
         try {
-            RandomAccessFile file = new RandomAccessFile("./io/text.txt", "r");
+            RandomAccessFile file = new RandomAccessFile("./io/test.txt", "r");
             FileChannel channel = file.getChannel();
             ByteBuffer buffer = ByteBuffer.allocate(1024);
             channel.read(buffer);
-            //读完之后，position 指向的是 buffer 中有效内容的最后一为，将 position 赋值给
+            //读完之后，position 指向的是 buffer 中有效内容的最后一位，将 position 赋值给 limit，用于仅读取有效内容的长度。然后将 position 置为 0 ，即从第 0 位开始读取 Buffer 中的内容。
             //buffer.flip() 等价于 buffer.limit(buffer.position()); buffer.position(0)
             buffer.flip();
             System.out.println(Charset.defaultCharset().decode(buffer));
+            //将 limit 重置位 Buffer 的长度，然后将 position 置为 0 ，这是 ByteBuffer 初始化时的状态。
             //buffer.clear() 等价于 buffer.limit(buffer.capacity()); buffer.position(0);
             buffer.clear();
         } catch (FileNotFoundException e) {
@@ -55,7 +83,7 @@ public class Main {
     }
 
 
-    private static void io2()  {
+    private static void io2() {
         try (InputStream inputStream = new FileInputStream("./io/test.txt")) {
             //从 ./io/test.txt 中读一个字节，并打印到控制台
             System.out.println((char) inputStream.read());
