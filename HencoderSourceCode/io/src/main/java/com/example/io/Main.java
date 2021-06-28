@@ -26,7 +26,11 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.logging.SocketHandler;
 
 public class Main {
@@ -60,6 +64,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        io8();
     }
 
     private static void io8() {
@@ -73,6 +78,14 @@ public class Main {
             buffer.flip();
             System.out.println(Charset.defaultCharset().decode(buffer));
             //将 limit 重置位 Buffer 的长度，然后将 position 置为 0 ，这是 ByteBuffer 初始化时的状态。
+            RandomAccessFile file = new RandomAccessFile("./io/text.txt", "r");
+            FileChannel channel = file.getChannel();
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            channel.read(buffer);
+            //读完之后，position 指向的是 buffer 中有效内容的最后一为，将 position 赋值给
+            //buffer.flip() 等价于 buffer.limit(buffer.position()); buffer.position(0)
+            buffer.flip();
+            System.out.println(Charset.defaultCharset().decode(buffer));
             //buffer.clear() 等价于 buffer.limit(buffer.capacity()); buffer.position(0);
             buffer.clear();
         } catch (FileNotFoundException e) {
@@ -83,7 +96,7 @@ public class Main {
     }
 
 
-    private static void io2() {
+    private static void io2()  {
         try (InputStream inputStream = new FileInputStream("./io/test.txt")) {
             //从 ./io/test.txt 中读一个字节，并打印到控制台
             System.out.println((char) inputStream.read());
