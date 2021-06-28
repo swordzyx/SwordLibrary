@@ -14,7 +14,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.logging.SocketHandler;
 
 public class Main {
@@ -24,11 +30,32 @@ public class Main {
         //io3();
         //io4();
         //io5();
-        io6();
+        //io6();
+        //io7();
+        io8();
+    }
+
+    private static void io8() {
+        try {
+            RandomAccessFile file = new RandomAccessFile("./io/text.txt", "r");
+            FileChannel channel = file.getChannel();
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+            channel.read(buffer);
+            //读完之后，position 指向的是 buffer 中有效内容的最后一为，将 position 赋值给
+            //buffer.flip() 等价于 buffer.limit(buffer.position()); buffer.position(0)
+            buffer.flip();
+            System.out.println(Charset.defaultCharset().decode(buffer));
+            //buffer.clear() 等价于 buffer.limit(buffer.capacity()); buffer.position(0);
+            buffer.clear();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private static void io2() {
+    private static void io2()  {
         try (InputStream inputStream = new FileInputStream("./io/test.txt")) {
             //从 ./io/test.txt 中读一个字节，并打印到控制台
             System.out.println((char) inputStream.read());
@@ -99,7 +126,11 @@ public class Main {
         }
     }
 
+    /**
+     * 客户端，发送请求，获取响应
+     */
     private static void io6() {
+        //建 TCP 链接
         try (Socket socket = new Socket("hencoder.com", 80);
              BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
@@ -111,10 +142,12 @@ public class Main {
             //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             //对于网络请求，目标主机只有在看到 2 个换行之后才认为请求结束。
 
+            //2. 写请求报文。两个换行（\n）表示请求结束
             writer.write("GET / HTTP/1.1 \n" +
                     "Host: www.example.com\n\n");
             writer.flush();
 
+            //3. 读取响应
             String content;
             while ((content = reader.readLine()) != null) {
                 System.out.println(content);
@@ -124,5 +157,33 @@ public class Main {
         }
     }
 
-
+    //在浏览器输入 127.0.0.1:9999 一直显示 “127.0.0.1 拒绝了我们的连接请求”
+    private static void io7() {
+        try (ServerSocket server = new ServerSocket(9999);
+             Socket socket = server.accept();
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))
+        ) {
+            writer.write("HTTP/1.1 200 OK\n" +
+                    "Date: Mon, 23 May 2005 22:38:34 GMT\n" +
+                    "Content-Type: text/html; charset=UTF-8\n" +
+                    "Content-Length: 138\n" +
+                    "Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT\n" +
+                    "Server: Apache/1.3.3.7 (Unix) (Red-Hat/Linux)\n" +
+                    "ETag: \"3f80f-1b6-3e1cb03b\"\n" +
+                    "Accept-Ranges: bytes\n" +
+                    "Connection: close\n" +
+                    "\n" +
+                    "<html>\n" +
+                    "  <head>\n" +
+                    "    <title>An Example Page</title>\n" +
+                    "  </head>\n" +
+                    "  <body>\n" +
+                    "    <p>Hello World, this is a very simple HTML document.</p>\n" +
+                    "  </body>\n" +
+                    "</html>\n\n");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
