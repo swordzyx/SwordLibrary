@@ -2,6 +2,7 @@ package com.example.io;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -30,6 +31,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.logging.SocketHandler;
 
@@ -82,10 +85,11 @@ public class Main {
             FileChannel channel = file.getChannel();
             ByteBuffer buffer = ByteBuffer.allocate(1024);
             channel.read(buffer);
-            //读完之后，position 指向的是 buffer 中有效内容的最后一为，将 position 赋值给
+            //读完之后，position 指向的是 buffer 中有效内容的最后一位，将 position 赋值给 limit，用于仅读取有效内容的长度。然后将 position 置为 0 ，即从第 0 位开始读取 Buffer 中的内容。
             //buffer.flip() 等价于 buffer.limit(buffer.position()); buffer.position(0)
             buffer.flip();
             System.out.println(Charset.defaultCharset().decode(buffer));
+            //将 limit 重置位 Buffer 的长度，然后将 position 置为 0 ，这是 ByteBuffer 初始化时的状态。
             //buffer.clear() 等价于 buffer.limit(buffer.capacity()); buffer.position(0);
             buffer.clear();
         } catch (FileNotFoundException e) {
@@ -96,7 +100,7 @@ public class Main {
     }
 
 
-    private static void io2()  {
+    private static void io2() {
         try (InputStream inputStream = new FileInputStream("./io/test.txt")) {
             //从 ./io/test.txt 中读一个字节，并打印到控制台
             System.out.println((char) inputStream.read());
