@@ -7,6 +7,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,6 +39,11 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.logging.SocketHandler;
 
+import okio.Buffer;
+import okio.BufferedSource;
+import okio.Okio;
+import okio.Source;
+
 public class Main {
     public static void main(String[] args) {
         //io1();
@@ -49,7 +55,23 @@ public class Main {
         //io7();
         //io8();
         //io9();
-        io10();
+        //io10();
+        io11();
+    }
+
+    //使用 Buffer
+    private static void io11() {
+        try(BufferedSource source = Okio.buffer(Okio.source(new File("./io/test.txt")))) {
+            Buffer buffer = new Buffer();
+            //从 source 读取内容到 buffer 中，对于 buffer 是一个写操作，而对于 source 则是读操作
+            source.read(buffer, 1024);
+            //buffer.readUtf8Line() 表示从 buffer 中以 Utf8 的编码格式读取一行，字符串都是有编码的，现在的字符统一都是按照 utf8 来编码的
+            System.out.println(buffer.readUtf8Line());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("NewApi")
