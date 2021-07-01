@@ -24,6 +24,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
@@ -46,7 +48,47 @@ public class Main {
         //io6();
         //io7();
         //io8();
-        io9();
+        //io9();
+        io10();
+    }
+
+    @SuppressLint("NewApi")
+    private static void io10() {
+        try {
+            ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.bind(new InetSocketAddress(8099));
+            //设置为非阻塞式
+            serverSocketChannel.configureBlocking(false);
+            Selector selector = Selector.open();
+            //将 ServerSocketChannel 注册到 Selector 中，当有终端连接到 ServerSocketChannel 时，会自动通知到 selector，通过 selector.select() 方法接收通知，SelectionKey 表示接收所有的 ACCEPT 事件
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            while(true) {
+                //select() 是一个阻塞方法，这是没办法的，做这种网络编程，肯定有一个地方是要进行等待的，不过使用 selector 可以实现多个 ServerSocketChannel 注册到同一个 Selector，这样可以同时监听多个 ServerSocketChannel 的连接。所有的 Channel 都可以往同一个 Selector 中注册，这样不同的代码就不用写到多个不同的平行线程中，使用一个线程可以处理多个 Channel 的连接
+                selector.select();
+                //遍历所有发生的事件
+                for (SelectionKey key : selector.selectedKeys()) {
+                    //表示发生了 ACCEPT 事件，且有终端连接到了 ServerSocketChannel
+                    if (key.isAcceptable()) {
+                        //ServerSocketChannel 为非阻塞式，但 SocketChannel 依然为阻塞式
+                        SocketChannel socketChannel = serverSocketChannel.accept();
+                        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                        while (socketChannel.read(byteBuffer) != -1) {
+                            //每次对 ByteBuffer 进行操作之后都要进行 flip()（翻页） 操作
+                            if (byteBuffer.get(byteBuffer.position() - 1) == 10) {
+                                byteBuffer.flip();
+                                System.out.println(Charset.defaultCharset().decode(byteBuffer));
+                                byteBuffer.flip();
+                                socketChannel.write(byteBuffer);
+                                byteBuffer.clear();
+                            }
+                        }
+                    }
+                }
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("NewApi")
@@ -59,10 +101,13 @@ public class Main {
             SocketChannel socketChannel = serverSocketChannel.accept();
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
             while (socketChannel.read(byteBuffer) != -1) {
-                byteBuffer.flip();
-                socketChannel.write(byteBuffer);
-                //System.out.println(Charset.defaultCharset().decode(byteBuffer));
-                byteBuffer.clear();
+                if (byteBuffer.get(byteBuffer.position() - 1) == 10) {
+                    byteBuffer.flip();
+                    System.out.println(Charset.defaultCharset().decode(byteBuffer));
+                    byteBuffer.flip();
+                    socketChannel.write(byteBuffer);
+                    byteBuffer.clear();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,16 +125,6 @@ public class Main {
             //buffer.flip() 等价于 buffer.limit(buffer.position()); buffer.position(0)
             buffer.flip();
             System.out.println(Charset.defaultCharset().decode(buffer));
-            //将 limit 重置位 Buffer 的长度，然后将 position 置为 0 ，这是 ByteBuffer 初始化时的状态。
-            RandomAccessFile file = new RandomAccessFile("./io/text.txt", "r");
-            FileChannel channel = file.getChannel();
-            ByteBuffer buffer = ByteBuffer.allocate(1024);
-            channel.read(buffer);
-            //读完之后，position 指向的是 buffer 中有效内容的最后一位，将 position 赋值给 limit，用于仅读取有效内容的长度。然后将 position 置为 0 ，即从第 0 位开始读取 Buffer 中的内容。
-            //buffer.flip() 等价于 buffer.limit(buffer.position()); buffer.position(0)
-            buffer.flip();
-            System.out.println(Charset.defaultCharset().decode(buffer));
-            //将 limit 重置位 Buffer 的长度，然后将 position 置为 0 ，这是 ByteBuffer 初始化时的状态。
             //buffer.clear() 等价于 buffer.limit(buffer.capacity()); buffer.position(0);
             buffer.clear();
         } catch (FileNotFoundException e) {
@@ -98,7 +133,6 @@ public class Main {
             e.printStackTrace();
         }
     }
-
 
     private static void io2() {
         try (InputStream inputStream = new FileInputStream("./io/test.txt")) {
