@@ -2,6 +2,8 @@ package com.sword.script;
 
 import android.renderscript.ScriptGroup;
 
+import com.google.android.material.badge.BadgeDrawable;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -164,7 +166,7 @@ public class ChangeApkInfo {
         showAlert("图标更换完成");
     }
 
-    private void changeAppNameInStringXml(String oldAppName, String newAppName) {
+    private void changeAppNameByXmlReader(String oldAppName, String newAppName) {
         String stringsFileName = decodeApkPath + "res/values/strings.xml";
 
         SAXReader reader = new SAXReader();
@@ -181,7 +183,7 @@ public class ChangeApkInfo {
         }
     }
 
-    private void changeAppNameInStringXmlFile(String oldAppName, String newAppName) {
+    private void changeAppNameByFileReader(String oldAppName, String newAppName) {
         String stringsFileName = decodeApkPath + "/res/values/strings.xml";
         changeStringInFile(stringsFileName, oldAppName, newAppName);
     }
@@ -256,19 +258,81 @@ public class ChangeApkInfo {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void encodeApk() {
-        processBuilder.command("apktool", "b", decodeApkPath);
+        List<String> args = new ArrayList<>();
+        args.add("apktool");
+        args.add("b");
+        args.add(decodeApkPath);
+        executCommand(args);
+    }
+
+    private void zipalign(String apkPath, String outputPath) {
+        List<String> args = new ArrayList<>();
+        args.add("zipalign");
+        args.add("-p");
+        args.add("-f");
+        args.add("-v");
+        args.add("4");
+        args.add(apkPath);
+        args.add(outputPath);
+        executCommand(args);
+    }
+
+    private void signApk(String apkPath, String v1Enable, String v2Enable, String jksPath, String ksPass, String ksAlias, String ksAliasPass) {
+        List<String> args = new ArrayList<>();
+        args.add("java");
+        args.add("-jar");
+        args.add("apksigner");
+        args.add("sign");
+        //是否开启 V1 签名
+        args.add("--v1-signing-enabled");
+        args.add(v1Enable);
+        //是否开启 V2 签名
+        args.add("--v2-signing-enabled");
+        args.add(v2Enable);
+        //args.add("--v3-signing-enabled");  是否开启 V3 签名
+        //args.add("--v4-signing-enabled");  是否开启 V4 签名
+        args.add("--ks");
+        args.add(jksPath);
+        args.add("--key-pass");
+        args.add("pass:" + ksPass);
+        args.add("--ks-key-alias");
+        args.add(ksAlias);
+        args.add("--ks-pass");
+        args.add("pass:" + ksAliasPass);
+        args.add("--out");
+        args.add(apkPath.replace(".apk", "signed.apk"));
+        args.add(apkPath);
+    }
+
+    //签名验证
+    private void verifyApkSign(String apkPath) {
+        List<String> args = new ArrayList<>();
+        args.add("java");
+        args.add("-jar");
+        args.add("apksigner.jar");
+        args.add("verify");
+        args.add("v");
+        args.add("--print-certs");
+        args.add(apkPath);
+    }
+
+    private void executCommand(List<String> args) {
+        processBuilder.command(args);
         Process process = null;
         try {
             process = processBuilder.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (process == null) {
+            showAlert(args.toString() + "执行失败");
+            return ;
+        }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
             String info;
             while((info = reader.readLine()) != null) {
                 showAlert(info);
@@ -280,6 +344,5 @@ public class ChangeApkInfo {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
