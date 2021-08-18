@@ -1,3 +1,4 @@
+include ':connectivity'
 include ':script'
 include ':gradlescript'
 include ':loginlibrary'
