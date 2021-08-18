@@ -51,8 +51,6 @@ public class ChangeApkInfo {
 
         ChangeApkInfo changeApkInfo = new ChangeApkInfo();
         changeApkInfo.decodeApk(apkFilePath, decodeApkPath);
-
-
     }
 
     /**
@@ -330,6 +328,49 @@ public class ChangeApkInfo {
         if (process == null) {
             showAlert(args.toString() + "执行失败");
             return ;
+        }
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+            String info;
+            while((info = reader.readLine()) != null) {
+                showAlert(info);
+            }
+
+            while ((info = errorReader.readLine()) != null) {
+                showAlert(info);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void zipAlignApk(String apkPath, String outputPath) {
+        ArrayList<String> args = new ArrayList<>();
+        args.add("zipalign");
+        args.add("-p");
+        args.add("-f");
+        args.add("-v");
+        args.add("4");
+        args.add(apkPath);
+        args.add(outputPath);
+        execCommand(args);
+    }
+
+    private void signApk(String apkPath, String outputPath) {
+
+    }
+
+    private void execCommand(List<String> args) {
+        processBuilder.command(args);
+        Process process = null;
+        try {
+            process = processBuilder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (process == null) {
+            showAlert(args.toString() + "执行失败");
+            return;
         }
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
              BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
