@@ -6,6 +6,7 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 
@@ -27,6 +28,8 @@ class MyLocalUnitTestClass {
 
     @Test
     fun readStringFromContext_LocalizedString() {
+        `when`(context.getString(R.string.hello_world)).thenReturn(FAKE_STRING)
+        assertThat(getHelloWorldString(context)).isEqualTo(FAKE_STRING)
         //val entry = SharedPreferenceEntry(TEST_NAME, TEST_BIRTH, TEST_EMAIL)
         //val spHelper = SharedPreferencesHelper(mMockSharedPreferences)
         //
@@ -36,5 +39,9 @@ class MyLocalUnitTestClass {
         //assertThat(spEntry.name).isEqualTo(TEST_NAME)
         //assertThat(spEntry.email).isEqualTo(TEST_EMAIL)
         //assertThat(spEntry.birth).isEqualTo(TEST_BIRTH)
+    }
+
+    fun getHelloWorldString(context: Context): String {
+        return "Hello world"
     }
 }

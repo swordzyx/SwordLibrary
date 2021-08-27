@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello_world">HELLO WORLD</string>
+    <string name="hello_world">HELLO</string>
 
     <string name="app_name">Basic unittest sample</string>
     <string name="name_label">Your name:</string>
