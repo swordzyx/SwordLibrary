@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Connectivity</string>
+    <string name="page_title">PageTitle</string>
+    <string name="updated">update</string>
 </resources>
