@@ -30,8 +30,8 @@ allprojects {
 ext {
     // Sdk and tools
     minSdkVersion = 21
-    targetSdkVersion = 30
-    compileSdkVersion = 30
+    targetSdkVersion = 28
+    compileSdkVersion = 28
 
     // App dependencies
     androidXVersion = '1.0.0'
