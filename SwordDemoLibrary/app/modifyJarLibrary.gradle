@@ -1,0 +1,20 @@
+def jarName = "AVProVideo-V2"
+def jarFile = new File("libs/${jarName}.jar")
+def unzipDir = new File("libs/${jarName}/")
+def removePackage = "google"
+
+task unZipJar(type: Copy) {
+    from zipTree(jarFile)
+    into "${unzipDir}"
+    doLast {
+        delete jarFile
+    }
+}
+
+task zipJar(type: Jar) {
+    dependsOn "unZipJar"
+    archivesBaseName = jarName
+    from unzipDir
+    destinationDirectory = file("libs")
+    exclude "com.google.android.*"
+}
