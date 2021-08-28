@@ -21,6 +21,7 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources=true
+            unitTests.returnDefaultValues = true
         }
     }
 
@@ -49,11 +50,8 @@ dependencies {
     testImplementation "junit:junit:${junitVersion}"
     //mockito, for mocking Android Code
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
-    testImplementation "org.mockito:mockito-android:${mockitoVersion}"
     //assert library
     testImplementation "com.google.truth:truth:${googleTruthVersion}"
-    //
-    testImplementation "androidx.test:core:${androidXVersion}"
 
     //Robolectric environment 如果测试用例对 Android 框架具有依赖性，则需要添加依赖
     //testImplementation 'androidX.test:core:1.0.0'
