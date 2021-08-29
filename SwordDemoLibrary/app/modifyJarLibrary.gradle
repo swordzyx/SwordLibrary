@@ -3,6 +3,7 @@ def jarFile = new File("libs/${jarName}.jar")
 def unzipDir = new File("libs/${jarName}/")
 def removePackage = "google"
 
+//解压 jar 包
 task unZipJar(type: Copy) {
     from zipTree(jarFile)
     into "${unzipDir}"
@@ -11,6 +12,7 @@ task unZipJar(type: Copy) {
     }
 }
 
+//打 jar 包。
 task zipJar(type: Jar) {
     dependsOn "unZipJar"
     archivesBaseName = jarName
