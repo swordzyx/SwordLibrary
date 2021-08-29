@@ -9,3 +9,5 @@ include ':test'
 //include ':groovypractice'
 //include ':app'
 rootProject.name = "SwordDemoLibrary"
+include ':scanner'
+include ':CameraXSample'
