@@ -1,0 +1,16 @@
+platform :ios, '10.0'
+use_frameworks!
+
+project 'AutoMLExample.xcodeproj'
+
+pod 'GoogleMLKit/Common', '2.3.0'
+pod 'GoogleMLKit/ImageLabelingCustom', '2.3.0'
+pod 'GoogleMLKit/LinkFirebase', '2.3.0'
+pod 'GoogleMLKit/ObjectDetectionCustom', '2.3.0'
+pod 'GoogleMLKit/Vision', '2.3.0'
+
+target 'AutoMLExample' do
+end
+
+target 'AutoMLExampleObjc' do
+end
