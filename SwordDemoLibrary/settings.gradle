@@ -11,3 +11,4 @@ include ':test'
 rootProject.name = "SwordDemoLibrary"
 include ':scanner'
 include ':CameraXSample'
+include ':camerax'

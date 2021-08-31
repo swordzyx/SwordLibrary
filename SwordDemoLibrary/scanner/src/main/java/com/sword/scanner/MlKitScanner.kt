@@ -78,8 +78,6 @@ class MlKitScanner {
 
     fun createInputImage(context: Context, uri: Uri) {
         val image = InputImage.fromFilePath(context, uri)
-
-
     }
 
     companion object {
