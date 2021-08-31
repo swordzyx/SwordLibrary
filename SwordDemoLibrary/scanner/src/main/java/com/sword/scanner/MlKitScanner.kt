@@ -1,6 +1,14 @@
 package com.sword.scanner
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Context.CAMERA_SERVICE
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
+import android.util.SparseArray
+import android.util.SparseIntArray
+import android.view.Surface
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.barcode.Barcode
@@ -25,6 +33,33 @@ class MlKitScanner {
                 val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
             }
         }
+    }
+
+    private val ORIENTATIOINS = SparseIntArray()
+
+    init {
+        ORIENTATIOINS.append(Surface.ROTATION_0, 0)
+        ORIENTATIOINS.append(Surface.ROTATION_90, 90)
+        ORIENTATIOINS.append(Surface.ROTATION_180, 180)
+        ORIENTATIOINS.append(Surface.ROTATION_270, 270)
+    }
+
+    fun calculateRotationDegree(cameraId: String, activity: Activity, isFrontFacing: Boolean): Int {
+        val deviceRotation = activity.windowManager.defaultDisplay.rotation
+        var rotationCompensation = ORIENTATIOINS.get(deviceRotation)
+
+        //获取相机的选装方向
+        val cameraManager = activity.getSystemService(CAMERA_SERVICE) as CameraManager
+        val sensorOrientation = cameraManager.getCameraCharacteristics(cameraId).get(CameraCharacteristics.SENSOR_ORIENTATION)!!
+
+        //前置摄像头
+        if (isFrontFacing) {
+            rotationCompensation = (sensorOrientation + rotationCompensation) % 360
+        } else { //后置摄像头
+            rotationCompensation = (sensorOrientation - rotationCompensation + 360) % 360
+        }
+
+        return rotationCompensation
     }
 
 }
