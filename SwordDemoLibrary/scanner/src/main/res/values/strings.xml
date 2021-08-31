@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">scanner</string>
+    <string name="scan_qrcode_MLKit">scan qrcode with MLKit</string>
 </resources>
