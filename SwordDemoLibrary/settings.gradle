@@ -10,5 +10,5 @@ include ':test'
 //include ':app'
 rootProject.name = "SwordDemoLibrary"
 include ':scanner'
-include ':CameraXSample'
 include ':camerax'
+include ':utilclass'

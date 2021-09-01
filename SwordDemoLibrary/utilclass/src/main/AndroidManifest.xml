@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sword.camerax">
-    
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <!--andorid.hardware.camera.any 用于确保设备有摄像头（any 表示前置摄像头或者后置摄像头，即只要设备有摄像头即可）-->
-    <!--如果仅仅指定 android.hardware.camera，那么当设备没有后置摄像头是，相机功能将无法使用-->
-    <uses-feature android:name="android.hardware.camera.any"/>
+    package="com.example.utilclass">
 
     <application
         android:allowBackup="true"
