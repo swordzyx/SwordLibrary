@@ -12,3 +12,4 @@ rootProject.name = "SwordDemoLibrary"
 include ':scanner'
 include ':camerax'
 include ':utilclass'
+include ':zxingscanner'
