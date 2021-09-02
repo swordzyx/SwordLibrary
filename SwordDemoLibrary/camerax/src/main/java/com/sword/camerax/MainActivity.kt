@@ -19,14 +19,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         
         //init instance
-        cameraXStarter = CameraXStarter()
+        //cameraXStarter = CameraXStarter()
         cameraExecutor = Executors.newSingleThreadExecutor()
         
         //检查相机权限，请求相机权限，开启预览
         if(!PermissionRequestUtil.isPermissionGranted(this, NEEDED_PERMISSION)) {
             PermissionRequestUtil.requestSpecialPermission(this, NEEDED_PERMISSION)
         } else {
-            cameraXStarter.startCamera()
+            //cameraXStarter.startCamera()
         }
         
         camera_capture_button.setOnClickListener {
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         
         if(requestCode == PermissionRequestUtil.PERMISSION_RESULT_CODE) {
             if (PermissionRequestUtil.isPermissionGranted(this, NEEDED_PERMISSION)) {
-                cameraXStarter.startCamera()
+                //cameraXStarter.startCamera()
             } else {
                 Toast.makeText(this, "Permissions not granted by the user", Toast.LENGTH_SHORT).show()
                 finish()
