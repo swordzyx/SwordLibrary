@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.utilclass.LogUtil;
 import com.example.zxingscanner.camera.CameraManager;
+import com.example.zxingscanner.camera.CameraConfigurationManager;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback {
     private CameraManager cameraManager;
@@ -67,9 +70,10 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
         
         //打开相机
-        cameraManager.openDriver(holder);
-        
-        //开启预览
-        
+        try {
+            cameraManager.openDriver(holder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
