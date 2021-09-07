@@ -7,12 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.hardware.camera2.CameraManager;
 import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.zxingscanner.camera.CameraManager;
 import com.google.zxing.ResultPoint;
 
 import java.util.ArrayList;

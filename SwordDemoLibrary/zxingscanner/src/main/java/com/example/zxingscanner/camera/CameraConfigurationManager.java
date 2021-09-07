@@ -3,12 +3,15 @@ package com.example.zxingscanner.camera;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.WindowManager;
 
 import com.example.utilclass.LogUtil;
 import com.google.zxing.client.android.camera.CameraConfigurationUtils;
+
+import java.security.Policy;
 
 public class CameraConfigurationManager {
     private final Context context;
@@ -20,7 +23,7 @@ public class CameraConfigurationManager {
     }
 
     /**
-     * 初始化相机相关参数
+     * 初始化相机预览界面大小
      * 1. 屏幕旋转角度
      * 2. 相机图像旋转角度
      * 3. 相机预览界面大小
@@ -92,10 +95,65 @@ public class CameraConfigurationManager {
         }
         LogUtil.debug("Preview size on screen: " + bestPreviewSize);
     }
-    
-    
-    public void setDesiredCameraParameters(OpenCamera camera, boolean saveMode) {
-        
+
+
+    /**
+     * 设置曝光模式，以及是否开启闪光灯
+     * 设置聚焦模式
+     * 设置场景模式
+     * 设置预览尺寸
+     * @param camera
+     * @param safeMode
+     */
+    public void setDesiredCameraParameters(Camera camera, boolean safeMode) {
+        Camera.Parameters parameters = camera.getParameters();
+        if(parameters == null) {
+            LogUtil.warn("Device error: no camera parameters are available. Proceeding without configuration");
+            return;
+        }
+
+        LogUtil.debug("Initial camera parameters: " + parameters.flatten());
+
+        //? 这里没有理解是什么意思
+        if (safeMode) {
+            LogUtil.warn("In camera config safe mode -- most settings will not be honored");
+        }
+
+        //初始化曝光补偿以及是否开启闪光灯，默认不开启曝光补偿和闪光灯
+        initTorch(camera, false);
+
+        //设置聚焦模式
+        CameraConfigurationUtils.setFocus(parameters, true, false, safeMode);
+
+        if(!safeMode) {
+            //设置场景模式
+            CameraConfigurationUtils.setBarcodeSceneMode(parameters);
+        }
+
+        //设置预览尺寸
+        parameters.setPreviewSize(bestPreviewSize.x, bestPreviewSize.y);
+        //设置参数，使参数生效
+        camera.setParameters(parameters);
+        camera.setDisplayOrientation(cameraRotationNeed);
+
+        //重新设置预览尺寸，以适配设置了参数之后的推荐预览尺寸。
+        Camera.Parameters afterParameters = camera.getParameters();
+        Camera.Size afterSize = afterParameters.getPreviewSize();
+        if (afterSize != null && (bestPreviewSize.x != afterSize.width || bestPreviewSize.y != afterSize.height)) {
+            bestPreviewSize.x = afterSize.width;
+            bestPreviewSize.y = afterSize.height;
+        }
+    }
+
+    private void initTorch(Camera camera, boolean torch) {
+        setTorch(camera.getParameters(), torch, false);
+    }
+
+    private void setTorch(Camera.Parameters parameters, boolean torch, boolean safeMode) {
+        CameraConfigurationUtils.setTorch(parameters, torch);
+        if (!safeMode) {
+            CameraConfigurationUtils.setBestExposure(parameters, torch);
+        }
     }
 
 
