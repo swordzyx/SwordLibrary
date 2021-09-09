@@ -23,14 +23,22 @@ import java.util.List;
  */
 public class ViewFinderView extends View {
 
+    private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
+    private static final int CURRENT_POINT_OPACITY = 0xA0;
+    private static final int POINT_SIZE = 6;
+    private static final long ANIMATION_DELAY = 80L; 
+    
+
     private CameraManager cameraManager;
     private final Paint paint;
     private Bitmap resultBitmap;
+    
     private final int maskColor;
     private final int resultColor;
     private final int laserColor;
     private final int resultPointColor;
     private int scannerAlpha;
+    
     private List<ResultPoint> possibleResultPoints;
     private List<ResultPoint> lastPossibleResultPoints;
 
@@ -61,5 +69,73 @@ public class ViewFinderView extends View {
 
         Rect frame = cameraManager.getFramingRect();
         Rect previewFrame = cameraManager.getFramingRectInPreview();
+        if(frame == null || previewFrame == null) {
+            return;
+        }
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
+        
+        paint.setColor(resultBitmap != null ? resultColor : maskColor);
+        canvas.drawRect(0, 0, width, frame.top, paint);
+        canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
+        canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
+        canvas.drawRect(0, frame.bottom + 1, width, height, paint); 
+        
+        if (resultBitmap != null) {
+            paint.setAlpha(CURRENT_POINT_OPACITY);
+            canvas.drawBitmap(resultBitmap, null, frame, paint);
+        } else {
+            paint.setColor(laserColor);
+            paint.setAlpha(SCANNER_ALPHA[scannerAlpha]);
+            scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
+            int middle = frame.height() / 2 + frame.top;
+            canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
+            
+            float scaleX = frame.width() / (float) previewFrame.width();
+            float scaleY = frame.height() / (float) previewFrame.height();
+            
+            List<ResultPoint> currentPossible = possibleResultPoints;
+            List<ResultPoint> currentLast = lastPossibleResultPoints;
+            int frameLeft = frame.left;
+            int frameTop = frame.top;
+            if (currentPossible.isEmpty()) {
+                lastPossibleResultPoints = null;
+            } else {
+                possibleResultPoints = new ArrayList<>(5);
+                lastPossibleResultPoints = currentPossible;
+                paint.setAlpha(CURRENT_POINT_OPACITY);
+                paint.setColor(resultPointColor);
+                synchronized (currentPossible) {
+                    for (ResultPoint point : currentPossible) {
+                        canvas.drawCircle(frameLeft + (int)(point.getX() * scaleX), frameTop + (int)(point.getY() * scaleY), POINT_SIZE, paint);
+                    }
+                }
+            }
+            
+            if (currentLast != null) {
+                paint.setAlpha(CURRENT_POINT_OPACITY / 2);
+                paint.setColor(resultPointColor);
+                synchronized (currentLast) {
+                    float radius = POINT_SIZE / 2.0f;
+                    for (ResultPoint point : currentLast) {
+                        canvas.drawCircle(frameLeft + (int)(point.getX() * scaleX), frameTop + (int)(point.getY() * scaleY), radius, paint);
+                    }
+                }
+            }
+            
+            //指定延迟之后,重绘特定的矩形区域.
+            postInvalidateDelayed(ANIMATION_DELAY, frame.left - POINT_SIZE, frame.top - POINT_SIZE, frame.right - POINT_SIZE, frame.bottom + POINT_SIZE);
+        }
+        
+        
+    }
+    
+    public void drawViewFinder() {
+        Bitmap resultBitmap = this.resultBitmap;
+        this.resultBitmap = null;
+        if (resultBitmap != null) {
+            resultBitmap.recycle();
+        }
+        invalidate();
     }
 }

@@ -1,28 +1,42 @@
 package com.example.zxingscanner;
 
+import android.Manifest;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.utilclass.LogUtil;
+import com.example.utilclass.PermissionRequestUtil;
 import com.example.zxingscanner.camera.CameraManager;
-import com.example.zxingscanner.camera.CameraConfigurationManager;
+import com.example.zxingscanner.camera.CaptureHandler;
+import com.google.zxing.Result;
+import com.google.zxing.client.result.ParsedResult;
+import com.google.zxing.client.result.ResultParser;
 
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+    private static final long DEFAULT_INTENT_RESULT_DURATION_MS = 1500L;
+    private static final long BULK_MODE_SCAN_DELAY_MS = 1000L;
+    
     private CameraManager cameraManager;
     private ViewFinderView viewfinderView;
-    private boolean hasSurface;
+    private boolean hasSurface = false;
+    
+    private CaptureHandler handler;
+    private Result lastResult;
     
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
+        
+        PermissionRequestUtil.Companion.requestSpecialPermission(this, Manifest.permission.CAMERA);
 
         //当设备处于电池供电时，如果当前 Activity 一段时间不活动，则结束它
         //inactivityTimer = new InActivityTimer(this)
@@ -66,16 +82,16 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surface_view);
         SurfaceHolder holder = surfaceView.getHolder();
+        holder.addCallback(this);
         //onResume 会在 surfaceCreated 之前调用，因为执行了 addCallback 之后，才会出发 surfaceCreated 的执行。
-        if(hasSurface) {
-            initCamera(holder);
-        } else {
-            holder.addCallback(this);
-        }
+        LogUtil.debug("hasSurface: " + hasSurface);
+        initCamera(holder);
+        hasSurface = true;
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
+        LogUtil.debug("surfaceCreated");
         if (holder == null) {
             LogUtil.error("null surface");
         }
@@ -91,6 +107,10 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         //inactivityTimer.onPause()
         //ambientLightManger.stop()
         //beepManager.close()
+        if (handler != null) {
+            handler.quitSync();
+            handler = null;
+        }
         cameraManager.closeDriver();
 
         //关闭相机，释放对应资源
@@ -117,8 +137,37 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
         hasSurface = false;
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (lastResult != null) {
+                    restartPreviewAfterDelay(0);
+                }
+                break;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void restartPreviewAfterDelay(long delayMs) {
+        if (handler != null) {
+            handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMs);
+        }
+    }
+    
+    public CameraManager getCameraManager() {
+        return cameraManager;
+    }
+    
+    public CaptureHandler getHandler() {
+        return handler;
+    }
     
     private void initCamera(SurfaceHolder holder) {
+        LogUtil.debug("initCamera");
         if (holder == null) {
             throw new IllegalStateException("No SurfaceHolder");
         }
@@ -132,6 +181,9 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         //打开相机
         try {
             cameraManager.openDriver(holder);
+            if (handler == null) {
+                handler = new CaptureHandler(this);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -160,6 +212,24 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 default:
                     return ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
             }
+        }
+    }
+    
+    public void drawViewFinder() {
+        viewfinderView.drawViewFinder();
+    }
+
+    /**
+     * 
+     * @param result
+     * @param barcode
+     * @param scaleFactor
+     */
+    public void handleDecode(Result result, Bitmap barcode, float scaleFactor) {
+        lastResult = result;
+        String rawResultString = String.valueOf(result);
+        if (rawResultString.length() > 32) {
+            Toast.makeText(this, rawResultString.substring(0, 32), Toast.LENGTH_SHORT).show();
         }
     }
 }

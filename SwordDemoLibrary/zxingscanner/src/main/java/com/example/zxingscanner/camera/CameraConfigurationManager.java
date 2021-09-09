@@ -11,12 +11,12 @@ import android.view.WindowManager;
 import com.example.utilclass.LogUtil;
 import com.google.zxing.client.android.camera.CameraConfigurationUtils;
 
-import java.security.Policy;
-
 public class CameraConfigurationManager {
     private final Context context;
     private Point bestPreviewSize;
     private int cameraRotationNeed;
+    private Point screenResolution;
+    private Point cameraResolution;
 
     public CameraConfigurationManager(Context context) {
         this.context = context;
@@ -81,17 +81,17 @@ public class CameraConfigurationManager {
         //获取相机的硬件参数
         Camera.Parameters parameters = camera.getCamera().getParameters();
         //获取屏幕的大小
-        Point screenResolution = new Point();
+        screenResolution = new Point();
         display.getSize(screenResolution);
-        Point cameraPreviewSize = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
+        cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
         
         boolean isScreenPortrait = screenResolution.x < screenResolution.y;
-        boolean isPreviewPortrait = bestPreviewSize.x < bestPreviewSize.y;
+        boolean isPreviewPortrait = cameraResolution.x < cameraResolution.y;
         
         if (isScreenPortrait == isPreviewPortrait) {
-            bestPreviewSize = cameraPreviewSize;
+            bestPreviewSize = cameraResolution;
         } else {
-            bestPreviewSize = new Point(cameraPreviewSize.y, cameraPreviewSize.x);
+            bestPreviewSize = new Point(cameraResolution.y, cameraResolution.x);
         }
         LogUtil.debug("Preview size on screen: " + bestPreviewSize);
     }
@@ -144,6 +144,14 @@ public class CameraConfigurationManager {
             bestPreviewSize.y = afterSize.height;
         }
     }
+    
+    public Point getScreenResolution() {
+        return screenResolution;
+    }
+    
+    public Point getCameraResolution() {
+        return cameraResolution;
+    }
 
     private void initTorch(Camera camera, boolean torch) {
         setTorch(camera.getParameters(), torch, false);
@@ -155,6 +163,5 @@ public class CameraConfigurationManager {
             CameraConfigurationUtils.setBestExposure(parameters, torch);
         }
     }
-
-
+    
 }
