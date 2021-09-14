@@ -1,0 +1,3 @@
+include ':EsauKnow'
+include ':zxingLib'
+include ':ZXingWrapLib'
