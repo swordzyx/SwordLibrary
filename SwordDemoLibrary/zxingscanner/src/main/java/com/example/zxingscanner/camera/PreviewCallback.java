@@ -5,6 +5,8 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 
+import com.example.utilclass.LogUtil;
+
 public class PreviewCallback implements Camera.PreviewCallback{
     private final CameraConfigurationManager configurationManager;
     private Handler previewHandler;
@@ -21,6 +23,7 @@ public class PreviewCallback implements Camera.PreviewCallback{
     
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
+        //LogUtil.debug("onPreviewFrame");
         Point cameraResolution = configurationManager.getCameraResolution();
         Handler thePreviewHandler = previewHandler;
         if (cameraResolution != null && thePreviewHandler != null) {

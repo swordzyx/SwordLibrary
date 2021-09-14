@@ -61,12 +61,14 @@ public class CameraManager {
         } catch (RuntimeException re) {
             LogUtil.warn("Camera reject parameters. Setting only minimal safe-mode parameters");
             LogUtil.debug("Resetting to saved camera params: " + paramFlattened);
-
+            
+            re.printStackTrace();
             if (paramFlattened != null) {
                 parameters.unflatten(paramFlattened);
                 try {
                     configurationManager.setDesiredCameraParameters(camera, true);
                 } catch (RuntimeException ex2) {
+                    ex2.printStackTrace();
                     LogUtil.warn("Camera reject even safe-mode parameters");
                 }
             }

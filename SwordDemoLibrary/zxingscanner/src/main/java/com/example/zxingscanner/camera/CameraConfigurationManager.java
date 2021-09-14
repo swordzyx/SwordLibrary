@@ -83,7 +83,9 @@ public class CameraConfigurationManager {
         //获取屏幕的大小
         screenResolution = new Point();
         display.getSize(screenResolution);
+        LogUtil.debug("screenResolution: x-" + screenResolution.x + "  y-" + screenResolution.y);
         cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
+        LogUtil.debug("screenResolution: x-" + cameraResolution.x + "  y-" + cameraResolution.y);
         
         boolean isScreenPortrait = screenResolution.x < screenResolution.y;
         boolean isPreviewPortrait = cameraResolution.x < cameraResolution.y;
@@ -120,23 +122,26 @@ public class CameraConfigurationManager {
         }
 
         //初始化曝光补偿以及是否开启闪光灯，默认不开启曝光补偿和闪光灯
-        initTorch(camera, false);
+        //initTorch(camera, false);
 
         //设置聚焦模式
-        CameraConfigurationUtils.setFocus(parameters, true, false, safeMode);
+        //CameraConfigurationUtils.setFocus(parameters, true, false, safeMode);
 
-        if(!safeMode) {
+        /*if(!safeMode) {
             //设置场景模式
             CameraConfigurationUtils.setBarcodeSceneMode(parameters);
-        }
+        }*/
 
         //设置预览尺寸
-        parameters.setPreviewSize(bestPreviewSize.x, bestPreviewSize.y);
+        LogUtil.debug("set best preview：" + bestPreviewSize.x + "---" + bestPreviewSize.y);
+        //parameters.setPreviewSize(bestPreviewSize.x, bestPreviewSize.y);
+        
         //设置参数，使参数生效
         camera.setParameters(parameters);
-        camera.setDisplayOrientation(cameraRotationNeed);
 
-        //重新设置预览尺寸，以适配设置了参数之后的推荐预览尺寸。
+        camera.setDisplayOrientation(cameraRotationNeed);
+        
+        
         Camera.Parameters afterParameters = camera.getParameters();
         Camera.Size afterSize = afterParameters.getPreviewSize();
         if (afterSize != null && (bestPreviewSize.x != afterSize.width || bestPreviewSize.y != afterSize.height)) {
