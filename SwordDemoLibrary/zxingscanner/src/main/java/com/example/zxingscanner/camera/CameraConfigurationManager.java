@@ -62,19 +62,15 @@ public class CameraConfigurationManager {
         
         //获取相机旋转角度，也就是图片或者相机预览图像的旋转角度。
         int cameraRotation = camera.getOrientation();
-        //如果设备竖屏，而相机图像显示为横屏，对于后置摄像头则是旋转了 90 度，而对于前置摄像头则是旋转了 270 度。
-        if(camera.getFacing() == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            cameraRotation = (360 - cameraRotation) % 360;
-        }
         LogUtil.debug("camera rotation: " + cameraRotation);
         
-        int rotationFromCameraToDisplay = (360 + cameraRotation - displayRotation) % 360;
         if (camera.getFacing() == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            cameraRotationNeed = (360 - rotationFromCameraToDisplay) % 360;
+            cameraRotationNeed = (cameraRotation + displayRotationFromNature) % 360;
+            cameraRotationNeed = (360 - cameraRotationNeed) % 360;
         } else {
-            cameraRotationNeed = rotationFromCameraToDisplay;
+            cameraRotationNeed = (cameraRotation - displayRotationFromNature + 360) % 360;
         }
-        LogUtil.debug("Clock rotation from display to camera: " + rotationFromCameraToDisplay);
+        LogUtil.debug("Clock rotation from display to camera: " + cameraRotationNeed);
 
 
         //获取预览界面的大小
@@ -125,7 +121,7 @@ public class CameraConfigurationManager {
         //initTorch(camera, false);
 
         //设置聚焦模式
-        //CameraConfigurationUtils.setFocus(parameters, true, false, safeMode);
+        CameraConfigurationUtils.setFocus(parameters, true, false, safeMode);
 
         /*if(!safeMode) {
             //设置场景模式

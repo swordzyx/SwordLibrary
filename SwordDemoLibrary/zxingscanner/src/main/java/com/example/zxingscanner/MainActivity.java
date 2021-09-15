@@ -227,8 +227,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     public void handleDecode(Result result, Bitmap barcode, float scaleFactor) {
         lastResult = result;
         String rawResultString = String.valueOf(result);
-        if (rawResultString.length() > 32) {
-            Toast.makeText(this, rawResultString.substring(0, 32), Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(this, rawResultString, Toast.LENGTH_SHORT).show();
     }
 }

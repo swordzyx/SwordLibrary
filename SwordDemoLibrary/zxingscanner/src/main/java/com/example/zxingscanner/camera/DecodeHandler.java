@@ -9,6 +9,7 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
+import com.example.utilclass.LogUtil;
 import com.example.zxingscanner.MainActivity;
 import com.example.zxingscanner.R;
 import com.google.zxing.BinaryBitmap;
@@ -56,12 +57,16 @@ public class DecodeHandler extends Handler {
         Result rawResult = null;
         //获取 PlanarYUVLuminanceSource 对象，表示待识别的二维码图像数据。
         PlanarYUVLuminanceSource source = cameraManager.buildLuminanceSource(data, width, height);
+        //LogUtil.debug("start decode data.length = " + data.length);
         if (source != null) { 
+            //LogUtil.debug("decode qrcode");
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer((source)));
             try {
                 //通过 MultiFormatReader#decodeWithState 解析二维码
                 rawResult = formatReader.decodeWithState(bitmap);
+                //LogUtil.debug("rawResult: " + rawResult.getText());
             } catch (ReaderException re) {
+                re.printStackTrace();
             } finally {
                 formatReader.reset();
             }
