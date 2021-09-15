@@ -2,6 +2,7 @@ package com.example.zxingscanner;
 
 import android.Manifest;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -51,6 +52,11 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         if (!PermissionRequestUtil.Companion.isPermissionGranted(this, Manifest.permission.CAMERA)) {
             PermissionRequestUtil.Companion.requestSpecialPermission(this, Manifest.permission.CAMERA);
+        }
+        
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            Toast.makeText(this, "当前设备不支持相机", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         //UI 初始化
