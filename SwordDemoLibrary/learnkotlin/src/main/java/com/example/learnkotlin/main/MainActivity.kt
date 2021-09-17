@@ -12,6 +12,7 @@ import com.example.learnkotlin.entity.User
 import com.example.learnkotlin.lesson.LessonActivity
 import com.example.learnkotlin.main.widget.CodeView
 import com.example.learnkotlin.utils.get
+import com.example.learnkotlin.utils.save
 import com.example.learnkotlin.utils.toast
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -58,8 +59,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val user = User(username, password, code)
         if(verify(user)) {
-            CacheUtils.save(usernameKey, username)
-            CacheUtils.save(passwordKey, password)
+            save(usernameKey, username)
+            save(passwordKey, password)
             startActivity(Intent(this, LessonActivity::class.java))
         }
     }

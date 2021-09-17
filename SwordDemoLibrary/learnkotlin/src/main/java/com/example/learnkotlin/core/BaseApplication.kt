@@ -1,5 +1,6 @@
 package com.example.learnkotlin.core
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 
@@ -12,6 +13,7 @@ class BaseApplication : Application() {
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private var context: Context? = null
 
         fun currentApplication(): Context? {
