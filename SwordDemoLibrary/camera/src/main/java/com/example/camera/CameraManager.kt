@@ -42,4 +42,6 @@ class CameraManager {
     private fun checkCameraHardware(context: Context): Boolean {
         return context.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)
     }
+    
+    
 }

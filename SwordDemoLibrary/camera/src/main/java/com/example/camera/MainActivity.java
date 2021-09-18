@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PermissionRequestUtil.Companion.requestSpecialPermission(this, Manifest.permission.CAMERA);
+        PermissionRequestUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
         
         cameraManager = new CameraManager();
         camera = cameraManager.getCameraInstance(Camera.CameraInfo.CAMERA_FACING_FRONT);
