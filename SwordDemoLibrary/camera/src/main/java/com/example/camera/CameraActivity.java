@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -24,12 +23,13 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        PermissionRequestUtil.Companion.requestSpecialPermission(this, Manifest.permission.CAMERA);
+        PermissionRequestUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
         
         SurfaceView previewView = (SurfaceView) findViewById(R.id.preview_view);
         previewView.getHolder().addCallback(callback);
 
         cameraManager = new CameraManager();
+        //获取相机实例
         camera = cameraManager.getCameraInstance(Camera.CameraInfo.CAMERA_FACING_BACK);
     }
 
@@ -58,6 +58,7 @@ public class CameraActivity extends AppCompatActivity {
             }
 
             try {
+                //开启预览
                 camera.setPreviewDisplay(holder);
                 camera.startPreview();
             } catch (IOException e) {
