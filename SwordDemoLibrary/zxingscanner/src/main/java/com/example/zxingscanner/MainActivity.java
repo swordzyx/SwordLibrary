@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         setContentView(R.layout.activity_main);
 
         if (!PermissionRequestUtil.Companion.isPermissionGranted(this, Manifest.permission.CAMERA)) {
-            PermissionRequestUtil.Companion.requestSpecialPermission(this, Manifest.permission.CAMERA);
+            PermissionRequestUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
         }
         
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
