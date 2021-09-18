@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         
         //检查相机权限，请求相机权限，开启预览
         if(!PermissionRequestUtil.isPermissionGranted(this, NEEDED_PERMISSION)) {
-            PermissionRequestUtil.requestSpecialPermission(this, NEEDED_PERMISSION)
+            PermissionRequestUtil.requestSpecialSinglePermission(this, NEEDED_PERMISSION)
         } else {
             //cameraXStarter.startCamera()
         }
