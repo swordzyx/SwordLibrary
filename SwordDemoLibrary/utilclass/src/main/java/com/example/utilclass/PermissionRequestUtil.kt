@@ -24,6 +24,7 @@ class PermissionRequestUtil {
                     neededPermission.add(permission)
                 }
             }
+            LogUtil.debug(neededPermission.toString())
             if (neededPermission.isNotEmpty()) {
                 ActivityCompat.requestPermissions(activity!!, neededPermission.toTypedArray(), PERMISSION_RESULT_CODE)
             }
@@ -51,11 +52,21 @@ class PermissionRequestUtil {
         fun isPermissionGranted(context: Context, permission: String?): Boolean {
             return ContextCompat.checkSelfPermission(context, permission!!) == PackageManager.PERMISSION_GRANTED
         }
-        
-        fun requestSpecialPermission(activity: Activity, permission: String) {
+
+        /**
+         * 申请单个权限
+         */
+        fun requestSpecialSinglePermission(activity: Activity, permission: String) {
             val per = arrayOf(permission)
             
             ActivityCompat.requestPermissions(activity, per, PERMISSION_RESULT_CODE)
+        }
+
+        /**
+         * 申请多个权限
+         */
+        fun requestSpecialArrayPermission(activity: Activity, permissions: Array<String>) {
+            ActivityCompat.requestPermissions(activity, permissions, PERMISSION_RESULT_CODE)
         }
     }
 }
