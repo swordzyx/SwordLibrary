@@ -12,4 +12,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="playback">#303F9F</color>
+    <color name="live">#FF4081</color>
+    <color name="wait">#8F9DEE</color>
 </resources>

@@ -6,6 +6,9 @@ import android.content.Context
 import com.example.learnkotlin.R
 import com.example.learnkotlin.core.BaseApplication
 
+/**
+ * ShareaPreference 工具类
+ */
 //返回的并非应用组建的 Context，这里应该不会导致内存泄漏
 @SuppressLint("StaticFieldLeak")
 private val context = BaseApplication.currentApplication()

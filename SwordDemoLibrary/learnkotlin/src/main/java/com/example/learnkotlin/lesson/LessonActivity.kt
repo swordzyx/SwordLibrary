@@ -16,25 +16,23 @@ class LessonActivity : AppCompatActivity(), BaseView<LessonPresenter>, Toolbar.O
 
     private val lessonPresenter = LessonPresenter(this@LessonActivity)
 
-    //LessonPresenter 待实现
     override fun getPresenter(): LessonPresenter {
         return lessonPresenter
     }
 
     private lateinit var refreshLayout : SwipeRefreshLayout
-    //LessonAdapter 待实现
     private val lessonAdapter = LessonAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lesson)
         
-        val toolbar = findViewById<Toolbar>(R.id.toolbar).apply { 
+        findViewById<Toolbar>(R.id.toolbar).apply {
             inflateMenu(R.menu.menu_lesson)
             setOnMenuItemClickListener(this@LessonActivity)
         }
         
-        val recyclerView = findViewById<RecyclerView>(R.id.list).apply { 
+        findViewById<RecyclerView>(R.id.list).apply {
             layoutManager = LinearLayoutManager(this@LessonActivity)
             adapter = lessonAdapter
             addItemDecoration(DividerItemDecoration(this@LessonActivity, LinearLayout.VERTICAL))
@@ -43,14 +41,17 @@ class LessonActivity : AppCompatActivity(), BaseView<LessonPresenter>, Toolbar.O
         refreshLayout = findViewById(R.id.swipe_refresh_layout)
         refreshLayout.isRefreshing = true
 
-        getPresenter().fetechData()
+        lessonPresenter.fetchData()
     }
 
-
-
+    fun showResult(lessons: List<Lesson>) {
+        lessonAdapter.updateAndNotify(lessons)
+        refreshLayout.isRefreshing = false
+    }
 
     override fun onMenuItemClick(p0: MenuItem?): Boolean {
-        TODO("Not yet implemented")
+        lessonPresenter.showPlayback()
+        return false
     }
 
 
