@@ -8,21 +8,6 @@ fun main() {
     computeVerifyCode(idNumber)
 }
 
-
-
-fun computeVerifyCode(idNumber: String) {
-    var s: Double = 0.0
-    val chars = idNumber.toCharArray()
-    for ((i, c) in chars.withIndex()) {
-        val ai = c.digitToInt()
-        val wi = Math.pow(2.0, 18.0 - i - 1) % 11
-        println("i: $i, ai: $ai, wi: $wi")
-        s += (ai * wi)
-    }
-    val y = s % 11
-    println("y: $y")
-}
-
 /**
  * 大陆身份证号验证
  */
@@ -73,18 +58,7 @@ fun convertFifteenToEighteen(idNumber: String): String {
 
 
 /**
- * Y - 校验码：
- * 0 - 1
- * 1 - 0
- * 2 - X
- * 3 - 9
- * 4 - 8
- * 5 - 7
- * 6 - 6
- * 7 - 5
- * 8 - 4
- * 9 - 3
- * 10 - 2
+ * Y - 校验码：0 - 1, 1 - 0, 2 - X, 3 - 9, 4 - 8, 5 - 7, 6 - 6, 7 - 5, 8 - 4, 9 - 3, 10 - 2
  */
 val yToVerifyCode = arrayOf("1", "0", "X", "9", "7", "6", "5", "4", "3", "2")
 val wis = arrayOf(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2)
@@ -101,6 +75,27 @@ fun getVerifyCode(idNumber: String): String? {
         s += (ai * wi)
     }
     return yToVerifyCode[s % 11]
+}
+
+
+/**
+ * 计算身份证的最后一位对应的校验码
+ * @param idNumber：身份证前 16 位
+ */
+//S = A2*W2 + A3*W3 + ... + A18*W18
+//Wi = 2^(i-1) mod 11
+fun computeVerifyCode(idNumber: String) {
+    var s: Double = 0.0
+    val chars = idNumber.toCharArray()
+    //i 的取值范围：0~16
+    for ((i, c) in chars.withIndex()) {
+        val ai = c.digitToInt()
+        val wi = Math.pow(2.0, 18.0 - i - 1) % 11
+        println("i: $i, ai: $ai, wi: $wi")
+        s += (ai * wi)
+    }
+    val y = s % 11
+    println("y: $y")
 }
 
 
