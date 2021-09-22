@@ -79,9 +79,22 @@ public class TextUtil {
         return str.matches(SPECIAL_REGEX);
     }
 
-    
-    //
-     public static final String DEFAULT_QUERY_REGEX = "[!$^&*+=|{}';'\",<>/?~！#￥%……&*——|{}【】‘；：”“'。，、？]";
+
+    /**
+     * 是否以特殊字符开头
+     */
+    public static final String DEFAULT_QUERY_REGEX = "[!$^&*+=|{}';'\",<>/?~！#￥%……&*——|{}【】‘；：”“'。，、？]";
+    public static boolean startWithSpecial(String input) {
+        if(!input.matches(DEFAULT_QUERY_REGEX)) {
+            return false;
+        }
+        for (char ch : DEFAULT_QUERY_REGEX.toCharArray()) {
+            if (ch == input.charAt(0)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 
