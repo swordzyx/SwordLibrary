@@ -98,9 +98,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         LogUtil.debug("surfaceCreated");
-        if (holder == null) {
-            LogUtil.error("null surface");
-        }
         if (!hasSurface) {
             hasSurface = true;
             //初始化相机
