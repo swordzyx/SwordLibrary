@@ -8,11 +8,16 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
+import androidx.core.view.marginTop
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class TheLayout(context: Context): ViewGroup(context) {
+    protected val View.measuredWidthWithMargins get() = (measuredWidth + marginLeft + marginRight)
+    protected val View.measuredHeightWithMargins get() = (measuredHeight + marginTop + marginBottom)
+    
     val header = AppCompatImageView(context).apply {
         scaleType = ImageView.ScaleType.CENTER_CROP
         setImageResource(R.drawable.header)
@@ -49,9 +54,12 @@ class TheLayout(context: Context): ViewGroup(context) {
      * 布局
      */
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        header.let {
-            it.layout(0, 0, it.measuredWidth, it.measuredHeight)
-        }
+        header.layout(0,0)
+        fab.let { it.layout(it.marginRight, header.bottom - (it.measuredHeight / 2), true) }
+        avatar.let { it.layout(it.marginLeft, header.bottom + marginTop) }
+        itemTitle.let { it.layout(avatar.right + it.marginLeft, avatar.top + it.marginTop)}
+        itemMessage.let { it.layout(avatar.right + it.marginLeft, itemTitle.bottom + it.marginTop) }
+        reply.let { it.layout(it.marginRight, avatar.top + it.marginTop, true)}
     }
 
     /**
