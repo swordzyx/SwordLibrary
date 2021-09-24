@@ -8,16 +8,10 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.view.marginBottom
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
+import androidx.core.view.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class TheLayout(context: Context): ViewGroup(context) {
-    protected val View.measuredWidthWithMargins get() = (measuredWidth + marginLeft + marginRight)
-    protected val View.measuredHeightWithMargins get() = (measuredHeight + marginTop + marginBottom)
-    
+class TheLayout(context: Context): CustomLayout(context) {
     val header = AppCompatImageView(context).apply {
         scaleType = ImageView.ScaleType.CENTER_CROP
         setImageResource(R.drawable.header)
@@ -27,11 +21,10 @@ class TheLayout(context: Context): ViewGroup(context) {
 
     val fab = FloatingActionButton(context).apply {
         setImageResource(R.drawable.ic_baseline_swap_horiz_24)
-        layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT).also {
-            it.marginEnd = 12.dp
-        }
+        layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
         addView(this)
     }
+    
 
     val avatar = AppCompatImageView(context).apply {
 
@@ -48,8 +41,7 @@ class TheLayout(context: Context): ViewGroup(context) {
     val reply = AppCompatImageView(context).apply {
 
     }
-
-
+    
     /**
      * 布局
      */
@@ -85,55 +77,4 @@ class TheLayout(context: Context): ViewGroup(context) {
         val wrapContentHeight = header.measuredHeightWithMargins + max
         setMeasuredDimension(measuredWidth, wrapContentHeight)
     }
-
-    private val Int.dp
-        get() = (this * resources.displayMetrics.density + 0.5f).toInt()
-
-    private fun View.layout(x: Int, y: Int, fromRight: Boolean = false) {
-        if (!fromRight) {
-            layout(x, y, x + measuredWidth, y + measuredHeight)
-        } else {
-            layout(this@TheLayout.measuredWidth - x - measuredWidth, y)
-        }
-    }
-
-    private fun View.autoMeasure() {
-        measure(
-            this.defaultWithMeasureSpec(this@TheLayout),
-            this.defaultHeightMeasureSpec(this@TheLayout)
-        )
-    }
-
-    /**
-     * 默认宽度测量
-     */
-    private fun View.defaultWithMeasureSpec(parentView: ViewGroup): Int {
-        return when(layoutParams.width) {
-            MATCH_PARENT -> parentView.measuredWidth.toExactlyMeasureSpec()
-            WRAP_CONTENT -> WRAP_CONTENT.toAtMostMeasureSpec()
-            0 -> throw IllegalAccessException("Need special treatment for $this")
-            else -> layoutParams.width.toExactlyMeasureSpec()
-        }
-    }
-
-    /**
-     * 默认高度测量
-     */
-    private fun View.defaultHeightMeasureSpec(parentView: ViewGroup): Int {
-        return when(layoutParams.height) {
-            MATCH_PARENT -> parentView.measuredHeight.toExactlyMeasureSpec()
-            WRAP_CONTENT -> WRAP_CONTENT.toAtMostMeasureSpec()
-            0 -> throw IllegalAccessException("Need special treatment for $this")
-            else -> layoutParams.height.toExactlyMeasureSpec()
-        }
-    }
-
-    private fun Int.toExactlyMeasureSpec(): Int {
-        return MeasureSpec.makeMeasureSpec(this, MeasureSpec.EXACTLY)
-    }
-
-    private fun Int.toAtMostMeasureSpec(): Int {
-        return MeasureSpec.makeMeasureSpec(this, MeasureSpec.AT_MOST)
-    }
-
 }
