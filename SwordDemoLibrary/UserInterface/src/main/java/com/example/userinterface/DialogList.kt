@@ -1,4 +1,4 @@
 package com.example.userinterface
 
-class DialogList {
+class DialogListAdapter {
 }

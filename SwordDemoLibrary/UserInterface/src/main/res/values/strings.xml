@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="dialog_fire_missiles">Fire missiles</string>
+    <string name="fire">fire</string>
+    <string name="cancel">cancel</string>
+    <string name="title">dialog title</string>
+    
+    <array name="color_array">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+    </array>
 </resources>
