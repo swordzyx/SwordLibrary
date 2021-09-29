@@ -5,7 +5,7 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 
-open class BaseViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView) {
+open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private var viewHashMap = hashMapOf<Int, View>()
 
     protected fun <T : View> getView(@IdRes id: Int): T {
@@ -18,7 +18,7 @@ open class BaseViewHolder(val itemView: View) : RecyclerView.ViewHolder(itemView
     }
 
     protected fun setText(@IdRes id: Int, text: String?) {
-        (viewHashMap[id] as TextView).text = text
+        (getView(id) as TextView).text = text
     }
     
 }

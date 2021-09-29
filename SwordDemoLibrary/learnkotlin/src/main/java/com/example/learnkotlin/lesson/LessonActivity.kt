@@ -39,6 +39,9 @@ class LessonActivity : AppCompatActivity(), BaseView<LessonPresenter>, Toolbar.O
         }
 
         refreshLayout = findViewById(R.id.swipe_refresh_layout)
+        refreshLayout.setOnRefreshListener { 
+            lessonPresenter.fetchData()
+        }
         refreshLayout.isRefreshing = true
 
         lessonPresenter.fetchData()

@@ -22,7 +22,7 @@
     
     <style name="LessonTheme" parent="AppTheme">
         <item name="windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="actionMenuTextColor">@color/white</item>
         <item name="colorButtonNormal">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
