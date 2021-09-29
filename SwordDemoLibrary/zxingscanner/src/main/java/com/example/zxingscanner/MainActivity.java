@@ -231,5 +231,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         lastResult = result;
         String rawResultString = String.valueOf(result);
         Toast.makeText(this, rawResultString, Toast.LENGTH_SHORT).show();
+        finish();
     }
 }
