@@ -32,6 +32,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         et_password = findViewById(R.id.et_username)
         et_code = findViewById(R.id.et_code)
         
+        
+        //eCode 是 Button! 类型，表示这个类型不是 kotlin 声明出来的类型，而是别的平台声明出来的类型，kotlin 不能判断这个类型是否为空，因此只能用平台类型来接收它。平台类型泛指来自其他平台的类型，因为 kotlin 可以跟多种语言做交互。
+        //编写代码的时候，编译器会把平台类型看成不可空类型。如果平台类型的对象为空，在使用该对象的时候依然会报空指针，可以看出使用 kotlin 并不代表永远的避免了空指针异常
+        //Java 中的 @NotNull 和 @Nullable 注解可以帮助 kotlin 判断 Java 对象类型，其他语言类似
+        val eCode = findViewById<EditText>(R.id.et_code)
+        eCode.setText("hencoder")
+        
+        //delegate.findViewById 方式使用了 @Nullable 注解，表示该方法返回的对象可能为空，因此在 kotlin 中，该方法返回的对象类型就为可空类型 
+        val code = delegate.findViewById<EditText>(R.id.et_code)
+        code?.setText("hencoder")
+        
+        
         et_username.setText(get(usernameKey))
         et_password.setText(get(passwordKey))
 
