@@ -1,6 +1,7 @@
 package com.example.zxingscanner;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -28,13 +29,9 @@ import com.google.zxing.Result;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements SurfaceHolder.Callback {
-    private static final long DEFAULT_INTENT_RESULT_DURATION_MS = 1500L;
-    private static final long BULK_MODE_SCAN_DELAY_MS = 1000L;
 
     private CameraManager cameraManager;
     private ViewFinderView viewfinderView;
-    private SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
     private boolean hasSurface = false;
 
     private CaptureHandler handler;
@@ -58,15 +55,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             Toast.makeText(this, "当前设备不支持相机", Toast.LENGTH_SHORT).show();
             finish();
         }
-
-        //UI 初始化
-        //二维码扫描框
-        /*viewfinderView = (ViewFinderView) findViewById(R.id.view_finder_view);
-        viewfinderView.setVisibility(View.VISIBLE);
-
-        surfaceView = (SurfaceView) findViewById(R.id.preview_view);
-        surfaceView.getHolder().addCallback(this);
-        surfaceHolder = surfaceView.getHolder();*/
     }
 
     @Override
@@ -78,33 +66,23 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
         //宽高的测量需要在 Activity 显示了之后在进行。因此 CameraManager 在此处初始化
         cameraManager = new CameraManager(getApplication());
-        viewfinderView = (ViewFinderView) findViewById(R.id.view_finder_view);
+        viewfinderView = findViewById(R.id.view_finder_view);
         viewfinderView.setCameraManager(cameraManager);
         viewfinderView.setVisibility(View.VISIBLE);
 
         //onResume 会在 surfaceCreated 之前调用，因为执行了 addCallback 之后，才会触发 surfaceCreated 的执行。
         LogUtil.debug("hasSurface: " + hasSurface);
-        
-        surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+
+        SurfaceView surfaceView = findViewById(R.id.preview_view);
         surfaceView.setVisibility(View.VISIBLE);
-        surfaceHolder = surfaceView.getHolder();
+        SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if(hasSurface) {
             initCamera(surfaceHolder);
         } else {
             surfaceHolder.addCallback(this);
         }
     }
-
-    @Override
-    public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        LogUtil.debug("surfaceCreated");
-        if (!hasSurface) {
-            hasSurface = true;
-            //初始化相机
-            initCamera(holder);
-        }
-    }
-
+    
     @Override
     protected void onPause() {
         super.onPause();
@@ -118,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         //关闭相机，释放对应资源
         //surfaceDestroyed 会在 onPause 之前执行.
         if (!hasSurface) {
-            SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+            SurfaceView surfaceView = findViewById(R.id.preview_view);
             SurfaceHolder holder = surfaceView.getHolder();
             holder.removeCallback(this);
         }
@@ -132,6 +110,16 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     @Override
+    public void surfaceCreated(@NonNull SurfaceHolder holder) {
+        LogUtil.debug("surfaceCreated");
+        if (!hasSurface) {
+            hasSurface = true;
+            //初始化相机
+            initCamera(holder);
+        }
+    }
+
+    @Override
     public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
     }
 
@@ -142,14 +130,10 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_BACK:
-                if (lastResult != null) {
-                    restartPreviewAfterDelay(0);
-                }
-                break;
-            default:
-                break;
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (lastResult != null) {
+                restartPreviewAfterDelay(0);
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -193,9 +177,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     /**
      * 这个方法还不是很懂
-     *
-     * @return
      */
+    @SuppressLint("SwitchIntDef")
     private int getCurrentOrientation() {
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
 
@@ -218,16 +201,12 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         }
     }
 
+    //绘制矩形扫描区
     public void drawViewFinder() {
         viewfinderView.drawViewFinder();
     }
-
-    /**
-     * @param result
-     * @param barcode
-     * @param scaleFactor
-     */
-    public void handleDecode(Result result, Bitmap barcode, float scaleFactor) {
+    
+    public void handleDecode(Result result) {
         lastResult = result;
         String rawResultString = String.valueOf(result);
         Toast.makeText(this, rawResultString, Toast.LENGTH_SHORT).show();

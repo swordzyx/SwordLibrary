@@ -49,7 +49,7 @@ dependencies {
     //CameraX Lifecycle Library
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
     //CameraX View class
-    implementation "androidx.camera:camera-view:1.0.0-SNAPSHOT"
+    implementation "androidx.camera:camera-view:1.0.0-alpha28"
 
     //for Unit Test
     testImplementation 'junit:junit:4.+'

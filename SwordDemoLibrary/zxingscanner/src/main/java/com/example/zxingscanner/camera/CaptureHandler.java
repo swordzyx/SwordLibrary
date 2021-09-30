@@ -1,12 +1,6 @@
 package com.example.zxingscanner.camera;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Paint;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
@@ -16,8 +10,6 @@ import com.example.utilclass.LogUtil;
 import com.example.zxingscanner.MainActivity;
 import com.example.zxingscanner.R;
 import com.google.zxing.Result;
-
-import java.util.concurrent.CountDownLatch;
 
 public class CaptureHandler extends Handler {
     private final MainActivity activity;
@@ -53,7 +45,7 @@ public class CaptureHandler extends Handler {
         switch (msg.what) {
             case R.id.decode_succeeded:
                 state = State.SUCCESS;
-                Bundle bundle = msg.getData();
+                /*Bundle bundle = msg.getData();
                 Bitmap barcode = null;
                 float scaleFactor = 1.0f;
                 if (bundle != null) {
@@ -63,8 +55,8 @@ public class CaptureHandler extends Handler {
                         barcode = barcode.copy(Bitmap.Config.ARGB_8888, true);
                     }
                     scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
-                }
-                activity.handleDecode((Result) msg.obj, barcode, scaleFactor);
+                }*/
+                activity.handleDecode((Result) msg.obj);
                 break;
             case R.id.decode_failed:
                 state = State.PREVIEW;

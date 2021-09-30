@@ -144,19 +144,19 @@ public class CameraManager {
                 return null;
             }
             
-            //获取扫描区域的宽高
+            //获取扫描区域的宽高 width: 5/8 * screenResolution.x, height: 5/8 * screenResolution.y
             int width = findDesiredDimensionInRange(screenResolution.x, MIN_FRAME_WIDTH, MAX_FRAME_WIDTH);
-            int height = findDesiredDimensionInRange(screenResolution.y, MIN_FRAME_HEIGHT, MAX_FRAME_HEIGHT);
+            //int height = findDesiredDimensionInRange(screenResolution.y, MIN_FRAME_HEIGHT, MAX_FRAME_HEIGHT);
             
             int leftOffset = (screenResolution.x - width) / 2;
-            int topOffset = (screenResolution.y - height) / 2;
-            framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+            int topOffset = (screenResolution.y - width) / 2;
+            framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + width);
         }
         return framingRect;
     }
     
     private int findDesiredDimensionInRange(int resolution, int min, int max) {
-        int dim = 5 * resolution / 8;
+        int dim = resolution / 2;
         if (dim < min) {
             return min;
         }
