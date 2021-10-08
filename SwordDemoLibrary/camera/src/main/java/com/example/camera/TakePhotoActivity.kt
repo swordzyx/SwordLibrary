@@ -1,25 +1,21 @@
 package com.example.camera
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.example.utilclass.LogUtil
+import androidx.core.content.FileProvider.getUriForFile
 import com.example.utilclass.PermissionRequestUtil
 import kotlinx.android.synthetic.main.take_photo_activity.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.jar.Manifest
 
 class TakePhotoActivity : AppCompatActivity() {
     private val REQUEST_IMAGE_CAPTURE = 1
@@ -80,5 +76,12 @@ class TakePhotoActivity : AppCompatActivity() {
         return File.createTempFile("JEPG_${timeStamp}_", ".jpg", storageDir).apply {
             currentPhotoPath = absolutePath
         }
+    }
+
+    //usage: createUriForFile("my_images", "default_image.jpg")
+    private fun createUriForFile(dirName: String, fileName: String): Uri {
+        val imagePath = File(filesDir, dirName)
+        val newFile = File(imagePath, fileName);
+        return getUriForFile(this, "com.mydomain.fileprovider", newFile)
     }
 }
