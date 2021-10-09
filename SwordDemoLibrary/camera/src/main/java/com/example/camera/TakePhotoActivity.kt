@@ -2,6 +2,7 @@ package com.example.camera
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -16,6 +17,8 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 class TakePhotoActivity : AppCompatActivity() {
     private val REQUEST_IMAGE_CAPTURE = 1
@@ -56,8 +59,7 @@ class TakePhotoActivity : AppCompatActivity() {
 
                 photoFile?.also {
                     //返回 “content://” 格式的 URI。对于 targetSdkVersion 为 24（Android 7.0）及更高的设备，传递 ”file://“ 会导致 FileUriExposedException 异常。使用 FileProvider 存储图片是一种更为通用的方式。 
-                    val photoURI =
-                        FileProvider.getUriForFile(this, "com.example.android.fileprovider", it)
+                    val photoURI = getUriForFile(this, "com.example.android.fileprovider", it)
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                 }
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
@@ -84,4 +86,75 @@ class TakePhotoActivity : AppCompatActivity() {
         val newFile = File(imagePath, fileName);
         return getUriForFile(this, "com.mydomain.fileprovider", newFile)
     }
+
+    /**
+     * 发送 ACTION_MEDIA_SCANNER_SCAN_FILE 广播。将图片添加到相册
+     */
+    private fun galleryAddPic() {
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            val f = File(currentPhotoPath)
+            mediaScanIntent.data = Uri.fromFile(f)
+            sendBroadcast(mediaScanIntent)
+        }
+    }
+
+    private fun scalePic() {
+        val targetW = imageView.width
+        val targetH = imageView.height
+
+        //获取缩小因子。min(原图宽/目标宽，原图高/目标高)
+        val bmOptions = BitmapFactory.Options().apply {
+            inJustDecodeBounds = true
+            BitmapFactory.decodeFile(currentPhotoPath, this)
+
+            val photoW = outWidth
+            val photoH = outHeight
+
+            //缩放系数应该大于 1 ，小于 1 将会使图片放大
+            val scaleFactor = max(1, min(photoW / targetW, photoH / targetH))
+
+            inJustDecodeBounds = false
+            inSampleSize = scaleFactor
+            inPurgeable = true
+        }
+
+        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
+            imageView.setImageBitmap(bitmap)
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
