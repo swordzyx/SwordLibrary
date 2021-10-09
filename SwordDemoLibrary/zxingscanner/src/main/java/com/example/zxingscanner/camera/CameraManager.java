@@ -110,23 +110,42 @@ public class CameraManager {
         if (framingRectInPreview == null) {
             //获取扫描区域的尺寸
             Rect framingRect = getFramingRect();
-            if (framingRect == null) {
-                return null;
-            }
+            LogUtil.debug("framingRect.left: " + framingRect.left + "---framingRect.right: " + framingRect.right + "----framingRect.top: " + framingRect.top + "---framingRect.bottom: " + framingRect.bottom + "---framingRect.width: " + framingRect.width() + "----framingRect.height: " + framingRect.height());
 
             //获取屏幕和相机预览尺寸
             Rect rect = new Rect(framingRect);
             Point cameraResolution = configurationManager.getCameraResolution();
             Point screenResolution = configurationManager.getScreenResolution();
-            if (cameraResolution == null || screenResolution == null) {
-                return null;
-            }
+            LogUtil.debug("cameraResolution x: " + cameraResolution.x + "----y: " + cameraResolution.y);
+            LogUtil.debug("screenResolution x: " + screenResolution.x + "----y: " + screenResolution.y);
+
             //计算矩形扫描区域的显示位置
-            rect.left = rect.left * cameraResolution.x / screenResolution.x;
-            rect.right = rect.right * cameraResolution.x / screenResolution.x;
-            rect.top = rect.top * cameraResolution.y / screenResolution.y;
-            rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
+            LogUtil.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
+            
+            double scaleX, scaleY;
+            if (configurationManager.getCameraRotationNeed() == 90 || configurationManager.getCameraRotationNeed() == 270) {
+                scaleX =  (double) cameraResolution.y / (double) screenResolution.x;
+                scaleY = (double) cameraResolution.x / (double) screenResolution.y;
+                rect.top = (int) (framingRect.left * scaleX);
+                rect.bottom = (int) (framingRect.right * scaleX);
+                rect.left = (int) (framingRect.top * scaleY);
+                rect.right = (int) (framingRect.bottom * scaleY);
+            } else {
+                scaleX =  (double) cameraResolution.x / (double) screenResolution.x;
+                scaleY = (double) cameraResolution.y / (double) screenResolution.y;
+                rect.left = (int) (framingRect.left * scaleX);
+                rect.top = (int) (framingRect.top * scaleY);
+                rect.right = (int) (framingRect.right * scaleX);
+                rect.bottom = (int) (framingRect.bottom * scaleY);
+            }
+            LogUtil.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
+
             framingRectInPreview = rect;
+            LogUtil.debug("ratio x: " + scaleX);
+            LogUtil.debug("ratio y: " + scaleY);
+
+
+            LogUtil.debug("framingRectInPreview.left: " + framingRectInPreview.left + "---framingRectInPreview.right: " + framingRectInPreview.right + "----framingRectInPreview.top: " + framingRectInPreview.top + "---framingRectInPreview.bottom: " + framingRectInPreview.bottom + "---framingRectInPreview.width: " + framingRectInPreview.width() + "----framingRectInPreview.height: " + framingRectInPreview.height());
         }
         return framingRectInPreview;
     }

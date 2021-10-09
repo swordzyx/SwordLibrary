@@ -3,6 +3,7 @@ package com.example.zxingscanner.camera;
 import android.content.Context;
 import android.graphics.Point;
 import android.hardware.Camera;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
@@ -71,7 +72,6 @@ public class CameraConfigurationManager {
             cameraRotationNeed = (cameraRotation - displayRotationFromNature + 360) % 360;
         }
         LogUtil.debug("Clock rotation from display to camera: " + cameraRotationNeed);
-
 
         //获取预览界面的大小
         //获取相机的硬件参数
@@ -152,6 +152,10 @@ public class CameraConfigurationManager {
     
     public Point getCameraResolution() {
         return cameraResolution;
+    }
+    
+    public int getCameraRotationNeed() {
+        return cameraRotationNeed;
     }
 
     private void initTorch(Camera camera, boolean torch) {

@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -210,6 +211,12 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         lastResult = result;
         String rawResultString = String.valueOf(result);
         Toast.makeText(this, rawResultString, Toast.LENGTH_SHORT).show();
-        finish();
+        //finish();
+    }
+
+    public void setCodeImage(Bitmap barcode) {
+        LogUtil.debug("bitmap.width: " + barcode.getWidth() + "---bitmap.height: " + barcode.getHeight());
+        ((ImageView)findViewById(R.id.code_image)).setVisibility(View.VISIBLE);
+        ((ImageView)findViewById(R.id.code_image)).setImageBitmap(barcode);
     }
 }
