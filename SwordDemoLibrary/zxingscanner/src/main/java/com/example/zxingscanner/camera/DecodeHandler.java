@@ -1,6 +1,8 @@
 package com.example.zxingscanner.camera;
 
 
+import static com.example.zxingscanner.camera.DecodeThread.BARCODE_BITMAP;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +11,6 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import com.example.utilclass.LogUtil;
 import com.example.zxingscanner.MainActivity;
 import com.example.zxingscanner.R;
 import com.google.zxing.BinaryBitmap;
@@ -22,6 +23,7 @@ import com.google.zxing.common.HybridBinarizer;
 import java.io.ByteArrayOutputStream;
 
 public class DecodeHandler extends Handler {
+    public static final String ORIGINAL_SOURCE_PIC_KEY = "original_source_pic";
     private final MultiFormatReader formatReader;
     private boolean running = true;
     private final CameraManager cameraManager;
@@ -79,7 +81,8 @@ public class DecodeHandler extends Handler {
                 Message message = Message.obtain(handler, R.id.decode_succeeded, rawResult);
                 //将原始的二维码与识别结果一并返回。
                 Bundle bundle = new Bundle();
-                bundleThumbnail(source, bundle);
+                bundleThumbnail(source, bundle, BARCODE_BITMAP);
+                bundleThumbnail(new PlanarYUVLuminanceSource(data, width, height, 0, 0, width, height, false), bundle, ORIGINAL_SOURCE_PIC_KEY);
                 message.setData(bundle);
                 message.sendToTarget();
             } else {
@@ -89,14 +92,16 @@ public class DecodeHandler extends Handler {
         }
     }
     
-    private static void bundleThumbnail(PlanarYUVLuminanceSource source, Bundle bundle) {
+    private static void bundleThumbnail(PlanarYUVLuminanceSource source, Bundle bundle, String key) {
         int[] pixels = source.renderThumbnail();
         int width = source.getThumbnailWidth();
         int height = source.getThumbnailHeight();
+
         Bitmap bitmap = Bitmap.createBitmap(pixels, 0, width, width, height, Bitmap.Config.ARGB_8888);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
-        bundle.putByteArray(DecodeThread.BARCODE_BITMAP, out.toByteArray());
+        bundle.putByteArray(key, out.toByteArray());
+
         bundle.putFloat(DecodeThread.BARCODE_SCALED_FACTOR, (float) width / source.getWidth());
     }
 }

@@ -219,4 +219,10 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         ((ImageView)findViewById(R.id.code_image)).setVisibility(View.VISIBLE);
         ((ImageView)findViewById(R.id.code_image)).setImageBitmap(barcode);
     }
+
+    public void setOriginalCapture(Bitmap bitmap) {
+        LogUtil.debug("original width: " + bitmap.getWidth() + "---original height: " + bitmap.getHeight());
+        ((ImageView)findViewById(R.id.source_image)).setVisibility(View.VISIBLE);
+        ((ImageView)findViewById(R.id.source_image)).setImageBitmap(bitmap);
+    }
 }

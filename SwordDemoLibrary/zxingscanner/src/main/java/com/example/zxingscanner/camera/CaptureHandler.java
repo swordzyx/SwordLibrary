@@ -50,16 +50,21 @@ public class CaptureHandler extends Handler {
                 state = State.SUCCESS;
                 Bundle bundle = msg.getData();
                 Bitmap barcode = null;
+                Bitmap sourceBitmap = null;
                 float scaleFactor = 1.0f;
                 if (bundle != null) {
                     byte[] compressedBitmap = bundle.getByteArray(DecodeThread.BARCODE_BITMAP);
                     if(compressedBitmap != null) {
                         barcode = BitmapFactory.decodeByteArray(compressedBitmap, 0, compressedBitmap.length, null);
                         barcode = barcode.copy(Bitmap.Config.ARGB_8888, true);
+                        byte[] picData = bundle.getByteArray(DecodeHandler.ORIGINAL_SOURCE_PIC_KEY);
+                        sourceBitmap = BitmapFactory.decodeByteArray(picData, 0, picData.length, null);
+                        sourceBitmap = sourceBitmap.copy(Bitmap.Config.ARGB_8888, true);
                     }
                     //scaleFactor = bundle.getFloat(DecodeThread.BARCODE_SCALED_FACTOR);
                 }
                 activity.setCodeImage(barcode);
+                activity.setOriginalCapture(sourceBitmap);
                 activity.handleDecode((Result) msg.obj);
                 break;
             case R.id.decode_failed:

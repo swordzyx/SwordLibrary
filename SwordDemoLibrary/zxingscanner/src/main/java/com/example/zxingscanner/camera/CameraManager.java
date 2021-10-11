@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.example.utilclass.LogUtil;
 import com.google.zxing.PlanarYUVLuminanceSource;
@@ -98,6 +99,7 @@ public class CameraManager {
             return null;
         }
         //返回 PlanarYUVLuminanceSource 对象，代表一个二维码扫描源，传入对应的数据，以及扫描区域的尺寸
+        LogUtil.debug("build srouce width: " + width + "----height: " + height);
         return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
     }
 
@@ -110,7 +112,10 @@ public class CameraManager {
         if (framingRectInPreview == null) {
             //获取扫描区域的尺寸
             Rect framingRect = getFramingRect();
-            LogUtil.debug("framingRect.left: " + framingRect.left + "---framingRect.right: " + framingRect.right + "----framingRect.top: " + framingRect.top + "---framingRect.bottom: " + framingRect.bottom + "---framingRect.width: " + framingRect.width() + "----framingRect.height: " + framingRect.height());
+            if (framingRect == null) {
+                return null;
+            }
+//            LogUtil.debug("framingRect.left: " + framingRect.left + "---framingRect.right: " + framingRect.right + "----framingRect.top: " + framingRect.top + "---framingRect.bottom: " + framingRect.bottom + "---framingRect.width: " + framingRect.width() + "----framingRect.height: " + framingRect.height());
 
             //获取屏幕和相机预览尺寸
             Rect rect = new Rect(framingRect);
@@ -121,28 +126,15 @@ public class CameraManager {
 
             //计算矩形扫描区域的显示位置
             LogUtil.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
-            
-            double scaleX, scaleY;
-            if (configurationManager.getCameraRotationNeed() == 90 || configurationManager.getCameraRotationNeed() == 270) {
-                scaleX =  (double) cameraResolution.y / (double) screenResolution.x;
-                scaleY = (double) cameraResolution.x / (double) screenResolution.y;
-                rect.top = (int) (framingRect.left * scaleX);
-                rect.bottom = (int) (framingRect.right * scaleX);
-                rect.left = (int) (framingRect.top * scaleY);
-                rect.right = (int) (framingRect.bottom * scaleY);
-            } else {
-                scaleX =  (double) cameraResolution.x / (double) screenResolution.x;
-                scaleY = (double) cameraResolution.y / (double) screenResolution.y;
-                rect.left = (int) (framingRect.left * scaleX);
-                rect.top = (int) (framingRect.top * scaleY);
-                rect.right = (int) (framingRect.right * scaleX);
-                rect.bottom = (int) (framingRect.bottom * scaleY);
-            }
+            rect.top = (cameraResolution.y - framingRect.height()) / 2;
+            rect.bottom = rect.top + framingRect.height();
+            rect.left = (cameraResolution.x - framingRect.width()) / 2;
+            rect.right = rect.left + framingRect.width();
             LogUtil.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
 
             framingRectInPreview = rect;
-            LogUtil.debug("ratio x: " + scaleX);
-            LogUtil.debug("ratio y: " + scaleY);
+//            LogUtil.debug("ratio x: " + scaleX);
+//            LogUtil.debug("ratio y: " + scaleY);
 
 
             LogUtil.debug("framingRectInPreview.left: " + framingRectInPreview.left + "---framingRectInPreview.right: " + framingRectInPreview.right + "----framingRectInPreview.top: " + framingRectInPreview.top + "---framingRectInPreview.bottom: " + framingRectInPreview.bottom + "---framingRectInPreview.width: " + framingRectInPreview.width() + "----framingRectInPreview.height: " + framingRectInPreview.height());
