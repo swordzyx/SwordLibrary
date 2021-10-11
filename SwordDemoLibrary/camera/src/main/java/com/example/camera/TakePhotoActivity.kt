@@ -98,30 +98,7 @@ class TakePhotoActivity : AppCompatActivity() {
         }
     }
 
-    private fun scalePic() {
-        val targetW = imageView.width
-        val targetH = imageView.height
 
-        //获取缩小因子。min(原图宽/目标宽，原图高/目标高)
-        val bmOptions = BitmapFactory.Options().apply {
-            inJustDecodeBounds = true
-            BitmapFactory.decodeFile(currentPhotoPath, this)
-
-            val photoW = outWidth
-            val photoH = outHeight
-
-            //缩放系数应该大于 1 ，小于 1 将会使图片放大
-            val scaleFactor = max(1, min(photoW / targetW, photoH / targetH))
-
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
-            inPurgeable = true
-        }
-
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions)?.also { bitmap ->
-            imageView.setImageBitmap(bitmap)
-        }
-    }
 
 
 
