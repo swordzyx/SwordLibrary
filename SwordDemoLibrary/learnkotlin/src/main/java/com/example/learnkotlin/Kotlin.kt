@@ -33,11 +33,25 @@ fun main() {
     //类型推断，上面三句变量的声明等价于以下三行
     var age1 = 18
     val name1 = "kotlin"
-    var java1 = Java() 
+    var java1 = Java()
 }
 
 //有参，有返回值函数
 fun doubleNumber(x: Int): Int {
     return 2 * x
+}
+
+
+fun test() {
+    /**
+     * 输入 isVerify().if 会自动生成以下代码
+     */
+    if (isVerify()) {
+        TODO()
+    }
+}
+
+fun isVerify() : Boolean{
+    return false;
 }
 

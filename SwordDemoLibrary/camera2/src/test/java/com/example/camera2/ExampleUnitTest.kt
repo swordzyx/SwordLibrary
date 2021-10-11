@@ -1,4 +1,4 @@
-package com.sword.camera2
+package com.example.camera2
 
 import org.junit.Test
 
