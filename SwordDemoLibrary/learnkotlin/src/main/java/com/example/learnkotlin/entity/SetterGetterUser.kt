@@ -46,4 +46,34 @@ class SetterGetterUser : Any {
         this.password = password
         this.code = code
     }
+
+
+    /**
+     * 创建数组
+     */
+    private val codeList = arrayOf(
+        "kotlin",
+        "android",
+        "java",
+        "http",
+        "https",
+        "okhttp",
+        "retrofit",
+        "tcp/ip"
+    )
+
+    fun arraySample() {
+        /**
+         * int 类型的数组，使用 arrayOf(...) 方式创建基本数据类型的数组，会有一个自动装箱拆箱的操作，这会带来额外的开销
+         *
+         * Kotlin 为基本数据类型提供了专门的函数用于创建数组
+         *   int - intArrayOf
+         *   float - floatArrayOf
+         *   ....
+         *
+         * kotlin 中的包装类型是可空的，而基本数据类型对应的是不可空的数据类型
+         */
+        val arrayOf = arrayOf(1, 2, 3, 4, 6)
+        val intArrayOf = intArrayOf(1, 2, 3, 4, 5)
+    }
 }
