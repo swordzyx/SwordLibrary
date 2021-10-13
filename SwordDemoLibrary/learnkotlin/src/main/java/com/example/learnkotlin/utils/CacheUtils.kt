@@ -15,6 +15,10 @@ private val context = BaseApplication.currentApplication()
 
 private val SP = context?.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
+/**
+ * Java 通过 CacheUtils.save(key, value) 即可调用 
+ */
+@SuppressLint("CommitPrefEdits")
 fun save(key: String, value: String) {
     SP?.edit()?.putString(key, value)?.apply()
 }
