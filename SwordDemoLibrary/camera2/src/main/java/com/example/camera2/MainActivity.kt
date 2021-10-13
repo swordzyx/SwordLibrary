@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         }, null)
     }
 
-//    fun Int.dp(): Int =
-//        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, display.getMetrics(Dis))
+    fun Int.dp(): Int =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), displayMetrics).toInt()
 
     private fun obtainMetrics() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
