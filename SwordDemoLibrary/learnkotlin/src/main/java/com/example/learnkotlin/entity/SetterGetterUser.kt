@@ -1,5 +1,8 @@
 package com.example.learnkotlin.entity
 
+/**
+ * 如果使用 constructor 主动声明了构造器，此处继承父类时就不需要在父类后面加括号。
+ */
 class SetterGetterUser : Any {
     /**
      * kotlin 会自动生成一个私有的 username 成员变量，以及 username 成员的 getter 和 setter 方法
