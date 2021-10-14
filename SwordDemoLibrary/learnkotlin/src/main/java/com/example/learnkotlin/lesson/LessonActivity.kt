@@ -14,6 +14,9 @@ import com.example.learnkotlin.core.BaseView
 
 class LessonActivity : AppCompatActivity(), BaseView<LessonPresenter>, Toolbar.OnMenuItemClickListener {
 
+    /**
+     * Java 则是使用 LessonActivity.this 来获取外部类引用2 
+     */
     private val lessonPresenter = LessonPresenter(this@LessonActivity)
 
     override fun getPresenter(): LessonPresenter {
@@ -56,6 +59,5 @@ class LessonActivity : AppCompatActivity(), BaseView<LessonPresenter>, Toolbar.O
         lessonPresenter.showPlayback()
         return false
     }
-
-
+    
 }

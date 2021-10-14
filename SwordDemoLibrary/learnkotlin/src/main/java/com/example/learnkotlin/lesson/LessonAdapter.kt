@@ -48,15 +48,9 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
 
             //设置背景颜色
             val colorRes = when(lesson.state) {
-                Lesson.State.PLAYBACK -> {
-                    R.color.playback
-                }
-                Lesson.State.LIVE -> {
-                    R.color.live
-                }
-                Lesson.State.WAIT -> {
-                    R.color.wait
-                }
+                Lesson.State.PLAYBACK -> R.color.playback
+                Lesson.State.LIVE -> R.color.live
+                Lesson.State.WAIT -> R.color.wait
             }
             val backgroundColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 itemView.context.getColor(colorRes)
