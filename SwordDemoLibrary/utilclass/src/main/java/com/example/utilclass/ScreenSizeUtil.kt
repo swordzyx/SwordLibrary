@@ -1,12 +1,15 @@
 package com.example.utilclass
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Point
 import android.os.Build
+import android.util.TypedValue
 import android.view.SurfaceView
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import java.lang.reflect.TypeVariable
 
 class ScreenSizeUtil {
 
@@ -19,6 +22,14 @@ class ScreenSizeUtil {
         } else {
             return getScreenSizeByDisplay(context)
         }
+    }
+
+
+    /**
+     * 单位转换，dp 转成 px
+     */
+    fun dpToPxe(dp: Int) : Int{
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), Resources.getSystem().displayMetrics).toInt()
     }
 
     /**
@@ -57,6 +68,8 @@ class ScreenSizeUtil {
             surfaceView.display.getRealSize(this)
         }
     }
+    
+    
 
 
 }
