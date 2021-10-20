@@ -11,9 +11,9 @@ import com.example.learnkotlin.R
 import com.example.learnkotlin.entity.User
 import com.example.learnkotlin.lesson.LessonActivity
 import com.example.learnkotlin.main.widget.CodeView
+import com.example.learnkotlin.utils.Utils.toast
 import com.example.learnkotlin.utils.get
 import com.example.learnkotlin.utils.save
-import com.example.learnkotlin.utils.toast
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val usernameKey = "username"

@@ -27,6 +27,7 @@ object HttpClient : OkHttpClient() {
 
             override fun onResponse(call: Call, response: Response) {
                 when(response.code) {
+                    //判断 response.code 是否位于 200 到 299 这个区间内，包括 200 和 299
                     in 200..299 -> entityCallback.onSuccess(convert(response.body!!.string(), type))
                     in 400..499 -> entityCallback.onFailure("客户端错误")
                     in 500..599 -> entityCallback.onFailure("服务器错误")

@@ -7,26 +7,19 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 
-class PermissionRequestUtil {
-    var activity: Activity? = null
-    
-    constructor()
-
-    constructor(activity: Activity) {
-        this.activity = activity 
-    }
+class PermissionRequestUtil(val activity: Activity) {
 
     val runtimePermission: Unit
         get() {
             val neededPermission: MutableList<String?> = ArrayList()
             for (permission in packagePermissionsInfo) {
-                if (!isPermissionGranted(activity!!, permission)) {
+                if (!isPermissionGranted(activity, permission)) {
                     neededPermission.add(permission)
                 }
             }
             LogUtil.debug(neededPermission.toString())
             if (neededPermission.isNotEmpty()) {
-                ActivityCompat.requestPermissions(activity!!, neededPermission.toTypedArray(), PERMISSION_RESULT_CODE)
+                ActivityCompat.requestPermissions(activity, neededPermission.toTypedArray(), PERMISSION_RESULT_CODE)
             }
         }
     
@@ -34,10 +27,10 @@ class PermissionRequestUtil {
         get() = 
             try {
                 //获取应用包中权限相关的信息
-                val info = activity!!.packageManager.getPackageInfo(activity!!.packageName, PackageManager.GET_PERMISSIONS)
+                val info = activity.packageManager.getPackageInfo(activity.packageName, PackageManager.GET_PERMISSIONS)
                 //获取所有再清单文件中通过 <uses-permission> 声明的权限，这个列表中包含了所有已经申请的权限，包括系统授予的或未授予的权限。
                 val ps = info.requestedPermissions
-                if (ps != null && !ps.isNotEmpty()) {
+                if (ps != null && ps.isEmpty()) {
                     ps
                 } else {
                     arrayOfNulls(0)
@@ -58,7 +51,6 @@ class PermissionRequestUtil {
          */
         fun requestSpecialSinglePermission(activity: Activity, permission: String) {
             val per = arrayOf(permission)
-            
             ActivityCompat.requestPermissions(activity, per, PERMISSION_RESULT_CODE)
         }
 

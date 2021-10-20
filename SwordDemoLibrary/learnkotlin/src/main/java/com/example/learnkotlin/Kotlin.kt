@@ -55,3 +55,15 @@ fun isVerify() : Boolean{
     return false;
 }
 
+open class A {
+    open fun test() {
+        
+    }
+}
+
+class B : A() {
+    override fun test() {
+        
+    }
+}
+
