@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var et_username: EditText
     private lateinit var et_password: EditText
     private lateinit var et_code: EditText
-
+    
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         et_username = findViewById(R.id.et_username)
         et_password = findViewById(R.id.et_username)
         et_code = findViewById(R.id.et_code)
+        
         
         
         //eCode 是 Button! 类型，表示这个类型不是 kotlin 声明出来的类型，而是别的平台声明出来的类型，kotlin 不能判断这个类型是否为空，因此只能用平台类型来接收它。平台类型泛指来自其他平台的类型，因为 kotlin 可以跟多种语言做交互。

@@ -22,7 +22,6 @@ package com.example.learnkotlin
 //无参，无返回值函数。Java 中无返回值的函数使用 void 声明，而 Kotlin 中使用的时 Unit
 //下面的声明也等价于 fun main(): Unit {...}
 fun main() {
-    println("Hello world")
     
     //变量声明
     var age: Int = 18
@@ -34,6 +33,14 @@ fun main() {
     var age1 = 18
     val name1 = "kotlin"
     var java1 = Java()
+    
+    println("Hello world")
+    val s = """
+        line1
+        line2
+        line3
+    """.trimIndent()
+    println(s)
 }
 
 //有参，有返回值函数
