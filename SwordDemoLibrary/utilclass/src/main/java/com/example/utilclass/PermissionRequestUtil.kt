@@ -47,7 +47,7 @@ class PermissionRequestUtil {
             }
     
     companion object {
-        val PERMISSION_RESULT_CODE = 1
+        val PERMISSION_RESULT_CODE = 1001
 
         fun isPermissionGranted(context: Context, permission: String?): Boolean {
             return ContextCompat.checkSelfPermission(context, permission!!) == PackageManager.PERMISSION_GRANTED
