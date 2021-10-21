@@ -20,7 +20,7 @@ public class MotionVelocityUtil {
     }
 
     /**
-     * @param event 向VelocityTracker添加MotionEvent
+     * @param event 向 VelocityTracker 添加 MotionEvent
      * @see VelocityTracker#obtain()
      * @see VelocityTracker#addMovement(MotionEvent)
      */

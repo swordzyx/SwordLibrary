@@ -234,6 +234,9 @@ public class FloatBall extends FrameLayout implements ICarrier {
         removeSleepRunnable();
     }
 
+    /**
+     * 移动悬浮球
+     */
     private void touchMove(int x, int y) {
         int totalDeltaX = x - mDownX;
         int totalDeltaY = y - mDownY;
@@ -249,6 +252,10 @@ public class FloatBall extends FrameLayout implements ICarrier {
         }
     }
 
+    /**
+     * 悬浮球移动结束
+     * 1. 
+     */
     private void touchUp() {
         mVelocity.computeCurrentVelocity();
         mVelocityX = (int) mVelocity.getXVelocity();
