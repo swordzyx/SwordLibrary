@@ -51,4 +51,9 @@ public class ShellAdbUtil {
         }
         return result;
     }
+    
+    public static void runCommand(String[] args) {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        
+    } 
 }
