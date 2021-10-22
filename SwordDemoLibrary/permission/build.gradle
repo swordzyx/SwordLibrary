@@ -42,7 +42,8 @@ dependencies {
     
     //for Util lib
     implementation project(':utilclass')
-    
+    implementation 'com.google.android.material:material:1.4.0'
+
     //for Unit Test
     testImplementation 'junit:junit:4.+'
     //for Instrument test
