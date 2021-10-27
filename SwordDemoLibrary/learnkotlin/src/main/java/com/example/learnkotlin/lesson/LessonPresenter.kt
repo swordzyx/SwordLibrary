@@ -30,12 +30,8 @@ class LessonPresenter(val activity: LessonActivity) {
     }
 
     fun showPlayback() {
-        //filter 返回的是一个集合
-        val playbackLessons = lessons.filter {
-            it.state == Lesson.State.PLAYBACK
-        }.toList()
-
-        activity.showResult(playbackLessons)
+        /* filter 返回的是一个集合，里面传入过滤的条件 */
+        activity.showResult(lessons.filter { it.state == Lesson.State.PLAYBACK })
     }
 
     companion object {

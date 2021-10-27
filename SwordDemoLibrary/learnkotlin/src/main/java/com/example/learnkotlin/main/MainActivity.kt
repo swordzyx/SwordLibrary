@@ -79,6 +79,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun verify(user: User): Boolean {
+        /**
+         * if (user.username == null || user.username.length < 4) 等价于 user.username?.length ?: 0 < 4
+         *
+         * 说明：如果 user.username 为 null，那么user.username.length 就是 null，那么 user.username?.length ?: 0 就会返回 0
+         */
         if (user.username.length < 4) {
             toast("用户名不合法")
             return false

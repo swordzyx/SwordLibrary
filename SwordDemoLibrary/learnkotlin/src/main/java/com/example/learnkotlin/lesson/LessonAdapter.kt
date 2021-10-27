@@ -38,11 +38,20 @@ class LessonAdapter : RecyclerView.Adapter<LessonAdapter.LessonViewHolder>() {
 
         fun onBind(lesson: Lesson) {
             //设置内容
-            var date = lesson.date
-            if (date == null) {
-                date = "日期待定"
-            }
-            setText(R.id.tv_date, date)
+            /**
+             * setText(R.id.tv_date, lesson.date ?: "日期待定") 与以下代码是等价的
+             *
+                var date = lesson.date
+                if (date == null) {
+                    date = "日期待定"
+                }
+                setText(R.id.tv_date, date)
+
+             * lesson.data ?: "日期待定" 表示当 lesson.data 为 null 时自动赋值为 "日期待定"
+             */
+            setText(R.id.tv_date, lesson.date ?: "日期待定")
+
+
             setText(R.id.tv_content, lesson.content)
             setText(R.id.tv_state, lesson.state.stateName())
 
