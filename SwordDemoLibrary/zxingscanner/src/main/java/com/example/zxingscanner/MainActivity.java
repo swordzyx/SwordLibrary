@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.utilclass.LogUtil;
-import com.example.utilclass.PermissionRequestUtil;
+import com.example.utilclass.PermissionUtil;
 import com.example.zxingscanner.camera.CameraManager;
 import com.example.zxingscanner.camera.CaptureHandler;
 import com.google.zxing.Result;
@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
 
-        if (!PermissionRequestUtil.Companion.isPermissionGranted(this, Manifest.permission.CAMERA)) {
-            PermissionRequestUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
+        if (!PermissionUtil.Companion.isPermissionGranted(this, Manifest.permission.CAMERA)) {
+            PermissionUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
         }
         
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {

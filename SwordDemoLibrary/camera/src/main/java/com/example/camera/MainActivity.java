@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.example.utilclass.LogUtil;
-import com.example.utilclass.PermissionRequestUtil;
+import com.example.utilclass.PermissionUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PermissionRequestUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
+        PermissionUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
         
         cameraManager = new CameraManager();
         camera = cameraManager.getCameraInstance(Camera.CameraInfo.CAMERA_FACING_FRONT);

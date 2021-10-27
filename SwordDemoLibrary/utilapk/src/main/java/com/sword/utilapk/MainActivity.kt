@@ -3,12 +3,10 @@ package com.sword.utilapk
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import com.example.utilclass.LogUtil
-import com.example.utilclass.PermissionRequestUtil
+import com.example.utilclass.PermissionUtil
 import com.example.utilclass.ShellAdbUtil
 import java.io.File
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,8 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (!PermissionRequestUtil.isPermissionGranted(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            PermissionRequestUtil.requestSpecialSinglePermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (!PermissionUtil.isPermissionGranted(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            PermissionUtil.requestSpecialSinglePermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
 
         logFilePath = "$filesDir${File.separator}XlcwLog.log"

@@ -4,7 +4,7 @@ import android.Manifest
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.utilclass.PermissionRequestUtil
+import com.example.utilclass.PermissionUtil
 import com.sword.camerax.cameraxlib.CameraXStarter
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.ExecutorService
@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
         
         //检查相机权限，请求相机权限，开启预览
-        if(!PermissionRequestUtil.isPermissionGranted(this, NEEDED_PERMISSION)) {
-            PermissionRequestUtil.requestSpecialSinglePermission(this, NEEDED_PERMISSION)
+        if(!PermissionUtil.isPermissionGranted(this, NEEDED_PERMISSION)) {
+            PermissionUtil.requestSpecialSinglePermission(this, NEEDED_PERMISSION)
         } else {
             //cameraXStarter.startCamera()
         }
@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         
-        if(requestCode == PermissionRequestUtil.PERMISSION_RESULT_CODE) {
-            if (PermissionRequestUtil.isPermissionGranted(this, NEEDED_PERMISSION)) {
+        if(requestCode == PermissionUtil.PERMISSION_RESULT_CODE) {
+            if (PermissionUtil.isPermissionGranted(this, NEEDED_PERMISSION)) {
                 //cameraXStarter.startCamera()
             } else {
                 Toast.makeText(this, "Permissions not granted by the user", Toast.LENGTH_SHORT).show()

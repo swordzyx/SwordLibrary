@@ -32,8 +32,6 @@ class ViewUtil {
                         return@OnTouchListener true
                     }
                 }
-                else -> {
-                }
             }
             false
         })

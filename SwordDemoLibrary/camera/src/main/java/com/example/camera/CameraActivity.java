@@ -10,7 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.utilclass.LogUtil;
-import com.example.utilclass.PermissionRequestUtil;
+import com.example.utilclass.PermissionUtil;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        PermissionRequestUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
+        PermissionUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
         
         SurfaceView previewView = (SurfaceView) findViewById(R.id.preview_view);
         previewView.getHolder().addCallback(callback);
