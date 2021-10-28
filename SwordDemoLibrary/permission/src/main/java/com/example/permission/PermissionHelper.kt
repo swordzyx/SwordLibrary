@@ -2,7 +2,9 @@ package com.example.permission
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.SensorPrivacyManager
 import android.os.Build
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,8 +60,15 @@ fun permissionCodeManagedBySystem(activity: AppCompatActivity, permission: Strin
 }
 
 fun getPrivacyIndicatorBounds(v: View) {
-    v.setOnApplyWindowInsetsListener { view, insets -> 
-        val indicators = insets.privacyIndicatorBounds
+    v.setOnApplyWindowInsetsListener { view, insets ->
+        val indicators = if (Build.VERSION.SDK_INT == 31) insets.privacyIndicatorBounds else null
         insets
+    }
+}
+
+fun checkDeviceSupport(context: Context) {
+    if (Build.VERSION.SDK_INT == 31) {
+        val sensorPrivacyManager = context.getSystemService(SensorPrivacyManager::class.java) as SensorPrivacyManager
+        val supportsMicroPhoneToggle = sensorPrivacyManager.supportsSensorToggle(SensorPrivacyManager.Sensors.CAMERA)
     }
 }
