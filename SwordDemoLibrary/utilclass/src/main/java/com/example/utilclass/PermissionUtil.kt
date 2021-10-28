@@ -10,9 +10,24 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 interface PermissionCallback {
+    /**
+     * 应用获取权限
+     */
     fun permissionGrant()
+
+    /**
+     * 用户拒绝授予权限
+     */
     fun permissionReject()
+
+    /**
+     * 显示权限请求说明提示框，在请求权限前调用
+     */
     fun showRationaleUI()
+
+    /**
+     * 应用已经获取权限
+     */
     fun permissionHaveGranted()
 }
 
@@ -55,6 +70,9 @@ fun isPermissionGranted(context: Context, permission: String): Boolean {
 
 /**
  * 申请单个权限。
+ * [activity]：需要获取权限的 Activity
+ * [permission]：需要请求的权限
+ * [requestCode]：权限请求码，默认为 [PERMISSION_RESULT_CODE]
  */
 fun requestSinglePermission(activity: Activity, permission: String, requestCode: Int = PERMISSION_RESULT_CODE) {
     val per = arrayOf(permission)
@@ -65,7 +83,7 @@ fun requestSinglePermission(activity: Activity, permission: String, requestCode:
  * 申请多个权限，需要重写 Activity#onRequestPermissionsResult() 方法，如果没有传入 requestCode 参数，则默认权限请求码为 [PERMISSION_RESULT_CODE]，该请求码也会传到 Activity#onRequestPermissionResult() 中。
  * [activity]：需要请求权限的 Activity
  * [permissions]：权限数组，里面包含需要请求的一个或多个权限
- * [requestCode]：
+ * [requestCode]：权限请求码，默认为 [PERMISSION_RESULT_CODE]
  */
 fun requestMultiPermission(activity: Activity, permissions: Array<String>, requestCode: Int = PERMISSION_RESULT_CODE) {
     val needGrantPers = permissions.filterNot { 
