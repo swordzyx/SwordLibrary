@@ -25,6 +25,19 @@
         </activity>
         
         <activity android:name=".TestActivity"/>
+        
+        <activity android:name=".DataAccessRationaleActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+            android:exported="true">
+            
+            <intent-filter>
+                <!--VIEW_PERMISSION_USAGE 用于配置应用在系统设置的应用程序权限页面显示的应用图标-->
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <!--VIEW_PERMISSION_USAGE_FOR_PERIOD 用于配置当前应用在 Privacy Dashboard（隐私仪表盘）页面显示的应用图标 -->
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE_FOR_PERIOD"/>
+                <action android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

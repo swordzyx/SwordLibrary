@@ -1,6 +1,10 @@
 package com.example.permission
 
+import android.Manifest
+import android.app.Activity
 import android.content.pm.PackageManager
+import android.os.Build
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -50,5 +54,12 @@ fun permissionCodeManagedBySystem(activity: AppCompatActivity, permission: Strin
         else -> {
             requestPermissionLauncher.launch(permission)
         }
+    }
+}
+
+fun getPrivacyIndicatorBounds(v: View) {
+    v.setOnApplyWindowInsetsListener { view, insets -> 
+        val indicators = insets.privacyIndicatorBounds
+        insets
     }
 }
