@@ -70,6 +70,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val password = et_password.text.toString()
         val code = et_code.text.toString()
 
+        /**
+         * verify() 函数确定只会再 login() 中用得到，因此可以直接将 verify 定义到 login 函数体中
+         * 
+         * 内部函数可以访问外部函数的成员。因此 verify(user: User) 中的 user 参数可以省略掉
+         * 
+         * 不过内部函数被调用的时候会生成一个额外的对象，也就是每次调用 login() 的时候都会生成一个用来调用 verify() 的对象。因此，如果 login() 会被频繁调用，就要考虑性能问题，不要老是创建出一堆垃圾对象出来
+         * 内部函数调用时会创建处临时对象，因此除非定义内部函数真的能提高代码的可读性，否则不要使用
+         */
+        fun verify(user: User): Boolean {
+            if (user.username.length < 4) {
+                toast("用户名不合法")
+                return false
+            }
+            if (user.password.length < 4) {
+                toast("密码不合法")
+                return false
+            }
+            return true
+        }
+        
         val user = User(username, password, code)
         if(verify(user)) {
             save(usernameKey, username)
@@ -78,12 +98,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun verify(user: User): Boolean {
-        /**
+    /**
+     * 如果确定 verify 函数只会在 login 中使用到，那么可以将 verify 函数直接定义的 login() 函数中 
+     */
+    /*private fun verify(user: User): Boolean {
+        *//**
          * if (user.username == null || user.username.length < 4) 等价于 user.username?.length ?: 0 < 4
          *
          * 说明：如果 user.username 为 null，那么user.username.length 就是 null，那么 user.username?.length ?: 0 就会返回 0
-         */
+         *//*
         if (user.username.length < 4) {
             toast("用户名不合法")
             return false
@@ -93,5 +116,5 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             return false
         }
         return true
-    }
+    }*/
 }

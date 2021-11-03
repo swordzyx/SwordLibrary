@@ -36,7 +36,7 @@ fun main() {
 
     //数组遍历
     val arrayOf = arrayOf(1, 3, 4, 5, 34, 5, 53, 2, 3, 43, 53, 32, 34)
-    for (i in 0 until arrayOf.size) {
+    for (i in arrayOf.indices) {
 
     }
 

@@ -1,9 +1,8 @@
 package com.example.permission
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.Sensor
 import android.hardware.SensorPrivacyManager
 import android.os.Build
 import android.view.View
@@ -59,6 +58,9 @@ fun permissionCodeManagedBySystem(activity: AppCompatActivity, permission: Strin
     }
 }
 
+/**
+ * Android 12 以后，应用访问麦克风或者相机时，会在屏幕右上角显示一个小图标，用于提示用户当前有应用在使用麦克风或者相机。通过以下方法获取小图标在屏幕上的位置。
+ */
 fun getPrivacyIndicatorBounds(v: View) {
     v.setOnApplyWindowInsetsListener { view, insets ->
         val indicators = if (Build.VERSION.SDK_INT == 31) insets.privacyIndicatorBounds else null
@@ -66,9 +68,14 @@ fun getPrivacyIndicatorBounds(v: View) {
     }
 }
 
+/**
+ * 检查设备是否支持麦克风和相机可用状态的切换。
+ */
 fun checkDeviceSupport(context: Context) {
     if (Build.VERSION.SDK_INT == 31) {
+        //toggle 中文有切换键，开关的意思
         val sensorPrivacyManager = context.getSystemService(SensorPrivacyManager::class.java) as SensorPrivacyManager
-        val supportsMicroPhoneToggle = sensorPrivacyManager.supportsSensorToggle(SensorPrivacyManager.Sensors.CAMERA)
+        val supportsMicroPhoneToggle = sensorPrivacyManager.supportsSensorToggle(SensorPrivacyManager.Sensors.MICROPHONE)
+        val supportsCameraToggle = sensorPrivacyManager.supportsSensorToggle(SensorPrivacyManager.Sensors.CAMERA)
     }
 }
