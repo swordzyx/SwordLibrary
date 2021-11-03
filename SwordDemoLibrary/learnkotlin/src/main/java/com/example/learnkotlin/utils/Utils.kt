@@ -34,11 +34,13 @@ fun dp2px(dp: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_
  *    Utils.INSTANCE.toast("...", Toast.LEAGTH_SHORT)
  */
 object Utils {
-    fun toast(string: String) {
-        toast(string, Toast.LENGTH_SHORT)
-    }
+    /**
+     * 只有一行代码的函数可以直接使用 "=" 相连
+     *
+     * 使用函数参数默认值可以将单参数的函数去掉，直接在 toast(string: String, duration: Int) 中为第二个参数设置默认值。
+     *      toast(string: String, duration: Int = Toast.LENGTH_SHORT)
+     */
+    //fun toast(string: String) = toast(string, Toast.LENGTH_SHORT)
 
-    fun toast(string: String, duration: Int) {
-        Toast.makeText(BaseApplication.currentApplication(), string, duration).show()
-    }
+    fun toast(string: String, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(BaseApplication.currentApplication, string, duration).show()
 }
