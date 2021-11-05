@@ -2,10 +2,13 @@ package com.example.learnkotlin.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.learnkotlin.R
 import com.example.learnkotlin.entity.User
@@ -22,6 +25,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var et_username: EditText
     private lateinit var et_password: EditText
     private lateinit var et_code: EditText
+
+
+    /**
+     * 为 ViewGroup 添加一个成员属性，表示第一个子 View。自定义 get 方法，通过 getChildAt(0) 返回第 0 个子 view
+     */
+    val ViewGroup.firstChild: View
+        get() = getChildAt(0)
     
     @SuppressLint("CutPasteId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
     
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onClick(v: View?) {
         if (v is CodeView) {
             v.updateCode()
