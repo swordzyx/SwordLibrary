@@ -1,5 +1,6 @@
 package com.example.learnkotlin
 
+import android.util.Log
 import com.example.learnkotlin.entity.User
 
 /**     函数声明
@@ -21,9 +22,8 @@ import com.example.learnkotlin.entity.User
  * var age = 18
  */
 
-//无参，无返回值函数。Java 中无返回值的函数使用 void 声明，而 Kotlin 中使用的时 Unit
-//下面的声明也等价于 fun main(): Unit {...}
-fun main() {
+
+/*
     //repeat 实际是一个函数，接收两个参数，第一个是循环的次数，第二个是一个 Lambda，这个 Lambda 接收一个参数
     repeat(100) {
         println(it)
@@ -39,8 +39,18 @@ fun main() {
     for (i in arrayOf.indices) {
 
     }
+*/
 
+//无参，无返回值函数。Java 中无返回值的函数使用 void 声明，而 Kotlin 中使用的时 Unit
+//下面的声明也等价于 fun main(): Unit {...}
+fun main() {
+    log("log")
 }
+
+fun log(text: String) {
+    Log.e("sword", text)
+}
+
 
 fun dataClass() {
     /*
