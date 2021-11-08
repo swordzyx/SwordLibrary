@@ -35,8 +35,11 @@ dependencies {
     //extended version of the Kotlin standard library, which contains additional extension function for Java API
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    //
+    //for json parse
     implementation "com.google.code.gson:gson:2.8.6"
+
+    //for retrofit, http client library
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
     
     
     //Appcompat & UI 

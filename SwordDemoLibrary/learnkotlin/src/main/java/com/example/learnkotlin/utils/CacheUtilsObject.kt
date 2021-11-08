@@ -11,7 +11,7 @@ import com.example.learnkotlin.core.BaseApplication
  */
 @SuppressLint("StaticFieldLeak")
 object CacheUtilsObject {
-    private val context = BaseApplication.currentApplication()
+    private val context = BaseApplication.currentApplication
 
     private val SP = context?.getSharedPreferences(context.getString(R.string.app_name), Context.MODE_PRIVATE)
 
@@ -22,4 +22,6 @@ object CacheUtilsObject {
     fun get(key: String): String? {
         return SP?.getString(key, null)
     }
+
+
 }

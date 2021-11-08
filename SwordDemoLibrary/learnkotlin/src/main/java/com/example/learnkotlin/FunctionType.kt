@@ -55,14 +55,18 @@ fun onClick() {
     Log.d("sword", "onClick")
 }
 
-fun measureTime(action: () -> Unit) {
+inline fun measureTime(action: () -> Unit) {
     println(">>>>>>")
     val start = System.currentTimeMillis()
     
     action()
     
     val end = System.currentTimeMillis()
-    println("<<<<<< [${end - }]")
-    
-    
+    println("<<<<<< [${end - start}]ms")
+}
+
+fun main3() {
+    measureTime {
+        println("hello kotlin")
+    }
 }

@@ -23,7 +23,15 @@ class  CodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
     //constructor(context: Context) : super(context)
 
 
-    private val paint = Paint()
+    /**
+     * 使用 apply 可以让 Paint() 的创建和初始化处于一个相对比较紧密的整体中。apply 返回的是它自己本身
+     */
+    private val paint = Paint().apply {
+        isAntiAlias = true
+        style = Paint.Style.STROKE
+        color = context.getColor(R.color.colorAccent)
+        strokeWidth = 6f.dp2px()
+    }
 
     private val codeList = arrayOf("kotlin", "android", "java", "http", "https", "okhttp", "retrofit", "tcp/ip")
     /*
@@ -35,13 +43,6 @@ class  CodeView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         gravity = Gravity.CENTER
         setBackgroundColor(context.getColor(R.color.colorPrimary))
         setTextColor(Color.WHITE)
-
-        paint.apply { 
-            isAntiAlias = true
-            style = Paint.Style.STROKE
-            color = context.getColor(R.color.colorAccent)
-            strokeWidth = dp2px(6f)
-        }
 
         updateCode()
     }

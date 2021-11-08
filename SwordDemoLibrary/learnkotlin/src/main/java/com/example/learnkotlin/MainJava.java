@@ -6,6 +6,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function0;
 
 public class MainJava {
+
     public static void main(String[] args) {
         CacheUtils.save("key", "value");
         
