@@ -1,7 +1,6 @@
 package com.example.utilclass
 
 import android.os.Environment
-import android.widget.Toast
 import java.io.*
 
 class LogCollector {
