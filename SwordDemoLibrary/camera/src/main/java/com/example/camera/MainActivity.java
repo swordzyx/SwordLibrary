@@ -7,7 +7,7 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
-import com.example.utilclass.LogUtil;
+import com.example.utilclass.LogCollector;
 import com.example.utilclass.PermissionUtil;
 
 import java.io.File;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             File[] mediaFiles = MainActivity.this.getExternalMediaDirs(); 
             
             for (File file : mediaFiles) {
-                LogUtil.debug("getExternalMediaDirs: " + file.getAbsolutePath());
+                LogCollector.debug("getExternalMediaDirs: " + file.getAbsolutePath());
             }
             File pictureFile = new File(mediaFiles[0], "capture.jpg");
 

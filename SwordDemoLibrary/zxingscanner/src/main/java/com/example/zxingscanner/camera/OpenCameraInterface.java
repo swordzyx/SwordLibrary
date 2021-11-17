@@ -3,9 +3,7 @@ package com.example.zxingscanner.camera;
 
 import android.hardware.Camera;
 
-import com.example.utilclass.LogUtil;
-
-import java.util.IllegalFormatCodePointException;
+import com.example.utilclass.LogCollector;
 
 public class OpenCameraInterface {
     public static final int NO_REQUEST_CAMERA = -1;
@@ -15,12 +13,12 @@ public class OpenCameraInterface {
         //获取当前设备的相机数量，检测 cameraId 是否有效，获取要打开的相机的 cameraId
         int cameraNums = Camera.getNumberOfCameras();
         if (cameraNums == 0) {
-            LogUtil.warn("could not found camera on device");
+            LogCollector.warn("could not found camera on device");
             return null;
         }
         
         if (cameraId >= cameraNums) {
-            LogUtil.warn("Requested camera not exist: " + cameraId);
+            LogCollector.warn("Requested camera not exist: " + cameraId);
             return null;
         }
         
@@ -35,7 +33,7 @@ public class OpenCameraInterface {
                 ++cameraId;
             }
             if (cameraId == cameraNums) {
-                LogUtil.warn("No camera facing Back, return camera #0");
+                LogCollector.warn("No camera facing Back, return camera #0");
                 cameraId = 0;
             }
         }
@@ -45,7 +43,7 @@ public class OpenCameraInterface {
         Camera.getCameraInfo(cameraId, cameraInfo);
         Camera camera = Camera.open(cameraId);
         if(camera == null) {
-            LogUtil.warn("camera open failed, return null");
+            LogCollector.warn("camera open failed, return null");
             return null;
         }
         

@@ -1,7 +1,6 @@
 package com.example.permission
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +9,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.utilclass.LogUtil
+import com.example.utilclass.LogCollector
 
 class MainActivity : AppCompatActivity() {
     private val permissionTest = Manifest.permission.CAMERA
@@ -61,27 +60,27 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        LogUtil.debug("MainActivity - onRequestPermissionResult requestCode = $requestCode")
+        LogCollector.debug("MainActivity - onRequestPermissionResult requestCode = $requestCode")
         when (requestCode) {
             permission_code -> {
                 when(grantResults.size) {
                     1 -> {
                         //申请单个权限的情况下，仅判断 grantResults（结果数组）中的第一个是否为 PackageManager.PERMISSION_GRANTED 即可
                         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                            LogUtil.debug("单个权限 ${permissions[0]} 申请成功")
+                            LogCollector.debug("单个权限 ${permissions[0]} 申请成功")
                         } else {
                             //用户拒绝权限
                             //向用户说明拒绝权限将无法使用特定的功能，然后让该功能不可用。
-                            LogUtil.debug("单个权限 ${permissions[0]} 申请失败")
+                            LogCollector.debug("单个权限 ${permissions[0]} 申请失败")
                         }
                     }
                     else -> {
                         //一次申请多个权限时，则需要遍历 permissions（所有请求的权限），挨个判断是否有对应的权限
                         for((index, per) in permissions.withIndex()) {
                             if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
-                                LogUtil.debug("权限 $per 申请成功")
+                                LogCollector.debug("权限 $per 申请成功")
                             } else {
-                                LogUtil.debug("权限 $per 申请失败")
+                                LogCollector.debug("权限 $per 申请失败")
                             }
                         }
                     }

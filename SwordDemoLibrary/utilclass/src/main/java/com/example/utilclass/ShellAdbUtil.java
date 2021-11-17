@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShellAdbUtil {
     /**
@@ -53,7 +55,17 @@ public class ShellAdbUtil {
     }
     
     public static void runCommand(String[] args) {
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        
+        /*ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command(args);
+        try {
+            processBuilder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        /*try {
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     } 
 }

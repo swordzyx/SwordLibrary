@@ -6,11 +6,8 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.View
-import android.widget.ListAdapter
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.utilclass.LogUtil
+import com.example.utilclass.LogCollector
 import com.example.utilclass.toast
 import java.lang.ClassCastException
 import java.lang.IllegalStateException
@@ -51,10 +48,10 @@ class FireMissilesDialogFragment : DialogFragment() {
                 
                 //操作按钮
                 setPositiveButton(R.string.fire) {dialog, id ->
-                    LogUtil.debug("click positive button, id = $id")
+                    LogCollector.debug("click positive button, id = $id")
                 }
                 setNegativeButton(R.string.cancel) { dialog, id ->
-                    LogUtil.debug("click negative button, id  = $id")
+                    LogCollector.debug("click negative button, id  = $id")
                 }
             }.create() ?: throw IllegalStateException("Dialog 创建失败")
         }
@@ -66,7 +63,7 @@ class FireMissilesDialogFragment : DialogFragment() {
             setTitle(title)
             setItems(items) { dialog, id ->
                 //列表点击事件监听器
-                LogUtil.debug("click id $id")
+                LogCollector.debug("click id $id")
             }
         }.create()
 
@@ -81,10 +78,10 @@ class FireMissilesDialogFragment : DialogFragment() {
                 }
             }
             setPositiveButton(R.string.ok) {dialog, id ->
-                LogUtil.debug("click OK")
+                LogCollector.debug("click OK")
             }
             setNegativeButton(R.string.cancel) {dialog, id ->
-                LogUtil.debug("click cancel")
+                LogCollector.debug("click cancel")
             }
         }
     }
@@ -96,10 +93,10 @@ class FireMissilesDialogFragment : DialogFragment() {
         val customLayoutDialog = AlertDialog.Builder(activity).apply {
             setView(inflater.inflate(R.layout.dialog_signin, null))
             setPositiveButton(R.string.signin) { dialog, id ->
-                LogUtil.debug("sign in")
+                LogCollector.debug("sign in")
             }
             setNegativeButton(R.string.cancel) { dialog, id ->
-                LogUtil.debug("cancel")
+                LogCollector.debug("cancel")
             }
         }.create()
     }

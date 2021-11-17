@@ -9,7 +9,7 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import com.example.utilclass.LogUtil;
+import com.example.utilclass.LogCollector;
 import com.example.zxingscanner.MainActivity;
 import com.example.zxingscanner.R;
 import com.google.zxing.Result;
@@ -81,7 +81,7 @@ public class CaptureHandler extends Handler {
     
     private void restartPreviewAndDecode() {
         if (state == State.SUCCESS) {
-            LogUtil.debug("restartPreviewAndDecode");
+            LogCollector.debug("restartPreviewAndDecode");
             state = State.PREVIEW;
             //请求预览帧
             cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);

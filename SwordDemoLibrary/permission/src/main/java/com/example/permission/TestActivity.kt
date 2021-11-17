@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.utilclass.LogUtil
+import com.example.utilclass.LogCollector
 
 class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +24,6 @@ class TestActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        LogUtil.debug("TestActivity - onRequestPermissionResult, requestCode = $requestCode")
+        LogCollector.debug("TestActivity - onRequestPermissionResult, requestCode = $requestCode")
     }
 }

@@ -5,8 +5,6 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 
-import com.example.utilclass.LogUtil;
-
 public class PreviewCallback implements Camera.PreviewCallback{
     private final CameraConfigurationManager configurationManager;
     private Handler previewHandler;

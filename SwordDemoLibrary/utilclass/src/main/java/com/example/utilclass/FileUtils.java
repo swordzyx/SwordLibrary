@@ -41,8 +41,10 @@ public class FileUtils {
 
         String PACKAGE_NAME = getAppInfo(activity);
         if (isSdCardExist()) {
+            //获取外部存储的根目录
             path = Environment.getExternalStorageDirectory().getPath();
         } else {
+            //获取内部存储中的应用私有目录
             path = activity.getFilesDir().getPath();
         }
 
@@ -51,11 +53,14 @@ public class FileUtils {
         File dir = new File(path);
         Log.d("Sword", "存储目录：" + path);
     }
+    
+    public static void getLogSwitchFile() {
+        String logSwitch = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Android" + File.separator;
+        //String fileNameMd5 = Encryption.md5(logSwitch + "logSwitch");
+    }
 
     /**
      * 获取应用包名
-     *
-     * @return
      */
     public static String getAppInfo(Context activity) {
         try {
@@ -65,21 +70,18 @@ public class FileUtils {
             int versionCode = activity.getPackageManager().getPackageInfo(
                     pkName, 0).versionCode;
             return pkName + "_" + versionName + "_" + versionCode;
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return null;
     }
 
 
     /**
-     * 判断SDCard是否存在 [当没有外挂SD卡时，内置ROM也被识别为存在sd卡]
-     *
-     * @return
+     * 判断设备外部存储当前是否可以访问。（如果外部存储目录被挂在到了计算机上，应用程序将无法访问）
      */
     public static boolean isSdCardExist() {
         try{
-            return Environment.getExternalStorageState().equals(
-                    Environment.MEDIA_MOUNTED);
+            return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
         }catch(Exception e){
             e.printStackTrace();
         }
