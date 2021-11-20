@@ -274,6 +274,13 @@ public class FloatBall extends FrameLayout implements ICarrier {
         mVelocityY = 0;
     }
 
+    /**
+     * 移动悬浮球到指定 x 坐标
+     * 计算悬浮球的 y 坐标：超过边界，则显示在边界处
+     * 计算需要滑动的距离
+     *  如果 smooth 为 true，则滑动到指定位置，
+     *  如果 smooth 为 false，则直接移动到指定位置，直接更新悬浮球的位置参数
+     */
     private void moveToX(boolean smooth, int destX) {
         int statusBarHeight = floatBallManager.getStatusBarHeight();
         final int screenHeight = floatBallManager.mScreenHeight - statusBarHeight;
@@ -294,6 +301,9 @@ public class FloatBall extends FrameLayout implements ICarrier {
         }
     }
 
+    /**
+     * 移动悬浮球到左边界或者右边界
+     */
     private void wakeUp() {
         final int screenWidth = floatBallManager.mScreenWidth;
         int width = getWidth();
@@ -305,6 +315,10 @@ public class FloatBall extends FrameLayout implements ICarrier {
         moveToX(true, destX);
     }
 
+    /**
+     * 移动悬浮球到左边界或者右边界。
+     * sleep 控制当悬浮球显示在边界时，是否只显示一半。
+     */
     private void moveToEdge(boolean smooth, boolean forceSleep) {
         final int screenWidth = floatBallManager.mScreenWidth;
         int width = getWidth();
