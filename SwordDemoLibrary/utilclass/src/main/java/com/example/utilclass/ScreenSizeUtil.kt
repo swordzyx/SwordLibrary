@@ -1,3 +1,4 @@
+@file: JvmName("ScreenSize")
 package com.example.utilclass
 
 import android.content.Context
@@ -72,6 +73,15 @@ class ScreenSizeUtil {
 			surfaceView.display.getRealSize(this)
 		}
 	}
+}
 
-
+/**
+ * 单位转换，dp 转成 px
+ */
+fun dpToPx(dp: Int): Int {
+	return TypedValue.applyDimension(
+		TypedValue.COMPLEX_UNIT_DIP,
+		dp.toFloat(),
+		Resources.getSystem().displayMetrics
+	).toInt()
 }
