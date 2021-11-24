@@ -10,10 +10,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.utilclass.LogUtil;
 import com.example.utilclass.ScreenSize;
@@ -21,64 +20,37 @@ import com.example.utilclass.ScreenSize;
 /**
  * {@hide}
  */
-public class FloatBallView extends View {
+public class FloatBallView2 extends AppCompatImageView {
 	private static final int WAKE_UP_TIME = 3000;
-
-	private final Paint backPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
 	private final GestureDetector gestureDetector;
 
 	private final Runnable sleepRunnable = new SleepRunnable();
 
-	private final int border = ScreenSize.dpToPx(3);
-	private final int screenWidth;
-	private int borderAlpha = (int) (0.3 * 0xff);
-	private int innerCircleAlpha = (int) (0.6 * 0xff);
 	private float offsetX = 0;
 	private float offsetY = 0;
 	private boolean sleep = false;
 
-	public FloatBallView(@NonNull Context context) {
+	public FloatBallView2(@NonNull Context context) {
 		super(context);
-
-		backPaint.setColor(Color.BLACK);
 
 		FloatBallGestureListener listener = new FloatBallGestureListener();
 		gestureDetector = new GestureDetector(context, listener);
-
-		screenWidth = ScreenSize.getWindowSizeExcludeSystem(context).x;
 		
 		setBackgroundColor(Color.WHITE);
+		setImageResource(R.mipmap.floatball);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
+		//canvas.translate(offsetX, offsetY);
 		super.onDraw(canvas);
-		float centerX = (getLeft() + getRight()) / 2f + offsetX;
-		float centerY = (getTop() + getBottom()) / 2f + offsetY;
-		backPaint.setStyle(Paint.Style.FILL);
-		backPaint.setAlpha(innerCircleAlpha);
-		canvas.drawCircle(centerX, centerY, getWidth()/2f - border - 3, backPaint);
-		
-		//canvas.drawBitmap();
-		backPaint.setAlpha(borderAlpha);
-		backPaint.setStyle(Paint.Style.STROKE);
-		backPaint.setStrokeWidth(border);
-		canvas.drawCircle(centerX, centerY, getWidth()/2f - border, backPaint);
 	}
 
-	public void setInnerCircleAlpha(int alpha) {
-		innerCircleAlpha = alpha;
-	}
-
-	public void setBorderAlpha(int alpha) {
-		borderAlpha = alpha;
-	}
-
-	public void setOffsetX(float offsetX) {
+	/*public void setOffsetX(float offsetX) {
 		this.offsetX = offsetX;
 		invalidate();
-	}
+	}*/
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -118,30 +90,17 @@ public class FloatBallView extends View {
 		@SuppressLint("ObjectAnimatorBinding")
 		@Override
 		public boolean onScroll(MotionEvent downEvent, MotionEvent currentEvent, float distanceX, float distanceY) {
+			LogUtil.debug("onScroll");
 			if (!scrolled) {
 				removeCallbacks(sleepRunnable);
 				scrolled = true;
 			}
+
+			/*offsetX += distanceX;
+			offsetY += distanceY;
+			invalidate();*/
+			scrollBy((int) distanceX, (int) distanceY);
 			
-			switch (currentEvent.getAction()) {
-				case MotionEvent.ACTION_UP:
-					ObjectAnimator moveEdge;
-					if (currentEvent.getX() > screenWidth / 2f) {
-						moveEdge = ObjectAnimator.ofFloat(this, "offsetX", offsetX, screenWidth - getLeft());
-					} else {
-						moveEdge = ObjectAnimator.ofFloat(this, "offsetX", offsetX, 0);
-					}
-					moveEdge.addListener(animatorListener);
-					moveEdge.start();
-					break;
-				case MotionEvent.ACTION_MOVE:
-					offsetX += distanceX;
-					offsetY += distanceY;
-					invalidate();
-					break;
-				default:
-					break;
-			}
 			return false;
 		}
 
@@ -173,21 +132,24 @@ public class FloatBallView extends View {
 		sleep = true;
 
 		if (getLeft() == 0) {
-			offsetX -= getWidth() / 2f;
+			//offsetX -= getWidth() / 2f;
+			scrollTo(getLeft() - getWidth()/2, getTop());
 		} else {
-			offsetX += getWidth() / 2f;
+			scrollTo(getLeft() + getWidth()/2, getTop());
+			//offsetX += getWidth() / 2f;
 		}
 		invalidate();
 	}
 
 	private void wakeUp() {
 		if (!sleep) return;
+		
 		sleep = false;
 
 		if (getLeft() == 0) {
-			offsetX += getWidth() / 2f;
+			scrollTo(getLeft() + getWidth()/2, getTop());
 		} else {
-			offsetX -= getWidth() / 2f;
+			scrollTo(getLeft() - getWidth()/2, getTop());
 		}
 		invalidate();
 	}

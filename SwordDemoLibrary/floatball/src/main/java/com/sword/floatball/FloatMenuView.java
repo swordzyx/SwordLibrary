@@ -1,6 +1,7 @@
 package com.sword.floatball;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +27,8 @@ public class FloatMenuView extends ViewGroup {
     super(context);
     
     initMenuItems(context);
+    
+    setBackgroundColor(Color.WHITE);
   }
   
   private void initMenuItems(Context context) {
@@ -108,6 +111,10 @@ public class FloatMenuView extends ViewGroup {
     }
     return true;
   }
+  
+  public void setMenuItemListener(OnMenuItemClickListener listener) {
+    this.listener = listener;
+  }
 
   /**
    * 悬浮菜单封装类
@@ -163,7 +170,7 @@ public class FloatMenuView extends ViewGroup {
     }
   }
   
-  interface OnMenuItemClickListener {
+  public interface OnMenuItemClickListener {
     void onMenuItemClick(int index);
   }
 }
