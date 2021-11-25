@@ -8,6 +8,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
     
-    FloatBall.getInstance(this).showFloatBall()
+    //FloatBall2.getInstance(this).showFloatBall()
+    //FloatBall.getInstance(this).showFloatBall()
   }
 }
