@@ -36,7 +36,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
 
     floatMenuView = new FloatMenuView(context);
     floatMenuView.setMenuItemListener(this);
-    //floatMenuView.setVisibility(View.GONE);
+    floatMenuView.setVisibility(View.INVISIBLE);
     addView(floatMenuView);
     
     LogUtil.debug("add float ball and float menu");
@@ -77,7 +77,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
 
     int menuLeft;
     if (floatBallOnLeft) {
-      menuLeft = ballLeft + MARGIN_WITH_BALL;
+      menuLeft = floatBallView.getRight() + MARGIN_WITH_BALL;
     } else {
       menuLeft = ballLeft - MARGIN_WITH_BALL - floatMenuView.getMeasuredWidth();
     }
@@ -91,7 +91,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
   }
 
   @Override
-  public boolean onInterceptHoverEvent(MotionEvent event) {
+  public boolean onInterceptTouchEvent(MotionEvent event) {
     return dragHelper.shouldInterceptTouchEvent(event);
   }
 
@@ -99,6 +99,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     dragHelper.processTouchEvent(event);
+
     return true;
   }
 
@@ -115,7 +116,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
     }
   }
 
-  private void hideMenu() {
+  private void hideFloatMenu() {
     LogUtil.debug("show float ball, visible: " + (floatBallView.getVisibility() == View.VISIBLE));
     if (floatMenuView.getVisibility() == View.VISIBLE) {
       floatMenuView.setVisibility(View.INVISIBLE);
@@ -140,8 +141,13 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
     }
     removeCallbacks(sleepRunnable);
     LogUtil.debug("show float menu, visible: " + (floatMenuView.getVisibility() == View.VISIBLE));
+
+    switchFloatMenuVisibility();
+  }
+
+  private void switchFloatMenuVisibility() {
     if (floatMenuView.getVisibility() == View.VISIBLE) {
-      hideMenu();
+      hideFloatMenu();
     } else {
       showFloatMenu();
     }

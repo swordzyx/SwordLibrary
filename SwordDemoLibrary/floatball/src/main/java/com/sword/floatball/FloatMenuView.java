@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.icu.util.Measure;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -27,10 +26,10 @@ public class FloatMenuView extends ViewGroup {
   final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private OnMenuItemClickListener listener;
   private final List<MenuItem> items = new ArrayList<>();
-  private final int itemPadding = ScreenSize.dpToPx(4);
+  private final int itemPadding = ScreenSize.dpToPx(8);
 
 
-  int innerPadding = ScreenSize.dpToPx(4);
+  int innerPadding = ScreenSize.dpToPx(3);
 
 
   public FloatMenuView(Context context) {
@@ -77,8 +76,8 @@ public class FloatMenuView extends ViewGroup {
     TextView view = new TextView(context);
     view.setLayoutParams(params);
     view.setText(text);
-    view.setTextColor(Color.BLACK);
-    view.setTextSize(TypedValue.COMPLEX_UNIT_PX, 20);
+    view.setTextColor(Color.WHITE);
+    view.setTextSize(TypedValue.COMPLEX_UNIT_PX, 40);
     view.setGravity(Gravity.CENTER);
     return view;
   }
@@ -121,7 +120,7 @@ public class FloatMenuView extends ViewGroup {
       measureWidth += item.getWidth() + itemPadding;
       measureHeight = item.getHeight();
     }
-    setMeasuredDimension(measureWidth, measureHeight);
+    setMeasuredDimension(measureWidth + itemPadding, measureHeight);
     LogUtil.debug("float menu onMeasure, measureWidth: " + getMeasuredWidth() + "; measureHeight: " + getMeasuredHeight());
   }
 
@@ -182,7 +181,7 @@ public class FloatMenuView extends ViewGroup {
     }
 
     int getHeight() {
-      return title.getMeasuredHeight() + icon.getMeasuredHeight() + innerPadding;
+      return title.getMeasuredHeight() + icon.getMeasuredHeight() + 2 * innerPadding;
     }
 
     @SuppressLint("Range")

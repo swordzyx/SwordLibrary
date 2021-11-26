@@ -2,32 +2,16 @@ package com.sword.floatball;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
-import android.text.Layout;
-import android.transition.Scene;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-
-import com.example.utilclass.LogUtil;
-import com.example.utilclass.ScreenSize;
 
 public class FloatBall {
-  private static final int MARGIN_WITH_BALL = ScreenSize.dpToPx(5);
 
   private final FloatBallContainer floatBallContainer;
   private final WindowManager windowManager;
-  //private final ViewGroup decorView;
-  private WindowManager.LayoutParams floatLayout;
-
-  private final int screenWidth;
-  /*private int floatBallX = 0;
-  private int floatBallY = 0;*/
-
+  private final WindowManager.LayoutParams floatLayout;
   private static FloatBall instance;
 
   public static FloatBall getInstance(Activity activity) {
@@ -38,11 +22,9 @@ public class FloatBall {
   }
 
   private FloatBall(Activity context) {
-    screenWidth = ScreenSize.getWindowSizeExcludeSystem(context).x;
 
     floatBallContainer = new FloatBallContainer(context);
 
-    //windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     windowManager = context.getWindowManager();
     floatLayout = layoutParams();
   }
@@ -53,10 +35,6 @@ public class FloatBall {
       floatBallContainer.setVisibility(View.VISIBLE);
     }
     floatBallContainer.showFloatBall();
-  }
-
-  public void removeFloatBall() {
-    if (floatBallContainer.isAttachedToWindow()) windowManager.removeView(floatBallContainer);
   }
 
   @SuppressLint("RtlHardcoded")
