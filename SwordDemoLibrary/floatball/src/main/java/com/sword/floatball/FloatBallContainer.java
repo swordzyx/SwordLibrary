@@ -28,6 +28,7 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
   private int floatBallOffsetY;
   boolean floatBallOnLeft = true;
   boolean sleep = false;
+  boolean floatBallDragEvent = false;
 
   public FloatBallContainer(Context context) {
     super(context);
@@ -44,6 +45,7 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
     LogUtil.debug("add float ball and float menu");
 
     dragHelper = ViewDragHelper.create(this, new DragCallback());
+    //gestureDetector = new GestureDetector(context, new GestureCallback());
   }
 
   @SuppressLint("Range")
@@ -92,55 +94,17 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
     LogUtil.debug("floatMenuView Left: " + floatMenuView.getLeft() + "; top=" + floatMenuView.getTop() + "; measureWidth=" + floatMenuView.getMeasuredWidth() + "; measureHeight=" + floatMenuView.getMeasuredWidth());
   }
 
-  boolean downOutofMenu = false;
-
   @Override
   public boolean onInterceptTouchEvent(MotionEvent event) {
-    /*if (dragHelper.shouldInterceptTouchEvent(event)) {
-      return true;
+    if (floatMenuVisiable() && dragHelper.findTopChildUnder((int) event.getX(), (int) event.getY()) == floatMenuView) {
+      return false;
     }
-    switch (event.getAction()) {
-      case MotionEvent.ACTION_DOWN:
-        downOutofMenu = touchOutofMenu(event) && floatMenuVisiable();
-        LogUtil.debug("onInterceptTouchEvent touchOutofMenu: " + downOutofMenu);
-        return downOutofMenu;
-      case MotionEvent.ACTION_UP:
-        if (downOutofMenu && touchOutofMenu(event) && floatMenuVisiable()) {
-          LogUtil.debug("onInterceptTouchEvent switchFloatMenuVisibility");
-          switchFloatMenuVisibility();
-          return true;
-        }
-      default:
-        break;
-    }
-    return false;*/
-    /*View view  = dragHelper.findTopChildUnder((int) event.getX(), (int) event.getY());
-    LogUtil.debug("find view , x : " + event.getX() + "-- y: " + event.getY() + "-- floatBallX: " + floatBallView.getX() + "-- floatBallY: " + floatBallView.getY() + " find status: " + (view != null));
-    LogUtil.debug("shouldInterceptTouchEvent: " + dragHelper.shouldInterceptTouchEvent(event));
-    return dragHelper.shouldInterceptTouchEvent(event);*/
-    return true;
+    return dragHelper.shouldInterceptTouchEvent(event);
   }
   
   @SuppressLint("ClickableViewAccessibility")
   @Override
   public boolean onTouchEvent(MotionEvent event) {
-    switch (event.getAction()) {
-      case MotionEvent.ACTION_DOWN:
-        downOutofMenu = touchOutofMenu(event);
-        
-        LogUtil.debug("onTouchEvent touchOutofMenu: " + downOutofMenu);
-      case MotionEvent.ACTION_UP:
-        if (downOutofMenu && touchOutofMenu(event) && floatMenuVisiable()) {
-          LogUtil.debug("onTouchEvent switchFloatMenuVisibility");
-          switchFloatMenuVisibility();
-        }
-      default:
-        break;
-    }
-    /*if (event.getAction() == MotionEvent.ACTION_DOWN) {
-      View view  = dragHelper.findTopChildUnder((int) event.getX(), (int) event.getY());
-      LogUtil.debug("find view , x : " + event.getX() + "-- y: " + event.getY() + "-- floatBallX: " + floatBallView.getX() + "-- floatBallY: " + floatBallView.getY() + " find status: " + (view != null));
-    }*/
     dragHelper.processTouchEvent(event);
     return true;
   }
@@ -210,21 +174,24 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
 
     @Override
     public boolean tryCaptureView(@NonNull View child, int pointerId) {
-      LogUtil.debug("tryCaptureView");
-      /*LogUtil.debug("chile == floatBallView: " + (child == floatBallView) + "; sleep: " + sleep);
-      return child == floatBallView && !sleep;*/
-      return true;
+      LogUtil.debug("chile == floatBallView: " + (child == floatBallView) + "; sleep: " + sleep);
+      return child == floatBallView;
+    }
+
+    @Override
+    public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
+      floatBallDragEvent = capturedChild == floatBallView;
     }
 
     @Override
     public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
-      LogUtil.debug("clampViewPositionHorizontal left: " + left + "-- dx: " + dx);
+      //LogUtil.debug("clampViewPositionHorizontal left: " + left + "-- dx: " + dx);
       return left;
     }
 
     @Override
     public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
-      LogUtil.debug("clampViewPositionVertical top: " + top + "--dy: " + dy);
+      //LogUtil.debug("clampViewPositionVertical top: " + top + "--dy: " + dy);
       return top;
     }
 
@@ -245,6 +212,11 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
         return;
       }
 
+      if (!floatBallDragEvent) {
+        floatBallClick();
+        return;
+      }
+
       if (releasedChild.getLeft() >= getWidth() / 2) {
         dragHelper.settleCapturedViewAt(getWidth() - MARGIN_WITH_BALL, floatBallView.getTop());
         floatBallOnLeft = false;
@@ -256,7 +228,7 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
     }
   }
   
-  class GestureCallback extends GestureDetector.SimpleOnGestureListener {
+  /*class GestureCallback extends GestureDetector.SimpleOnGestureListener {
     @Override
     public boolean onSingleTapConfirmed(MotionEvent e) {
       if ((floatMenuVisiable() && touchOutofMenu(e)) || dragHelper.findTopChildUnder((int) e.getX(), (int) e.getY()) == floatBallView) {
@@ -264,7 +236,7 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
       }
       return true;
     }
-  }
+  }*/
 
 
   /**
