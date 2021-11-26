@@ -2,7 +2,6 @@ package com.sword.floatball;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,9 @@ import androidx.customview.widget.ViewDragHelper;
 import com.example.utilclass.LogUtil;
 import com.example.utilclass.ScreenSize;
 
-public class FloatBallContainer extends ViewGroup implements /*View.OnClickListener, */FloatMenuView.OnMenuItemClickListener {
-  private static final int WAKE_UP_TIME = 10000 * 60;
+/** {@hide} */
+public class FloatBallContainer extends ViewGroup implements /*View.OnClickListener, */OnMenuItemClickListener {
+  private static final int WAKE_UP_TIME = 10000 * 6;
   private static final int MARGIN_WITH_BALL = ScreenSize.dpToPx(5);
   private static final int MARGIN_WITH_EDGE = ScreenSize.dpToPx(3);
 
@@ -23,7 +23,6 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
   private final FloatMenuView floatMenuView;
 
   private final ViewDragHelper dragHelper;
-  //private final GestureDetector gestureDetector;
   private int floatBallOffsetX;
   private int floatBallOffsetY;
   boolean floatBallOnLeft = true;
@@ -34,18 +33,19 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
     super(context);
 
     floatBallView = new FloatBallView2(context);
-    //floatBallView.setOnClickListener(this);
     addView(floatBallView);
 
     floatMenuView = new FloatMenuView(context);
-    floatMenuView.setMenuItemListener(this);
     floatMenuView.setVisibility(View.INVISIBLE);
     addView(floatMenuView);
 
     LogUtil.debug("add float ball and float menu");
 
     dragHelper = ViewDragHelper.create(this, new DragCallback());
-    //gestureDetector = new GestureDetector(context, new GestureCallback());
+  }
+  
+  public void setFloatMenuItemListener(OnMenuItemClickListener listener) {
+    floatMenuView.setMenuItemListener(listener);
   }
 
   @SuppressLint("Range")
@@ -96,17 +96,30 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
 
   @Override
   public boolean onInterceptTouchEvent(MotionEvent event) {
+    LogUtil.debug("FloatBallContainer - onInterceptTouchEvent");
     if (floatMenuVisiable() && dragHelper.findTopChildUnder((int) event.getX(), (int) event.getY()) == floatMenuView) {
       return false;
     }
     return dragHelper.shouldInterceptTouchEvent(event);
   }
-  
+
   @SuppressLint("ClickableViewAccessibility")
   @Override
   public boolean onTouchEvent(MotionEvent event) {
-    dragHelper.processTouchEvent(event);
+    LogUtil.debug("FloatBallContainer onTouchEvent");
+    if (touchOutofMenu(event) && floatMenuVisiable()) {
+      switchFloatMenuVisibility();
+    } else {
+      dragHelper.processTouchEvent(event);
+    }
     return true;
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    LogUtil.debug("onAttachToWindow");
+    super.onAttachedToWindow();
+    postSleepRunnable();
   }
 
   private boolean touchOutofMenu(MotionEvent event) {
@@ -114,11 +127,7 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
     return event.getY() < floatMenuView.getTop() || event.getY() > floatMenuView.getBottom() || event.getX() > floatMenuView.getRight();
   }
 
-  private void showFloatMenu() {
-    if (floatMenuView.getVisibility() != View.VISIBLE) {
-      floatMenuView.setVisibility(View.VISIBLE);
-    }
-  }
+  
 
   public void showFloatBall() {
     LogUtil.debug("show float ball, visible: " + (floatBallView.getVisibility() == View.VISIBLE));
@@ -132,16 +141,14 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
     if (floatMenuView.getVisibility() == View.VISIBLE) {
       floatMenuView.setVisibility(View.INVISIBLE);
     }
-    postSleepRunnable();
   }
 
-  @Override
-  protected void onAttachedToWindow() {
-    LogUtil.debug("onAttachToWindow");
-    super.onAttachedToWindow();
-    postSleepRunnable();
+  private void showFloatMenu() {
+    if (floatMenuView.getVisibility() != View.VISIBLE) {
+      floatMenuView.setVisibility(View.VISIBLE);
+    }
   }
-
+  
   private void floatBallClick() {
     LogUtil.debug("FloatBall Click");
     if (sleep) {
@@ -149,18 +156,19 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
       postSleepRunnable();
       return;
     }
-    removeCallbacks(sleepRunnable);
     switchFloatMenuVisibility();
   }
 
   private void switchFloatMenuVisibility() {
     if (floatMenuVisiable()) {
+      postSleepRunnable();
       hideFloatMenu();
     } else {
+      removeCallbacks(sleepRunnable);
       showFloatMenu();
     }
   }
-  
+
   private boolean floatMenuVisiable() {
     return floatMenuView.getVisibility() == View.VISIBLE;
   }
@@ -174,13 +182,8 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
 
     @Override
     public boolean tryCaptureView(@NonNull View child, int pointerId) {
-      LogUtil.debug("chile == floatBallView: " + (child == floatBallView) + "; sleep: " + sleep);
+      LogUtil.debug("DragCallback child == floatBallView: " + (child == floatBallView) + "; sleep: " + sleep);
       return child == floatBallView;
-    }
-
-    @Override
-    public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
-      floatBallDragEvent = capturedChild == floatBallView;
     }
 
     @Override
@@ -197,47 +200,56 @@ public class FloatBallContainer extends ViewGroup implements /*View.OnClickListe
 
     @Override
     public void onViewPositionChanged(@NonNull View changedView, int left, int top, int dx, int dy) {
-      LogUtil.debug("changeView == floatBallView: " + (changedView == floatBallView) + "; dx = " + dx + "; dy = " + dy);
+      LogUtil.debug("DragCallback changeView == floatBallView: " + (changedView == floatBallView) + "; dx = " + dx + "; dy = " + dy);
       if (changedView == floatBallView) {
-        floatBallOffsetX = dx;
-        floatBallOffsetY = dy;
-        requestLayout();
+        floatBallOffsetX += dx;
+        floatBallOffsetY += dy;
+
+        if ((floatBallOffsetX >= dragHelper.getTouchSlop() || floatBallOffsetY >= dragHelper.getTouchSlop()) && !floatBallDragEvent) {
+            floatBallDragEvent = true;
+        }
+        
+        if (floatBallDragEvent) {
+          requestLayout();
+        }
       }
     }
-
+    
     @Override
     public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
-      LogUtil.debug("onViewRelease, xvel: " + xvel + "--yvel: " + yvel);
+      LogUtil.debug("DragCallback onViewRelease, xvel: " + xvel + "--yvel: " + yvel);
       if (releasedChild != floatBallView) {
         return;
       }
 
       if (!floatBallDragEvent) {
         floatBallClick();
-        return;
+      } else { 
+        if (releasedChild.getLeft() >= getWidth() / 2) {
+          //STATE_DRAGGING -> STATE_SETTLING
+          dragHelper.settleCapturedViewAt(getWidth() - MARGIN_WITH_BALL - floatBallView.getWidth(), floatBallView.getTop());
+          floatBallOnLeft = false;
+        } else {
+          //STATE_DRAGGING -> STATE_SETTLING
+          dragHelper.settleCapturedViewAt(MARGIN_WITH_BALL, floatBallView.getTop());
+          floatBallOnLeft = true;
+        }
+        postInvalidateOnAnimation();
       }
+    }
 
-      if (releasedChild.getLeft() >= getWidth() / 2) {
-        dragHelper.settleCapturedViewAt(getWidth() - MARGIN_WITH_BALL, floatBallView.getTop());
-        floatBallOnLeft = false;
-      } else {
-        dragHelper.settleCapturedViewAt(MARGIN_WITH_BALL, floatBallView.getTop());
-        floatBallOnLeft = true;
+    /**
+     * 拖拽状态发生改变时回调
+     */
+    @Override
+    public void onViewDragStateChanged(int state) {
+      LogUtil.debug("onViewDragStateChanged, state = " + state);
+      if (floatBallDragEvent && state == ViewDragHelper.STATE_IDLE) {
+        floatBallDragEvent = false;
+        postSleepRunnable();
       }
-      postInvalidateOnAnimation();
     }
   }
-  
-  /*class GestureCallback extends GestureDetector.SimpleOnGestureListener {
-    @Override
-    public boolean onSingleTapConfirmed(MotionEvent e) {
-      if ((floatMenuVisiable() && touchOutofMenu(e)) || dragHelper.findTopChildUnder((int) e.getX(), (int) e.getY()) == floatBallView) {
-        switchFloatMenuVisibility();
-      }
-      return true;
-    }
-  }*/
-
 
   /**
    * computeScroll 在 View 重绘时会被自动调用。

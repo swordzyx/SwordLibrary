@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.WindowManager;
 
 public class FloatBall {
+  public static final int FLOAT_ITEM_USER = 0;
+  public static final int FLOAT_ITEM_FEEDBACK = 1;
+  public static final int FLOAT_ITEM_SWITCH_ACCOUNT = 2;
+  public static final int FLOAT_ITEM_GIFT = 3;
 
   private final FloatBallContainer floatBallContainer;
   private final WindowManager windowManager;
@@ -27,6 +31,10 @@ public class FloatBall {
 
     windowManager = context.getWindowManager();
     floatLayout = layoutParams();
+  }
+
+  public void setFloatMenuItemListener(OnMenuItemClickListener listener) {
+    floatBallContainer.setFloatMenuItemListener(listener);
   }
 
   public void showFloatBall() {

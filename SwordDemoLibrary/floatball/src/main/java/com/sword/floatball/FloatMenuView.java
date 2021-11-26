@@ -6,7 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
@@ -21,15 +23,16 @@ import java.util.List;
 
 /** {@hide} */
 public class FloatMenuView extends ViewGroup {
-  private static final int BACKGROUND_ALPHA = (int)(0.3 * 0xff);
+  private static final int BACKGROUND_ALPHA = (int) (0.3 * 0xff);
+
+  private OnMenuItemClickListener listener;
+  private final GestureDetector gestureDetector;
 
   final Paint backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private OnMenuItemClickListener listener;
   private final List<MenuItem> items = new ArrayList<>();
-  private final int itemPadding = ScreenSize.dpToPx(8);
 
-
-  int innerPadding = ScreenSize.dpToPx(3);
+  private final int innerPadding = ScreenSize.dpToPx(3);
+  private final int itemMargin = ScreenSize.dpToPx(8);
 
 
   public FloatMenuView(Context context) {
@@ -39,9 +42,11 @@ public class FloatMenuView extends ViewGroup {
   public FloatMenuView(Context context, AttributeSet attrs) {
     super(context, attrs);
     initMenuItems(context);
-    
+
     backgroundPaint.setColor(Color.BLACK);
     backgroundPaint.setAlpha(BACKGROUND_ALPHA);
+
+    gestureDetector = new GestureDetector(context, new CustomGestureDetector());
   }
 
   private void initMenuItems(Context context) {
@@ -97,11 +102,12 @@ public class FloatMenuView extends ViewGroup {
    */
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    LogUtil.debug("float menu view onLayout, left: " + l + "; top: " + t + "; right: " + r + "; bottom: " + b);
-    int left = itemPadding;
+    LogUtil.debug("FloatMenuView - onLayout, left: " + l + "; top: " + t + "; right: " + r + "; bottom: " + b);
+    int left = itemMargin;
     for (MenuItem item : items) {
+      LogUtil.debug("left: " + left + "; width: " + item.getWidth());
       item.layout(left, getPaddingTop());
-      left = left + item.getWidth() + itemPadding;
+      left = left + item.getWidth() + itemMargin;
     }
   }
 
@@ -117,11 +123,11 @@ public class FloatMenuView extends ViewGroup {
     int measureHeight = 0;
     for (MenuItem item : items) {
       item.measure();
-      measureWidth += item.getWidth() + itemPadding;
+      measureWidth += item.getWidth() + itemMargin;
       measureHeight = item.getHeight();
     }
-    setMeasuredDimension(measureWidth + itemPadding, measureHeight);
-    LogUtil.debug("float menu onMeasure, measureWidth: " + getMeasuredWidth() + "; measureHeight: " + getMeasuredHeight());
+    setMeasuredDimension(measureWidth + itemMargin, measureHeight);
+    LogUtil.debug("FloatMenuView - onMeasure, measureWidth: " + getMeasuredWidth() + "; measureHeight: " + getMeasuredHeight());
   }
 
   @Override
@@ -135,23 +141,15 @@ public class FloatMenuView extends ViewGroup {
 
   @Override
   public boolean onInterceptTouchEvent(MotionEvent ev) {
-    LogUtil.debug("FloatMenuView onInterceptTouchEvent");
-    float menuItemWidth = Float.MAX_VALUE;
-    switch (ev.getAction()) {
-      case MotionEvent.ACTION_DOWN:
-        downX = ev.getX();
-        break;
-      case MotionEvent.ACTION_UP:
-        if (ev.getX() - downX > menuItemWidth) {
-          break;
-        }
-        if (listener != null) {
-          int index = (int) ((ev.getX() - getLeft()) / menuItemWidth);
-          listener.onMenuItemClick(index);
-        }
-        break;
-    }
+    LogUtil.debug("FloatMenuView - onInterceptTouchEvent event.getAction = " + ev.getAction());
     return true;
+  }
+
+  //FloatMenuView 的父 View 是 FloatBallContainer，如果 FloatMenuView#onTouchEvent 返回 false，那么即使 FloatMenuView#onInterceptTouchEvent 返回 true，FloatBallContainer#onTouchEvent 依然会被执行。
+  @SuppressLint("ClickableViewAccessibility")
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    return gestureDetector.onTouchEvent(event);
   }
 
   public void setMenuItemListener(OnMenuItemClickListener listener) {
@@ -162,7 +160,6 @@ public class FloatMenuView extends ViewGroup {
    * 悬浮菜单封装类
    */
   class MenuItem {
-    int width;
     ImageView icon;
     TextView title;
 
@@ -193,9 +190,9 @@ public class FloatMenuView extends ViewGroup {
         return;
       }
       icon.measure(defaultSpec, defaultSpec);
-      
+
       title.measure(defaultSpec, defaultSpec);
-      LogUtil.debug("icon width: " + icon.getMeasuredWidth() + "; height: " + icon.getMeasuredHeight());
+      LogUtil.debug("FloatMenuView - icon width: " + icon.getMeasuredWidth() + "; height: " + icon.getMeasuredHeight());
     }
 
     /*int measureWidth(LayoutParams layoutParams) {
@@ -222,7 +219,32 @@ public class FloatMenuView extends ViewGroup {
     }*/
   }
 
-  public interface OnMenuItemClickListener {
-    void onMenuItemClick(int index);
+  class CustomGestureDetector extends GestureDetector.SimpleOnGestureListener {
+    @Override
+    public boolean onDown(MotionEvent e) {
+      return true;
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+      if (listener != null) {
+        listener.onMenuItemClick(findClickItemIndex(e));
+      }
+      return true;
+    }
+  }
+
+  /**
+   * 根据点击的位置判断点击的是哪个 item 项。悬浮菜单中的所有菜单项都是等宽的，定义每个子项的范围是“子项的宽度 + 子项前面的 itemMargin”
+   * 更好的设计是：每个子项的点击范围仅为其宽度，其宽度是“内容宽度 + 水平 padding”，这样的话，每个子项在测量时就需要加上设置的 padding
+   */
+  private int findClickItemIndex(MotionEvent event) {
+    int itemWidth = (getWidth() - itemMargin) / 4;
+    LogUtil.debug("FloatMenuView - itemWidth: " + itemWidth + "; clickX: " + event.getX() + "; menuLeft: " + getLeft());
+    /*for (int i=0; i<items.size(); i++) {
+      MenuItem item = items.get(i);
+      
+    }*/
+    return (int) (event.getX() / itemWidth);
   }
 }

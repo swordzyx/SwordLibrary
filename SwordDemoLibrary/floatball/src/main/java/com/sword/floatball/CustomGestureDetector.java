@@ -4,6 +4,16 @@ import android.view.MotionEvent;
 
 public class CustomGestureDetector {
 
+	/*class GestureCallback extends GestureDetector.SimpleOnGestureListener {
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+      if ((floatMenuVisiable() && touchOutofMenu(e)) || dragHelper.findTopChildUnder((int) e.getX(), (int) e.getY()) == floatBallView) {
+        switchFloatMenuVisibility();
+      }
+      return true;
+    }
+  }*/
+	
 	public void processInterceptTouchEvent(MotionEvent event) {
 		/*if (dragHelper.shouldInterceptTouchEvent(event)) {
       return true;
