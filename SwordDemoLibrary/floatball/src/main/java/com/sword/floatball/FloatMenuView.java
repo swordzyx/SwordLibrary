@@ -77,7 +77,7 @@ public class FloatMenuView extends ViewGroup {
     view.setLayoutParams(params);
     view.setText(text);
     view.setTextColor(Color.WHITE);
-    view.setTextSize(TypedValue.COMPLEX_UNIT_PX, 40);
+    view.setTextSize(TypedValue.COMPLEX_UNIT_PX, 35);
     view.setGravity(Gravity.CENTER);
     return view;
   }
@@ -116,7 +116,7 @@ public class FloatMenuView extends ViewGroup {
     int measureWidth = 0;
     int measureHeight = 0;
     for (MenuItem item : items) {
-      item.measure(MeasureSpec.makeMeasureSpec(LayoutParams.WRAP_CONTENT, MeasureSpec.AT_MOST));
+      item.measure();
       measureWidth += item.getWidth() + itemPadding;
       measureHeight = item.getHeight();
     }
@@ -135,6 +135,7 @@ public class FloatMenuView extends ViewGroup {
 
   @Override
   public boolean onInterceptTouchEvent(MotionEvent ev) {
+    LogUtil.debug("FloatMenuView onInterceptTouchEvent");
     float menuItemWidth = Float.MAX_VALUE;
     switch (ev.getAction()) {
       case MotionEvent.ACTION_DOWN:
@@ -161,6 +162,7 @@ public class FloatMenuView extends ViewGroup {
    * 悬浮菜单封装类
    */
   class MenuItem {
+    int width;
     ImageView icon;
     TextView title;
 
@@ -177,7 +179,7 @@ public class FloatMenuView extends ViewGroup {
     }
 
     int getWidth() {
-      return icon.getMeasuredWidth();
+      return Math.max(icon.getMeasuredWidth(), title.getMeasuredWidth());
     }
 
     int getHeight() {
@@ -185,16 +187,14 @@ public class FloatMenuView extends ViewGroup {
     }
 
     @SuppressLint("Range")
-    void measure(int widthSpec) {
+    void measure() {
+      int defaultSpec = MeasureSpec.makeMeasureSpec(LayoutParams.WRAP_CONTENT, MeasureSpec.AT_MOST);
       if (icon == null || title == null) {
         return;
       }
-      icon.measure(widthSpec, MeasureSpec.makeMeasureSpec(LayoutParams.WRAP_CONTENT, MeasureSpec.AT_MOST));
+      icon.measure(defaultSpec, defaultSpec);
       
-      title.measure(
-          MeasureSpec.makeMeasureSpec(icon.getMeasuredWidth(), MeasureSpec.EXACTLY), 
-          MeasureSpec.makeMeasureSpec(LayoutParams.WRAP_CONTENT, MeasureSpec.AT_MOST)
-      );
+      title.measure(defaultSpec, defaultSpec);
       LogUtil.debug("icon width: " + icon.getMeasuredWidth() + "; height: " + icon.getMeasuredHeight());
     }
 

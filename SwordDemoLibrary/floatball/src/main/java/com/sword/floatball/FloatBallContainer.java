@@ -2,6 +2,7 @@ package com.sword.floatball;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,8 @@ import androidx.customview.widget.ViewDragHelper;
 import com.example.utilclass.LogUtil;
 import com.example.utilclass.ScreenSize;
 
-public class FloatBallContainer extends ViewGroup implements View.OnClickListener, FloatMenuView.OnMenuItemClickListener {
-  private static final int WAKE_UP_TIME = 3000;
+public class FloatBallContainer extends ViewGroup implements /*View.OnClickListener, */FloatMenuView.OnMenuItemClickListener {
+  private static final int WAKE_UP_TIME = 10000 * 60;
   private static final int MARGIN_WITH_BALL = ScreenSize.dpToPx(5);
   private static final int MARGIN_WITH_EDGE = ScreenSize.dpToPx(3);
 
@@ -22,6 +23,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
   private final FloatMenuView floatMenuView;
 
   private final ViewDragHelper dragHelper;
+  //private final GestureDetector gestureDetector;
   private int floatBallOffsetX;
   private int floatBallOffsetY;
   boolean floatBallOnLeft = true;
@@ -31,14 +33,14 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
     super(context);
 
     floatBallView = new FloatBallView2(context);
-    floatBallView.setOnClickListener(this);
+    //floatBallView.setOnClickListener(this);
     addView(floatBallView);
 
     floatMenuView = new FloatMenuView(context);
     floatMenuView.setMenuItemListener(this);
     floatMenuView.setVisibility(View.INVISIBLE);
     addView(floatMenuView);
-    
+
     LogUtil.debug("add float ball and float menu");
 
     dragHelper = ViewDragHelper.create(this, new DragCallback());
@@ -90,17 +92,62 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
     LogUtil.debug("floatMenuView Left: " + floatMenuView.getLeft() + "; top=" + floatMenuView.getTop() + "; measureWidth=" + floatMenuView.getMeasuredWidth() + "; measureHeight=" + floatMenuView.getMeasuredWidth());
   }
 
+  boolean downOutofMenu = false;
+
   @Override
   public boolean onInterceptTouchEvent(MotionEvent event) {
-    return dragHelper.shouldInterceptTouchEvent(event);
+    /*if (dragHelper.shouldInterceptTouchEvent(event)) {
+      return true;
+    }
+    switch (event.getAction()) {
+      case MotionEvent.ACTION_DOWN:
+        downOutofMenu = touchOutofMenu(event) && floatMenuVisiable();
+        LogUtil.debug("onInterceptTouchEvent touchOutofMenu: " + downOutofMenu);
+        return downOutofMenu;
+      case MotionEvent.ACTION_UP:
+        if (downOutofMenu && touchOutofMenu(event) && floatMenuVisiable()) {
+          LogUtil.debug("onInterceptTouchEvent switchFloatMenuVisibility");
+          switchFloatMenuVisibility();
+          return true;
+        }
+      default:
+        break;
+    }
+    return false;*/
+    /*View view  = dragHelper.findTopChildUnder((int) event.getX(), (int) event.getY());
+    LogUtil.debug("find view , x : " + event.getX() + "-- y: " + event.getY() + "-- floatBallX: " + floatBallView.getX() + "-- floatBallY: " + floatBallView.getY() + " find status: " + (view != null));
+    LogUtil.debug("shouldInterceptTouchEvent: " + dragHelper.shouldInterceptTouchEvent(event));
+    return dragHelper.shouldInterceptTouchEvent(event);*/
+    return true;
   }
-
+  
   @SuppressLint("ClickableViewAccessibility")
   @Override
   public boolean onTouchEvent(MotionEvent event) {
+    switch (event.getAction()) {
+      case MotionEvent.ACTION_DOWN:
+        downOutofMenu = touchOutofMenu(event);
+        
+        LogUtil.debug("onTouchEvent touchOutofMenu: " + downOutofMenu);
+      case MotionEvent.ACTION_UP:
+        if (downOutofMenu && touchOutofMenu(event) && floatMenuVisiable()) {
+          LogUtil.debug("onTouchEvent switchFloatMenuVisibility");
+          switchFloatMenuVisibility();
+        }
+      default:
+        break;
+    }
+    /*if (event.getAction() == MotionEvent.ACTION_DOWN) {
+      View view  = dragHelper.findTopChildUnder((int) event.getX(), (int) event.getY());
+      LogUtil.debug("find view , x : " + event.getX() + "-- y: " + event.getY() + "-- floatBallX: " + floatBallView.getX() + "-- floatBallY: " + floatBallView.getY() + " find status: " + (view != null));
+    }*/
     dragHelper.processTouchEvent(event);
-
     return true;
+  }
+
+  private boolean touchOutofMenu(MotionEvent event) {
+    LogUtil.debug("touchX: " + event.getX() + "; touchY: " + event.getY() + "; floatMenu bottom: " + floatMenuView.getBottom() + "; floatMenu top: " + floatMenuView.getTop() + "; floatMenu right: " + floatMenuView.getRight());
+    return event.getY() < floatMenuView.getTop() || event.getY() > floatMenuView.getBottom() || event.getX() > floatMenuView.getRight();
   }
 
   private void showFloatMenu() {
@@ -131,8 +178,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
     postSleepRunnable();
   }
 
-  @Override
-  public void onClick(View v) {
+  private void floatBallClick() {
     LogUtil.debug("FloatBall Click");
     if (sleep) {
       floatBallWakeUp();
@@ -140,17 +186,19 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
       return;
     }
     removeCallbacks(sleepRunnable);
-    LogUtil.debug("show float menu, visible: " + (floatMenuView.getVisibility() == View.VISIBLE));
-
     switchFloatMenuVisibility();
   }
 
   private void switchFloatMenuVisibility() {
-    if (floatMenuView.getVisibility() == View.VISIBLE) {
+    if (floatMenuVisiable()) {
       hideFloatMenu();
     } else {
       showFloatMenu();
     }
+  }
+  
+  private boolean floatMenuVisiable() {
+    return floatMenuView.getVisibility() == View.VISIBLE;
   }
 
   @Override
@@ -162,17 +210,21 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
 
     @Override
     public boolean tryCaptureView(@NonNull View child, int pointerId) {
-      LogUtil.debug("chile == floatBallView: " + (child == floatBallView) + "; sleep: " + sleep);
-      return child == floatBallView && !sleep; 
+      LogUtil.debug("tryCaptureView");
+      /*LogUtil.debug("chile == floatBallView: " + (child == floatBallView) + "; sleep: " + sleep);
+      return child == floatBallView && !sleep;*/
+      return true;
     }
 
     @Override
     public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
+      LogUtil.debug("clampViewPositionHorizontal left: " + left + "-- dx: " + dx);
       return left;
     }
 
     @Override
     public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
+      LogUtil.debug("clampViewPositionVertical top: " + top + "--dy: " + dy);
       return top;
     }
 
@@ -188,6 +240,7 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
 
     @Override
     public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
+      LogUtil.debug("onViewRelease, xvel: " + xvel + "--yvel: " + yvel);
       if (releasedChild != floatBallView) {
         return;
       }
@@ -200,6 +253,16 @@ public class FloatBallContainer extends ViewGroup implements View.OnClickListene
         floatBallOnLeft = true;
       }
       postInvalidateOnAnimation();
+    }
+  }
+  
+  class GestureCallback extends GestureDetector.SimpleOnGestureListener {
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+      if ((floatMenuVisiable() && touchOutofMenu(e)) || dragHelper.findTopChildUnder((int) e.getX(), (int) e.getY()) == floatBallView) {
+        switchFloatMenuVisibility();
+      }
+      return true;
     }
   }
 
