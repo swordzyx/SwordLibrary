@@ -1,6 +1,7 @@
 package com.sword.floatball
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,7 +20,7 @@ class WebViewActivity : AppCompatActivity() {
 		"server_id" to "31", //XLCWGameConfig.getRoleInfo().get("server_id")
 		"vip" to "", //XLCWGameConfig.getRoleInfo().get("vip")
 		"channel_id" to "", //XLCWGameConfig.getChannelId()
-		"device" to "${Build.MODEL} / ${Build.BRAND}", //设备型号 SystemUtil.getSystemModel()
+		"device" to Build.MODEL, //设备型号 SystemUtil.getSystemModel()
 		"ip" to "${getIpv4Address()}",
 		"os" to "0", //系统类型，固定为 Android，XLCWGameConfig.getOS()
 		"apkVersionDesc" to BuildConfig.VERSION_NAME,
@@ -29,12 +30,14 @@ class WebViewActivity : AppCompatActivity() {
 	private lateinit var webView: WebView
 
 
+	@SuppressLint("SetJavaScriptEnabled")
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_web_view)
 
 		webView = findViewById(R.id.webview)
 		webView.loadUrl(buildUrl())
+		webView.settings.javaScriptEnabled = true;
 	}
 
 	private fun buildUrl(): String {
