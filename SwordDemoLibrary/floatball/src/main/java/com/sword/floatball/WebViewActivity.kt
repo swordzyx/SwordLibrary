@@ -12,6 +12,7 @@ import java.lang.StringBuilder
 import java.net.Inet4Address
 import java.net.NetworkInterface
 
+//Dialog + Animation
 class WebViewActivity : AppCompatActivity() {
 	private val url = "http://192.168.18.86:8080/feedback"
 	private val params = hashMapOf(
@@ -37,7 +38,7 @@ class WebViewActivity : AppCompatActivity() {
 
 		webView = findViewById(R.id.webview)
 		webView.loadUrl(buildUrl())
-		webView.settings.javaScriptEnabled = true;
+		webView.settings.javaScriptEnabled = true
 	}
 
 	private fun buildUrl(): String {
