@@ -19,14 +19,19 @@ public class FLoatMenuActivity extends AppCompatActivity {
     setContentView(R.layout.activity_menu_activity);
     webView = findViewById(R.id.webView);
 
-    loadPageFromUrl("http://192.168.18.86:8080/feedback");
+    String url = getIntent().getStringExtra("url");
+    if (url == null) {
+      url = "http://192.168.18.86:8080/feedback";
+    }
+    loadPageFromUrl(url);
   }
+  
+  
 
   @SuppressLint("SetJavaScriptEnabled")
   private void loadPageFromUrl(String url) {
     if (webView == null) {
       webView = new WebView(this);
-
     }
 
     FloatMenuWebClient webClient = new FloatMenuWebClient(findViewById(R.id.progress));

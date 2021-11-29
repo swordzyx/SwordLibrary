@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity(), OnMenuItemClickListener {
   override fun onMenuItemClick(index: Int) {
     when (index) {
       FloatBall.FLOAT_ITEM_USER -> {
+        showUserActivity()
         LogUtil.debug("$TAG - click user item")
       }
       FloatBall.FLOAT_ITEM_FEEDBACK -> {
@@ -35,8 +36,14 @@ class MainActivity : AppCompatActivity(), OnMenuItemClickListener {
     TODO("Not yet implemented")
   }
 
+  private fun showUserActivity() {
+    val intent = Intent(this, UserActivity::class.java);
+    startActivity(intent)
+  }
+
   private fun showFeedBackDialog() {
     val intent = Intent(this, WebViewActivity::class.java)
     startActivity(intent)
+    //val dialog = FloatMenuDialog(this, )
   }
 }
