@@ -45,8 +45,6 @@ public class FloatMenuDialog {
     
     //动画
     dialog.getWindow().setWindowAnimations(R.style.dialog_anim_default);
-    
-    
   }
   
   /*private void animation() {

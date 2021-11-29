@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity(), OnMenuItemClickListener {
   }
 
   private fun showFeedBackDialog() {
-    val intent = Intent(this, WebViewActivity::class.java)
+    val intent = Intent(this, FLoatMenuActivity::class.java)
+    intent.putExtra("url", "http://192.168.18.86:8080/feedback");
     startActivity(intent)
-    //val dialog = FloatMenuDialog(this, )
   }
 }

@@ -1,11 +1,13 @@
-package com.sword.floatball
+package com.sword.webbasecontent
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
+import android.webkit.WebChromeClient
 import android.webkit.WebView
+import com.example.utilclass.BuildConfig
 import com.example.utilclass.LogUtil
 import java.lang.Exception
 import java.lang.StringBuilder
@@ -37,8 +39,22 @@ class WebViewActivity : AppCompatActivity() {
 		setContentView(R.layout.activity_web_view)
 
 		webView = findViewById(R.id.webview)
-		webView.loadUrl(buildUrl())
 		webView.settings.javaScriptEnabled = true
+		webView.webChromeClient = WebChromeClient()
+		webView.webViewClient = SwordWebViewClient(null)
+
+		loadFromData();
+	}
+
+	private fun loadFromData() {
+		val unencodedHtml = "<html><body>'%23' is the percent code for ‘#‘</body></html>"
+		//将给定的字节数组转成 Base64 字符串。Base64.NO_PADDING 表示编码结束时空余的部分以 "=" 填充
+		val encodedHtml = Base64.encodeToString(unencodedHtml.toByteArray(), Base64.NO_PADDING)
+		webView.loadData(encodedHtml,  "text/html", "base64")
+	}
+
+	private fun loadFromUrl() {
+		webView.loadUrl(buildUrl())
 	}
 
 	private fun buildUrl(): String {

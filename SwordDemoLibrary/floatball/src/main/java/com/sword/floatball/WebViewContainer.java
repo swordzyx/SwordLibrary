@@ -60,8 +60,9 @@ public class WebViewContainer extends ViewGroup {
     
     if (client != null) {
       webView.setWebViewClient(client);
-      
     }
+
+    webView.loadUrl(url);
   }
   
   

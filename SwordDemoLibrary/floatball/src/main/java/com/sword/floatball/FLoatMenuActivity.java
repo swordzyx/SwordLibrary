@@ -21,7 +21,7 @@ public class FLoatMenuActivity extends AppCompatActivity {
 
     String url = getIntent().getStringExtra("url");
     if (url == null) {
-      url = "http://192.168.18.86:8080/feedback";
+      finish();
     }
     loadPageFromUrl(url);
   }

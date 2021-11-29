@@ -1,4 +1,4 @@
-package com.sword.floatball;
+package com.sword.webbasecontent;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -20,15 +20,15 @@ import androidx.annotation.Nullable;
 
 import com.example.utilclass.LogUtil;
 
-public class FloatMenuWebClient extends WebViewClient {
+public class SwordWebViewClient extends WebViewClient {
   private final ProgressBar progressBar;
-  private final FloatMenuWebClient client;
+  private final SwordWebViewClient client;
 
-  public FloatMenuWebClient(ProgressBar progressBar) {
+  public SwordWebViewClient(ProgressBar progressBar) {
     this(progressBar, null);
   }
-  
-  public FloatMenuWebClient(ProgressBar progressBar, FloatMenuWebClient client) {
+
+  public SwordWebViewClient(ProgressBar progressBar, SwordWebViewClient client) {
     this.progressBar = progressBar;
     this.client = client; 
   }
