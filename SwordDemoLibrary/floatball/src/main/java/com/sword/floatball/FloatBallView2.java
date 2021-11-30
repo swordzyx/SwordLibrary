@@ -12,9 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 public class FloatBallView2 extends AppCompatImageView {
 	public FloatBallView2(@NonNull Context context) {
 		super(context);
-
 		
-		//setBackgroundColor(Color.WHITE);
 		setImageResource(R.mipmap.floatball);
 	}
 
