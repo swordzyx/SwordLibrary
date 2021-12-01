@@ -8,12 +8,20 @@
 			function callJs() {
 				alert("Android 调用了 JS 的 callJS 方法");
 			}
+
+			function callAndroid() {
+				test.hello("执行 AndroidJsInterface 中的 hello 方法")
+			}
+
+			function callAndroidUrl() {
+				document.location = "js://webview?arg1=111&arg2=222"
+			}
 		
 	</script>
 </head>
 
 <body>
-Web Base Content
+	<button type="button" id="button1" onclick="callAndroid()">点击执行 Android 代码</button>
 </body>
 
 
