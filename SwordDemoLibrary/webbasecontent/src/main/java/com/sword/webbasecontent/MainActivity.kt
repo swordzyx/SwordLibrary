@@ -1,6 +1,7 @@
 package com.sword.webbasecontent
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.*
@@ -28,13 +29,13 @@ class MainActivity : AppCompatActivity() {
 		/**
 		 * 1. Android 通过 loadUrl 调用 JS 代码
 		 * 2. 通过 WebView 的 evaluateJavascript 执行 JS 代码，这种方法更高效，因为它不会导致 url 刷新，而 loadUrl 会导致页面刷新
+		 * 3. 通过 WebView#addJavascriptInterface() 的将 Android 的实例映射到 JS 的实例，实现 JS 执行 Android 代码
+		 * 4. 通过 WebViewClient#shouldOverrideUrlLoading() 拦截用户点击的 url，解析 url，如果 schemas 和 authority 是约定的值，则触发 Android 方法的调用
 		 */
 		configureWebView()
 
 	}
-
-
-
+	
 	@SuppressLint("SetJavaScriptEnabled")
 	private fun configureWebView() {
 		webView.webChromeClient = webChromeClient
@@ -73,11 +74,8 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
-			if (request.url.scheme == "js" && request.url.authority == "webview") {
-
-				LogUtil.debug("执行 Android 方法，参数：${request.url.queryParameterNames}")
-			}
-			return super.shouldOverrideUrlLoading(view, request)
+			//url: js://webview?arg1=111&arg2=222
+			return checkUrl(request.url)
 		}
 	}
 	
@@ -86,15 +84,54 @@ class MainActivity : AppCompatActivity() {
 		 * Js 执行 alert() 弹框时回调，让主应用程序决定是否拦截。如果返回 false 表示不拦截，JS 继续弹框，如果返回 true，则拦截，弹自定义 Dialog，不过在 Dialog 关闭之后需要执行 JsResult#confirm() 方法。
 		 */
 		override fun onJsAlert(view: WebView?, url: String?, message: String?, result: JsResult?): Boolean {
-			AlertDialog.Builder(this@MainActivity)
+			/*AlertDialog.Builder(this@MainActivity)
 				.setTitle("Android 执行 JS")
 				.setMessage(message)
 				.setPositiveButton("确定") { _, _ ->
 					result?.confirm()
 				}
 				.setCancelable(true)
-				.create().show()
+				.create().show()*/
+			LogUtil.debug("onJsAlert, message: $message, url: $url")
+			result?.confirm()
 			return true
 		}
+
+		override fun onJsConfirm(
+			view: WebView?,
+			url: String?,
+			message: String?,
+			result: JsResult?
+		): Boolean {
+			LogUtil.debug("onJsConfirm, message: $message, url: $url")
+			result?.confirm()
+			return true
+		}
+
+		override fun onJsPrompt(
+			view: WebView?,
+			url: String?,
+			message: String?,
+			defaultValue: String?,
+			result: JsPromptResult?
+		): Boolean {
+			LogUtil.debug("onJsPrompt, url: $url, defaultValue: $defaultValue")
+			//返回值给 JS
+			result?.confirm("onJsPrompt result")
+			return true
+		}
+	}
+	
+	private fun checkUrl(uri: Uri) : Boolean {
+		if (uri.scheme == "js" && uri.authority == "webview") {
+			LogUtil.debug("执行 Android 方法 -----")
+
+			//获取查询参数
+			for(s in uri.queryParameterNames) {
+				LogUtil.debug("param: $s, value: ${uri.getQueryParameter(s)}")
+			}
+			return true
+		}
+		return false
 	}
 }

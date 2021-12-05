@@ -2,6 +2,7 @@ package com.sword.httptheory
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.sword.httptheory.okhttp.OkHttpSample
 import com.sword.httptheory.retrofit.RetrofitNetUtil
 
 class MainActivity : AppCompatActivity() {
@@ -9,6 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        RetrofitNetUtil().requestByRetrofit()
+        //RetrofitNetUtil().requestByRetrofit()
+        OkHttpSample.testRequest()
     }
 }
