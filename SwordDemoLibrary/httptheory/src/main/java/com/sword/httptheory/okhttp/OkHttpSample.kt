@@ -10,7 +10,18 @@ class OkHttpSample {
     fun testRequest() {
       val url = "https://api.github.com/users/rengwuxian/repos"
 
-      val client = OkHttpClient()
+      val client = OkHttpClient.Builder()
+        .authenticator(object : Authenticator {
+          override fun authenticate(route: Route?, response: Response): Request? {
+            ...//token 刷新
+            //重新发起一次请求
+            return response.request().newBuilder()
+              .header("Authorization", "Bearer badakfjdklsjfla")
+              .build()
+          }
+
+        })
+        .build()
       val request = Request.Builder()
         .url(url)
         .build()
