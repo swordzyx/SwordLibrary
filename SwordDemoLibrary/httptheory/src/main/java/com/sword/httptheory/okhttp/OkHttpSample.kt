@@ -10,28 +10,24 @@ class OkHttpSample {
     fun testRequest() {
       val url = "https://api.github.com/users/rengwuxian/repos"
 
-      val client = OkHttpClient.Builder()
-        .authenticator(object : Authenticator {
-          override fun authenticate(route: Route?, response: Response): Request? {
-            ...//token 刷新
-            //重新发起一次请求
-            return response.request().newBuilder()
-              .header("Authorization", "Bearer badakfjdklsjfla")
-              .build()
-          }
-
-        })
+      val certificatePinner = CertificatePinner.Builder()
+        .add("api.github.com", "sha256/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=")
         .build()
+
+      val client = OkHttpClient.Builder()
+        .certificatePinner(certificatePinner)
+        .build()
+
       val request = Request.Builder()
         .url(url)
         .build()
       client.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
-          println("request fail")
+          e.printStackTrace()
         }
 
         override fun onResponse(call: Call, response: Response) {
-          println("response code: ${response.code()}")
+          println("response code: ${response.code}")
         }
 
       })
