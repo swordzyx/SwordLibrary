@@ -1,8 +1,12 @@
 package com.example.utilclass
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Rect
+import android.os.Build
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 
 class ViewUtil {
 	/**

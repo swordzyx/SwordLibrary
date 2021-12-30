@@ -1,0 +1,93 @@
+println("gradle home dir: ${getGradle().getGradleHomeDir().path}")
+println("gradle user home dir: ${getGradle().getGradleUserHomeDir().path}")
+getGradle().getIncludedBuilds().forEach {
+    println "includeBuild: ${it.name}"
+}
+
+println("absoluteProjectPath: ${absoluteProjectPath("build/")}")
+
+//评估阶段执行完成之后回调
+afterEvaluate {
+    println "evaluate finish"
+}
+
+allprojects {
+    //配置阶段执行
+    println "execute allprojects"
+}
+
+println """depthCompare with app: ${getRootProject().depthCompare(getRootProject().project(":gradlescript"))}"""
+
+println "build script file: ${getBuildFile().absolutePath}"
+
+println "display name: ${getDisplayName()}"
+
+println "-------------------------------------------------------------------------------------------------------"
+/*getProperties().each {
+    println "key: ${it.key} - value: ${it.value}"
+}*/
+println "-------------------------------------------------------------------------------------------------------"
+
+
+println "-------------------------------------------------------------------------------------------------------"
+getRepositories().each {
+    println "repository: ${it.name}"
+}
+println "-------------------------------------------------------------------------------------------------------"
+
+println "-------------------------------------------------------------------------------------------------------"
+println "relativePath: ${relativePath("D:\\GitCode\\Android-Pratice\\SwordDemoLibrary\\gradlescript\\build")}"
+println "-------------------------------------------------------------------------------------------------------"
+
+task xxxx {
+    println "${getName()}"
+}
+
+//获取所有 project 各个阶段的耗时
+long beginOfSetting = System.currentTimeMillis()
+//配置开始时间
+def beginOfConfig
+def beginOfProjectConfig = new HashMap()
+def beginOfProjectExecute
+def configHasBegin = false
+gradle.projectsLoaded {
+    println "初始阶段耗时 ${System.currentTimeMillis() - beginOfSetting}ms"
+}
+
+gradle.beforeProject { project -> 
+    if (!configHasBegin) {
+        configHasBegin = true
+        //记录整个配置阶段开始的时间点
+        beginOfConfig = Sytem.currentTimeMillis()
+    }
+    //保存每个 Project 开始配置的时间
+    beginOfProjectConfig.put(project, System.currentTimeMillis())
+}
+
+gradle.afterProject { project ->
+    println "project ${project.getName()} 配置阶段耗时：${System.currentTimeMillis() - beginOfProjectConfig.get(project)}ms"
+}
+
+
+//有向无环的 Task 图绘制完成时回调，gradle.taskGraph 就是整个构建过程中所有 task 的有向无环图实例
+gradle.taskGraph.whenReady {
+    println "配置阶段，总共耗时：${System.currentTimeMillis() - beginOfConfig}"
+    //配置阶段完成之后，就开始进入执行阶段
+    beginOfProjectExecute = System.currentTimeMillis()
+}
+
+//记录每一个 Task 开始执行的时间
+gradle.taskGraph.beforeTask { task ->
+    task.doFirst {
+        task.ext.beginOfTask = System.currentTimeMillis()
+    }
+    
+    task.doLast {
+        println "task ${task.getName()} 执行阶段耗时：${System.currentTimeMillis() - task.ext.beginOfTask}"
+    }
+}
+
+gradle.buildFinished {
+    println "执行阶段耗时：${System.currentTimeMillis() - beginOfProjectExecute}ms"
+    println "整个构建过程耗时: ${System.currentTimeMillis() - beginOfSetting}"
+}

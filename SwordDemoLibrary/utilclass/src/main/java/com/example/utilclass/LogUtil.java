@@ -20,6 +20,10 @@ public class LogUtil {
   public static void debug(String msg) {
     Log.d(TAG, msg);
   }
+
+  public static void debug(String tag, String msg) {
+    Log.d(tag, msg);
+  }
     
   public static void error(String msg) {
     Log.d(TAG, msg);

@@ -7,7 +7,7 @@ include ':loginlibrary'
 //include ':loginlibrary'
 include ':test'
 //include ':groovypractice'
-//include ':app'
+include ':app'
 rootProject.name = "SwordDemoLibrary"
 include ':scanner'
 include ':camerax'
