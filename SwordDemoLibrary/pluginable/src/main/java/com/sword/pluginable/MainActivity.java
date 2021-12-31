@@ -1,6 +1,7 @@
 package com.sword.pluginable;
 
 import android.os.Bundle;
+import android.os.FileUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -65,4 +66,9 @@ public class MainActivity extends AppCompatActivity {
 	/**
 	 * 访问同一个工程下其他 apk 模块的类，使用 ClassLoader
 	 */
+	private static void refectInvokeOtherApk() {
+		//先将 assets/plugin-debug.apk 拷贝到缓存目录中
+
+
+	}
 }

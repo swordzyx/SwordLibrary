@@ -114,6 +114,7 @@ fun getNotchHeightHw(window: Window): IntArray {
 /**
  * 在华为手机上设置使用刘海区域
  */
+const val FLAG_NOTCH_SUPPORT = 1
 fun useNotchInFullScreenHw(window: Window) {
   val lp = window.attributes
   val layoutParamExCls =
@@ -295,7 +296,7 @@ private fun gainCutoutRect(context: Context): List<Rect?>? {
       }
     }
   }
-  return rects
+  return cutouts
 }
 
 

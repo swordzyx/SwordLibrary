@@ -87,4 +87,12 @@ public class FileUtils {
         }
         return false;
     }
+
+    public static void fileCopy(String sourceFile, String aimFile) {
+
+    }
+
+    public static void fileCopy(File sourceFile, File aimFile) {
+
+    }
 }
