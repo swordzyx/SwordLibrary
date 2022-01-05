@@ -28,10 +28,17 @@
 		
 	
 	<Button
-		android:id="@+id/loadHofix"
+		android:id="@+id/loadHofixApk"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="hofix button"
+		android:text="apk hofix button"
+		android:onClick="onClick"/>
+
+	<Button
+		android:id="@+id/loadHofixDex"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="dex hofix button"
 		android:onClick="onClick"/>
 
 

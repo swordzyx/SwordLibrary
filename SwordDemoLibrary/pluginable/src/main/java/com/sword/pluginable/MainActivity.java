@@ -98,13 +98,18 @@ public class MainActivity extends AppCompatActivity {
 		if (view.getId() == R.id.loadPlugin) {
 			refectInvokeOtherApk();
 		}
-		if (view.getId() == R.id.loadHofix) {
+		if (view.getId() == R.id.loadHofixApk) {
 			copyHofixApkToCache();
+		}
+		if (view.getId() == R.id.loadHofixDex) {
+
 		}
 		if (view.getId() == R.id.showTitle) {
 			Title title = new Title();
 			((TextView)findViewById(R.id.title)).setText(title.getTitle());
 		}
+
+
 	}
 
 	private void copyHofixApkToCache() {
