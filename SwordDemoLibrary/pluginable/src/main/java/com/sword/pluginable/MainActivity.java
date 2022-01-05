@@ -2,6 +2,7 @@ package com.sword.pluginable;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		if (apk.exists()) {
+			//创建插件 apk 对应的 ClassLoader，这个 ClassLoader 加载插件 apk 中所有的类。
 			DexClassLoader classLoader = new DexClassLoader(apk.getPath(), getCacheDir().getPath(), null, null);
 			try {
 				Class<?> cls = classLoader.loadClass("com.example.plugin.PublicUtils");
@@ -96,5 +98,25 @@ public class MainActivity extends AppCompatActivity {
 		if (view.getId() == R.id.loadPlugin) {
 			refectInvokeOtherApk();
 		}
+		if (view.getId() == R.id.loadHofix) {
+			copyHofixApkToCache();
+		}
+		if (view.getId() == R.id.showTitle) {
+			Title title = new Title();
+			((TextView)findViewById(R.id.title)).setText(title.getTitle());
+		}
 	}
+
+	private void copyHofixApkToCache() {
+		//拷贝热修复 apk 到缓存目录
+		File apk = new File(getCacheDir() + "/hotfix.apk");
+		try(Source source = Okio.source(getAssets().open("hotfix.apk"));
+				BufferedSink sink = Okio.buffer(Okio.sink(apk))) {
+			sink.writeAll(source);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
