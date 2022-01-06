@@ -99,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
 			refectInvokeOtherApk();
 		}
 		if (view.getId() == R.id.loadHofixApk) {
-			copyHofixApkToCache();
+			copyAssetsFileToCache("hotfix.apk", "hotfix.apk");
 		}
 		if (view.getId() == R.id.loadHofixDex) {
-
+			copyAssetsFileToCache("hotfix.dex", "hotfix.dex");
 		}
 		if (view.getId() == R.id.showTitle) {
 			Title title = new Title();
@@ -112,10 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
 	}
 
-	private void copyHofixApkToCache() {
+	private void copyAssetsFileToCache(String filePathInAssets, String filePathInCache) {
 		//拷贝热修复 apk 到缓存目录
-		File apk = new File(getCacheDir() + "/hotfix.apk");
-		try(Source source = Okio.source(getAssets().open("hotfix.apk"));
+		File apk = new File(getCacheDir() + File.separator + filePathInCache);
+		try(Source source = Okio.source(getAssets().open(filePathInAssets));
 				BufferedSink sink = Okio.buffer(Okio.sink(apk))) {
 			sink.writeAll(source);
 		} catch (IOException e) {
