@@ -1,11 +1,18 @@
 package com.sword.pluginable;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.utilclass.TextUtil;
+import com.example.utilclass.ToastUtilKt;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,16 +21,21 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import dalvik.system.DexClassLoader;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Source;
 
 public class MainActivity extends AppCompatActivity {
+	private static final String HOTFIX_DEX_NAME = "hotfix.dex";
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
 		//reflectInvokePrivate();
 		//refectInvokeOtherApk();
 	}
@@ -99,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 			refectInvokeOtherApk();
 		}
 		if (view.getId() == R.id.loadHofixApk) {
+			downloadHotfix();
 			copyAssetsFileToCache("hotfix.apk", "hotfix.apk");
 		}
 		if (view.getId() == R.id.loadHofixDex) {
@@ -109,7 +122,43 @@ public class MainActivity extends AppCompatActivity {
 			((TextView)findViewById(R.id.title)).setText(title.getTitle());
 		}
 
+		if (view.getId() == R.id.removeHotfix) {
+			File hotfixDex = new File(getCacheDir() + File.separator + "hotfix.dex");
+			if (hotfixDex.exists() && hotfixDex.delete()) {
+				Toast.makeText(this, "unstall hotfix success, please restart app", Toast.LENGTH_SHORT).show();
+			}
+		}
 
+		if (view.getId() == R.id.restart) {
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			finish();
+			Runtime.getRuntime().exit(0);
+		}
+
+	}
+
+	private void downloadHotfix() {
+		OkHttpClient client = new OkHttpClient();
+		final Request request = new Request.Builder()
+				.url("https://api.hencoder.com/patch/upload/hotfix.dex")
+				.build();
+
+		client.newCall(request).enqueue(new Callback() {
+			@Override
+			public void onFailure(@NonNull Call call, @NonNull IOException e) {
+				runOnUiThread(() -> {
+					ToastUtilKt.toast(MainActivity.this, "补丁下载失败");
+				});
+			}
+
+			@Override
+			public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+				BufferedSink sink = Okio.buffer(Okio.sink(new File(getCacheDir() + File.separator + HOTFIX_DEX_NAME)));
+				sink.writeAll(Okio.source(response))
+			}
+		});
 	}
 
 	private void copyAssetsFileToCache(String filePathInAssets, String filePathInCache) {
@@ -122,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
 			e.printStackTrace();
 		}
 	}
+
+
 	
 	
 }

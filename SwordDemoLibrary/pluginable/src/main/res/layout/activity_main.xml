@@ -41,5 +41,18 @@
 		android:text="dex hofix button"
 		android:onClick="onClick"/>
 
+	<Button
+		android:id="@+id/removeHotfix"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="移除补丁"/>
+
+	<Button
+		android:id="@+id/restart"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="重启"/>
+
+
 
 </LinearLayout>
