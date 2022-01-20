@@ -68,8 +68,6 @@ public class FloatBallManager {
 
     /**
      * 添加一个菜单条目
-     *
-     * @param item
      */
     public FloatBallManager addMenuItem(MenuItem item) {
         menuItems.add(item);
@@ -101,6 +99,9 @@ public class FloatBallManager {
         return floatBall.getSize();
     }
 
+    /**
+     * 计算屏幕大小
+     */
     public void computeScreenSize() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             Point point = new Point();
@@ -149,6 +150,9 @@ public class FloatBallManager {
         floatMenu.detachFromWindow(mWindowManager);
     }
 
+    /**
+     * 触发点击事件，显示菜单栏。
+     */
     public void onFloatBallClick() {
         if (menuItems != null && menuItems.size() > 0) {
             floatMenu.attachToWindow(mWindowManager);
@@ -159,6 +163,9 @@ public class FloatBallManager {
         }
     }
 
+    /**
+     * 隐藏悬浮球
+     */
     public void hide() {
         if (!isShowing) return;
         isShowing = false;
@@ -184,6 +191,9 @@ public class FloatBallManager {
         void onFloatBallClick();
     }
 
+    /**
+     * 悬浮窗相关权限
+     */
     public interface IFloatBallPermission {
         /**
          * request the permission of floatball,just use {@link #requestFloatBallPermission(Activity)},

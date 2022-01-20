@@ -32,6 +32,9 @@ import android.widget.ImageView;
 import com.huxq17.floatball.libarary.FloatBallManager;
 import com.huxq17.floatball.libarary.FloatBallUtil;
 
+/**
+ * 悬浮菜单
+ */
 public class FloatMenu extends FrameLayout {
     private MenuLayout mMenuLayout;
 
@@ -277,8 +280,8 @@ public class FloatMenu extends FrameLayout {
 
     /**
      * 计算菜单中各个view的位置
-     *
-     * @return
+     * mBallSize 为悬浮球 width 的 1/2（悬浮球 width 和 height 相等）
+     * mSize 为菜单栏大小，
      */
     public int computeMenuLayout(WindowManager.LayoutParams layoutParams) {
         int position = FloatMenu.RIGHT_CENTER;
@@ -287,6 +290,7 @@ public class FloatMenu extends FrameLayout {
         final int screenHeight = floatBallManager.mScreenHeight;
         final int floatballCenterY = floatBallManager.floatballY + halfBallSize;
 
+        //悬浮球 x 坐标，悬浮球中心 y 坐标
         int wmX = floatBallManager.floatballX;
         int wmY = floatballCenterY;
 
@@ -310,7 +314,8 @@ public class FloatMenu extends FrameLayout {
                 position = FloatMenu.RIGHT_TOP;//右上
                 wmY = floatballCenterY - halfBallSize;
             } else if (wmY > screenHeight - mSize / 2) {
-                position = FloatMenu.RIGHT_BOTTOM;//右下
+                position = FloatMenu.RIGHT_BOTTOM;//悬浮球位于右下角
+                //悬浮菜单是一个正方形区域，mSize 就是这个正方形区域的边长，当悬浮球位于右下角时，悬浮菜单的 y 就等于悬浮球的 bottom - mSize。
                 wmY = floatballCenterY - mSize + halfBallSize;
             } else {
                 position = FloatMenu.RIGHT_CENTER;//右中
