@@ -155,8 +155,12 @@ public class MainActivity extends AppCompatActivity {
 
 			@Override
 			public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-				BufferedSink sink = Okio.buffer(Okio.sink(new File(getCacheDir() + File.separator + HOTFIX_DEX_NAME)));
-				sink.writeAll(Okio.source(response))
+				try(BufferedSink sink = Okio.buffer(Okio.sink(new File(getCacheDir() + File.separator + HOTFIX_DEX_NAME)))) {
+					sink.write(response.body().bytes());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				ToastUtilKt.toast(MainActivity.this, "补丁加载成功");
 			}
 		});
 	}
@@ -171,8 +175,4 @@ public class MainActivity extends AppCompatActivity {
 			e.printStackTrace();
 		}
 	}
-
-
-	
-	
 }

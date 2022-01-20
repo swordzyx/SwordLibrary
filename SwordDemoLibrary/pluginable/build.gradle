@@ -47,3 +47,29 @@ dependencies {
 	androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 	androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
+
+def patchPath = 'com/sword/pluginable/Title'
+
+task hotfix {
+	doLast {
+		exec {
+			commandLine 'rm', '-r', './build/patch'
+		}
+
+		exec {
+			commandLine 'mkdir', './build/patch'
+		}
+
+		exec {
+			commandLine 'javac', "./src/main/java/${patchPath}.java", "-d", './build/patch'
+		}
+
+		exec {
+			commandLine '/Users/zhouyanxia/Library/Android/sdk/build-tools/29.0.2/d8', "./build/patch/${patchPath}.class", '--output', './build/patch'
+		}
+
+		exec {
+			commandLine 'mv', './build/patch/classes.dex', './build/patch/hotfix.dex'
+		}
+	}
+}
