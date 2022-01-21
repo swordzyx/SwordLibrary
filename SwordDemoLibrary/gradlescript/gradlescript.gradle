@@ -91,3 +91,18 @@ gradle.buildFinished {
     println "执行阶段耗时：${System.currentTimeMillis() - beginOfProjectExecute}ms"
     println "整个构建过程耗时: ${System.currentTimeMillis() - beginOfSetting}"
 }
+
+
+afterEvaluate {
+    //android 是一个扩展类的对象，此扩展类的类名为 BaseAppModuleExtension.kt，它继承了 AppExtension 类，applicationVariants 是 AppExtension 提供的一个 getApplicationVariants() 的简写
+    android.applicationVariants.all { variant ->
+        def taskName = "fastInstall${variant.getName()}"
+        def dependsOnTask = tasks.findTaskByName("compress${variant.name}Assets")
+        def finalizedTask = tasks.findTaskByName("install${variant.name}")
+
+        tasks.register(taskName) {
+            dependsOn dependsOnTask
+            finalizedBy finalizedTask
+        }
+    }
+}

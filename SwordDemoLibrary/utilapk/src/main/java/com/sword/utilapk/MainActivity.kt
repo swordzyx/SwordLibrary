@@ -16,6 +16,9 @@ class MainActivity : AppCompatActivity() {
     if (!isPermissionGranted(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
       requestSinglePermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
+    
+    println("sha1 95363036b1013: ${Encryption.sha1("95363036b1013")}")
+    println("sha1 319479652122886144l1099: ${Encryption.sha1("95363036b1013")}")
   }
 
   fun onClick(view: android.view.View) {

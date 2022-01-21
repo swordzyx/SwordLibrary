@@ -112,4 +112,8 @@ public class Encryption {
     public static String md5(String content) {
         return DIGEST_HEX_String(content, MD5);
     }
+    
+    public static String sha1(String content) {
+        return DIGEST_HEX_String(content,SHA1);
+    }
 }
