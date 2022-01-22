@@ -36,12 +36,10 @@ public class DeviceHelper {
     }
 
     public static String getBuildInfo() {
-        StringBuilder buildSB = new StringBuilder();
-        buildSB.append("Brand").append(Build.BRAND).append("/");
-        buildSB.append(Build.PRODUCT).append("/");
-        buildSB.append(Build.DEVICE).append("/");
-        buildSB.append(Build.ID).append("/");
-        return buildSB.toString();
+        return "Brand" + Build.BRAND + "/" +
+            Build.PRODUCT + "/" +
+            Build.DEVICE + "/" +
+            Build.ID + "/";
     }
 
 }
