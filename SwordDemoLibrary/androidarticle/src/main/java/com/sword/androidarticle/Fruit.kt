@@ -1,4 +1,3 @@
 package com.sword.androidarticle
 
-class Fruit {
-}
+data class Fruit(var fruitName: String, var fruitImage: Int)
