@@ -1,2 +1,0 @@
-rootProject.name='dialog'
-include ':app', ':lib_dialog'
