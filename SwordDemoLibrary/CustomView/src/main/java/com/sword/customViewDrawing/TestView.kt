@@ -68,7 +68,7 @@ class TestView(context: Context, attrs: AttributeSet?) : View(context, attrs){
     //第二个参数用于指定是否强制闭合
     pathMeasure = PathMeasure(path, false)
     pathMeasure.length //获取 Path 的长度，如果 path 是一个圆，半径为 r，则 pathMeasure 返回的值就是 2π
-    pathMeasure.getPosTan() //给定一个长度，获取 path 上面对应长度的点的正切值。比如 path 是一个圆，传入 π，则会返回 path 上面距离起点为 π 的点的角度的正切值
+    //pathMeasure.getPosTan() //给定一个长度，获取 path 上面对应长度的点的正切值。比如 path 是一个圆，传入 π，则会返回 path 上面距离起点为 π 的点的角度的正切值
   }
 }
 
