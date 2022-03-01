@@ -57,7 +57,7 @@ class CodeView2 constructor(context: Context, attrs: AttributeSet?)  : AppCompat
             isAntiAlias = true
             style = Paint.Style.STROKE
             color = context.getColor(R.color.colorAccent)
-            strokeWidth = dp2px(6f)
+            strokeWidth = 6f.dp2px()
         }
 
         updateCode()

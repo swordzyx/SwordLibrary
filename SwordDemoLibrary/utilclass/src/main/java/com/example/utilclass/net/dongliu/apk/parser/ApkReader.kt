@@ -94,7 +94,7 @@ class ApkReader(apkPath: String) {
   private fun readPlatformCodeSvnVersion() {
     //return com.xlcwnet.sdk.dock.compat.BuildConfig.B2_SVN_VERSION_CODE
   }
-  
+
   //检查 dex 方法数
   private fun readMethodRefs(): Int {
     return 0
@@ -104,27 +104,31 @@ class ApkReader(apkPath: String) {
   private fun weChatActivityExist(): Boolean {
     apkFile.dexClasses.forEach {
       println("classType: ${it.classType}, packageName: ${it.packageName}")
-      if (it.classType.substring(1, it.classType.length - 1).replace("/", ".") == "${paraMap[packageName]}.wxapi.WXPayEntryActivity") return true
+      if (it.classType.substring(1, it.classType.length - 1)
+          .replace("/", ".") == "${paraMap[packageName]}.wxapi.WXPayEntryActivity"
+      ) return true
     }
     return false
   }
 
   //检查统一配置地址是否有效
-  private fun checkConfigUrl() {
+  fun checkConfigUrl(paraMap: Map<String, String>) {
     val configUrl = paraMap[configUrl]
-    val paramString = TreeMap<String, String>().apply {
-      put("bin_ver", paraMap[versionName]!!)
-      put("bin_name", paraMap[packageName]!!)
-      put("uuid", "00000000-0000-0000-0000-000000000000")
-      if (TextUtils.isEmpty(paraMap["configUrlSalt"])) {
-        put("channel", paraMap[channelId]!!)
-        signParamWithSalt(this, null)
-      } else {
-        put("channel_id", paraMap[channelId]!!)
-        put("timestamp", (System.currentTimeMillis() / 100).toString())
-        signParamWithSalt(this, paraMap["configUrlSalt"])
-      }
+    val paramString: String?
+    
+    val params = TreeMap<String, String>()
+    params["bin_ver"] = paraMap[versionName]!!
+    params["bin_name"] = paraMap[packageName]!!
+    params["uuid"] = "00000000-0000-0000-0000-000000000000"
+    if (TextUtils.isEmpty(paraMap["configUrlSalt"])) {
+      params["channel"] = paraMap[channelId]!!
+      paramString = signParamWithSalt(params, null)
+    } else {
+      params["channel_id"] = paraMap[channelId]!!
+      params["timestamp"] = (System.currentTimeMillis() / 100).toString()
+      paramString = signParamWithSalt(params, paraMap["configUrlSalt"])
     }
+
 
     val client = OkHttpClient()
     val request = Request.Builder()
@@ -132,7 +136,7 @@ class ApkReader(apkPath: String) {
       .build()
 
     showAlert("request url: ${request.url}")
-    showAlert("response: ${client.newCall(request).execute().body.toString()}")
+    showAlert("response: ${client.newCall(request).execute().body?.string()}")
   }
 
   //读取图标
@@ -145,27 +149,31 @@ class ApkReader(apkPath: String) {
   private fun readCertificationMd5() {
     apkFile.apkSingers.forEach { signer ->
       signer.certificateMetas.forEach { certificateMeta ->
-        println("v1 signer - ${signer.path} ---> " +
-            "\n\t signAlgorithm: ${certificateMeta.signAlgorithm}" +
-            "\n\t signAlgorithmOID: ${certificateMeta.signAlgorithmOID}" +
-            "\n\t startDate: ${certificateMeta.startDate}" +
-            "\n\t endDate ${certificateMeta.endDate}" +
-            "\n\t data ${certificateMeta.data}" +
-            "\n\t certBase64Md5: ${certificateMeta.certBase64Md5}" +
-            "\n\t certMd5: ${certificateMeta.certMd5}" )
+        println(
+          "v1 signer - ${signer.path} ---> " +
+              "\n\t signAlgorithm: ${certificateMeta.signAlgorithm}" +
+              "\n\t signAlgorithmOID: ${certificateMeta.signAlgorithmOID}" +
+              "\n\t startDate: ${certificateMeta.startDate}" +
+              "\n\t endDate ${certificateMeta.endDate}" +
+              "\n\t data ${certificateMeta.data}" +
+              "\n\t certBase64Md5: ${certificateMeta.certBase64Md5}" +
+              "\n\t certMd5: ${certificateMeta.certMd5}"
+        )
       }
     }
 
     apkFile.apkV2Singers.forEach { signer ->
       signer.certificateMetas.forEach { certificateMeta ->
-        println("apkV2Signer - certificateMeta: " +
-            "\n\t signAlgorithm: ${certificateMeta.signAlgorithm}" +
-            "\n\t signAlgorithmOID: ${certificateMeta.signAlgorithmOID}" +
-            "\n\t startDate: ${certificateMeta.startDate}" +
-            "\n\t endDate ${certificateMeta.endDate}" +
-            "\n\t data ${certificateMeta.data}" +
-            "\n\t certBase64Md5: ${certificateMeta.certBase64Md5}" +
-            "\n\t certMd5: ${certificateMeta.certMd5}" )
+        println(
+          "apkV2Signer - certificateMeta: " +
+              "\n\t signAlgorithm: ${certificateMeta.signAlgorithm}" +
+              "\n\t signAlgorithmOID: ${certificateMeta.signAlgorithmOID}" +
+              "\n\t startDate: ${certificateMeta.startDate}" +
+              "\n\t endDate ${certificateMeta.endDate}" +
+              "\n\t data ${certificateMeta.data}" +
+              "\n\t certBase64Md5: ${certificateMeta.certBase64Md5}" +
+              "\n\t certMd5: ${certificateMeta.certMd5}"
+        )
       }
     }
   }
