@@ -6,12 +6,14 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
+//夜间模式
 private val DarkColorPalette = darkColors(
   primary = Purple200,
   primaryVariant = Purple700,
   secondary = Teal200
 )
 
+//日间模式
 private val LightColorPalette = lightColors(
   primary = Purple500,
   primaryVariant = Purple700,
@@ -27,6 +29,8 @@ private val LightColorPalette = lightColors(
     */
 )
 
+
+//自定义主题
 @Composable
 fun SwordDemoLibraryTheme(
   darkTheme: Boolean = isSystemInDarkTheme(),
