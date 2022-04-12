@@ -39,6 +39,7 @@ class PagerLayout {
 				modifier = Modifier.fillMaxSize()
 			)
 		}
+		
 		LaunchedEffect(Unit) {
 			delay(1000)
 			pagerState.scrollToPage(2)
@@ -48,7 +49,7 @@ class PagerLayout {
 
 	@ExperimentalPagerApi
 	@Composable
-	fun HorizontalPagerWidthIndicatorsSample() {
+	fun HorizontalPagerWidthIndicators() {
 		Scaffold(
 			topBar = {
 				TopAppBar(
@@ -97,24 +98,10 @@ class PagerLayout {
 	@Composable
 	fun HorizontalPagerWithTab() {
 		Scaffold(
-			topBar = {
-				TopAppBar(
-					title = { Text(text = "Tab Title") },
-					backgroundColor = MaterialTheme.colors.surface
-				)
-			},
+			topBar = { TopAppBar(title = { Text(text = "Tab Title") }, backgroundColor = MaterialTheme.colors.surface) },
 			modifier = Modifier.fillMaxSize()
 		) {
-			val pages = remember {
-				listOf(
-					"Home",
-					"Shows",
-					"Movies",
-					"Books",
-					"Really long movies",
-					"Short audiobooks"
-				)
-			}
+			val pages = remember { listOf("Home", "Shows", "Movies", "Books", "Really long movies", "Short audiobooks") }
 
 			Column(Modifier.fillMaxSize()) {
 				val coroutineScope = rememberCoroutineScope()
@@ -124,7 +111,7 @@ class PagerLayout {
 					selectedTabIndex = pagerState.currentPage,
 					indicator = { tabPositions ->
 						//默认指示器，显示在 TabRow 的底部，Pager 和 TabRow 分割线的顶部
-						//pagerTabIndicatorOffset 定义指示器如何布局，用于 TabRow（或 ScrollableTabRow）  与 HorizontalPager（或）
+						//pagerTabIndicatorOffset 定义指示器如何布局，用于 TabRow（或 ScrollableTabRow）  与 HorizontalPager（或 VerticalPager） 的同步
 						TabRowDefaults.Indicator(Modifier.pagerTabIndicatorOffset(pagerState, tabPositions))
 					}
 				) {
@@ -137,10 +124,19 @@ class PagerLayout {
 					}
 				}
 				
-				HorizontalPager(count = pages.size, state = pagerState, contentPadding = PaddingValues(16.dp), modifier = Modifier.weight(1f).fillMaxWidth()) { page ->
-					
+				HorizontalPager(count = pages.size, state = pagerState, contentPadding = PaddingValues(16.dp), modifier = Modifier
+					.weight(1f)
+					.fillMaxWidth()) { page ->
+					Card {
+						Box(Modifier.fillMaxSize()) {
+							Text(
+								text = "Page: ${pages[page]}",
+								style = MaterialTheme.typography.h4,
+								modifier = Modifier.align(Alignment.Center)
+							)
+						}
+					}
 				}
-
 			}
 		}
 	}
