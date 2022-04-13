@@ -21,8 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.utilclass.LogCollector;
-import com.example.utilclass.PermissionUtil;
+import com.example.utilclass.LogUtil;
+import com.example.utilclass.PermissionUtilKt;
 import com.example.zxingscanner.camera.CameraManager;
 import com.example.zxingscanner.camera.CaptureHandler;
 import com.google.zxing.Result;
@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogCollector.debug("onCreate");
+        LogUtil.debug("onCreate");
 
         //设置屏幕常亮
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
 
-        if (!PermissionUtil.Companion.isPermissionGranted(this, Manifest.permission.CAMERA)) {
-            PermissionUtil.Companion.requestSpecialSinglePermission(this, Manifest.permission.CAMERA);
+        if (!PermissionUtilKt.isPermissionGranted(this, Manifest.permission.CAMERA)) {
+            PermissionUtilKt.requestSinglePermission(this, Manifest.permission.CAMERA, 0);
         }
         
         if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     protected void onResume() {
         super.onResume();
-        LogCollector.debug("onResume");
+        LogUtil.debug("onResume");
         
         setRequestedOrientation(getCurrentOrientation());
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         viewfinderView.setVisibility(View.VISIBLE);
 
         //onResume 会在 surfaceCreated 之前调用，因为执行了 addCallback 之后，才会触发 surfaceCreated 的执行。
-        LogCollector.debug("hasSurface: " + hasSurface);
+        LogUtil.debug("hasSurface: " + hasSurface);
 
         SurfaceView surfaceView = findViewById(R.id.preview_view);
         surfaceView.setVisibility(View.VISIBLE);
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     @Override
     protected void onPause() {
         super.onPause();
-        LogCollector.debug("onPause");
+        LogUtil.debug("onPause");
         if (handler != null) {
             handler.quitSync();
             handler = null;
@@ -106,13 +106,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
     @Override
     protected void onDestroy() {
-        LogCollector.debug("onDestroy");
+        LogUtil.debug("onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        LogCollector.debug("surfaceCreated");
+        LogUtil.debug("surfaceCreated");
         if (!hasSurface) {
             hasSurface = true;
             //初始化相机
@@ -154,14 +154,14 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     private void initCamera(SurfaceHolder holder) {
-        LogCollector.debug("initCamera");
+        LogUtil.debug("initCamera");
         if (holder == null) {
             throw new IllegalStateException("No SurfaceHolder");
         }
 
         //相机已经处于开启状态，则直接返回
         if (cameraManager.isOpen()) {
-            LogCollector.warn("camera has been open");
+            LogUtil.warn("camera has been open");
             return;
         }
         
@@ -215,13 +215,13 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     }
 
     public void setCodeImage(Bitmap barcode) {
-        LogCollector.debug("bitmap.width: " + barcode.getWidth() + "---bitmap.height: " + barcode.getHeight());
+        LogUtil.debug("bitmap.width: " + barcode.getWidth() + "---bitmap.height: " + barcode.getHeight());
         ((ImageView)findViewById(R.id.code_image)).setVisibility(View.VISIBLE);
         ((ImageView)findViewById(R.id.code_image)).setImageBitmap(barcode);
     }
 
     public void setOriginalCapture(Bitmap bitmap) {
-        LogCollector.debug("original width: " + bitmap.getWidth() + "---original height: " + bitmap.getHeight());
+        LogUtil.debug("original width: " + bitmap.getWidth() + "---original height: " + bitmap.getHeight());
         ((ImageView)findViewById(R.id.source_image)).setVisibility(View.VISIBLE);
         ((ImageView)findViewById(R.id.source_image)).setImageBitmap(bitmap);
     }
