@@ -6,16 +6,13 @@ import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.RequiresApi
-import androidx.core.view.drawToBitmap
-import com.example.utilclass.ViewUtil
 import com.example.utilclass.dp
+import com.sword.customviewgroup.R
 
 private val IMAGE_WIDTH = 150.dp
 
@@ -40,6 +37,7 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?): View(context, a
 	private val measureTextWidth = floatArrayOf(0f)
 
 	private val staticLayout = StaticLayout(text, textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1f, 0f, false)
+	private val bitmap = getBitmap(resources, R.drawable.avatar_rengwuxian, IMAGE_WIDTH)
 	//val staticLayout = StaticLayout.Builder.obtain(text, 0, 0, textPaint, width).build()
 
 	@SuppressLint("DrawAllocation")
@@ -48,7 +46,7 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?): View(context, a
 		//staticLayout.draw(canvas)
 
 
-		canvas.drawBitmap()
+		canvas.drawBitmap(bitmap, )
 
 		var xOffsetCount = 0
 		var yOffset = 0f
@@ -61,15 +59,13 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?): View(context, a
 		}
 	}
 
-	fun getBitmap(res: Resources, resId: Int, targetWidth: Int, targetHeight: Int) {
+	fun getBitmap(res: Resources, resId: Int, targetWidth: Int, targetHeight: Int = targetWidth) {
 		val ops = BitmapFactory.Options()
 		ops.inJustDecodeBounds = true
 		BitmapFactory.decodeResource(res, resId, ops)
 		ops.inJustDecodeBounds = false
 		ops.inDensity = ops.outWidth
-		val scaleFactor = (targetWidth / ops.outWidth).coerceAtMost(targetHeight / ops.outHeight)
-		ops.inTargetDensity = targetWidth
-
+		ops.inTargetDensity = targetWidth.coerceAtMost(targetHeight)
 
 	}
 }
