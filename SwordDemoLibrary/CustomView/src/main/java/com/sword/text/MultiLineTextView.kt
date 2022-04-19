@@ -3,6 +3,7 @@ package com.sword.text
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -15,6 +16,7 @@ import com.example.utilclass.dp
 import com.sword.customviewgroup.R
 
 private val IMAGE_WIDTH = 150.dp
+private val IMAGE_PADDING = 50.dp
 
 class MultiLineTextView(context: Context?, attr: AttributeSet?): View(context, attr) {
 
@@ -39,6 +41,7 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?): View(context, a
 	private val staticLayout = StaticLayout(text, textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1f, 0f, false)
 	private val bitmap = getBitmap(resources, R.drawable.avatar_rengwuxian, IMAGE_WIDTH)
 	//val staticLayout = StaticLayout.Builder.obtain(text, 0, 0, textPaint, width).build()
+	private val fontMetrics =
 
 	@SuppressLint("DrawAllocation")
 	override fun onDraw(canvas: Canvas) {
@@ -46,26 +49,31 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?): View(context, a
 		//staticLayout.draw(canvas)
 
 
-		canvas.drawBitmap(bitmap, )
+		canvas.drawBitmap(bitmap, (width - IMAGE_WIDTH).toFloat(), IMAGE_PADDING.toFloat(), paint)
 
-		var xOffsetCount = 0
+		var textStart = 0
 		var yOffset = 0f
-		val count = paint.breakText(text, 0, text.length, true, width.toFloat(), measureTextWidth)
-		while (count > 0) {
+		while (textStart < text.length) {
+			paint.getFontMetrics(fon)
+			val count = if(yOffset >= IMAGE_PADDING && yOffset <= IMAGE_PADDING + IMAGE_WIDTH) {
+				paint.breakText(text, 0, text.length, true, (width - IMAGE_WIDTH).toFloat(), measureTextWidth)
+			} else {
+				paint.breakText(text, 0, text.length, true, width.toFloat(), measureTextWidth)
+			}
 			//canvas.drawText(String text, int start, int end, float x, float y, Paint paint)
-			canvas.drawText(text, xOffsetCount, xOffsetCount + count, 0f, yOffset, paint)
+			canvas.drawText(text, textStart, textStart + count, 0f, yOffset, paint)
 			yOffset += paint.fontSpacing
-			xOffsetCount += count
+			textStart += count
 		}
 	}
 
-	fun getBitmap(res: Resources, resId: Int, targetWidth: Int, targetHeight: Int = targetWidth) {
+	fun getBitmap(res: Resources, resId: Int, targetWidth: Int, targetHeight: Int = targetWidth): Bitmap {
 		val ops = BitmapFactory.Options()
 		ops.inJustDecodeBounds = true
 		BitmapFactory.decodeResource(res, resId, ops)
 		ops.inJustDecodeBounds = false
 		ops.inDensity = ops.outWidth
 		ops.inTargetDensity = targetWidth.coerceAtMost(targetHeight)
-
+		return BitmapFactory.decodeResource(res, resId, ops)
 	}
 }
