@@ -14,13 +14,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class TheLayout(context: Context): CustomLayout(context) {
     val header = AppCompatImageView(context).apply {
         scaleType = ImageView.ScaleType.CENTER_CROP
-        setImageResource(R.drawable.header)
+        //setImageResource(R.drawable.header)
         layoutParams = LayoutParams(MATCH_PARENT, 280.dp)
         addView(this)
     }
 
     val fab = FloatingActionButton(context).apply {
-        setImageResource(R.drawable.ic_baseline_swap_horiz_24)
+        //setImageResource(R.drawable.ic_baseline_swap_horiz_24)
         layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
         addView(this)
     }
