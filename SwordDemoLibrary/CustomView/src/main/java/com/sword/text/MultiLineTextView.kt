@@ -18,6 +18,7 @@ import com.sword.customViewDrawing.dp
 import com.sword.customviewgroup.R
 
 private val IMAGE_WIDTH = 150.dp
+
 private val IMAGE_PADDING = 50f.dp
 
 class MultiLineTextView(context: Context?, attr: AttributeSet?) : View(context, attr) {
@@ -41,7 +42,6 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?) : View(context, 
 
   private val measureTextWidth = floatArrayOf(0f)
   private val fontMetrics = Paint.FontMetrics()
-
   private val staticLayout =
     StaticLayout(text, textPaint, width, Layout.Alignment.ALIGN_NORMAL, 1f, 0f, false)
   private val bitmap = getBitmap(resources, R.drawable.avatar_rengwuxian, IMAGE_WIDTH)
@@ -51,7 +51,6 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?) : View(context, 
   override fun onDraw(canvas: Canvas) {
     //使用 StaticLayout 显示成段文本
     //staticLayout.draw(canvas)
-
 
     canvas.drawBitmap(bitmap, (width - IMAGE_WIDTH).toFloat(), IMAGE_PADDING, paint)
     paint.getFontMetrics(fontMetrics)
