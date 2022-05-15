@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">hencoder</string>
+
+    <string name="show_playback">只看回放课程</string>
+</resources>

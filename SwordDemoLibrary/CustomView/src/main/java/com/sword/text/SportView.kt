@@ -7,8 +7,8 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
-import com.example.utilclass.LogUtil
-import com.example.utilclass.dp
+import com.sword.LogUtil
+import com.sword.dp
 import com.sword.customViewDrawing.dp
 
 private val CIRCLE_COLOR = Color.parseColor("#90A4AE")
@@ -46,14 +46,14 @@ class SportView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 		//-------------------------------- 文字垂直居中
 		//绘制文字，通过 getTextBounds 获取文字实际边界距离起始点的偏移，实现纵向居中。
 		paint.getTextBounds(titleText, 0, titleText.length, textBoundsRect)
-		LogUtil.debug("CustomView:SportView", "getTextBounds: ${textBoundsRect.left}, ${textBoundsRect.top}, ${textBoundsRect.right}, ${textBoundsRect.bottom}")
+		com.sword.LogUtil.debug("CustomView:SportView", "getTextBounds: ${textBoundsRect.left}, ${textBoundsRect.top}, ${textBoundsRect.right}, ${textBoundsRect.bottom}")
 		canvas.drawText(titleText, width / 2f, height / 2f + (textBoundsRect.top + textBoundsRect.bottom) / 2, paint)
 
 		//绘制文字，通过 FontMetric 获取文字的上边界和下边接实现纵向居中
 		paint.getFontMetrics(fontMetric)
 		//fontMetric.ascent 和 fontMetric.descent 分别表示文字核心部分的顶部和底部，这是跟字体相关，而跟具体某个字无关
 		//fontMetric.top 和 fontMetric.bottom 则表示文字最大能达到的上边界和下边界距离文字绘制起始点的距离，一般文字实际显示的边界会离 top 和 bottom 有一定的距离
-		LogUtil.debug("CustomView:SportView", "getFontMetrics, ascent: ${fontMetric.ascent}; top: ${fontMetric.top}; descent: ${fontMetric.descent}; bottom: ${fontMetric.bottom}; leading: ${fontMetric.leading}")
+		com.sword.LogUtil.debug("CustomView:SportView", "getFontMetrics, ascent: ${fontMetric.ascent}; top: ${fontMetric.top}; descent: ${fontMetric.descent}; bottom: ${fontMetric.bottom}; leading: ${fontMetric.leading}")
 		canvas.drawText(titleText, width / 2f, height / 2f + (fontMetric.ascent + fontMetric.descent) / 2f, paint)
 
 		//-------------------------------- 文字顶部贴边

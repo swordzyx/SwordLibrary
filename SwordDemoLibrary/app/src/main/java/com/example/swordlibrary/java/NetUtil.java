@@ -1,9 +1,5 @@
 package com.example.swordlibrary.java;
 
-import androidx.annotation.NonNull;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;

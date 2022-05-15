@@ -12,8 +12,8 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
-import com.example.utilclass.LogUtil
-import com.example.utilclass.dp
+import com.sword.LogUtil
+import com.sword.dp
 import com.sword.customViewDrawing.dp
 import com.sword.customviewgroup.R
 
@@ -62,7 +62,7 @@ class MultiLineTextView(context: Context?, attr: AttributeSet?) : View(context, 
       val maxWidth =
         if (yOffset + fontMetrics.top > IMAGE_WIDTH + IMAGE_PADDING || yOffset + fontMetrics.bottom < IMAGE_PADDING) width.toFloat() else (width - IMAGE_WIDTH).toFloat()
       val count = paint.breakText(text, start, text.length, true, maxWidth, measureTextWidth)
-      LogUtil.debug("start: $start, end: ${start + count}, text length: ${text.length}")
+      com.sword.LogUtil.debug("start: $start, end: ${start + count}, text length: ${text.length}")
       canvas.drawText(text, start, start + count, 0f, yOffset, paint)
       
       start += count
