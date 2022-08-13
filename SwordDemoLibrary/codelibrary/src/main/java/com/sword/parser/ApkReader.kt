@@ -3,6 +3,8 @@ package com.example.utilclass.dongliu.apk.parser
 import android.text.TextUtils
 import com.example.utilclass.apk.parse.Property
 import com.example.utilclass.dongliu.apk.parser.xlcw.*
+import com.example.utilclass.net.dongliu.apk.parser.showAlert
+import com.example.utilclass.net.dongliu.apk.parser.signParamWithSalt
 import net.dongliu.apk.parser.ApkFile
 import okhttp3.*
 import java.util.*

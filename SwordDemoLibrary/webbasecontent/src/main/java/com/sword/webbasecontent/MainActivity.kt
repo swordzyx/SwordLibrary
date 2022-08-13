@@ -5,8 +5,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.*
-import androidx.appcompat.app.AlertDialog
-import com.example.utilclass.LogUtil
 
 class MainActivity : AppCompatActivity() {
 	lateinit var webView: WebView

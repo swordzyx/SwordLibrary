@@ -1,6 +1,7 @@
 package com.sword;
 
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -18,18 +19,38 @@ public class LogUtil {
   }
 
   public static void debug(String msg) {
-    Log.d(TAG, msg);
+    Log.d("", msg);
   }
 
   public static void debug(String tag, String msg) {
-    Log.d(tag, msg);
+    if (TextUtils.isEmpty(tag)) {
+      Log.d(TAG, msg);
+    } else {
+      Log.d(TAG + "_" + tag, msg);
+    }
   }
     
   public static void error(String msg) {
-    Log.d(TAG, msg);
+    error("", msg);
+  }
+  
+  public static void error(String tag, String msg) {
+    if (TextUtils.isEmpty(tag)) {
+      Log.e(TAG, msg);
+    } else {
+      Log.e(TAG + "_" + tag, msg);
+    }
   }
 
   public static void warn(String msg) {
-    Log.d(TAG, msg);
+    warn("", msg);
+  }
+  
+  public static void warn(String tag, String msg) {
+    if (TextUtils.isEmpty(tag)) {
+      Log.w(TAG, msg);
+    } else {
+      Log.w(TAG + "_" + tag, msg);
+    }
   }
 }

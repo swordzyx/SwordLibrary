@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class FileUtils {
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    //@RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String readFileInfo(String fileName) {
         StringBuilder fileInfo = new StringBuilder();
 
@@ -24,7 +24,7 @@ public class FileUtils {
         }
 
         try(BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-            String message = null;
+            String message;
             while ((message = fileReader.readLine()) != null) {
                 fileInfo.append(message);
             }

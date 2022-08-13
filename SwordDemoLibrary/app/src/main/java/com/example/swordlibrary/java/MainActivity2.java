@@ -16,7 +16,6 @@ import android.view.WindowMetrics;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -133,10 +132,10 @@ public class MainActivity2 extends AppCompatActivity {
 
     //TelephonyManager 信息打印测试
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void TelephonyManagerJavaUtiltest() {
+    /*public void TelephonyManagerJavaUtiltest() {
         TelephonyManagerJavaUtil.checkPermission(this);
         TelephonyManagerJavaUtil.debug(this);
-    }
+    }*/
 
     //获取 Android 设备所在地区
     public void getIpAddress() {

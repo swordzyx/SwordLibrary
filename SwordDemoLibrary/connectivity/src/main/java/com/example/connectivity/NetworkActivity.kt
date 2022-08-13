@@ -1,7 +1,10 @@
 package com.example.connectivity
 
 import android.app.Activity
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.AsyncTask
+import android.os.Bundle
 import android.preference.PreferenceManager
 import android.webkit.WebView
 import org.xmlpull.v1.XmlPullParserException
@@ -13,6 +16,15 @@ import java.net.URL
 import java.text.SimpleDateFormat
 
 class NetworkActivity : Activity() {
+    private lateinit var recevier: NetworkReceiver
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        recevier = NetworkReceiver()
+    }
+    
     companion object {
         const val WIFI = "Wi-Fi"
         const val ANY = "Any"
@@ -101,6 +113,4 @@ class NetworkActivity : Activity() {
             inputStream
         }
     }
-
-
 }
