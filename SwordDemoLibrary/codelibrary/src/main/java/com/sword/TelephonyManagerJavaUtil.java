@@ -84,7 +84,7 @@ public class TelephonyManagerJavaUtil {
         return tm.getNetworkCountryIso() + "\n" + tm.getSimCountryIso() ;
     }
 
-    private static String getImeiOrMeid(Context context, int slotId) {
+    /*private static String getImeiOrMeid(Context context, int slotId) {
         String imei = "";
         
         if (!PermissionUtilKt.isPermissionGranted(context, Manifest.permission.READ_PHONE_STATE)) {
@@ -103,6 +103,6 @@ public class TelephonyManagerJavaUtil {
                 
             }
         }
-    }
+    }*/
     
 }
