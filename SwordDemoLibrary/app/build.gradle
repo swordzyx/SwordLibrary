@@ -34,10 +34,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.firebase:firebase-messaging'
-    //implementation project(":loginlibrary")
-    //implementation project(":CustomView")
-//
 
+    implementation project(":codelibrary")
+    
     //Google 服务
     implementation 'com.google.android.gms:play-services-base:16.1.0'
     implementation platform('com.google.firebase:firebase-bom:26.6.0')

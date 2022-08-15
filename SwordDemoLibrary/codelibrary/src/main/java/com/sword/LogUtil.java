@@ -19,7 +19,7 @@ public class LogUtil {
   }
 
   public static void debug(String msg) {
-    Log.d("", msg);
+    debug("", msg);
   }
 
   public static void debug(String tag, String msg) {
