@@ -81,7 +81,7 @@ public class CaptureHandler extends Handler {
     
     private void restartPreviewAndDecode() {
         if (state == State.SUCCESS) {
-            LogCollector.debug("restartPreviewAndDecode");
+            //LogCollector.debug("restartPreviewAndDecode");
             state = State.PREVIEW;
             //请求预览帧
             cameraManager.requestPreviewFrame(decodeThread.getHandler(), R.id.decode);
