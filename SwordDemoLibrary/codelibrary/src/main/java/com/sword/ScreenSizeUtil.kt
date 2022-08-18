@@ -14,21 +14,9 @@ import android.view.*
 import androidx.annotation.RequiresApi
 
 /**
- * 获取应用程序显示区域的尺寸
- */
-fun getWindowSizeExcludeSystem(context: Context): Point {
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-    return getScreenSizeByMetrics(context)
-  } else {
-    return getScreenSizeByDisplay(context)
-  }
-}
-
-
-/**
  * 单位转换，dp 转成 px
  */
-fun dpToPx(dp: Int): Int {
+fun dp(dp: Int): Int {
   return TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
     dp.toFloat(),
@@ -36,12 +24,27 @@ fun dpToPx(dp: Int): Int {
   ).toInt()
 }
 
+
+/**
+ * 获取应用程序显示区域的尺寸
+ */
+fun getWindowSizeExcludeSystem(context: Context): Point {
+  return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    getScreenSizeByMetrics(context)
+  } else {
+    getScreenSizeByDisplay(context)
+  }
+}
+
+
 /**
  * 获取应用程序逻辑显示的尺寸
  */
 private fun getScreenSizeByDisplay(context: Context): Point {
   val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
   val display = windowManager.defaultDisplay
+  
+  context.resources.displayMetrics
   return Point().apply {
     display.getSize(this)
   }
@@ -69,21 +72,14 @@ private fun getScreenSizeByMetrics(context: Context): Point {
  */
 private fun getSurfaceViewSizeByDisplay(surfaceView: SurfaceView): Point {
   return Point().apply {
-    surfaceView.display.getRealSize(this)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+      surfaceView.display.getRealSize(this)
+    } else {
+      x = -1
+      y = -1
+    }
   }
 }
-
-/**
- * 单位转换，dp 转成 px
- */
-/*
-fun dpToPx(dp: Int): Int {
-	return TypedValue.applyDimension(
-		TypedValue.COMPLEX_UNIT_DIP,
-		dp.toFloat(),
-		Resources.getSystem().displayMetrics
-	).toInt()
-}*/
 
 
 /**
