@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,8 +32,11 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        LogUtil.debug(tag, "check emulator: " + EmulatorCheck.isEmulator(this));
+        
+        String t = "check emulator: " + EmulatorCheck.isEmulator(this);
+        LogUtil.debug(tag, t);
+        t += "\n\n" + EmulatorCheck.emulatorResult;
+        ((TextView)findViewById(R.id.text)).setText(t);
     }
 
     /**

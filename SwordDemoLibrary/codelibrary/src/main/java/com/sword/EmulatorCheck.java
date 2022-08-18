@@ -3,6 +3,7 @@ package com.sword;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -22,6 +23,7 @@ import java.io.InputStreamReader;
  */
 public class EmulatorCheck {
   private static final String TAG = "EmulatorCheck";
+  public static String emulatorResult = "";
 
   @RequiresApi(api = Build.VERSION_CODES.KITKAT)
   public static boolean isEmulator(Context context) {
@@ -29,21 +31,33 @@ public class EmulatorCheck {
     boolean b2 = !hasLightSensor(context);
     boolean b3 = checkEmulatorByCpuInfoFile();
     boolean b4 = judgeBuildInfo(context);
-    //boolean b5 = mayOnEmulatorViaQEMU();
-    LogUtil.debug("resolveTelPhone is Emulator: " + b1 + ", hasLightSensor is Emulator: : " + b2 + ", checkEmulatorByCpuInfoFile is Emulator: : " + b3 + ", judgeBuildInfo is Emulator: : " + b4 /*+ ", mayOnEmulatorViaQEMU: " + b5*/);
-    return b1 || b2 || b3 || b4 /*|| b5*/;
+    boolean b5 = checkAppInstalled(context.getPackageManager(), "com.android.server.telecom");
+    emulatorResult = "resolveTelPhone is Emulator: " + b1 + ", hasLightSensor is Emulator: : " + b2 + ", checkEmulatorByCpuInfoFile is Emulator: : " + b3 + ", judgeBuildInfo is Emulator: : " + b4 + ", check com.android.server.telecom exist: " + b5;
+    LogUtil.debug(TAG, emulatorResult );
+    return /*b1 || */b2 || b3 || b4 /*|| b5*/;
   }
 
   /**
    * 判断是否可以处理跳转到拨号的Intent
    */
-  @SuppressLint("QueryPermissionsNeeded")
   private static boolean resolveTelPhone(Context ctx) {
     String url = "tel:" + "123456";
     Intent intent = new Intent();
     intent.setData(Uri.parse(url));
     intent.setAction(Intent.ACTION_DIAL);
     return intent.resolveActivity(ctx.getPackageManager()) != null;
+  }
+
+  @SuppressLint("PackageManagerGetSignatures")
+  private static boolean checkAppInstalled(PackageManager pm, String packageName) {
+    LogUtil.debug(TAG, "checkAppInstalled, packageName: " + packageName);
+    try {
+      return pm.getPackageInfo(packageName, 0) != null;
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      LogUtil.debug("checkAppInstalled ");
+      return false;
+    }
   }
 
   /**
@@ -113,6 +127,7 @@ public class EmulatorCheck {
       }
     } catch (IOException e) {
       e.printStackTrace();
+      return true;
     }
 
     return false;
