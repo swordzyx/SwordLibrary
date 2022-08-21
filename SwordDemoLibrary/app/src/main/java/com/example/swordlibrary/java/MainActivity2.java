@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +12,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.swordlibrary.R;
-import com.sword.EmulatorCheck;
+import com.sword.xlcwtest.EmulatorDetectUtils;
+import com.sword.xlcwtest.EmulatorDetectUtilsUpdate1;
 import com.sword.LogUtil;
+import com.sword.xlcwtest.EmulatorDetectUtilsUpdate2;
+import com.sword.xlcwtest.SystemUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -33,10 +35,16 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        String t = "check emulator: " + EmulatorCheck.isEmulator(this);
+        /*String t = "check emulator: " + EmulatorCheck.isEmulator(this);
         LogUtil.debug(tag, t);
         t += "\n\n" + EmulatorCheck.emulatorResult;
-        ((TextView)findViewById(R.id.text)).setText(t);
+        ((TextView)findViewById(R.id.text)).setText(t);*/
+        String debugInfo = "\n\n修改后 EmulatorDetectUtilsUpdate-1.isEmulator: " + EmulatorDetectUtilsUpdate1.isEmulator(this) 
+            + "\n\n修改后 EmulatorDetectUtilsUpdate-2.isEmulator: " + EmulatorDetectUtilsUpdate2.isEmulator(this)
+            + "\n\n修改前 EmulatorDetectUtils.isEmulator: " + EmulatorDetectUtils.isEmulator(this)
+            + "\n\n自买量 SDK, System.getOs: " + SystemUtil.getOS();
+        
+        LogUtil.debug(debugInfo);
     }
 
     /**

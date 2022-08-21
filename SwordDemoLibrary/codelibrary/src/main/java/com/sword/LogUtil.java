@@ -44,6 +44,21 @@ public class LogUtil {
     Log.d(TAG, "logFilePath: " + logFile.getAbsolutePath());
   }
 
+  public static void verbose(String info) {
+    verbose("", info);
+  }
+
+  public static void verbose(String tag, String info) {
+    if (!isDebug()) {
+      return;
+    }
+    if (TextUtils.isEmpty(tag)) {
+      Log.v(TAG, info);
+    } else {
+      Log.v(TAG + "_" + tag, info);
+    }
+  }
+
   public static void debug(String msg) {
     debug("", msg);
   }
@@ -87,7 +102,7 @@ public class LogUtil {
   
   
   private static void writeToLogFile(String content) {
-    Log.d(TAG, "write to log File: " + content);
+    //Log.d(TAG, "write to log File: " + content);
     try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, true)))) {
       writer.write(content);
       writer.flush();
