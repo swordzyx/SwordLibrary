@@ -8,8 +8,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />-->
 
     <queries>
         <package android:name="com.android.server.telecom"/>
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".java.memory.MemoryListenerActivity"/>
+        <!--<activity android:name=".java.memory.MemoryListenerActivity"/>
         <activity android:name=".java.firebase.FireBaseActivity" />
         <service
             android:name=".java.firebase.MyFirebaseMessagingService"
@@ -58,7 +58,7 @@
             android:resource="@color/colorAccent" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />
+            android:value="@string/default_notification_channel_id" />-->
     </application>
 
 </manifest>

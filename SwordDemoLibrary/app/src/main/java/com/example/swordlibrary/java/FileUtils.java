@@ -1,11 +1,8 @@
 package com.example.swordlibrary.java;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +23,7 @@ public class FileUtils {
         try(BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
             String message;
             while ((message = fileReader.readLine()) != null) {
-                fileInfo.append(message);
+                fileInfo.append(message).append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

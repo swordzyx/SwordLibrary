@@ -13,9 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.swordlibrary.R;
 import com.sword.xlcwtest.EmulatorDetectUtils;
-import com.sword.xlcwtest.EmulatorDetectUtilsUpdate1;
 import com.sword.LogUtil;
-import com.sword.xlcwtest.EmulatorDetectUtilsUpdate2;
 import com.sword.xlcwtest.SystemUtil;
 
 import java.io.BufferedReader;
@@ -37,14 +35,18 @@ public class MainActivity2 extends AppCompatActivity {
         
         /*String t = "check emulator: " + EmulatorCheck.isEmulator(this);
         LogUtil.debug(tag, t);
+        
         t += "\n\n" + EmulatorCheck.emulatorResult;
         ((TextView)findViewById(R.id.text)).setText(t);*/
-        String debugInfo = "\n\n修改后 EmulatorDetectUtilsUpdate-1.isEmulator: " + EmulatorDetectUtilsUpdate1.isEmulator(this) 
-            + "\n\n修改后 EmulatorDetectUtilsUpdate-2.isEmulator: " + EmulatorDetectUtilsUpdate2.isEmulator(this)
-            + "\n\n修改前 EmulatorDetectUtils.isEmulator: " + EmulatorDetectUtils.isEmulator(this)
-            + "\n\n自买量 SDK, System.getOs: " + SystemUtil.getOS();
-        
+        String debugInfo = "\n\nEmulatorDetectUtils.isEmulator: " + EmulatorDetectUtils.isEmulator(this)
+            /*+ "\n\n自买量 SDK, System.getOs: " + SystemUtil.getOS()*/;
         LogUtil.debug(debugInfo);
+        
+        
+        String cpuinfo = FileUtils.readFileInfo("/proc/cpuinfo");
+        LogUtil.debug("--------------cpuinfo--------------");
+        LogUtil.debug(cpuinfo);
+        LogUtil.debug("-----------------------------------");
     }
 
     /**
