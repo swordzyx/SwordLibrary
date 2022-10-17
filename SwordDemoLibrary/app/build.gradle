@@ -1,29 +1,30 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+	compileSdkVersion 30
+	buildToolsVersion "30.0.3"
 
-    defaultConfig {
-        applicationId "com.example.swordlibrary"
-        minSdkVersion 16
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
-        
-        multiDexEnabled true
+	defaultConfig {
+		applicationId "com.example.swordlibrary"
+		minSdkVersion 16
+		targetSdkVersion 30
+		versionCode 1
+		versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
+		multiDexEnabled true
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+	}
+
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+	}
 }
 
 dependencies {
@@ -38,20 +39,27 @@ dependencies {
     // https://mvnrepository.com/artifact/log4j/log4j
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
 
+	implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+	implementation 'com.squareup.okhttp3:okhttp:4.4.1'
+	implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+	implementation 'io.reactivex.rxjava3:rxjava:3.0.13'
+	implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+	implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8'
+
 
     testImplementation 'junit:junit:4.12'
-    
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
 }
 
 afterEvaluate {
-    def packageTask = this.tasks.findByName("packageRelease")
+	def packageTask = this.tasks.findByName("packageRelease")
 
-    this.tasks.all {
-        println "${getName()}"
-    }
+	this.tasks.all {
+		println "${getName()}"
+	}
 
 }
 

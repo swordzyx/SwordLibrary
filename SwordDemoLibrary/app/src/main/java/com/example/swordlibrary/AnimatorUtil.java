@@ -7,13 +7,14 @@ import android.animation.PropertyValuesHolder;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.example.utilclass.ScreenSizeUtil;
+import com.example.animations_transitions.CircleView;
+import com.sword.ScreenSize;
+
 
 public class AnimatorUtil {
-  private final ScreenSizeUtil sizeUtil = new ScreenSizeUtil();
   
   public void startAnimate(ImageView target) {
-    ObjectAnimator animator = ObjectAnimator.ofFloat(target, "alpha", sizeUtil.dpToPx(200));
+    ObjectAnimator animator = ObjectAnimator.ofFloat(target, "alpha", ScreenSize.dp(200));
     animator.start();
   }
   

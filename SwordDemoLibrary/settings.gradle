@@ -6,7 +6,7 @@ include ':connectivity'
 //include ':gradlescript'
 //include ':loginlibrary'
 //include ':test'
-//include ':groovypractice'
+include ':groovypractice'
 include ':app'
 rootProject.name = "SwordDemoLibrary"
 //include ':scanner'

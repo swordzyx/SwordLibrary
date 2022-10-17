@@ -51,19 +51,23 @@ public class ShellAdbUtil {
         }
         return result;
     }
-    
-    public static void runCommand(String[] args) {
-        /*ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command(args);
-        try {
-            processBuilder.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        /*try {
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-    } 
+
+    static class CommandResult {
+        private String errorString;
+        private String successString;
+        String[] args = new String[5];
+
+        CommandResult(String errorString, String successString) {
+            this.errorString = errorString;
+            this.successString = successString;
+        }
+
+        public String getErrorString() {
+            return errorString;
+        }
+
+        public String getSuccessString() {
+            return successString;
+        }
+    }
 }
