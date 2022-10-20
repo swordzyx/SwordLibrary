@@ -1,6 +1,8 @@
-package com.example.swordlibrary.java;
+package com.example.swordlibrary;
 
 import android.util.Log;
+
+import com.example.swordlibrary.ShellAdbUtil;
 
 import org.apache.log4j.Logger;
 

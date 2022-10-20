@@ -1,4 +1,4 @@
-package com.example.swordlibrary.java;
+package com.example.swordlibrary;
 
 import android.content.Context;
 import android.os.Environment;

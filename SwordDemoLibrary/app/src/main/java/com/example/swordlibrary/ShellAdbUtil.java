@@ -1,4 +1,4 @@
-package com.example.swordlibrary.java;
+package com.example.swordlibrary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

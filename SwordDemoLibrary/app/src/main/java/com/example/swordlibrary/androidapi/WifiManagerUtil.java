@@ -1,4 +1,4 @@
-package com.example.swordlibrary.java.androidapi;
+package com.example.swordlibrary.androidapi;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;

@@ -1,4 +1,4 @@
-package com.example.swordlibrary.java.memory;
+package com.example.swordlibrary.memory;
 
 import androidx.appcompat.app.AppCompatActivity;
 

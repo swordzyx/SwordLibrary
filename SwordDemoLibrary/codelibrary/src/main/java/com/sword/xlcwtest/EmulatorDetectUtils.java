@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
+import com.sword.FileUtils;
 import com.sword.LogUtil;
 
 import java.io.BufferedReader;
@@ -17,9 +18,25 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
+/**
+ * 模拟器检测工具类
+ */
 public class EmulatorDetectUtils {
 
   private static final String TAG = "EmulatorDetectUtils";
+
+  private void emulatorDetectUtilsTest(Context context) {
+    String debugInfo = "\n\nEmulatorDetectUtils.isEmulator: " + EmulatorDetectUtils.isEmulator(context)
+        /*+ "\n\n自买量 SDK, System.getOs: " + SystemUtil.getOS()*/;
+    LogUtil.debug(debugInfo);
+
+
+    String cpuinfo = FileUtils.readFileInfo("/proc/cpuinfo");
+    LogUtil.debug("--------------cpuinfo--------------");
+    LogUtil.debug(cpuinfo);
+    LogUtil.debug("-----------------------------------");
+  }
 
   /**
    * 获取最后判断结果，返回true为模拟器，返回false为真机

@@ -1,4 +1,4 @@
-package com.example.swordlibrary.java;
+package com.example.swordlibrary;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -11,10 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.swordlibrary.R;
 import com.sword.xlcwtest.EmulatorDetectUtils;
 import com.sword.LogUtil;
-import com.sword.xlcwtest.SystemUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,21 +30,8 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         
-        /*String t = "check emulator: " + EmulatorCheck.isEmulator(this);
-        LogUtil.debug(tag, t);
-        
-        t += "\n\n" + EmulatorCheck.emulatorResult;
-        ((TextView)findViewById(R.id.text)).setText(t);*/
-        String debugInfo = "\n\nEmulatorDetectUtils.isEmulator: " + EmulatorDetectUtils.isEmulator(this)
-            /*+ "\n\n自买量 SDK, System.getOs: " + SystemUtil.getOS()*/;
-        LogUtil.debug(debugInfo);
-        
-        
-        String cpuinfo = FileUtils.readFileInfo("/proc/cpuinfo");
-        LogUtil.debug("--------------cpuinfo--------------");
-        LogUtil.debug(cpuinfo);
-        LogUtil.debug("-----------------------------------");
     }
 
     /**

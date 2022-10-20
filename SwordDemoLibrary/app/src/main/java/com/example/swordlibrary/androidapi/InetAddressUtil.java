@@ -1,4 +1,4 @@
-package com.example.swordlibrary.java.androidapi;
+package com.example.swordlibrary.androidapi;
 
 import android.os.Build;
 

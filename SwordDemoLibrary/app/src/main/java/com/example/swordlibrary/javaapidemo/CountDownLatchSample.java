@@ -1,4 +1,4 @@
-package com.example.swordlibrary.java.javaapidemo;
+package com.example.swordlibrary.javaapidemo;
 
 import java.util.concurrent.CountDownLatch;
 

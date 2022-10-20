@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class FileUtils {
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String readFileInfo(String fileName) {
         StringBuilder fileInfo = new StringBuilder();
 

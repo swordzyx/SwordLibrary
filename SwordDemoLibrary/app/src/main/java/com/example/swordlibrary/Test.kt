@@ -1,7 +1,9 @@
-package com.example.swordlibrary.kotlin
+package com.example.swordlibrary
 
 import android.util.Log
 import kotlinx.coroutines.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class Test {
   fun main() = runBlocking {
@@ -10,6 +12,12 @@ class Test {
     }*/
     
     testCoroutine()
+    
+    suspendCoroutine<String> { continuation ->
+      continuation.resume("hello")
+    }
+    
+    
   }
 
   suspend fun noSuspendTestCoroutine() {
@@ -22,7 +30,7 @@ class Test {
     println(feedList)
   }
   
-  suspend fun testCoroutine() {
+  suspend fun testCoroutine(): String {
     println("start")
     val user = getUserInfo()
     println(user)
@@ -30,6 +38,7 @@ class Test {
     println(friendList)
     val feedList = getFeedList(user, friendList)
     println(feedList)
+    return feedList
   }
   
   suspend fun noSuspendFriendList(user: String): String {
