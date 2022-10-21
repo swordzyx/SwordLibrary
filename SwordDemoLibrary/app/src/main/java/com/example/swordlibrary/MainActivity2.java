@@ -11,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.sword.xlcwtest.EmulatorDetectUtils;
-import com.sword.LogUtil;
+import com.sword.ScreenSize;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -31,7 +30,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
+        ScreenSize.test(this, getWindow());
     }
 
     /**

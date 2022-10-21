@@ -32,7 +32,7 @@
         <activity
             android:screenOrientation="landscape"
             android:name=".java.MainActivity2"
-            tools:ignore="IntentFilterExportedReceiver">
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,5 @@
 @file: JvmName("ScreenSize")
+@file:Suppress("DEPRECATION")
 
 package com.sword
 
@@ -13,17 +14,23 @@ import android.util.TypedValue
 import android.view.*
 import androidx.annotation.RequiresApi
 
-/**
- * 单位转换，dp 转成 px
- */
-fun dp(dp: Int): Int {
-  return TypedValue.applyDimension(
-    TypedValue.COMPLEX_UNIT_DIP,
-    dp.toFloat(),
-    Resources.getSystem().displayMetrics
-  ).toInt()
-}
+private const val tag = "ScreenSizeUtil"
 
+
+
+@RequiresApi(Build.VERSION_CODES.R)
+fun test(context: Context, window: Window) {
+  var point = getScreenSizeByMetrics(context)
+  LogUtil.debug(tag, "getScreenSizeByMetrics: ${point.x} - ${point.y}")
+  point = getScreenSizeByDisplay(context)
+  LogUtil.debug(tag, "getScreenSizeByDisplay: ${point.x} - ${point.y}")
+  point = getWindowSizeExcludeSystem(context)
+  LogUtil.debug(tag, "getWindowSizeExcludeSystem: ${point.x} - ${point.y}")
+  getCutoutRect(context)?.forEachIndexed { index, rect ->  
+    LogUtil.debug(tag, "getCutoutRect-$index, rect: $rect")
+  }
+  notchScreenAdapte(context, window, true)
+}
 
 /**
  * 获取应用程序显示区域的尺寸
@@ -36,39 +43,90 @@ fun getWindowSizeExcludeSystem(context: Context): Point {
   }
 }
 
+/**
+ * 刘海屏适配
+ */
+fun notchScreenAdapte(context: Context, window: Window, useNotch: Boolean) {
+  if (isNotchScreenHW(window)) {
+    getNotchHeightHw(window).forEach {
+      LogUtil.debug(tag, "getNotchHeightHw: $it")
+    }
+    
+    if (useNotch) useNotchInFullScreenHw(window) else excludeNotchInFullScreenHw(window) 
+    
+    return
+  }
+  
+  if (isNotchScreenXiaomi(window)) {
+    LogUtil.debug(tag, "getNotchHeightXiaomi: ${getNotchHeightXiaomi(context)}")
+    if (useNotch) useNotchInFullScreenXiaomi(window) else  excludeNotchInFullScreenXiaomi(window)
+    return
+  }
+
+  //oppo 手机设置使用刘海区域，OPPO 手机在全屏状态下默认是占用刘海屏区域的，只需将应用设置为全屏沉浸式即可
+  if (isNotchScreenOppo(window)) {
+    LogUtil.debug(tag, "getNotchHeightOppo: ${getNotchHeightOppo(window)}")
+    if (useNotch) fullScreen(window)
+  }
+}
 
 /**
- * 获取应用程序逻辑显示的尺寸
+ * 设置全屏
+ */
+fun fullScreen(window: Window) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { //Android 11
+    //假定 window 的按照全屏的模式布局（即隐藏状态栏和导航栏）
+    window.setDecorFitsSystemWindows(false)
+    //隐藏状态栏
+    window.insetsController?.hide(WindowInsets.Type.statusBars())
+    //隐藏导航栏
+    window.insetsController?.hide(WindowInsets.Type.navigationBars())
+  } else {
+    var systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+      systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+    }
+
+    window.decorView.systemUiVisibility = systemUiVisibility
+  }
+}
+
+/**
+ * 单位转换，dp 转成 px
+ */
+fun dp(dp: Int): Int {
+  return TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_DIP,
+    dp.toFloat(),
+    Resources.getSystem().displayMetrics
+  ).toInt()
+}
+
+/**
+ * 获取状态栏高度
+ */
+@SuppressLint("InternalInsetResource")
+fun getStatusHeight(context: Context): Int {
+  val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+  return if (resourceId > 0) context.resources.getDimensionPixelSize(resourceId) else 0
+}
+
+
+/**
+ * 通过 Display 获取应用程序逻辑显示的尺寸（Android 11 丢弃）
  */
 private fun getScreenSizeByDisplay(context: Context): Point {
   val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
   val display = windowManager.defaultDisplay
   
-  context.resources.displayMetrics
   return Point().apply {
     display.getSize(this)
   }
 }
 
-
 /**
- * 获取除去了系统导航栏以及显示器裁剪区域的显示尺寸，等价于 Display#getSize(Point)
- */
-@RequiresApi(Build.VERSION_CODES.R)
-private fun getScreenSizeByMetrics(context: Context): Point {
-  val windowManager = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
-  val metrics = windowManager.currentWindowMetrics
-
-  val insets =
-    metrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout())
-  val insetsWidth = insets.left + insets.right
-  val insetsHeight = insets.top + insets.bottom
-
-  return Point(metrics.bounds.width() - insetsWidth, metrics.bounds.height() - insetsHeight)
-}
-
-/**
- * 获取 SurfaceView 显示区域的尺寸
+ * 使用 Display 获取 SurfaceView 显示区域的尺寸，Android 11 丢弃
  */
 private fun getSurfaceViewSizeByDisplay(surfaceView: SurfaceView): Point {
   return Point().apply {
@@ -83,9 +141,26 @@ private fun getSurfaceViewSizeByDisplay(surfaceView: SurfaceView): Point {
 
 
 /**
+ * 通过 WindowMetrics 获取屏幕尺寸（Android 12 推荐的获取屏幕尺寸的方式）
+ * 获取除去了系统导航栏以及显示器裁剪区域的显示尺寸，等价于 Display#getSize(Point)
+ */
+@RequiresApi(Build.VERSION_CODES.R)
+private fun getScreenSizeByMetrics(context: Context): Point {
+  val windowManager = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
+  val metrics = windowManager.currentWindowMetrics
+
+  val insets = metrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout())
+  val insetsWidth = insets.left + insets.right
+  val insetsHeight = insets.top + insets.bottom
+
+  return Point(metrics.bounds.width() - insetsWidth, metrics.bounds.height() - insetsHeight)
+}
+
+
+/**
  * 判断华为手机是否有刘海
  */
-fun isNotchScreenHW(window: Window): Boolean {
+private fun isNotchScreenHW(window: Window): Boolean {
   val cl = window.context.classLoader
   val hwNotchSizeUtilCls = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil")
   val hasNotchInScreen = hwNotchSizeUtilCls.getMethod("hasNotchInScreen")
@@ -95,7 +170,7 @@ fun isNotchScreenHW(window: Window): Boolean {
 /**
  * 华为手机获取刘海屏高度
  */
-fun getNotchHeightHw(window: Window): IntArray {
+private fun getNotchHeightHw(window: Window): IntArray {
   if (!isNotchScreenHW(window)) {
     return intArrayOf(0, 0)
   }
@@ -110,8 +185,8 @@ fun getNotchHeightHw(window: Window): IntArray {
 /**
  * 在华为手机上设置使用刘海区域
  */
-const val FLAG_NOTCH_SUPPORT = 1
-fun useNotchInFullScreenHw(window: Window) {
+private const val FLAG_NOTCH_SUPPORT = 1
+private fun useNotchInFullScreenHw(window: Window) {
   val lp = window.attributes
   val layoutParamExCls =
     window.context.classLoader.loadClass("com.huawei.android.view.LayoutParamsEx")
@@ -126,7 +201,7 @@ fun useNotchInFullScreenHw(window: Window) {
 /**
  * 在华为手机上设置全屏不使用刘海区域
  */
-fun excludeNotchInFullScreenHw(window: Window) {
+private fun excludeNotchInFullScreenHw(window: Window) {
   val layoutParamExCls =
     window.context.classLoader.loadClass("com.huawei.android.view.LayoutParamEx")
 
@@ -142,7 +217,7 @@ fun excludeNotchInFullScreenHw(window: Window) {
  * 获取小米设备是否为刘海屏设备
  */
 @SuppressLint("PrivateApi")
-fun isNotchScreenXiaomi(window: Window): Boolean {
+private fun isNotchScreenXiaomi(window: Window): Boolean {
   val systemPropertiesCls = window.context.classLoader.loadClass("android.os.SystemProperties")
 
   val getInstanceMethod = systemPropertiesCls.getMethod("getInstance")
@@ -165,44 +240,36 @@ fun isNotchScreenXiaomi(window: Window): Boolean {
  * 0x00000100 | 0x00000400 横屏绘制到耳朵区
  * 0x00000100 | 0x00000200 | 0x00000400 横竖屏都绘制到耳朵区
  */
-@RequiresApi(Build.VERSION_CODES.O)
-fun useNotchInFullScreenXiaomi(activity: Activity) {
-  if (!isNotchScreenXiaomi(activity.window)) {
+private fun useNotchInFullScreenXiaomi(window: Window) {
+  if (!isNotchScreenXiaomi(window)) {
     return
   }
   val flagNotch = 0x00000100 or 0x00000200 or 0x00000400
   val addExtraFlagsMethod = Window::class.java.getMethod("addExtraFlags", Int::class.java)
   addExtraFlagsMethod.isAccessible = true
-  addExtraFlagsMethod.invoke(activity.window, flagNotch)
+  addExtraFlagsMethod.invoke(window, flagNotch)
 }
 
 /**
  * 小米手机设置不使用刘海区域
  */
-@RequiresApi(Build.VERSION_CODES.O)
-fun excludeNotchInFullScreenXiaomi(activity: Activity) {
-  if (!isNotchScreenXiaomi(activity.window)) {
+private fun excludeNotchInFullScreenXiaomi(window: Window) {
+  if (!isNotchScreenXiaomi(window)) {
     return
   }
 
   val flagNotch = 0x00000100 or 0x00000400
   val addExtraFlagMethod = Window::class.java.getMethod("addExtraFlags", Int::class.java)
   addExtraFlagMethod.isAccessible = true
-  addExtraFlagMethod.invoke(activity.window, flagNotch)
+  addExtraFlagMethod.invoke(window, flagNotch)
 }
 
-/**
- * 获取状态栏高度
- */
-fun getStatusHeight(context: Context): Int {
-  val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
-  return if (resourceId > 0) context.resources.getDimensionPixelSize(resourceId) else 0
-}
+
 
 /**
  * 小米手机获取刘海屏尺寸
  */
-fun getNotchHeightXiaomi(context: Context): Int {
+private fun getNotchHeightXiaomi(context: Context): Int {
   val resourceId = context.resources.getIdentifier("notch_height", "dimen", "android")
   return if (resourceId > 0) context.resources.getDimensionPixelSize(resourceId) else 0
 }
@@ -210,85 +277,37 @@ fun getNotchHeightXiaomi(context: Context): Int {
 /**
  * 判断 oppo 是否为刘海屏手机
  */
-fun isNotchScreenOppo(window: Window): Boolean {
+private fun isNotchScreenOppo(window: Window): Boolean {
   return window.context.packageManager.hasSystemFeature("com.oppo.feature.screen.heteromorphism")
 }
 
 /**
  * oppo 手机获取刘海屏高度，官网给出的 OPPO 手机的刘海固定高度为 80px
  */
-fun getNotchHeightOppo(window: Window): Int {
+private fun getNotchHeightOppo(window: Window): Int {
   if (!isNotchScreenOppo(window)) return 0
   return getStatusHeight(window.context)
 }
 
 /**
- * oppo 手机设置使用刘海区域，OPPO 手机在全屏状态下默认是占用刘海屏区域的，只需将应用设置为全屏沉浸式即可
- */
-fun fullScreen(window: Window, setListener: Boolean) {
-  /*var systemUiVisibility = 0
-  //Android 4.1  
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-    systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-  }
-  
-  //Android 4.4  
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-    systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY 
-  }
-  
-  window.decorView.systemUiVisibility = systemUiVisibility */
-
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-    //假定 window 的按照全屏的模式布局（即隐藏状态栏和导航栏）
-    window.setDecorFitsSystemWindows(false)
-    //隐藏状态栏
-    window.insetsController?.hide(WindowInsets.Type.statusBars())
-    //隐藏导航栏
-    window.insetsController?.hide(WindowInsets.Type.navigationBars())
-  } else {
-    val systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-    window.decorView.systemUiVisibility = systemUiVisibility
-  }
-}
-
-
-/**
  * 获取刘海区域的尺寸
  */
-private fun gainCutoutRect(context: Context): List<Rect?>? {
+private fun getCutoutRect(context: Context): List<Rect?>? {
   val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-  var cutouts: List<Rect>? = null
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-    val metric = windowManager.currentWindowMetrics
-    val insets = metric.windowInsets
-    val cutout = insets.displayCutout
-    /*int insetTop = cutout.getSafeInsetTop();
-          int insetBottom = cutout.getSafeInsetBottom();
-          int insetLeft = cutout.getSafeInsetLeft();
-          int insetRight = cutout.getSafeInsetRight();
-          LogUtil.debug(tag, "30 insetTop: " + insetTop + "; insetBottom: " + insetBottom + "; insetLeft: " + insetLeft + "; insetRight: " + insetRight);*/cutouts =
-      cutout!!.boundingRects
-    for (r in cutouts) {
-      LogUtil.debug(
-        "bounding, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom
-      )
+  val cutouts: List<Rect>? = null
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {  //Android 11
+    val cutout = windowManager.currentWindowMetrics.windowInsets.displayCutout ?: return null
+    LogUtil.debug(tag, "windowInsets.displayCutout: $cutout")
+    
+    cutout.boundingRects.forEachIndexed { index, r ->
+      LogUtil.debug("bounding-$index, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom) 
     }
   } else {
-    val display = windowManager.defaultDisplay
-    if (Build.VERSION.SDK_INT >= 29) {
-      val cutout = display.cutout
-      /*int insetTop = cutout.getSafeInsetTop();
-              int insetBottom = cutout.getSafeInsetBottom();
-              int insetLeft = cutout.getSafeInsetLeft();
-              int insetRight = cutout.getSafeInsetRight();
-              LogUtil.debug(tag, "29 insetTop: " + insetTop + "; insetBottom: " + insetBottom + "; insetLeft: " + insetLeft + "; insetRight: " + insetRight);*/
-      cutouts =
-        cutout!!.boundingRects
-      for (r in cutouts) {
-        LogUtil.debug(
-          "bounding, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom
-        )
+    if (Build.VERSION.SDK_INT >= 29) { // Android 10 
+      val cutout = windowManager.defaultDisplay.cutout ?: return null
+      LogUtil.debug(tag, "WindowManager.defaultDisplay.cutout: $cutout")
+      cutout.boundingRects.forEachIndexed { index, r ->
+        LogUtil.debug("bounding-$index, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom)
       }
     }
   }

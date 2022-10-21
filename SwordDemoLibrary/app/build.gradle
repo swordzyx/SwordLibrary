@@ -1,16 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.google.gms.google-services'
 
 android {
-	compileSdkVersion 30
-	buildToolsVersion "30.0.3"
-
+	compileSdk 33 //compileSdkVersion 被丢弃
+	buildToolsVersion = "30.0.3"  //buildToolsVersion 函数被丢弃
 	defaultConfig {
 		applicationId "com.example.swordlibrary"
-		minSdkVersion 16
-		targetSdkVersion 30
+		minSdk 16 //minSdkVersion 被丢弃
+		targetSdk 31 //targetSdkVersion 被丢弃
 		versionCode 1
 		versionName "1.0"
 
@@ -29,8 +27,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
-    implementation 'androidx.core:core-ktx:1.9.0'
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
+    implementation 'androidx.core:core-ktx:1.9.0' //compileSdkVersion 至少为 33
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
@@ -45,7 +43,7 @@ dependencies {
 	implementation 'io.reactivex.rxjava3:rxjava:3.0.13'
 	implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 	implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8'
-
+	
 
     testImplementation 'junit:junit:4.12'
 

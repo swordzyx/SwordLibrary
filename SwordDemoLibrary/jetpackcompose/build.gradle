@@ -4,12 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdk 31
 
     defaultConfig {
         applicationId "com.example.jetpackcompose"
-        minSdkVersion 21
-        targetSdkVersion 31
+        minSdk 21
+        //noinspection OldTargetApi
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -47,23 +48,48 @@ android {
     }
 }
 
-dependencies {
 
+dependencies {
+    
+    implementation project(":codelibrary")
+    
+    //kotlin
+    //noinspection GradleDependency
     implementation 'androidx.core:core-ktx:1.3.2'
+    
+    //androidx
+    //noinspection GradleDependency
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.window:window:1.0.0'
+    
+    //jetpack compose
+    //noinspection GradleDependency
     implementation "androidx.compose.ui:ui:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.material:material:$compose_version"
+    //noinspection GradleDependency
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    
+    //jetpack compose component
+    //noinspection GradleDependency
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+    //noinspection GradleDependency
     implementation 'androidx.activity:activity-compose:1.3.0-alpha06'
 
+    //jetpack compose view pager
     implementation "com.google.accompanist:accompanist-pager:$compose_accompanist_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$compose_accompanist_version"
 
+    //Junit Unit Test
+    //noinspection GradleDynamicVersion
     testImplementation 'junit:junit:4.+'
+    
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    //noinspection GradleDependency
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    
+    //compose ui debug tool，用于可视化 Compose UI
+    //noinspection GradleDependency
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 }
