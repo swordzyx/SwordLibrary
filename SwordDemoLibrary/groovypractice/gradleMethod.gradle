@@ -1,0 +1,11 @@
+ext {
+	printAllTask = this.&printAllTask
+}
+
+def printAllTask() {
+	gradle.taskGraph.whenReady {
+		project.tasks.forEach { task ->
+			println "${task.name} : ${task.class.name - "_Decorated"}"
+		}
+	}
+}
