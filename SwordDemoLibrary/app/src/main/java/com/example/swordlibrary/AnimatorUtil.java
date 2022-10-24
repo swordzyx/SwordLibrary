@@ -19,16 +19,16 @@ public class AnimatorUtil {
   }
   
   public void propertyValuesHolder(CircleView target) {
-    PropertyValuesHolder holder1 = PropertyValuesHolder.ofFloat("radius", sizeUtil.dpToPx(200));
-    PropertyValuesHolder holder2 = PropertyValuesHolder.ofFloat("offset", sizeUtil.dpToPx(100));
+    PropertyValuesHolder holder1 = PropertyValuesHolder.ofFloat("radius", ScreenSize.dp(200));
+    PropertyValuesHolder holder2 = PropertyValuesHolder.ofFloat("offset", ScreenSize.dp(100));
     ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, holder1, holder2);
     animator.start();
   }
   
   public void propertyValuesHolderWithKeyframe(CircleView target) {
-    Keyframe keyframe1 = Keyframe.ofFloat(0, sizeUtil.dpToPx(100));
-    Keyframe keyframe2 = Keyframe.ofFloat(0.5f, sizeUtil.dpToPx(250));
-    Keyframe keyframe3 = Keyframe.ofFloat(1, sizeUtil.dpToPx(200));
+    Keyframe keyframe1 = Keyframe.ofFloat(0, ScreenSize.dp(100));
+    Keyframe keyframe2 = Keyframe.ofFloat(0.5f, ScreenSize.dp(250));
+    Keyframe keyframe3 = Keyframe.ofFloat(1, ScreenSize.dp(200));
     
     PropertyValuesHolder holder = PropertyValuesHolder.ofKeyframe("radius", keyframe1, keyframe2, keyframe3);
     ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, holder);
@@ -36,8 +36,8 @@ public class AnimatorUtil {
   }
   
   public void animatorSet(CircleView target) {
-    ObjectAnimator animator1 = ObjectAnimator.ofFloat(target, "radius", sizeUtil.dpToPx(200));
-    ObjectAnimator animator2 = ObjectAnimator.ofFloat(target, "offset", sizeUtil.dpToPx(100));
+    ObjectAnimator animator1 = ObjectAnimator.ofFloat(target, "radius", ScreenSize.dp(200));
+    ObjectAnimator animator2 = ObjectAnimator.ofFloat(target, "offset", ScreenSize.dp(100));
     
     AnimatorSet animatorSet = new AnimatorSet();
     animatorSet.playTogether(animator1, animator2);

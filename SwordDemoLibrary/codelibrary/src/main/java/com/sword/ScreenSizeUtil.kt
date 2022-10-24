@@ -18,10 +18,16 @@ private const val tag = "ScreenSizeUtil"
 
 
 
-@RequiresApi(Build.VERSION_CODES.R)
+//@RequiresApi(Build.VERSION_CODES.R)
 fun test(context: Context, window: Window) {
-  var point = getScreenSizeByMetrics(context)
-  LogUtil.debug(tag, "getScreenSizeByMetrics: ${point.x} - ${point.y}")
+  var point: Point
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    point = getScreenSizeByMetrics(context)
+    LogUtil.debug(tag, "getScreenSizeByMetrics: ${point.x} - ${point.y}")
+  } else {
+    LogUtil.debug(tag, "Android version smaller than 11, ignore getScreenSizeByMetrics(...)")
+  }
+  
   point = getScreenSizeByDisplay(context)
   LogUtil.debug(tag, "getScreenSizeByDisplay: ${point.x} - ${point.y}")
   point = getWindowSizeExcludeSystem(context)
@@ -162,9 +168,14 @@ private fun getScreenSizeByMetrics(context: Context): Point {
  */
 private fun isNotchScreenHW(window: Window): Boolean {
   val cl = window.context.classLoader
-  val hwNotchSizeUtilCls = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil")
-  val hasNotchInScreen = hwNotchSizeUtilCls.getMethod("hasNotchInScreen")
-  return hasNotchInScreen.invoke(hwNotchSizeUtilCls) as Boolean
+  try {
+    val hwNotchSizeUtilCls = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil")
+    val hasNotchInScreen = hwNotchSizeUtilCls.getMethod("hasNotchInScreen")
+    return hasNotchInScreen.invoke(hwNotchSizeUtilCls) as Boolean
+  } catch (e: java.lang.Exception) {
+    e.printStackTrace()
+  }
+  return false
 }
 
 /**
@@ -174,12 +185,17 @@ private fun getNotchHeightHw(window: Window): IntArray {
   if (!isNotchScreenHW(window)) {
     return intArrayOf(0, 0)
   }
-  val ret: IntArray
-  val cl = window.context.classLoader
-  val hwNotchSizeUtilCls = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil")
-  val getNotchSizeMethod = hwNotchSizeUtilCls.getMethod("getNotchSize")
-  ret = getNotchSizeMethod.invoke(hwNotchSizeUtilCls) as IntArray
-  return ret
+  try {
+    val ret: IntArray
+    val cl = window.context.classLoader
+    val hwNotchSizeUtilCls = cl.loadClass("com.huawei.android.util.HwNotchSizeUtil")
+    val getNotchSizeMethod = hwNotchSizeUtilCls.getMethod("getNotchSize")
+    ret = getNotchSizeMethod.invoke(hwNotchSizeUtilCls) as IntArray
+    return ret
+  } catch (e: Exception) {
+    e.printStackTrace()
+  }
+  return intArrayOf(0, 0)
 }
 
 /**
@@ -187,29 +203,39 @@ private fun getNotchHeightHw(window: Window): IntArray {
  */
 private const val FLAG_NOTCH_SUPPORT = 1
 private fun useNotchInFullScreenHw(window: Window) {
-  val lp = window.attributes
-  val layoutParamExCls =
-    window.context.classLoader.loadClass("com.huawei.android.view.LayoutParamsEx")
+  
+  try {
+    val lp = window.attributes
 
-  val con = layoutParamExCls.getConstructor(WindowManager.LayoutParams::class.java)
-  val layoutParamExObj = con.newInstance(lp)
+    val layoutParamExCls =
+      window.context.classLoader.loadClass("com.huawei.android.view.LayoutParamsEx")
 
-  val addHwFlagsMethod = layoutParamExCls.getMethod("addHwFlags", Int::class.java)
-  addHwFlagsMethod.invoke(layoutParamExObj, FLAG_NOTCH_SUPPORT)
+    val con = layoutParamExCls.getConstructor(WindowManager.LayoutParams::class.java)
+    val layoutParamExObj = con.newInstance(lp)
+
+    val addHwFlagsMethod = layoutParamExCls.getMethod("addHwFlags", Int::class.java)
+    addHwFlagsMethod.invoke(layoutParamExObj, FLAG_NOTCH_SUPPORT)
+  } catch (e: Exception) {
+    e.printStackTrace()
+  }
 }
 
 /**
  * 在华为手机上设置全屏不使用刘海区域
  */
 private fun excludeNotchInFullScreenHw(window: Window) {
-  val layoutParamExCls =
-    window.context.classLoader.loadClass("com.huawei.android.view.LayoutParamEx")
+  try {
+    val layoutParamExCls =
+      window.context.classLoader.loadClass("com.huawei.android.view.LayoutParamEx")
 
-  val con = layoutParamExCls.getConstructor(WindowManager.LayoutParams::class.java)
-  val layoutParamExObj = con.newInstance(window.attributes)
+    val con = layoutParamExCls.getConstructor(WindowManager.LayoutParams::class.java)
+    val layoutParamExObj = con.newInstance(window.attributes)
 
-  val clearHwFlagsMethod = layoutParamExCls.getMethod("clearHwFlags", Int::class.java)
-  clearHwFlagsMethod.invoke(layoutParamExObj, FLAG_NOTCH_SUPPORT)
+    val clearHwFlagsMethod = layoutParamExCls.getMethod("clearHwFlags", Int::class.java)
+    clearHwFlagsMethod.invoke(layoutParamExObj, FLAG_NOTCH_SUPPORT)
+  } catch (e: Exception) {
+    e.printStackTrace()
+  }
 }
 
 
@@ -218,14 +244,19 @@ private fun excludeNotchInFullScreenHw(window: Window) {
  */
 @SuppressLint("PrivateApi")
 private fun isNotchScreenXiaomi(window: Window): Boolean {
-  val systemPropertiesCls = window.context.classLoader.loadClass("android.os.SystemProperties")
+  try {
+    val systemPropertiesCls = window.context.classLoader.loadClass("android.os.SystemProperties")
 
-  val getInstanceMethod = systemPropertiesCls.getMethod("getInstance")
-  val systemPropertiesObj = getInstanceMethod.invoke(systemPropertiesCls)
+    val getInstanceMethod = systemPropertiesCls.getMethod("getInstance")
+    val systemPropertiesObj = getInstanceMethod.invoke(systemPropertiesCls)
 
-  val getMethod = systemPropertiesCls.getMethod("get", String::class.java)
-  val roMiniNotch = getMethod.invoke(systemPropertiesObj, "ro.miui.notch")
-  return roMiniNotch == "1"
+    val getMethod = systemPropertiesCls.getMethod("get", String::class.java)
+    val roMiniNotch = getMethod.invoke(systemPropertiesObj, "ro.miui.notch")
+    return roMiniNotch == "1"
+  } catch (e: Exception) {
+    e.printStackTrace()
+  }
+  return false
 }
 
 /**
@@ -244,10 +275,15 @@ private fun useNotchInFullScreenXiaomi(window: Window) {
   if (!isNotchScreenXiaomi(window)) {
     return
   }
-  val flagNotch = 0x00000100 or 0x00000200 or 0x00000400
-  val addExtraFlagsMethod = Window::class.java.getMethod("addExtraFlags", Int::class.java)
-  addExtraFlagsMethod.isAccessible = true
-  addExtraFlagsMethod.invoke(window, flagNotch)
+  
+  try {
+    val flagNotch = 0x00000100 or 0x00000200 or 0x00000400
+    val addExtraFlagsMethod = Window::class.java.getMethod("addExtraFlags", Int::class.java)
+    addExtraFlagsMethod.isAccessible = true
+    addExtraFlagsMethod.invoke(window, flagNotch)
+  } catch (e: Exception) {
+    e.printStackTrace()
+  }
 }
 
 /**
@@ -258,10 +294,14 @@ private fun excludeNotchInFullScreenXiaomi(window: Window) {
     return
   }
 
-  val flagNotch = 0x00000100 or 0x00000400
-  val addExtraFlagMethod = Window::class.java.getMethod("addExtraFlags", Int::class.java)
-  addExtraFlagMethod.isAccessible = true
-  addExtraFlagMethod.invoke(window, flagNotch)
+  try {
+    val flagNotch = 0x00000100 or 0x00000400
+    val addExtraFlagMethod = Window::class.java.getMethod("addExtraFlags", Int::class.java)
+    addExtraFlagMethod.isAccessible = true
+    addExtraFlagMethod.invoke(window, flagNotch)
+  } catch (e: Exception) {
+    e.printStackTrace()
+  }
 }
 
 

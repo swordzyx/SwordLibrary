@@ -30,8 +30,7 @@
         tools:ignore="AllowBackup,UnusedAttribute">
         
         <activity
-            android:screenOrientation="landscape"
-            android:name=".java.MainActivity2"
+            android:name=".MainActivity2"
             android:exported="true">
 
             <intent-filter>
