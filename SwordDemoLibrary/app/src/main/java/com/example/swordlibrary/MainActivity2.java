@@ -1,6 +1,7 @@
 package com.example.swordlibrary;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,15 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ScreenSize.test(this, getWindow());
+    }
+
+    /**
+     * 显示相册
+     */
+    public void showGallery() {
+        Intent intent = new Intent(this, AlbumActivity.class);
+        intent.putExtra("crop_photo", true);
+        this.startActivity(intent);
     }
 
     /**

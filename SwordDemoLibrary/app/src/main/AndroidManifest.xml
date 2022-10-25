@@ -40,6 +40,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".AlbumActivity"/>
+
         <!--<activity android:name=".java.memory.MemoryListenerActivity"/>
         <activity android:name=".java.firebase.FireBaseActivity" />
         <service
