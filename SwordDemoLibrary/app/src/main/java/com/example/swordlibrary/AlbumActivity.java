@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 
 
 import com.sword.LogUtil;
+import com.sword.ToastUtilKt;
 
 import org.json.JSONObject;
 
@@ -225,8 +226,10 @@ public class AlbumActivity extends Activity {
     JSONObject obj = new JSONObject();
     try {
       obj.put("path", getImagePath(uri));
-
+      
       LogUtil.debug("object: " + obj);
+      //ToastUtilKt.toast(this, obj.toString());
+      ToastUtilKt.snackBar(getParent(), obj.toString(), true);
     } catch (Exception e) {
       e.printStackTrace();
     }
