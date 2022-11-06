@@ -11,16 +11,21 @@ class Test {
       delay(500)
     }*/
     
-    testCoroutine()
+    //testCoroutine()
     
-    suspendCoroutine<String> { continuation ->
+    /*suspendCoroutine<String> { continuation ->
       continuation.resume("hello")
-    }
+    }*/
     
+    val scope = CoroutineScope(Job())
+    scope.launch { 
+      
+      delay(1000)
+    }
     
   }
 
-  suspend fun noSuspendTestCoroutine() {
+  /*suspend fun noSuspendTestCoroutine() {
     println("start")
     val user = getUserInfo()
     println(user)
@@ -64,5 +69,5 @@ class Test {
       delay(1000L)
     }
     return "{FeedList..}"
-  }
+  }*/
 }
