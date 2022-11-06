@@ -6,6 +6,9 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.sword.ScreenSize;
+import com.sword.view.TextCheckBox;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,6 +36,26 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ScreenSize.test(this, getWindow());
+
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
+        
+        requestPermission();
+
+        TextCheckBox checkBox = new TextCheckBox(this);
+        checkBox.setText("是否裁剪");
+        linearLayout.addView(checkBox);
+        
+        Button showGallery = new Button(this);
+        showGallery.setText("上传图片");
+        showGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showGallery(checkBox.isChecked());
+            }
+        });
+        linearLayout.addView(showGallery);
+        
+        //showGallery();
     }
 
     /**
@@ -77,7 +101,12 @@ public class MainActivity2 extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
     }
-
+    
+    private void showGallery(boolean isCrop) {
+        Intent intent = new Intent(this, AlbumActivity.class);
+        intent.putExtra("crop_photo", isCrop);
+        startActivity(intent);
+    }
 
     public static void getCPUABI() {
         if (CPUABI == null) {

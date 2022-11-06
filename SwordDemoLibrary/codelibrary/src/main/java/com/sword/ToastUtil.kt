@@ -11,9 +11,10 @@ private var toast: Toast? = null
 private var snake: Snackbar? = null
 
 fun toast(context: Context, msg: String) {
-    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    Toast.makeText(context.applicationContext, msg, Toast.LENGTH_SHORT).show()
 }
 
+//todo：会出现 snakeBar 无法显示的情况
 fun snackBar(activity: Activity, msg: String, isLong: Boolean) {
     snackBar(activity.window.decorView, msg, isLong)
 }
