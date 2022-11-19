@@ -44,6 +44,10 @@ dependencies {
 	implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 	implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8'
 	
+	//LeakCanary：内存泄漏检测库
+	debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+	//debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+	
 
     testImplementation 'junit:junit:4.12'
 
