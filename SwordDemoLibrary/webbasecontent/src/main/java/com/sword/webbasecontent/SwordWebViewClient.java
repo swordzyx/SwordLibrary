@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 
-import com.example.utilclass.LogUtil;
+import com.sword.LogUtil;
 
 public class SwordWebViewClient extends WebViewClient {
   private final ProgressBar progressBar;
