@@ -12,9 +12,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
-import com.example.utilclass.LogUtil;
-
-import java.util.IllegalFormatCodePointException;
+import com.sword.LogUtil;
 
 public class SwordWebChormClient extends WebChromeClient {
 	private static final String tag = "SwordWebChormClient-";

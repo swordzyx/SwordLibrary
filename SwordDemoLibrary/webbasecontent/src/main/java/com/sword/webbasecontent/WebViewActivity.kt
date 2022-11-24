@@ -7,8 +7,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import com.example.utilclass.BuildConfig
-import com.example.utilclass.LogUtil
+import com.sword.LogUtil
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.net.Inet4Address
@@ -38,7 +37,7 @@ class WebViewActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_web_view)
 
-		webView = findViewById(R.id.webview)
+		webView = findViewById(R.id.webView)
 		webView.settings.javaScriptEnabled = true
 		webView.webChromeClient = WebChromeClient()
 		webView.webViewClient = SwordWebViewClient(null)

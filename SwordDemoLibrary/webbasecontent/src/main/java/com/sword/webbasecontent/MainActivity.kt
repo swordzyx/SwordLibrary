@@ -1,10 +1,14 @@
 package com.sword.webbasecontent
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.*
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import com.sword.LogUtil
 
 class MainActivity : AppCompatActivity() {
 	lateinit var webView: WebView
@@ -13,34 +17,52 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 
-		webView = findViewById(R.id.webView)
+		/*webView = findViewById(R.id.webView)
+		webView.loadUrl("file:///android_asset/permission_privacy_protocol.txt")*/
+
+		showWebViewDialog()
+
+		/*findViewById<Button>(R.id.dialog_button).setOnClickListener {
+			showWebViewDialog()
+		}*/
+		/*findViewById<Button>(R.id.activity_button).setOnClickListener {
+			startActivity(Intent(this, WebViewActivity::class.java))
+		}*/
+	}
+
+	@SuppressLint("InflateParams")
+	private fun showWebViewDialog() {
+		val view = layoutInflater.inflate(R.layout.activity_web_view, null).apply {
+			findViewById<WebView>(R.id.webView).loadUrl("file:///android_asset/permission_privacy_protocol.txt")
+		}
+
+		AlertDialog.Builder(this)
+			.setView(view)
+			.show()
+	}
+
+	@SuppressLint("SetJavaScriptEnabled")
+	/**
+	 * 1. Android 通过 loadUrl 调用 JS 代码
+	 * 2. 通过 WebView 的 evaluateJavascript 执行 JS 代码，这种方法更高效，因为它不会导致 url 刷新，而 loadUrl 会导致页面刷新
+	 * 3. 通过 WebView#addJavascriptInterface() 的将 Android 的实例映射到 JS 的实例，实现 JS 执行 Android 代码
+	 * 4. 通过 WebViewClient#shouldOverrideUrlLoading() 拦截用户点击的 url，解析 url，如果 schemas 和 authority 是约定的值，则触发 Android 方法的调用
+	 */
+	private fun configureWebView(webView: WebView) {
+		webView.webChromeClient = webChromeClient
+		webView.webViewClient = webViewClient
+
 		//设置允许在 WebView 中执行 JS 代码
 		webView.settings.javaScriptEnabled = true
 		//允许 JS 弹框
 		webView.settings.javaScriptCanOpenWindowsAutomatically = true
+		
 		//允许使用 file 协议，也就是允许 WebView 加载 file:// 开头的 url
 		webView.settings.allowFileAccess = true
 
-		webView.loadUrl("file:///android_asset/javascript.html")
-
-
-		/**
-		 * 1. Android 通过 loadUrl 调用 JS 代码
-		 * 2. 通过 WebView 的 evaluateJavascript 执行 JS 代码，这种方法更高效，因为它不会导致 url 刷新，而 loadUrl 会导致页面刷新
-		 * 3. 通过 WebView#addJavascriptInterface() 的将 Android 的实例映射到 JS 的实例，实现 JS 执行 Android 代码
-		 * 4. 通过 WebViewClient#shouldOverrideUrlLoading() 拦截用户点击的 url，解析 url，如果 schemas 和 authority 是约定的值，则触发 Android 方法的调用
-		 */
-		configureWebView()
-
-	}
-	
-	@SuppressLint("SetJavaScriptEnabled")
-	private fun configureWebView() {
-		webView.webChromeClient = webChromeClient
-		webView.webViewClient = webViewClient
-
 		//将 AndroidJsInterface 对象映射到 JS 的 test 对象
 		webView.addJavascriptInterface(AndroidJsInterface(), "test")
+		
 		//加载 assets 中的文件固定格式为：file:///android_assets/文件名.html，这个 url 的 schemas（协议）是 file
 		webView.loadUrl("file:///android_asset/javascript.html")
 	}
