@@ -3,12 +3,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-	compileSdk 33 //compileSdkVersion 被丢弃
-	buildToolsVersion = "33.0.0"  //buildToolsVersion 函数被丢弃
+	compileSdkVersion 31 //compileSdkVersion 被丢弃
+	buildToolsVersion "31.0.0"  //buildToolsVersion 函数被丢弃
 	defaultConfig {
 		applicationId "com.example.swordlibrary"
-		minSdk 16 //minSdkVersion 被丢弃
-		targetSdk 31 //targetSdkVersion 被丢弃
+		minSdk 24 //minSdkVersion 被丢弃
+		targetSdkVersion 31 //targetSdkVersion 被丢弃
 		versionCode 1
 		versionName "1.0"
 
@@ -28,9 +28,11 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
-    implementation 'androidx.core:core-ktx:1.9.0' //compileSdkVersion 至少为 33
+    implementation 'androidx.core:core-ktx:1.7.0' //compileSdkVersion 至少为 33
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+	implementation "androidx.window:window-java:1.0.0"
 
     implementation project(":codelibrary")
     //log4j
@@ -43,7 +45,8 @@ dependencies {
 	implementation 'io.reactivex.rxjava3:rxjava:3.0.13'
 	implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 	implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8'
-	
+	implementation 'com.google.android.material:material:1.4.0'
+
 	//LeakCanary：内存泄漏检测库
 	debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 	//debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'

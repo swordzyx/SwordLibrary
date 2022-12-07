@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Point
 import android.graphics.Rect
+import android.hardware.display.DisplayManager
 import android.os.Build
 import android.util.TypedValue
 import android.view.*
@@ -16,36 +17,40 @@ import androidx.annotation.RequiresApi
 
 private const val tag = "ScreenSizeUtil"
 
+fun publicApiTest(activity: Activity, window: Window) {
+  val point: Point = getWindowSizeExcludeSystem(activity)
+  LogUtil.debug(tag, "屏幕尺寸: ${point.x} - ${point.y}")
+
+  notchScreenAdapte(activity, window, true)
+}
 
 
-//@RequiresApi(Build.VERSION_CODES.R)
-fun test(context: Context, window: Window) {
+fun test(activity: Activity) {
   var point: Point
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-    point = getScreenSizeByMetrics(context)
+    point = getScreenSizeByMetrics(activity)
     LogUtil.debug(tag, "getScreenSizeByMetrics: ${point.x} - ${point.y}")
   } else {
     LogUtil.debug(tag, "Android version smaller than 11, ignore getScreenSizeByMetrics(...)")
   }
-  
-  point = getScreenSizeByDisplay(context)
+  point = getScreenSizeByDisplay(activity)
   LogUtil.debug(tag, "getScreenSizeByDisplay: ${point.x} - ${point.y}")
-  point = getWindowSizeExcludeSystem(context)
-  LogUtil.debug(tag, "getWindowSizeExcludeSystem: ${point.x} - ${point.y}")
-  getCutoutRect(context)?.forEachIndexed { index, rect ->  
+  
+  getCutoutRect(activity)?.forEachIndexed { index, rect ->  
     LogUtil.debug(tag, "getCutoutRect-$index, rect: $rect")
   }
-  notchScreenAdapte(context, window, true)
+
+  printDisplayInfo(activity)
 }
 
 /**
  * 获取应用程序显示区域的尺寸
  */
-fun getWindowSizeExcludeSystem(context: Context): Point {
+fun getWindowSizeExcludeSystem(activity: Activity): Point {
   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-    getScreenSizeByMetrics(context)
+    getScreenSizeByMetrics(activity)
   } else {
-    getScreenSizeByDisplay(context)
+    getScreenSizeByDisplay(activity)
   }
 }
 
@@ -100,6 +105,8 @@ fun fullScreen(window: Window) {
 
 /**
  * 单位转换，dp 转成 px
+ * 
+ * 返回的值其实是：dp * density（屏幕密度缩放因子，当前屏幕密度/标准屏幕密度（160dpi））
  */
 fun dp(dp: Int): Int {
   return TypedValue.applyDimension(
@@ -118,17 +125,56 @@ fun getStatusHeight(context: Context): Int {
   return if (resourceId > 0) context.resources.getDimensionPixelSize(resourceId) else 0
 }
 
+/**
+ * 打印设备屏幕信息
+ */
+private fun printDisplayInfo(activity: Activity) {
+  LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+    val dm = activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    for (d: Display in dm.displays) {
+      LogUtil.debug(tag, d.toString())
+    }
+  } else {
+    LogUtil.debug(tag, "Android 系统版本小于 4.2（API 17），不支持 Display Api")
+  }
+  LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
+}
 
 /**
  * 通过 Display 获取应用程序逻辑显示的尺寸（Android 11 丢弃）
  */
-private fun getScreenSizeByDisplay(context: Context): Point {
-  val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-  val display = windowManager.defaultDisplay
+private fun getScreenSizeByDisplay(activity: Activity): Point {
+  val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    activity.display
+  } else {
+    (activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+  }
   
   return Point().apply {
-    display.getSize(this)
+    display!!.getSize(this)
   }
+}
+
+/**
+ * 通过 WindowMetrics 获取屏幕尺寸（Android 12 推荐的获取屏幕尺寸的方式）
+ * 获取除去了系统导航栏以及显示器裁剪区域的显示尺寸，等价于 Display#getSize(Point)
+ */
+@RequiresApi(Build.VERSION_CODES.R)
+private fun getScreenSizeByMetrics(activity: Activity): Point {
+  val metrics = activity.windowManager.currentWindowMetrics
+
+  //metrics.windowInsets 获取屏幕所有装饰物的尺寸信息
+  val insets = metrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout())
+  val insetsWidth = insets.left + insets.right
+  val insetsHeight = insets.top + insets.bottom
+  LogUtil.debug("ScreenSizeUtil", "insets: $insets")
+  LogUtil.debug("ScreenSizeUtil", "metrics: ${metrics.bounds}")
+  
+  val insets1 = metrics.windowInsets.getInsets(0)
+  LogUtil.debug("ScreenSizeUtil", "insets1, $insets1")
+
+  return Point(metrics.bounds.width() - insetsWidth, metrics.bounds.height() - insetsHeight)
 }
 
 /**
@@ -144,24 +190,6 @@ private fun getSurfaceViewSizeByDisplay(surfaceView: SurfaceView): Point {
     }
   }
 }
-
-
-/**
- * 通过 WindowMetrics 获取屏幕尺寸（Android 12 推荐的获取屏幕尺寸的方式）
- * 获取除去了系统导航栏以及显示器裁剪区域的显示尺寸，等价于 Display#getSize(Point)
- */
-@RequiresApi(Build.VERSION_CODES.R)
-private fun getScreenSizeByMetrics(context: Context): Point {
-  val windowManager = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
-  val metrics = windowManager.currentWindowMetrics
-
-  val insets = metrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout())
-  val insetsWidth = insets.left + insets.right
-  val insetsHeight = insets.top + insets.bottom
-
-  return Point(metrics.bounds.width() - insetsWidth, metrics.bounds.height() - insetsHeight)
-}
-
 
 /**
  * 判断华为手机是否有刘海
