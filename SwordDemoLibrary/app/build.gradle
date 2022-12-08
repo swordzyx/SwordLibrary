@@ -27,8 +27,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    //implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
-    implementation 'androidx.core:core-ktx:1.4.0' //compileSdkVersion 至少为 33
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.20"
+    implementation 'androidx.core:core-ktx:1.9.0' //compileSdkVersion 至少为 33
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
