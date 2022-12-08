@@ -1,4 +1,4 @@
-package com.example.swordlibrary;
+package com.example.swordlibrary.viewpager;
 
 import android.annotation.SuppressLint;
 import android.view.View;

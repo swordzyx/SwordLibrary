@@ -1,4 +1,4 @@
-package com.sword.floatball;
+package com.example.swordlibrary.viewpager;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -51,6 +51,10 @@ public class WebViewContainer extends ViewGroup {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     isAttachedToWindow = true;
+  }
+
+  public void loadUrl(String url) {
+    loadUrl(url, new FloatMenuWebClient(progressBar));
   }
 
   public void loadUrl(String url, FloatMenuWebClient client) {

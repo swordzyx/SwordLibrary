@@ -1,53 +1,40 @@
 package com.example.swordlibrary;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Point;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.util.Consumer;
+import androidx.viewpager.widget.ViewPager;
 import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;
 import androidx.window.layout.DisplayFeature;
 import androidx.window.layout.FoldingFeature;
 import androidx.window.layout.WindowInfoTracker;
 import androidx.window.layout.WindowLayoutInfo;
 
+import com.example.swordlibrary.viewpager.FloatBallData;
+import com.example.swordlibrary.viewpager.TabLayout;
+import com.example.swordlibrary.viewpager.ViewPagerAdapter;
 import com.sword.LogUtil;
 import com.sword.ScreenSize;
-import com.sword.view.TextCheckBox;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
-
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlinx.coroutines.flow.FlowCollector;
 
 
 public class MainActivity2 extends AppCompatActivity {
@@ -83,6 +70,8 @@ public class MainActivity2 extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    initViewPager();
     
     windowInfoTracker = new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this));
 
@@ -94,6 +83,18 @@ public class MainActivity2 extends AppCompatActivity {
       LogUtil.debug(TAG, d.toString());
     }    
     LogUtil.debug(TAG, "--------------------- DisplayManager.getDisplays --------------------");
+  }
+
+  private void initViewPager() {
+    ViewPager viewPager = findViewById(R.id.viewpager);
+
+    ViewPagerAdapter adapter = new ViewPagerAdapter();
+    viewPager.setAdapter(adapter);
+
+
+    FloatBallData floatBallData = new FloatBallData();
+    TabLayout tabLayout = findViewById(R.id.tabLayout);
+    tabLayout.bind(viewPager, floatBallData);
   }
 
   @Override

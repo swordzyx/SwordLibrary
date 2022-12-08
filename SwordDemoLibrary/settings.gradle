@@ -30,7 +30,7 @@ rootProject.name = "SwordDemoLibrary"
 //include ':androidarticle'
 //include ':jetpackcompose'
 //include ':telegramsource'
-include ':codelibrary'
+include ":codelibrary"
 //include ':hencoder'
 //include ':openprojectcode'
 //include ':jetpackcompose'

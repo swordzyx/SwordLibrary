@@ -1,4 +1,4 @@
-package com.sword.floatball;
+package com.example.swordlibrary.viewpager;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -17,8 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
-
-import com.example.utilclass.LogUtil;
+import com.sword.LogUtil;
 
 public class FloatMenuWebClient extends WebViewClient {
   private final ProgressBar progressBar;

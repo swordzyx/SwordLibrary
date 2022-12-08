@@ -28,7 +28,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
-    implementation 'androidx.core:core-ktx:1.7.0' //compileSdkVersion 至少为 33
+    implementation 'androidx.core:core-ktx:1.4.0' //compileSdkVersion 至少为 33
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
@@ -40,7 +40,7 @@ dependencies {
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
 
 	implementation 'com.squareup.retrofit2:retrofit:2.7.2'
-	implementation 'com.squareup.okhttp3:okhttp:4.4.1'
+	implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 	implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
 	implementation 'io.reactivex.rxjava3:rxjava:3.0.13'
 	implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
