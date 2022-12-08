@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -16,17 +17,26 @@ public class WebViewContainer extends ViewGroup {
   
   private WebView webView;
   private ProgressBar progressBar;
-  private Context context;
+  private final Context context;
   
   public WebViewContainer(@NonNull Context context) {
-    super(context, null);
+    this(context, null);
   }
 
   public WebViewContainer(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
 
     this.context = context;
-    initView();
+
+    LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
+    webView = new WebView(context);
+    WebSettings webSettings = webView.getSettings();
+    webSettings.setJavaScriptEnabled(true);
+    addView(webView, params);
+
+    progressBar = new ProgressBar(context);
+    addView(progressBar, params);
   }
 
   @Override
@@ -72,14 +82,7 @@ public class WebViewContainer extends ViewGroup {
   
   
   private void initView() {
-    LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     
-    webView = new WebView(context);
-    addView(webView, params);
-    
-    progressBar = new ProgressBar(context);
-    addView(progressBar, params);
-    progressBar.setVisibility(View.GONE);
   }
   
   

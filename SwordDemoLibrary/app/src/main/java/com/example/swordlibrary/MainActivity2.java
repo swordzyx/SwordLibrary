@@ -29,6 +29,7 @@ import com.example.swordlibrary.viewpager.TabLayout;
 import com.example.swordlibrary.viewpager.ViewPagerAdapter;
 import com.sword.LogUtil;
 import com.sword.ScreenSize;
+import com.sword.ViewUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -69,6 +70,7 @@ public class MainActivity2 extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    
     setContentView(R.layout.activity_main);
 
     initViewPager();
@@ -90,11 +92,9 @@ public class MainActivity2 extends AppCompatActivity {
 
     ViewPagerAdapter adapter = new ViewPagerAdapter();
     viewPager.setAdapter(adapter);
-
-
-    FloatBallData floatBallData = new FloatBallData();
+    
     TabLayout tabLayout = findViewById(R.id.tabLayout);
-    tabLayout.bind(viewPager, floatBallData);
+    tabLayout.bind(viewPager);
   }
 
   @Override
