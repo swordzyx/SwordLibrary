@@ -78,6 +78,12 @@ public class TabLayout extends LinearLayout {
 
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    int h = (b - t - (marginEdge << 1)) / menuItemViews.size();
+    LinearLayout.LayoutParams lp;
+    for (MenuItemView menuItemView : menuItemViews) {
+      lp = (LinearLayout.LayoutParams) menuItemView.getLayoutParams();
+      lp.topMargin = lp.bottomMargin = (h - menuItemView.getMeasuredHeight()) >> 1;
+    }
     super.onLayout(changed, l, t, r, b);
   }
 
