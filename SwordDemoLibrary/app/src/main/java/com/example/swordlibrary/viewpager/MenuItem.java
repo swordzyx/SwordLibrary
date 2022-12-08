@@ -1,9 +1,12 @@
 package com.example.swordlibrary.viewpager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sword.LogUtil;
@@ -20,6 +23,17 @@ class MenuItem {
     MenuItem(ImageView icon, TextView title) {
         this.icon = icon;
         this.title = title;
+    }
+    
+    LinearLayout convertToLinearLayout(MenuItem item, Context context) {
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        linearLayout.addView(item.icon, params);
+        linearLayout.addView(item.title, params);
+        return linearLayout;
     }
     
     public void setVerticalPadding(int verticalPadding) {
