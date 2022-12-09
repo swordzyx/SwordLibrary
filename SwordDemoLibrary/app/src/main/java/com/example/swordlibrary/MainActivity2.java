@@ -24,12 +24,10 @@ import androidx.window.layout.FoldingFeature;
 import androidx.window.layout.WindowInfoTracker;
 import androidx.window.layout.WindowLayoutInfo;
 
-import com.example.swordlibrary.viewpager.FloatBallData;
 import com.example.swordlibrary.viewpager.TabLayout;
 import com.example.swordlibrary.viewpager.ViewPagerAdapter;
 import com.sword.LogUtil;
 import com.sword.ScreenSize;
-import com.sword.ViewUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
