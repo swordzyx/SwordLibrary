@@ -14,8 +14,28 @@ import android.os.Build
 import android.util.TypedValue
 import android.view.*
 import androidx.annotation.RequiresApi
+import androidx.window.layout.FoldingFeature
+import androidx.window.layout.WindowInfoTracker
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 
 private const val tag = "ScreenSizeUtil"
+
+private val windowSize: Point = getWindowSizeExcludeSystem(SwordApplication.getGlobalContext()) 
+
+val windowWidth: Int
+  get() = windowSize.x
+val windowHeight: Int
+  get() = windowSize.y
+
+
+
+
+fun initWindowSize(context: Context) {
+  val point = getWindowSizeExcludeSystem(context)
+  windowSize.x = point.x
+  windowSize.y = point.y
+}
 
 fun publicApiTest(activity: Activity, window: Window) {
   val point: Point = getWindowSizeExcludeSystem(activity)
@@ -46,11 +66,11 @@ fun test(activity: Activity) {
 /**
  * 获取应用程序显示区域的尺寸
  */
-fun getWindowSizeExcludeSystem(activity: Activity): Point {
+fun getWindowSizeExcludeSystem(context: Context): Point {
   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-    getScreenSizeByMetrics(activity)
+    getScreenSizeByMetrics(context)
   } else {
-    getScreenSizeByDisplay(activity)
+    getScreenSizeByDisplay(context)
   }
 }
 
@@ -144,13 +164,13 @@ private fun printDisplayInfo(activity: Activity) {
 /**
  * 通过 Display 获取应用程序逻辑显示的尺寸（Android 11 丢弃）
  */
-private fun getScreenSizeByDisplay(activity: Activity): Point {
+private fun getScreenSizeByDisplay(context: Context): Point {
   val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-    activity.display
+    context.display
   } else {
-    (activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+    (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
   }
-  
+
   return Point().apply {
     display!!.getSize(this)
   }
@@ -161,8 +181,12 @@ private fun getScreenSizeByDisplay(activity: Activity): Point {
  * 获取除去了系统导航栏以及显示器裁剪区域的显示尺寸，等价于 Display#getSize(Point)
  */
 @RequiresApi(Build.VERSION_CODES.R)
-private fun getScreenSizeByMetrics(activity: Activity): Point {
-  val metrics = activity.windowManager.currentWindowMetrics
+private fun getScreenSizeByMetrics(context: Context): Point {
+  val metrics = if (context is Activity) {
+      context.windowManager.currentWindowMetrics
+    } else {
+      (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).currentWindowMetrics
+    }
 
   //metrics.windowInsets 获取屏幕所有装饰物的尺寸信息
   val insets = metrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout())

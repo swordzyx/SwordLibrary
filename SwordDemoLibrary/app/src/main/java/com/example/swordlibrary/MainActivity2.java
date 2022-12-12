@@ -1,33 +1,31 @@
 package com.example.swordlibrary;
 
 import android.Manifest;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.hardware.display.DisplayManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.util.Consumer;
 import androidx.viewpager.widget.ViewPager;
-import androidx.window.java.layout.WindowInfoTrackerCallbackAdapter;
-import androidx.window.layout.DisplayFeature;
-import androidx.window.layout.FoldingFeature;
-import androidx.window.layout.WindowInfoTracker;
-import androidx.window.layout.WindowLayoutInfo;
 
+import com.example.swordlibrary.utils.SwordDialog;
 import com.example.swordlibrary.viewpager.TabLayout;
 import com.example.swordlibrary.viewpager.ViewPagerAdapter;
 import com.sword.LogUtil;
 import com.sword.ScreenSize;
+import com.sword.ViewUtilKt;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -68,31 +66,69 @@ public class MainActivity2 extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    
+    ViewUtilKt.fullScreen(this);
+
     setContentView(R.layout.activity_main);
+    initFloatView(this);
 
-    initViewPager();
+    ((LinearLayout)findViewById(R.id.rootView)).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        LogUtil.debug(TAG, "rootView onClick");
+      }
+    });
+  }
+  
+  private void initFloatView(Activity activity) {
+    View decorView = getWindow().getDecorView();
+    final ViewGroup floatView = initViewPager(this);
+    //floatView.setVisibility(View.GONE);
+    ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ScreenSize.getWindowWidth() / 2, ViewGroup.LayoutParams.MATCH_PARENT);
+    ((ViewGroup)decorView).addView(floatView, lp);
     
-    windowInfoTracker = new WindowInfoTrackerCallbackAdapter(WindowInfoTracker.getOrCreate(this));
-
-    LogUtil.debug(TAG, "onCreate configuration: " + getResources().getConfiguration());
-
-    LogUtil.debug(TAG, "--------------------- DisplayManager.getDisplays --------------------");
-    DisplayManager dm = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
-    for(Display d: dm.getDisplays()) {
-      LogUtil.debug(TAG, d.toString());
-    }    
-    LogUtil.debug(TAG, "--------------------- DisplayManager.getDisplays --------------------");
+    decorView.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        LogUtil.debug(TAG, "decode onClick");
+      }
+    });
+    
+    /*Button button = (Button) findViewById(R.id.switch_viewPager);
+    button.setOnClickListener(v -> {
+      floatView.setVisibility(floatView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    });*/
+  }
+  
+  private void initFloatDialog(Activity activity) {
+    ViewGroup floatDialogView = initViewPager(activity);
+    
+    SwordDialog dialog = new SwordDialog(activity);
+    dialog.customView(floatDialogView).setSize(ScreenSize.getWindowWidth(), ScreenSize.getWindowHeight());
+    dialog.show();
   }
 
-  private void initViewPager() {
-    ViewPager viewPager = findViewById(R.id.viewpager);
-
+  private ViewGroup initViewPager(Activity activity) {
+    LinearLayout linearLayout = new LinearLayout(activity);
+    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+    
+    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ScreenSize.dp(40), ViewGroup.LayoutParams.MATCH_PARENT);
+    TabLayout tabLayout = new TabLayout(activity);
+    tabLayout.setBackgroundColor(Color.parseColor("#2B2B2B"));
+    tabLayout.setOrientation(LinearLayout.VERTICAL);
+    linearLayout.addView(tabLayout, lp);
+    
+    ViewPager viewPager = new ViewPager(activity);
+    viewPager.setBackgroundColor(Color.WHITE);
+    lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
+    lp.weight = 1;
+    linearLayout.addView(viewPager, lp);
+    
     ViewPagerAdapter adapter = new ViewPagerAdapter();
     viewPager.setAdapter(adapter);
+    viewPager.setCurrentItem(0);
     
-    TabLayout tabLayout = findViewById(R.id.tabLayout);
     tabLayout.bind(viewPager);
+    return linearLayout;
   }
 
   @Override
