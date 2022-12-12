@@ -38,31 +38,6 @@ public class MainActivity2 extends AppCompatActivity {
   private static final String TAG = "MainActivity";
   public static String CPUABI = null;
 
-  private WindowInfoTrackerCallbackAdapter windowInfoTracker;
-  private final LayoutStateChangeCallback layoutStateChangeCallback = new LayoutStateChangeCallback();
-
-  class LayoutStateChangeCallback implements Consumer<WindowLayoutInfo> {
-
-    @Override
-    public void accept(WindowLayoutInfo windowLayoutInfo) {
-      runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-          LogUtil.debug(TAG, "LayoutStateChange: " + windowLayoutInfo);
-          for (DisplayFeature df : windowLayoutInfo.getDisplayFeatures()) {
-            if (df instanceof FoldingFeature) {
-              LogUtil.debug(TAG, "Folding State");
-              LogUtil.debug(TAG, "State: " + ((FoldingFeature) df).getState());
-              LogUtil.debug(TAG, "OcclusionType: " + ((FoldingFeature) df).getOcclusionType());
-              LogUtil.debug(TAG, "Orientation: " + ((FoldingFeature) df).getOrientation());
-            }
-          }
-        }
-      });
-    }
-  }
-
-  @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -134,17 +109,8 @@ public class MainActivity2 extends AppCompatActivity {
   @Override
   protected void onStart() {
     super.onStart();
-    windowInfoTracker.addWindowLayoutInfoListener(this, Runnable::run, layoutStateChangeCallback);
   }
 
-  public static boolean isFoldDisplay(Context context) {
-    final String KEY = "config_lidControlsDisplayFold";
-    int id = context.getResources().getIdentifier(KEY, "bool", "android");
-    if (id > 0) {
-      return context.getResources().getBoolean(id);
-    }
-    return false;
-  }
 
   @Override
   public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -159,7 +125,6 @@ public class MainActivity2 extends AppCompatActivity {
   @Override
   protected void onStop() {
     super.onStop();
-    windowInfoTracker.removeWindowLayoutInfoListener(layoutStateChangeCallback);
   }
 
   /**

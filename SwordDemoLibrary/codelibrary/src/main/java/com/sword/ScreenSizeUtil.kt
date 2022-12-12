@@ -61,6 +61,12 @@ fun test(activity: Activity) {
   }
 
   printDisplayInfo(activity)
+  
+  //启动一个协程
+  val scope = CoroutineScope(Dispatchers.Main)
+  scope.launch { 
+    printFlodInfo(activity)
+  }
 }
 
 /**
@@ -149,6 +155,9 @@ fun getStatusHeight(context: Context): Int {
  * 打印设备屏幕信息
  */
 private fun printDisplayInfo(activity: Activity) {
+
+  LogUtil.debug(tag, "onCreate configuration: " + activity.resources.configuration)
+  
   LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
     val dm = activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -159,6 +168,30 @@ private fun printDisplayInfo(activity: Activity) {
     LogUtil.debug(tag, "Android 系统版本小于 4.2（API 17），不支持 Display Api")
   }
   LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
+}
+
+
+/**
+ * 使用 Jetpack 的 WindowManager 库中的 WindowInfoTracker 获取折叠屏的状态
+ * 
+ * 需要引入 androidx.window:window:1.0.0 依赖库
+ * 如果使用 Java，则须引入：androidx.window:window-java:1.0.0
+ */
+private suspend fun printFlodInfo(activity: Activity) {
+  val windowInfoTracker = WindowInfoTracker.getOrCreate(activity)
+
+  windowInfoTracker.windowLayoutInfo(activity).collect { windowLayoutInfo ->
+    LogUtil.debug(tag, "LayoutStateChange: $windowLayoutInfo")
+
+    for (df in windowLayoutInfo.displayFeatures) {
+      if (df is FoldingFeature) {
+        LogUtil.debug(tag, "Folding State")
+        LogUtil.debug(tag, "State: " + (df as FoldingFeature).state)
+        LogUtil.debug(tag, "OcclusionType: " + (df as FoldingFeature).occlusionType)
+        LogUtil.debug(tag, "Orientation: " + (df as FoldingFeature).orientation)
+      }
+    }
+  }
 }
 
 /**
