@@ -37,6 +37,10 @@ public class TabLayout extends LinearLayout {
     
     menuItemViews = new ArrayList<>();
   }
+  
+  public void currentClickIndex(int index) {
+    menuItemViews.get(index).performClick();
+  }
 
   public void bind(ViewPager viewPager) {
     LinearLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);

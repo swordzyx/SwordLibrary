@@ -1,6 +1,8 @@
 package com.example.swordlibrary;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -45,21 +47,14 @@ public class MainActivity2 extends AppCompatActivity {
 
     setContentView(R.layout.activity_main);
     initFloatView(this);
-
-    ((LinearLayout)findViewById(R.id.rootView)).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        LogUtil.debug(TAG, "rootView onClick");
-      }
-    });
   }
   
   private void initFloatView(Activity activity) {
-    View decorView = getWindow().getDecorView();
+    ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
     final ViewGroup floatView = initViewPager(this);
     //floatView.setVisibility(View.GONE);
     ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ScreenSize.getWindowWidth() / 2, ViewGroup.LayoutParams.MATCH_PARENT);
-    ((ViewGroup)decorView).addView(floatView, lp);
+    decorView.addView(floatView, lp);
     
     decorView.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -67,6 +62,50 @@ public class MainActivity2 extends AppCompatActivity {
         LogUtil.debug(TAG, "decode onClick");
       }
     });
+    
+    activity.getWindow().findViewById(android.R.id.content).setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        LogUtil.debug(TAG, "rootView clicked");
+        if (floatView.getVisibility() == View.VISIBLE) {
+          floatView.animate()
+              .translationX(-floatView.getWidth())
+              .alpha(0)
+              .setDuration(800)
+              .setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                  floatView.setVisibility(View.GONE);
+                }
+              });
+        } else {
+          floatView.animate()
+              .translationX(0)
+              .alpha(1)
+              .setDuration(800)
+              .setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                  floatView.setVisibility(View.VISIBLE);
+                }
+              });
+        }
+        
+      }
+    });
+
+    /*for (int i = 0; i < decorView.getChildCount(); i++) {
+      View child = decorView.getChildAt(i);
+      LogUtil.debug(TAG, "id: " + child.getId() + ", type: " + child.getClass().getName() + ", child count: " + ((ViewGroup)child).getChildCount());
+      if (child != floatView) {
+        child.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            LogUtil.debug(TAG, "rootView clicked");
+          }
+        });
+      }
+    }*/
     
     /*Button button = (Button) findViewById(R.id.switch_viewPager);
     button.setOnClickListener(v -> {
@@ -90,6 +129,7 @@ public class MainActivity2 extends AppCompatActivity {
     TabLayout tabLayout = new TabLayout(activity);
     tabLayout.setBackgroundColor(Color.parseColor("#2B2B2B"));
     tabLayout.setOrientation(LinearLayout.VERTICAL);
+    //tabLayout.currentClickIndex(0);
     linearLayout.addView(tabLayout, lp);
     
     ViewPager viewPager = new ViewPager(activity);

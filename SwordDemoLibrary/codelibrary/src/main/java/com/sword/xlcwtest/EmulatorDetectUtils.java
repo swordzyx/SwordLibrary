@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
-import com.sword.FileUtils;
+import com.sword.DataStorageUtils;
 import com.sword.LogUtil;
 
 import java.io.BufferedReader;
@@ -32,7 +32,7 @@ public class EmulatorDetectUtils {
     LogUtil.debug(debugInfo);
 
 
-    String cpuinfo = FileUtils.readFileInfo("/proc/cpuinfo");
+    String cpuinfo = DataStorageUtils.readFileInfo("/proc/cpuinfo");
     LogUtil.debug("--------------cpuinfo--------------");
     LogUtil.debug(cpuinfo);
     LogUtil.debug("-----------------------------------");

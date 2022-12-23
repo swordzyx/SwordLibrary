@@ -1,28 +1,32 @@
 package com.example.swordlibrary.viewpager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.swordlibrary.webcontent.BaseWebChromeClient;
+import com.example.swordlibrary.webcontent.BaseWebClient;
+import com.example.swordlibrary.webcontent.JsBridge;
+
 public class WebViewContainer extends ViewGroup {
   private boolean isAttachedToWindow = false;
   
-  private WebView webView;
-  private ProgressBar progressBar;
+  private final WebView webView;
+  private final ProgressBar progressBar;
   private final Context context;
   
   public WebViewContainer(@NonNull Context context) {
     this(context, null);
   }
 
+  @SuppressLint({"SetJavaScriptEnabled"})
   public WebViewContainer(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
 
@@ -32,11 +36,17 @@ public class WebViewContainer extends ViewGroup {
 
     webView = new WebView(context);
     WebSettings webSettings = webView.getSettings();
+    
     webSettings.setJavaScriptEnabled(true);
+    webView.addJavascriptInterface(new JsBridge(), "jsBridge");
     addView(webView, params);
 
     progressBar = new ProgressBar(context);
     addView(progressBar, params);
+
+    webView.setWebViewClient(new BaseWebClient(progressBar));
+    webView.setWebChromeClient(new BaseWebChromeClient());
+    
   }
 
   @Override
@@ -64,28 +74,12 @@ public class WebViewContainer extends ViewGroup {
   }
 
   public void loadUrl(String url) {
-    loadUrl(url, new FloatMenuWebClient(progressBar));
-  }
-
-  public void loadUrl(String url, FloatMenuWebClient client) {
     if (webView == null || !isAttachedToWindow) {
       return;
-    }
-    
-    if (client != null) {
-      webView.setWebViewClient(client);
     }
 
     webView.loadUrl(url);
   }
   
-  
-  
-  private void initView() {
-    
-  }
-  
-  
-
 
 }

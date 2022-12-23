@@ -1,4 +1,4 @@
-package com.example.swordlibrary.viewpager;
+package com.example.swordlibrary.webcontent;
 
 import android.graphics.Bitmap;
 import android.net.http.SslError;
@@ -19,15 +19,15 @@ import android.widget.ProgressBar;
 import androidx.annotation.Nullable;
 import com.sword.LogUtil;
 
-public class FloatMenuWebClient extends WebViewClient {
+public class BaseWebClient extends WebViewClient {
   private final ProgressBar progressBar;
-  private final FloatMenuWebClient client;
+  private final BaseWebClient client;
 
-  public FloatMenuWebClient(ProgressBar progressBar) {
+  public BaseWebClient(ProgressBar progressBar) {
     this(progressBar, null);
   }
   
-  public FloatMenuWebClient(ProgressBar progressBar, FloatMenuWebClient client) {
+  public BaseWebClient(ProgressBar progressBar, BaseWebClient client) {
     this.progressBar = progressBar;
     this.client = client; 
   }
@@ -83,7 +83,11 @@ public class FloatMenuWebClient extends WebViewClient {
     LogUtil.debug("onPageCommit Visible");
     super.onPageCommitVisible(view, url);
     
+    
+    
     if (client != null) client.onPageCommitVisible(view, url);
+    
+    
   }
 
   @Override
@@ -159,7 +163,7 @@ public class FloatMenuWebClient extends WebViewClient {
   @Nullable
   @Override
   public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-    LogUtil.debug("shouldInterceptRequest");
+    LogUtil.debug("shouldInterceptRequest, url: " + request.getUrl().toString());
 
     if (client != null) return client.shouldInterceptRequest(view, request);
 
@@ -175,11 +179,17 @@ public class FloatMenuWebClient extends WebViewClient {
   }
 
   @Override
-  public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-    LogUtil.debug("shouldOverrideUrlLoading");
+  public boolean shouldOverrideUrlLoading(WebView view, String url) {
+    LogUtil.debug("shouldOverrideUrlLoading, uri: " + url);
+    return true;
+  }
 
+  @Override
+  public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+    LogUtil.debug("shouldOverrideUrlLoading, uri: " + request.getUrl().toString());
+    
     if (client != null) return client.shouldOverrideUrlLoading(view, request);
 
-    return super.shouldOverrideUrlLoading(view, request);
+    return true;
   }
 }

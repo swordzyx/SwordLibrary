@@ -1,11 +1,8 @@
 package com.sword;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +10,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class FileUtils {
+public class DataStorageUtils {
+    
+    
     public static String readFileInfo(String fileName) {
         StringBuilder fileInfo = new StringBuilder();
 

@@ -33,9 +33,9 @@ public class FloatBallData {
 
   private FloatBallData() {
     titleStringArray = new String[]{"账户", "客服", "实名", "切换"};
-    String feedBackUrl = "http://122.112.237.78:12010/feedback?role_name=-1&role_id=-1&server_id=-1&vip=-1&channel_id=m1001&open_id=30414972100621631488&device=M2002J9E&ip=192.168.20.147&os=1&apkVersionDesc=2.5.2&resVersion=&osVersion=12";
-    String accountUrl = "http://122.112.237.78:12010/account?uuid=uuid&device=00000000-56b8-0815-ffff-ffffdebfaa4c&phone=17520450924";
-    urls = new String[]{accountUrl, feedBackUrl, "about:blank", "about:blank"};
+    String feedBackUrl = "a";
+    String accountUrl = "http://192.168.18.82:12009/my?Yz0lN0IlMjJvcGVuX2lkJTIyJTNBJTIyNDQ0NzA3MzY3ODgwMjI4ODY0JTIyJTJDJTIyY2hhbm5lbF9pZCUyMiUzQSUyMm0xMDAxJTIyJTJDJTIyc3ViX2NoYW5uZWxfaWQlMjIlM0ElMjJtMjAyMjA3MjIwMiUyMiUyQyUyMnNlcnZlcl9pZCUyMiUzQSUyMjMxJTIyJTJDJTIycm9sZV9pZCUyMiUzQSUyMjExMjUxOTg4NTU1MjY1NTIzOSUyMiUyQyUyMnV1aWQlMjIlM0ElMjJmZmZmZmZmZi1lMTA1LTEyNjktMDAwMC0wMDAwNGY3MGFmNjglMjIlMkMlMjJhcHBfaWQlMjIlM0ElMjIzMCUyMiUyQyUyMnJvbGVfbmFtZSUyMiUzQSUyMiVFNSVBRSU4NyVFNiU5NiU4NyVFOCU4QiU5MSVFNSVCOCU4NiUyMiUyQyUyMnZpcCUyMiUzQSUyMjElMjIlMkMlMjJkZXZpY2UlMjIlM0ElMjIxJTIyJTJDJTIyYXBrVmVyc2lvbkRlc2MlMjIlM0ElMjIyLjUuMiUyMiUyQyUyMm9zVmVyc2lvbiUyMiUzQSUyMjEyJTIyJTJDJTIyaXAlMjIlM0ElMjIxOTIuMTY4LjIwLjEyNyUyMiUyQyUyMmdhbWVfaWQlMjIlM0ElMjIzMCUyMiUyQyUyMnpvbmVfaWQlMjIlM0ElMjIwOSUyMiU3RCZzPWQyMWEwOTMwNDBjOGE1YWM5MGUyOTU4ODcxYzljMWFiJnQ9MTY3MTQzMjc2Mg==";
+    urls = new String[]{accountUrl, feedBackUrl, "file:///android_asset/webview.html", "about:blank"};
     
     initData();
   }

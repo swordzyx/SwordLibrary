@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Carson</title>
+	<script>
+         function callJsBridgeLogout(){
+            // 由于对象映射，所以调用test对象等于调用Android映射的对象
+            jsBridge.logout("js去调用了android中的hello方法");
+         }
+         
+         function createJsonParams() {
+            var jsonString =  "{\"phone\":\"13618444350\", \"age\": 23}"
+            return jsonString;
+         }
+         
+         function callVoidMethodByurl() {
+            document.location = "method://callVoidMethodByurl";
+         }
+         
+         function callMethodByUrlWithParams() {
+            document.location = "method://" + methodName + "?param=" + createJsonParams();
+         }
+         
+         function receiveFromNative(jsonString) {
+            document.querySelector('p').textContent = "receive from native: " + jsonString;
+         }
+         
+         function clickPrompt() {
+            document.querySelector('p').textContent = prompt("method://clickPrompt");
+         }
+         
+         function clickAlert() {
+            alert("method://clickAlert");
+         }
+         
+         function clickConfirm() {
+            document.querySelector('p').textContent = confirm("method://clickConfirm");
+         }
+         
+         function returnStringToNative() {
+            return createJsonParams();
+         }
+         
+         function callJsBridgeGetInfo() {
+            document.getElementById("JsBridgeText").textContent = jsBridge.getInfo()
+         }
+   
+	</script>
+</head>
+<body>
+<!--点击按钮则调用callAndroid函数-->
+<button type="button" id="button1" onclick="callJsBridgeLogout()">jsBridge.hello</button>
+
+<button type="button" id="button3" onclick="callVoidMethodByurl()">url 执行无参方法</button>
+
+<button type="button" id="button4" onclick="clickPrompt()">prompt(String)，可以返回任意值</button>
+
+<button type="button" id="button5" onclick="clickAlert()">alert(String)，没有返回值</button>
+
+<button type="button" id="button6" onclick="clickConfirm()">confirm(String)，返回确定或取消</button>
+
+<button type="button" id="button7" onclick="callJsBridgeGetInfo()">执行 jsBridge.getInfo</button>
+
+<p></p>
+
+<p id="JsBridgeText"></p>
+</body>
+</html>
