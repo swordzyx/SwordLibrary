@@ -60,6 +60,8 @@ fun WebView.defaultSetting() {
   settings.defaultTextEncodingName = "UTF-8"
   //设置为常规布局，不对网页做额外的操作
   settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.NORMAL
-  
-  
+  //启用 database storeage api 功能
+  settings.domStorageEnabled = true
+  //允许 WebView 从不安全的源加载 Resource
+  settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 }
