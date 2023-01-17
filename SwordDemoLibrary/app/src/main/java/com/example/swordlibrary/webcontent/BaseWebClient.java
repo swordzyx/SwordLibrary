@@ -45,6 +45,8 @@ public class BaseWebClient extends WebViewClient {
     super.onPageStarted(view, url, favicon);
     progressBar.setVisibility(View.VISIBLE);
     LogUtil.debug("start page");
+    
+    
 
     if (client != null) client.onPageStarted(view, url, favicon);
   }

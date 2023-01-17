@@ -11,9 +11,13 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.swordlibrary.webcontent.BaseWebChromeClient;
+//import com.example.swordlibrary.webcontent.BaseWebChromeClient;
 import com.example.swordlibrary.webcontent.BaseWebClient;
 import com.example.swordlibrary.webcontent.JsBridge;
+import com.sword.LogUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class WebViewContainer extends ViewGroup {
   private boolean isAttachedToWindow = false;
@@ -38,14 +42,25 @@ public class WebViewContainer extends ViewGroup {
     WebSettings webSettings = webView.getSettings();
     
     webSettings.setJavaScriptEnabled(true);
-    webView.addJavascriptInterface(new JsBridge(), "jsBridge");
+    JsBridge jsBridge = new JsBridge();
+    webView.addJavascriptInterface(jsBridge, "jsBridge");
+    String jsonString = "{\"command\": \"GetRedContent\"}";
+    
+    JSONObject jsonObject = new JSONObject();
+    try {
+      jsonObject.put("command", "GetRedContent");
+      jsBridge.returnToWebView(webView, jsonObject.toString());
+      LogUtil.debug("jsonString: " + jsonString + ", jsonObject: " + jsonObject.toString());
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
     addView(webView, params);
 
     progressBar = new ProgressBar(context);
     addView(progressBar, params);
 
     webView.setWebViewClient(new BaseWebClient(progressBar));
-    webView.setWebChromeClient(new BaseWebChromeClient());
+    //webView.setWebChromeClient(new BaseWebChromeClient());
     
   }
 

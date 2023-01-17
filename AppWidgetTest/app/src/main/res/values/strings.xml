@@ -1,6 +1,0 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">AppWidgetTest</string>
-
-    <string name="appwidget_prefix_default">Oh hai</string>
-    <string name="appwidget_text_format"><xliff:g id="prefix">%1$s</xliff:g>: <xliff:g id="time">%2$s</xliff:g></string>
-</resources>
