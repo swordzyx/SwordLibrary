@@ -1,4 +1,4 @@
-package com.example.swordlibrary;
+package com.sword;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.provider.Settings;
 
 import java.util.UUID;
 
-public class DeviceHelper {
+public class DeviceDetailInfo {
     public String getDeviceId(Context context) {
         String uuid = loadDeviceUUID(context);
         if (uuid == null) {
@@ -36,12 +36,10 @@ public class DeviceHelper {
     }
 
     public static String getBuildInfo() {
-        StringBuilder buildSB = new StringBuilder();
-        buildSB.append(Build.BRAND).append("/");
-        buildSB.append(Build.PRODUCT).append("/");
-        buildSB.append(Build.DEVICE).append("/");
-        buildSB.append(Build.ID).append("/");
-        return buildSB.toString();
+        return "Brand" + Build.BRAND + "/" +
+            Build.PRODUCT + "/" +
+            Build.DEVICE + "/" +
+            Build.ID + "/";
     }
 
 }

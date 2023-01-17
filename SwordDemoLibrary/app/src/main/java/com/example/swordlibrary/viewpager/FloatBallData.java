@@ -4,10 +4,8 @@ package com.example.swordlibrary.viewpager;
 import androidx.annotation.NonNull;
 
 import com.example.swordlibrary.viewpager.data.FloatBallInfoData;
-import com.sword.DeviceHelper;
 import com.sword.Encryption;
 import com.sword.LogUtil;
-import com.sword.xlcwtest.SystemUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;

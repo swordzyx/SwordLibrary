@@ -25,9 +25,10 @@ public class LogUtil {
   @SuppressLint("SimpleDateFormat")
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private static final String packageName = SwordApplication.getGlobalContext().getPackageName(); 
+  private static final boolean DEBUG = true; 
   
-  private static boolean isDebug() {
-    return LOG_SWITCH_FILE.exists();
+  public static boolean isDebug() {
+    return DEBUG || LOG_SWITCH_FILE.exists();
   }
   
   static {

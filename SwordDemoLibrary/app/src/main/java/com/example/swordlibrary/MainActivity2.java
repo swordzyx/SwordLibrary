@@ -1,32 +1,15 @@
 package com.example.swordlibrary;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
 
-import com.example.swordlibrary.utils.SwordDialog;
-import com.example.swordlibrary.viewpager.TabLayout;
-import com.example.swordlibrary.viewpager.ViewPagerAdapter;
-import com.sword.LogUtil;
-import com.sword.ScreenSize;
+import com.example.swordlibrary.logger.LoggerActivity;
 import com.sword.ViewUtilKt;
 
 import java.io.BufferedReader;
@@ -36,7 +19,7 @@ import java.util.Random;
 import java.util.UUID;
 
 
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity2 extends LoggerActivity {
   private static final String TAG = "MainActivity";
   public static String CPUABI = null;
 
@@ -46,27 +29,6 @@ public class MainActivity2 extends AppCompatActivity {
     ViewUtilKt.fullScreen(this);
 
     setContentView(R.layout.activity_main);
-  }
-
-  @Override
-  protected void onStart() {
-    super.onStart();
-  }
-
-
-  @Override
-  public void onConfigurationChanged(@NonNull Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    LogUtil.debug(TAG, "MainActivity  onConfigurationChanged");
-    LogUtil.debug(TAG, "newConfig: " + newConfig);
-    
-    LogUtil.debug(TAG, "newConfig width: " + ScreenSize.dp(newConfig.screenWidthDp) + ", height: " + ScreenSize.dp(newConfig.screenHeightDp));
-  }
-  
-
-  @Override
-  protected void onStop() {
-    super.onStop();
   }
 
   /**
