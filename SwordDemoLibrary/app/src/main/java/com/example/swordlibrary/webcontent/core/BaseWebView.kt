@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.lifecycle.Lifecycle
@@ -14,12 +15,21 @@ import androidx.lifecycle.LifecycleOwner
 import com.example.swordlibrary.ThreadExecutor
 import com.example.swordlibrary.webcontent.defaultSetting
 import com.sword.LogUtil
+import com.sword.toast
 
-open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, attrs), LifecycleEventObserver {
+@SuppressLint("JavascriptInterface")
+class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, attrs), LifecycleEventObserver {
   private val tag = "BaseWebView"
   
   interface BlankMonitorCallback {
     fun onBlank()
+  }
+
+  /**
+   * JS 对象注入，默认使用对象注入的方式实现 Android 端调用 JS 端的方法
+   */
+  init {
+    addJavascriptInterface(this, "bridge")
   }
 
   private var blankMonitorCallback: BlankMonitorCallback? = null
@@ -81,8 +91,10 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
     settings.javaScriptEnabled = false
   }
 
-  //释放 WebView 资源
-  open fun release() {
+  /**
+   * 释放 WebView 资源
+   */
+  fun release() {
     (parent as ViewGroup?)?.removeView(this)
     removeAllViews()
     stopLoading()
@@ -90,6 +102,22 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
     setCustomWebChromeClient(null)
     loadUrl("about:blank")
     clearHistory()
+  }
+
+  //TODO：可以使用协程的延时和取消实现，delay 函数
+  fun postBlankMonitorRunnable() {
+    LogUtil.debug(tag, "5s 后执行白屏检测")
+    postDelayed(blankMonitorExecRunnable, 5000)
+  }
+
+  fun cancelBlankMonitorRunnable() {
+    LogUtil.debug(tag, "白屏检测任务取消执行")
+    removeCallbacks(blankMonitorExecRunnable)
+  }
+  
+  @JavascriptInterface
+  fun showToast(msg: String) {
+    toast(context, msg)
   }
 
   private fun setCustomWebViewClient(webviewClient: CustomWebviewClient?) {
@@ -103,20 +131,7 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
   private fun setCustomWebChromeClient(webChromeClient: CustomWebChromeClient?) {
     setWebChromeClient(webChromeClient)
   }
-
-  //可以使用协程的延时和取消实现，delay 函数
-  fun postBlankMonitorRunnable() {
-    LogUtil.debug(tag, "5s 后执行白屏检测")
-    postDelayed(blankMonitorExecRunnable, 5000)
-  }
   
-  fun cancelBlankMonitorRunnable() {
-    LogUtil.debug(tag, "白屏检测任务取消执行")
-    removeCallbacks(blankMonitorExecRunnable)
-  }
-  
-  
-
   private val blankMonitorExecRunnable by lazy {
     val runnable = Runnable {
       LogUtil.debug(tag, "-------- 开始执行白屏检测 ----------------")

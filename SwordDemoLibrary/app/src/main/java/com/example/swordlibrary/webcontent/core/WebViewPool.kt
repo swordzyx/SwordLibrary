@@ -14,14 +14,14 @@ import java.util.*
  *    1. 在 Application#onCreate 中初始化 Webview 池会增加应用初始化耗时；
  *    2. 使用 Activity 初始化 webview 池会出现 activity 内存泄漏；使用一个 Context 包装类 MutableContextWrapper 可以解决，随时修改 MutableContextWrapper 中的时机 context
  */
-open class WebViewPool {
+open class WebViewPool private constructor() {
   val tag = "WebViewPool"
   companion object {
     val instance by lazy {
       WebViewPool()
     }
   }
-  
+
   private val webviewPool = Stack<BaseWebView>()
   
   @Volatile
@@ -33,7 +33,10 @@ open class WebViewPool {
   fun setMaxPoolSize(size: Int) {
     maxSize = size
   }
-  
+
+  /**
+   * Webview 池初始化
+   */
   fun init(context: Context, initSize: Int = maxSize) {
     for (i in 0 until initSize) {
       val view = BaseWebView(MutableContextWrapper(context)).apply {
@@ -61,8 +64,12 @@ open class WebViewPool {
     webview.webChromeClient = CustomWebChromeClient()
     return webview
   }
-  
+
+  /**
+   * 回收 Webview
+   */
   fun recycle(webView: BaseWebView) {
+    //始放 weview 所占用的资源
     webView.release()
 
     (webView.context as MutableContextWrapper).baseContext = webView.context.applicationContext

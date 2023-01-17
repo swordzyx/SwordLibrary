@@ -5,7 +5,6 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
-import com.example.swordlibrary.utils.SwordDialog
 import com.example.swordlibrary.webcontent.core.BaseWebView
 import com.example.swordlibrary.webcontent.core.WebViewPool
 

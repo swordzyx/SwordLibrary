@@ -50,7 +50,7 @@ public class WebViewContainer extends ViewGroup {
     try {
       jsonObject.put("command", "GetRedContent");
       jsBridge.returnToWebView(webView, jsonObject.toString());
-      LogUtil.debug("jsonString: " + jsonString + ", jsonObject: " + jsonObject.toString());
+      LogUtil.debug("jsonString: " + jsonString + ", jsonObject: " + jsonObject);
     } catch (JSONException e) {
       e.printStackTrace();
     }

@@ -46,104 +46,6 @@ public class MainActivity2 extends AppCompatActivity {
     ViewUtilKt.fullScreen(this);
 
     setContentView(R.layout.activity_main);
-    initFloatView(this);
-  }
-  
-  private void initFloatView(Activity activity) {
-    ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
-    final ViewGroup floatView = initViewPager(this);
-    //floatView.setVisibility(View.GONE);
-    ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ScreenSize.getWindowWidth() / 2, ViewGroup.LayoutParams.MATCH_PARENT);
-    decorView.addView(floatView, lp);
-    
-    decorView.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        LogUtil.debug(TAG, "decode onClick");
-      }
-    });
-    
-    activity.getWindow().findViewById(android.R.id.content).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        LogUtil.debug(TAG, "rootView clicked");
-        if (floatView.getVisibility() == View.VISIBLE) {
-          floatView.animate()
-              .translationX(-floatView.getWidth())
-              .alpha(0)
-              .setDuration(800)
-              .setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                  floatView.setVisibility(View.GONE);
-                }
-              });
-        } else {
-          floatView.animate()
-              .translationX(0)
-              .alpha(1)
-              .setDuration(800)
-              .setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                  floatView.setVisibility(View.VISIBLE);
-                }
-              });
-        }
-        
-      }
-    });
-
-    /*for (int i = 0; i < decorView.getChildCount(); i++) {
-      View child = decorView.getChildAt(i);
-      LogUtil.debug(TAG, "id: " + child.getId() + ", type: " + child.getClass().getName() + ", child count: " + ((ViewGroup)child).getChildCount());
-      if (child != floatView) {
-        child.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            LogUtil.debug(TAG, "rootView clicked");
-          }
-        });
-      }
-    }*/
-    
-    /*Button button = (Button) findViewById(R.id.switch_viewPager);
-    button.setOnClickListener(v -> {
-      floatView.setVisibility(floatView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-    });*/
-  }
-  
-  private void initFloatDialog(Activity activity) {
-    ViewGroup floatDialogView = initViewPager(activity);
-    
-    SwordDialog dialog = new SwordDialog(activity);
-    dialog.customView(floatDialogView).setSize(ScreenSize.getWindowWidth(), ScreenSize.getWindowHeight());
-    dialog.show();
-  }
-
-  private ViewGroup initViewPager(Activity activity) {
-    LinearLayout linearLayout = new LinearLayout(activity);
-    linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-    
-    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ScreenSize.dp(40), ViewGroup.LayoutParams.MATCH_PARENT);
-    TabLayout tabLayout = new TabLayout(activity);
-    tabLayout.setBackgroundColor(Color.parseColor("#2B2B2B"));
-    tabLayout.setOrientation(LinearLayout.VERTICAL);
-    //tabLayout.currentClickIndex(0);
-    linearLayout.addView(tabLayout, lp);
-    
-    ViewPager viewPager = new ViewPager(activity);
-    viewPager.setBackgroundColor(Color.WHITE);
-    lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-    lp.weight = 1;
-    linearLayout.addView(viewPager, lp);
-    
-    ViewPagerAdapter adapter = new ViewPagerAdapter();
-    viewPager.setAdapter(adapter);
-    viewPager.setCurrentItem(0);
-    
-    tabLayout.bind(viewPager);
-    return linearLayout;
   }
 
   @Override
@@ -186,7 +88,6 @@ public class MainActivity2 extends AppCompatActivity {
   }
 
   String s = "qwertyuiopasdfghjklzxcvbnmQWERRTYUIOPASDFGHJKLZXCVBNM1234567890";
-
   public String randomString(int count) {
     Random random = new Random();
     StringBuilder result = new StringBuilder();
@@ -230,7 +131,6 @@ public class MainActivity2 extends AppCompatActivity {
   }
 
   //打印 Local 信息
-  @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   public String getLocal() {
     Locale locale = Locale.getDefault();
     return "language: " + locale.getLanguage() + "\nCountry: " + locale.getCountry() + "\n languageTag: " + locale.toLanguageTag() + "\ndisplayCountry: " + locale.getDisplayCountry() + "\ngetDisplayLanguage: " + locale.getDisplayLanguage() + "\ngetDisplayName: " + locale.getDisplayName() + "\ngetDisplayScript: " + locale.getDisplayScript() + "\ngetDisplayVariant: " + locale.getDisplayVariant() + "\ngetISO3Country: " + locale.getISO3Country() + "\ngetISO3Language: " + locale.getISO3Language() + "\ngetScript: " + locale.getScript() + "\ngetVariant: " + locale.getVariant();
@@ -240,16 +140,16 @@ public class MainActivity2 extends AppCompatActivity {
   //获取 Android 设备所在地区
   public void getIpAddress() {
 
-    //1. 通过 NetworkInterface 获取 IP 地址，可能会获取不到
-    //2. 通过 TelephonyManager 获取类似 MCC 或者 SIM 卡运营商所在地区的国家/地区代码
-    //3. 通过 WifiManager 获取 IP 地址
-    //4. 由服务器端下发 IP 地址，通过 IpSeekUtils 获取 IP 地址所在地区/国家
-    //5. 访问外部连接
-    //      http://pv.sohu.com/cityjson
-    //      http://pv.sohu.com/cityjson?ie=utf-8
-    //      http://ip.chinaz.com/getip.aspx
-
-
+    /*
+    1. 通过 NetworkInterface 获取 IP 地址，可能会获取不到
+    2. 通过 TelephonyManager 获取类似 MCC 或者 SIM 卡运营商所在地区的国家/地区代码
+    3. 通过 WifiManager 获取 IP 地址
+    4. 由服务器端下发 IP 地址，通过 IpSeekUtils 获取 IP 地址所在地区/国家
+    5. 访问外部连接
+          http://pv.sohu.com/cityjson
+          http://pv.sohu.com/cityjson?ie=utf-8
+          http://ip.chinaz.com/getip.aspx
+    */
     Log.d("TAG", "shell 获取外网 ip：" + ShellAdbUtil.execShellCommand(false, "curl ifconfig.me").getSuccessString());
   }
 

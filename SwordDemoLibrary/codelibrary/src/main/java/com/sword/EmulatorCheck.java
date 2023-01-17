@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 
 /**
  * 参考：[CacheEmulatorChecker](https://github.com/happylishang/CacheEmulatorChecker)
+ * TODO: 测试数据
  */
 public class EmulatorCheck {
   private static final String TAG = "EmulatorCheck";

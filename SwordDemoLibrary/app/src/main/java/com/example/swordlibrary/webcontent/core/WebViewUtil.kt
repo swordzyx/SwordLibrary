@@ -2,8 +2,6 @@
 package com.example.swordlibrary.webcontent
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -49,7 +47,7 @@ fun WebView.defaultSetting() {
   //可以访问文件
   settings.allowFileAccess = true
   //可以通过 JS 打开新的窗口 
-  settings.javaScriptCanOpenWindowsAutomatically = true;
+  settings.javaScriptCanOpenWindowsAutomatically = true
   
   //支持自动加载图片
   settings.loadsImagesAutomatically = true
