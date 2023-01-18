@@ -52,7 +52,7 @@ public class ShellAdbUtil {
         return result;
     }
 
-    static class CommandResult {
+    public static class CommandResult {
         private String errorString;
         private String successString;
         String[] args = new String[5];

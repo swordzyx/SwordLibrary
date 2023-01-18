@@ -1,4 +1,4 @@
-package com.example.swordlibrary;
+package com.example.swordlibrary.camera;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -28,7 +28,7 @@ import java.io.InputStreamReader;
 /**
  * 启动系统相册Activity
  */
-public class AlbumActivity extends Activity {
+public class GalleryActivity extends Activity {
 
   public static final String LOG_TAG = "AlbumActivity";
   public static final int ALBUM_CODE = 1;
