@@ -1,5 +1,6 @@
 package com.example.swordlibrary.webcontent
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
@@ -11,6 +12,7 @@ import com.example.swordlibrary.webcontent.core.WebViewPool
 class WebViewFragment(val context: Context) {
   val webview = WebViewPool.instance.getWebview(context)
 
+  @SuppressLint("JavascriptInterface")
   fun createView(): View {
     val contentView = LinearLayout(context).apply {
       addView(

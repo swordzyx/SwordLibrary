@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.swordlibrary.webcontent.WebViewFragment
 
 class MainActivity: AppCompatActivity() {
-  private val webViewFragment = WebViewFragment(this)
-  
+  private lateinit var webViewFragment: WebViewFragment
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     
+    webViewFragment = WebViewFragment(this)
+    
     setContentView(webViewFragment.createView())
+    webViewFragment.loadUrl("file:///android_asset/webview.html")
   }
 
 

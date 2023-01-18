@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-	compileSdkVersion 32 //compileSdkVersion 被丢弃
+	compileSdkVersion 33 //compileSdkVersion 被丢弃
 	buildToolsVersion "31.0.0"  //buildToolsVersion 函数被丢弃
 	defaultConfig {
 		applicationId "com.example.swordlibrary"

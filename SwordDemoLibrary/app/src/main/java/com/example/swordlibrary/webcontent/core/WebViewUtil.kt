@@ -1,6 +1,7 @@
 @file: JvmName("WebViewUtil")
 package com.example.swordlibrary.webcontent
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.webkit.WebSettings
@@ -18,6 +19,7 @@ fun getWebViewCachePath(context: Context): String {
 /**
  * WebView 默认设置
  */
+@SuppressLint("SetJavaScriptEnabled")
 fun WebView.defaultSetting() {
   //WebView 背景设置，执行 View.setBackgroundColor(...)
   //setBackgroundColor(Color.TRANSPARENT)
@@ -67,12 +69,14 @@ fun WebView.defaultSetting() {
   settings.cacheMode = WebSettings.LOAD_DEFAULT
   //开启 Application Cache，默认为不开启，targetSdkVersion 为 33 时，WebSettings.setAppCacheEnabled(...) 这个 API 找不到，应该是 Google 移除了。
   //Application Cache API 已被弃用，Chromium 中可能会移除这些 API，一旦这些 API 被移除，这些方法会成为空操作方法
-  settings.setAppCacheEnabled(true)
+  //settings.setAppCacheEnabled(true)
   //设置缓存目录
   val cachePath = getWebViewCachePath(context)
   val cacheDir = File(cachePath)
   if (!cacheDir.exists() && !cacheDir.isDirectory) {
     cacheDir.mkdir()
   }
-  settings.setAppCachePath(cachePath)
+  //settings.setAppCachePath(cachePath)
+
+  settings.javaScriptEnabled = true
 }

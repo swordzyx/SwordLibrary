@@ -53,13 +53,13 @@ open class WebViewPool private constructor() {
   fun getWebview(context: Context): BaseWebView {
     val webview = if (webviewPool.size > 0) {
       LogUtil.debug(tag, "getWebview >> get from webviewPool")
-      webviewPool.pop()
+      webviewPool.pop().apply {
+        (this.context as MutableContextWrapper).baseContext = context
+      }
     } else {
       LogUtil.debug(tag, "getWebview >> create new Webview")
-      BaseWebView(context)
+      BaseWebView(MutableContextWrapper(context))
     }
-    
-    (webview.context as MutableContextWrapper).baseContext = context
     webview.webViewClient = CustomWebviewClient()
     webview.webChromeClient = CustomWebChromeClient()
     return webview

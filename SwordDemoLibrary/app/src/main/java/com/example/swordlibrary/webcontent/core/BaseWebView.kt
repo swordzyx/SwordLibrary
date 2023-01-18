@@ -18,19 +18,14 @@ import com.sword.LogUtil
 import com.sword.toast
 
 @SuppressLint("JavascriptInterface")
-class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, attrs), LifecycleEventObserver {
+open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, attrs), LifecycleEventObserver {
   private val tag = "BaseWebView"
   
   interface BlankMonitorCallback {
     fun onBlank()
   }
 
-  /**
-   * JS 对象注入，默认使用对象注入的方式实现 Android 端调用 JS 端的方法
-   */
-  init {
-    addJavascriptInterface(this, "bridge")
-  }
+  
 
   private var blankMonitorCallback: BlankMonitorCallback? = null
 
@@ -40,6 +35,9 @@ class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, att
     isHorizontalScrollBarEnabled = false
 
     defaultSetting()
+
+    //JS 对象注入，默认使用对象注入的方式实现 Android 端调用 JS 端的方法
+    addJavascriptInterface(this, "bridge")
   }
 
   constructor(context: Context) : this(context, null)
@@ -94,7 +92,7 @@ class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, att
   /**
    * 释放 WebView 资源
    */
-  fun release() {
+  open fun release() {
     (parent as ViewGroup?)?.removeView(this)
     removeAllViews()
     stopLoading()
@@ -117,6 +115,7 @@ class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, att
   
   @JavascriptInterface
   fun showToast(msg: String) {
+    LogUtil.debug("showToast, msg: $msg")
     toast(context, msg)
   }
 
