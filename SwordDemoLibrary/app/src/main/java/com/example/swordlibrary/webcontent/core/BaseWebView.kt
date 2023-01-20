@@ -14,8 +14,10 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.swordlibrary.ThreadExecutor
 import com.example.swordlibrary.webcontent.defaultSetting
+import com.google.gson.Gson
 import com.sword.LogUtil
 import com.sword.toast
+import org.json.JSONException
 
 @SuppressLint("JavascriptInterface")
 open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, attrs), LifecycleEventObserver {
@@ -114,9 +116,16 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
   }
   
   @JavascriptInterface
-  fun showToast(msg: String) {
-    LogUtil.debug("showToast, msg: $msg")
-    toast(context, msg)
+  fun sendCommand(json: String?) {
+    if (json.isNullOrEmpty()) return
+    
+    try {
+      LogUtil.debug(tag, "receive command from web: $json")
+      val message = Gson().fromJson(json, JsBridgeMessage::class.java)
+      
+    } catch (e: JSONException) {
+      e.printStackTrace()
+    }
   }
 
   private fun setCustomWebViewClient(webviewClient: CustomWebviewClient?) {
