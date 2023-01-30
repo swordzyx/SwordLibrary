@@ -3,8 +3,11 @@ package com.example.swordlibrary
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.swordlibrary.webcontent.WebViewFragment
+import com.sword.LogUtil
+import java.lang.Thread.sleep
 
 class MainActivity: AppCompatActivity() {
+  private val tag = "MainActivity"
   private lateinit var webViewFragment: WebViewFragment
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +16,10 @@ class MainActivity: AppCompatActivity() {
     webViewFragment = WebViewFragment(this)
     
     setContentView(webViewFragment.createView())
-    webViewFragment.loadUrl("file:///android_asset/webview.html")
+    webViewFragment.loadUrl("file:///android_asset/webView.html")
+
+    webViewFragment.webview.callJavascript()
+
   }
 
 

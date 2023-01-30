@@ -27,8 +27,6 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
     fun onBlank()
   }
 
-  
-
   private var blankMonitorCallback: BlankMonitorCallback? = null
 
   init {
@@ -114,7 +112,10 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
     LogUtil.debug(tag, "白屏检测任务取消执行")
     removeCallbacks(blankMonitorExecRunnable)
   }
-  
+
+  /**
+   * Web 调用 Android 端函数
+   */
   @JavascriptInterface
   fun sendCommand(json: String?) {
     if (json.isNullOrEmpty()) return
@@ -126,6 +127,13 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
     } catch (e: JSONException) {
       e.printStackTrace()
     }
+  }
+
+  /**
+   * Android 调用 Javascript 方法
+   */
+  fun callJavascript() {
+    evaluateJavascript("javascript:showToast('hello world')") {}
   }
 
   private fun setCustomWebViewClient(webviewClient: CustomWebviewClient?) {
