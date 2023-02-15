@@ -5,6 +5,8 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -93,22 +95,30 @@ public class LogUtil {
   }
   
   public static void warn(String tag, String msg) {
-    String t = TAG;
-    if (!TextUtils.isEmpty(tag)) {
-      t = TAG + "_" + tag;
-    }
+    String t = tag(tag);
     Log.w(t, msg);
     writeToLogFile(sdf.format(new Date()) + " " + packageName + "W/" + t + ": " + msg);
   }
   
   
   private static void writeToLogFile(String content) {
-    //Log.d(TAG, "write to log File: " + content);
     try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(logFile, true)))) {
       writer.write(content);
       writer.flush();
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  public static void info(@NotNull String tag, @NotNull String msg) {
+    Log.i(tag(tag), msg);
+  }
+  
+  private static String tag(String tag) {
+    if (TextUtils.isEmpty(tag)) {
+      return TAG + "_" + tag;
+    } else {
+      return TAG;
     }
   }
 }
