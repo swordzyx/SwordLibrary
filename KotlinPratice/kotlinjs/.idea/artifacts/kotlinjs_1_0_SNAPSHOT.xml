@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="kotlinjs-1.0-SNAPSHOT">
-    <output-path>D:\Git Project\Android-Pratice\KotlinGeekTime\kotlinjs\build\libs</output-path>
-    <root id="archive" name="kotlinjs-1.0-SNAPSHOT.jar" />
-  </artifact>
-</component>
