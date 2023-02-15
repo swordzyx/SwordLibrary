@@ -4,6 +4,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.runBlocking
+
+fun main() = runBlocking {
+  flatMapLatestTest()
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 suspend fun flatMapLatestTest() {
