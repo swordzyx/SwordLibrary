@@ -1,4 +1,4 @@
-package com.sword.view;
+package com.example.swordlibrary.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

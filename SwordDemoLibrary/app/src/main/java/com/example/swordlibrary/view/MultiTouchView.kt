@@ -1,4 +1,4 @@
-package com.sword.view
+package com.example.swordlibrary.view
 
 import android.annotation.SuppressLint
 import android.content.Context
