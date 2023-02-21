@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.example.swordlibrary.view.DashBoardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <!--<com.example.swordlibrary.viewpager.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="40dp"
@@ -19,10 +23,10 @@
         android:layout_weight="1"
         android:background="#ffffff" />-->
     
-    <Button
+    <!--<Button
         android:id="@+id/switch_viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="开/关 ViewPager"/>
+        android:text="开/关 ViewPager"/>-->
 
 </LinearLayout>

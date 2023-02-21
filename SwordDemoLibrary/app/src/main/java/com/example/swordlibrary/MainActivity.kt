@@ -12,13 +12,14 @@ class MainActivity: AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
     
-    webViewFragment = WebViewFragment(this)
+    /*webViewFragment = WebViewFragment(this)
     
     setContentView(webViewFragment.createView())
     webViewFragment.loadUrl("file:///android_asset/webView.html")
 
-    webViewFragment.webview.callJavascript()
+    webViewFragment.webview.callJavascript()*/
 
   }
 
