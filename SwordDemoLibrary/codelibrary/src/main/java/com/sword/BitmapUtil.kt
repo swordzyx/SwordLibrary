@@ -1,29 +1,43 @@
 package com.sword
 
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import kotlin.math.max
-import kotlin.math.min
 
 /**
  * 将图片缩放至目标大小，减少显示时的内存占用
  */
-private fun scalePic(sourcePicPath: String, targetWidth: Int, targetHeight: Int) : Bitmap {
-
-    //获取缩小因子。min(原图宽/目标宽，原图高/目标高)
-    val bmOptions = BitmapFactory.Options().apply {
-        //获取图片原始宽高
+fun createBitmap(resource: Resources, resId: Int, targetWidth: Float, targetHeight: Float): Bitmap {
+    val bitmaptOption = BitmapFactory.Options().apply {
         inJustDecodeBounds = true
-        BitmapFactory.decodeFile(sourcePicPath, this)
-        val photoW = outWidth
-        val photoH = outHeight
+        BitmapFactory.decodeResource(resource, resId, this)
+        val oldWidth = outWidth
+        val oldHeight = outHeight
 
-        //缩放系数应该大于 1 ，小于 1 将会使图片放大
-        val scaleFactor = max(1, min(photoW / targetWidth, photoH / targetHeight))
+        var sampleSize = 1f
+
+        val scale = max(1f, max(oldWidth / targetWidth, oldHeight / targetHeight))
+        while (sampleSize < scale) {
+            sampleSize *= 2f
+        }
+        LogUtil.debug("targetWidth: $targetWidth, targetHeight: $targetHeight, oldWidth: $oldWidth, oldHeight: $oldHeight, sampleSize: $sampleSize, scale: $scale")
         inJustDecodeBounds = false
-        inSampleSize = scaleFactor
-        inPurgeable = true
+        inSampleSize = sampleSize.toInt()
     }
+    return BitmapFactory.decodeResource(resource, resId, bitmaptOption)
+}
 
-    return BitmapFactory.decodeFile(sourcePicPath, bmOptions)
+
+fun createBitmap1(resource: Resources, resId: Int, targetWidth: Float, targetHeight: Float): Bitmap {
+    val bitmaptOption = BitmapFactory.Options().apply {
+        inJustDecodeBounds = true
+        BitmapFactory.decodeResource(resource, resId, this)
+
+        inDensity = outWidth
+        inJustDecodeBounds = false
+        inTargetDensity = targetWidth.toInt()
+        inScaled = true
+    }
+    return BitmapFactory.decodeResource(resource, resId, bitmaptOption)
 }

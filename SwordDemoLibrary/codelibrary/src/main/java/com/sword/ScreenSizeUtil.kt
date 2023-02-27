@@ -35,6 +35,7 @@ fun initWindowSize(context: Context) {
   val point = getWindowSizeExcludeSystem(context)
   windowSize.x = point.x
   windowSize.y = point.y
+  LogUtil.debug(tag, "screenWidth: ${windowSize.x}, screentHeight: ${windowSize.y}")
 }
 
 fun publicApiTest(activity: Activity, window: Window) {

@@ -3,11 +3,41 @@
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:scrollbars="vertical">
 
-    <com.example.swordlibrary.view.DashBoardView
+    <!--<com.example.swordlibrary.view.DashBoardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <com.example.swordlibrary.view.PieView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>-->
+
+    <!--<com.example.swordlibrary.view.CircleXfermodeView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>-->
+
+    <com.example.swordlibrary.view.TextDisplayView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <!--<com.example.swordlibrary.view.TextReadViewStaticLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>-->
+
+    <com.example.swordlibrary.view.TextReadView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
+
 
     <!--<com.example.swordlibrary.viewpager.TabLayout
         android:id="@+id/tabLayout"

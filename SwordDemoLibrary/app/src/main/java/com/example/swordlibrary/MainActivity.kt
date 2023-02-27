@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.swordlibrary.webcontent.WebViewFragment
 import com.sword.LogUtil
+import com.sword.initWindowSize
 import java.lang.Thread.sleep
 
 class MainActivity: AppCompatActivity() {
@@ -13,6 +14,7 @@ class MainActivity: AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+    initWindowSize(this)
     
     /*webViewFragment = WebViewFragment(this)
     

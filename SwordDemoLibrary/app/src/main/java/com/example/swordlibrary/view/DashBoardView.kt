@@ -5,8 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.util.Size
 import android.view.View
-import com.sword.dp
-import com.sword.dp2px
+import com.sword.*
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -17,14 +16,37 @@ import kotlin.math.sin
  * 仪表盘
  */
 class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
+    private val tag = "DashBoardView"
     private val angle = 90
     private val radius = dp2px(100f)
     private val strokeWidth = dp2px(2f)
     private val dashWidth = dp2px(2f)
     private val dashLength = dp2px(5f)
 
+    private lateinit var arcPath: Path
+    private lateinit var pathDashPathEffect: PathDashPathEffect
+    private var advance = 0f
+    private var arcPathLength = 0f
+    private var centerX = 0f
+    private var centerY = 0f
+
+    init {
+        setPadding(paddingLeft + dp(10), paddingTop + dp(10), paddingRight + dp(10), paddingBottom + dp(10))
+    }
+
     private val dashPath = Path().apply {
         addRect(RectF(0f, 0f, dashWidth, dashLength), Path.Direction.CCW)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val measureWidth = paddingLeft + 2 * radius.toInt() + paddingRight
+        val measureHeight = paddingTop + 2 * radius.toInt() + paddingBottom
+        LogUtil.debug(tag, "measureWidth: $measureWidth, measuredHeight: $measureHeight, screenWidth: $windowWidth, screenHeight: $windowHeight")
+        setMeasuredDimension(
+            measureWidth,
+            measureHeight
+        )
     }
 
         /**
@@ -38,25 +60,24 @@ class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attr
         color = Color.BLACK
     }
 
-    private lateinit var arcPath: Path
-    private lateinit var pathDashPathEffect: PathDashPathEffect
-
-
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         arcPath = Path().apply {
-            val centerX = width / 2
-            val centerY = height / 2
+            centerX = paddingLeft + radius
+            centerY = paddingTop + radius
             addArc(centerX - radius,
                 centerY - radius,
                 centerX + radius,
                 centerY + radius, 90f + angle/2f, 360f - angle)
         }
 
-        val advance = (PathMeasure(arcPath, false).length) / (dashCount - 1)
+        arcPathLength = PathMeasure(arcPath, false).length
+        advance = (arcPathLength - dashWidth) / (dashCount - 1)
+        //advance 指画完一个刻度之后，隔多远画下一个刻度，整个周长分成 20 分，实际会有 21 个刻度，但是最后一个刻度由于已经超出了 path 的范围，没有画出来，所以间隔需要再缩小一点，缩小到正好预留出最后一个刻度的位置，就相当于整个周长分成 20 份的基础上，再减去刻度的宽度平均分到 20 份，每份的宽度，这样就能预留出最后一个刻度的位置了。
         pathDashPathEffect = PathDashPathEffect(dashPath, advance, 0f, PathDashPathEffect.Style.ROTATE)
     }
 
     override fun onDraw(canvas: Canvas) {
+        LogUtil.debug(tag, "left: $left, top: $top, right: $right, bottom: $bottom")
         //绘制弧形
         paint.strokeWidth = strokeWidth
         canvas.drawPath(arcPath, paint)
@@ -69,9 +90,9 @@ class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attr
 
 
         //绘制指针
-        paint.strokeWidth = strokeWidth
+        paint.strokeWidth = dashWidth
         val point = computePointerCoordinate(5)
-        canvas.drawLine(width/2f, height/2f, point[0], point[1], paint)
+        canvas.drawLine(centerX, centerY, point[0], point[1], paint)
     }
 
     /**
@@ -79,11 +100,11 @@ class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attr
      */
     private fun computePointerCoordinate(dashIndex: Int): List<Float> {
         //通过刻度计算出角度
-        val anglePerDash = ((360 - angle) / (dashCount - 1))
-        val dashAngle = (anglePerDash * dashIndex) + (90 + angle / 2f)
+        val pointerSweepAngle = (advance * dashIndex) / arcPathLength * (360 - angle)
+        val pointerAngle = ((90 + angle/2f + pointerSweepAngle) * Math.PI / 180).toFloat()
 
         //通过角度计算出直针的终点坐标
-        val pointerLength = radius - dp(4)
-        return listOf(width / 2 + cos(dashAngle) * pointerLength, height / 2 + sin(dashAngle) * pointerLength)
+        val pointerLength = radius - dp(18)
+        return listOf(centerX + cos(pointerAngle) * pointerLength, centerY + sin(pointerAngle) * pointerLength)
     }
 }
