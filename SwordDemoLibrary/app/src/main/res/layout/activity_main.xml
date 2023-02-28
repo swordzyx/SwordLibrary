@@ -20,11 +20,11 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"/>-->
 
-    <com.example.swordlibrary.view.TextDisplayView
+    <!--<com.example.swordlibrary.view.TextDisplayView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"/>-->
 
     <!--<com.example.swordlibrary.view.TextReadViewStaticLayout
         android:layout_width="match_parent"
@@ -32,11 +32,15 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"/>-->
 
-    <com.example.swordlibrary.view.TextReadView
+    <!--<com.example.swordlibrary.view.TextReadView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp"/>-->
+
+    <com.example.swordlibrary.view.FlipPageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 
     <!--<com.example.swordlibrary.viewpager.TabLayout
