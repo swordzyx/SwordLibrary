@@ -45,5 +45,4 @@ public class ProxyGitHubService/* implements GitHubService */{
     //invoke 第一个参数是代理对象，也就是 ProxyGithubService 本身；第二个参数就是代理的方法，是一个 Method 对象；第三个参数是方法的参数，也就是 listRepos(..) 方法的参数
     return invocationHandler.invoke(this, method, user);
   }*/
-
 }
