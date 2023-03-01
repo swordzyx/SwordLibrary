@@ -36,7 +36,7 @@ public class AppsFlyerLibCore {
 
 
 
-  public void trackAppLaunch(Context var1, String var2) {
+  /*public void trackAppLaunch(Context var1, String var2) {
     if (ˊ(var1)) {
       if (this.ᐝॱ == null) {
         this.ᐝॱ = new j();
@@ -52,6 +52,6 @@ public class AppsFlyerLibCore {
     }
 
     this.ॱ(var1, var2, "", (Intent)null);
-  }
+  }*/
 
 }

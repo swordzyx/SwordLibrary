@@ -41,7 +41,7 @@ class LoginPageView(val context: Context) {
       
       val loginButton = Button(context).apply { 
         text = "登录"
-        background = 
+        //background =
       }
     }
 

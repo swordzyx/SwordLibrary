@@ -1,11 +1,12 @@
 package com.example.swordlibrary
 
 import android.os.Bundle
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.example.swordlibrary.view.CircleView
+import com.example.swordlibrary.view.FlipPageView
 import com.example.swordlibrary.webcontent.WebViewFragment
-import com.sword.LogUtil
 import com.sword.initWindowSize
-import java.lang.Thread.sleep
 
 class MainActivity: AppCompatActivity() {
   private val tag = "MainActivity"
@@ -13,9 +14,21 @@ class MainActivity: AppCompatActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    val circleView = CircleView(this)
+    val flipPageView = FlipPageView(this)
+    val linearLayout = LinearLayout(this).apply {
+      addView(circleView)
+      //addView(flipPageView)
+    }
+
+    setContentView(linearLayout)
     initWindowSize(this)
-    
+
+    //启动动画
+    circleView.startAnimate()
+    //flipPageView.startSequentiallyAnimate()
+
+
     /*webViewFragment = WebViewFragment(this)
     
     setContentView(webViewFragment.createView())
