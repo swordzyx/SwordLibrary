@@ -1,6 +1,7 @@
 package com.example.swordlibrary.view
 
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -8,6 +9,9 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateInterpolator
+import com.sword.dp
+import com.sword.dp2px
+import kotlin.math.max
 
 private val provinces = listOf(
     "北京市",
@@ -46,9 +50,22 @@ private val provinces = listOf(
     "澳门特别行政区"
 )
 
-class ProvinceView(context: Context, attrs: AttributeSet) : View(context, attrs) {
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+class ProvinceView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        textSize = dp2px(16f)
+    }
     private val textBounds = Rect()
+
+    private val minWidth = paint.textSize * 10 + dp(10)
+    private val minHeight = paint.fontMetrics.bottom - paint.fontMetrics.top + dp(10)
+
+    private val provinceAnimator = ObjectAnimator.ofInt(this, "provinceIndex", 0, provinces.size - 1).apply {
+        duration = 3000
+        startDelay = 1000
+        interpolator = AccelerateInterpolator()
+        repeatMode = ValueAnimator.RESTART
+        repeatCount = ValueAnimator.INFINITE
+    }
 
     var provinceIndex = 0
         set(value) {
@@ -65,10 +82,10 @@ class ProvinceView(context: Context, attrs: AttributeSet) : View(context, attrs)
             invalidate()
         }
 
-    private val provinceAnimator = ObjectAnimator.ofInt(this, "provinceIndex", 0, provinces.size - 1).apply {
-        duration = 3000
-        startDelay = 1000
-        interpolator = AccelerateInterpolator()
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val width = max(MeasureSpec.getSize(widthMeasureSpec), minWidth.toInt() + paddingLeft + paddingRight)
+        val height = max(MeasureSpec.getSize(heightMeasureSpec), minHeight.toInt() + paddingTop + paddingBottom)
+        setMeasuredDimension(width, height)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -76,12 +93,13 @@ class ProvinceView(context: Context, attrs: AttributeSet) : View(context, attrs)
         canvas.drawText(
             province,
             paddingLeft + 0f,
-            paddingTop - ((textBounds.top + textBounds.bottom) / 2f),
+            paddingTop - textBounds.top.toFloat(),
             paint
         )
     }
 
-    private fun startAnimator() {
+    fun startAnimator() {
         provinceAnimator.start()
+
     }
 }

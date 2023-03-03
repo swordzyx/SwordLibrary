@@ -24,6 +24,7 @@ class CircleView(context: Context, attrs: AttributeSet? = null) : View(context, 
 
     init {
         //initKeyFrameAnimator()
+        initObjectAnimator()
     }
 
 

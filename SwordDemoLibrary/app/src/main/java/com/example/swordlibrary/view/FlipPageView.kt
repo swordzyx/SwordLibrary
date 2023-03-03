@@ -1,9 +1,6 @@
 package com.example.swordlibrary.view
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.animation.ValueAnimator
+import android.animation.*
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Camera
@@ -13,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.withSave
 import com.example.swordlibrary.R
+import com.sword.LogUtil
 import com.sword.createBitmap1
 import com.sword.dp2px
 
@@ -20,6 +18,7 @@ import com.sword.dp2px
  * 翻页效果 View
  */
 class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
+    private val tag = "FlipPageView"
     private val angle = 30f
     private val imageWidth = dp2px(200f)
     private val imageBitmap =
@@ -64,8 +63,8 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
 
     init {
         setPadding(100, 100, 0, 0)
-        //initAnimationByAnimatorSet()
-        initAnimationByPropertyValuesHolder()
+        initAnimationByAnimatorSet()
+        //initAnimationByPropertyValuesHolder()
     }
 
     /**
@@ -73,11 +72,31 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
      */
     private fun initAnimationByAnimatorSet() {
         //动画相关
-        animatorSet = AnimatorSet()
+        animatorSet = AnimatorSet().apply {
+            addListener(object : Animator.AnimatorListener{
+                override fun onAnimationStart(animation: Animator) {
+                    LogUtil.debug(tag, "onAnimationStart")
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    LogUtil.debug(tag, "onAnimationEnd")
+                    start()
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    LogUtil.debug(tag, "onAnimationCancel")
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {
+                    LogUtil.debug(tag, "onAnimationRepeat")
+                }
+
+            })
+        }
 
         val bottomFlipAnimator =
             ObjectAnimator.ofFloat(this, "bottomFlip", 0f, 60f).apply {
-                duration = 1000
+                duration = 2000
                 startDelay = 1000
             }
         val topFlipAnimator = ObjectAnimator.ofFloat(this, "topFlip", 0f, -60f).apply {
