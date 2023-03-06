@@ -8,4 +8,10 @@
     <color name="color_orange">#F27920</color>
     <color name="color_gray">#CFD0D2</color>
     <color name="dialog_title_text_color">#3f4044</color>
+
+    <color name="common_accent_color">#5A8DDF</color>
+    <!-- 按钮按压时的颜色 -->
+    <color name="common_button_pressed_color">#AA5A8DDF</color>
+    <!-- 按钮禁用时的颜色 -->
+    <color name="common_button_disable_color">#BBBBBB</color>
 </resources>

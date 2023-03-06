@@ -1,4 +1,18 @@
 <resources>
+    <!--默认按钮样式-->
+    <style name="ButtonStyle">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center</item>
+        <item name="background">@drawable/button_circle_background</item>
+        <item name="android:foreground">null</item>
+    </style>
+
+
     <!-- Base application theme.   <item name="actionBarStyle">@style/ActionBar.Transparent.Start</item> -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
