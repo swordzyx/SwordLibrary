@@ -4,16 +4,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".java.MainActivity2"
-    android:paddingRight="25dp"
-    android:paddingLeft="25dp">
-<!--
-    <com.example.swordlibrary.view.VerifyCodeInputView
-        android:layout_width="match_parent"
+    tools:context=".MainActivity2">
+    
+    <!--<com.example.swordlibrary.view.SquareImageView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/avatar_rengwuxian"/>
+    
+    <View
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@color/colorAccent"/>-->
+
+    <com.example.swordlibrary.view.CircleImageView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:inputType="number"
-        app:borderColor="#B7B7B7"
-        app:gap="40" />-->
+        android:background="@color/colorAccent"/>
 
 </LinearLayout>
