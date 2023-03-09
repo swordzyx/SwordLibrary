@@ -23,6 +23,12 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 		}
 	}
+	
+	testOptions {
+		unitTests {
+			includeAndroidResources = true
+		}
+	}
 }
 
 dependencies {
@@ -31,7 +37,7 @@ dependencies {
 	//kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.20"
 	//协程相关依赖
-//	implementation "org.jetbrains.kotlinx:kotlinx:kotlinx-coroutines-core:1.6.0"
+	//implementation "org.jetbrains.kotlinx:kotlinx:kotlinx-coroutines-core:1.6.0"
     implementation 'androidx.core:core-ktx:1.9.0' //compileSdkVersion 至少为 33
 
 
@@ -70,10 +76,18 @@ dependencies {
 	implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
 
 	
-    /*testImplementation 'junit:junit:4.12'
-
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'*/
+    testImplementation 'junit:junit:4.13.2'
+	//Robolectric 依赖，用于测试
+	testImplementation 'org.robolectric:robolectric:4.9'
+	
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+	//Android 设备上自动执行测试所需要的依赖库
+	androidTestImplementation 'androidx.test:runner:1.5.2'
+	//Espresso Intent 相关，用于在测试时启动 Activity
+	androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+	//UI Automator 测试库，用于大型测试
+	androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0-alpha02'
 
 }
 

@@ -1,22 +1,38 @@
 package com.example.swordlibrary
 
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import android.widget.LinearLayout.VERTICAL
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
+import com.example.swordlibrary.pageview.HomePageView
+import com.example.swordlibrary.pageview.LoginPageView
 import com.example.swordlibrary.view.*
-import com.example.swordlibrary.webcontent.WebViewFragment
+import com.sword.LogUtil
 import com.sword.initWindowSize
+import com.sword.toast
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: AppCompatActivity(), LoginPageView.LoginListener {
   private val tag = "MainActivity"
   //private lateinit var webViewFragment: WebViewFragment
+  private lateinit var contentView: ViewGroup
+  
+  private val homePageView = HomePageView(this)
+  private val loginPageView = LoginPageView(this, this)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    setContentView(R.layout.activity_main)
+    //setContentView(R.layout.activity_main)
+    setContentView(loginPageView.rootView)
+    
+    contentView = window.decorView.findViewById(android.R.id.content)
+    contentView.forEach { view -> 
+      LogUtil.debug(tag, view.javaClass.name)
+    }
     initWindowSize(this)
 
     //setContentView(webViewFragment.createView())
@@ -55,5 +71,17 @@ class MainActivity: AppCompatActivity() {
   override fun onBackPressed() {
     super.onBackPressed()
     //webViewFragment.onBackPressed()
+  }
+
+  override fun loginSuccess(username: String) {
+    contentView.removeView(loginPageView.rootView)
+    contentView.addView(homePageView.rootView)
+  }
+
+  override fun loginFailed(username: String, msg: String) {
+    toast(this, "$username 登录失败", Toast.LENGTH_LONG)
+    window.decorView.viewTreeObserver.addOnGlobalLayoutListener {
+      
+    }
   }
 }
