@@ -15,8 +15,9 @@ class LoginPageView(val context: Context, private val loginListener: LoginListen
   private val loginLogic = LoginLogic()
 
 
-  override val rootView
-    get() = createView()
+  override val rootView by lazy {
+    createView()
+  }
 
   private fun createView(): View {
     LogUtil.debug(tag, "createView")

@@ -7,8 +7,9 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 
 class HomePageView(val context: Context): PageView {
-  override val rootView: View
-    get() = createView()
+  override val rootView by lazy { 
+    createView()
+  }
   private fun createView(): View {
     return LinearLayout(context).apply {
       contentDescription = "首页"

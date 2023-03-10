@@ -18,7 +18,7 @@ import com.sword.toast
 class MainActivity: AppCompatActivity(), LoginPageView.LoginListener {
   private val tag = "MainActivity"
   //private lateinit var webViewFragment: WebViewFragment
-  private lateinit var contentView: ViewGroup
+  private lateinit var rootView: ViewGroup
   
   private val homePageView = HomePageView(this)
   private val loginPageView = LoginPageView(this, this)
@@ -29,8 +29,8 @@ class MainActivity: AppCompatActivity(), LoginPageView.LoginListener {
     //setContentView(R.layout.activity_main)
     setContentView(loginPageView.rootView)
     
-    contentView = window.decorView.findViewById(android.R.id.content)
-    contentView.forEach { view -> 
+    rootView = window.decorView.findViewById(android.R.id.content)
+    rootView.forEach { view -> 
       LogUtil.debug(tag, view.javaClass.name)
     }
     initWindowSize(this)
@@ -74,14 +74,11 @@ class MainActivity: AppCompatActivity(), LoginPageView.LoginListener {
   }
 
   override fun loginSuccess(username: String) {
-    contentView.removeView(loginPageView.rootView)
-    contentView.addView(homePageView.rootView)
+    rootView.removeView(loginPageView.rootView)
+    rootView.addView(homePageView.rootView)
   }
 
   override fun loginFailed(username: String, msg: String) {
     toast(this, "$username 登录失败", Toast.LENGTH_LONG)
-    window.decorView.viewTreeObserver.addOnGlobalLayoutListener {
-      
-    }
   }
 }
