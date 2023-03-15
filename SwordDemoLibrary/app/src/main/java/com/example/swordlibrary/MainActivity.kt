@@ -5,15 +5,18 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import android.widget.LinearLayout.VERTICAL
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.forEach
 import com.example.swordlibrary.pageview.HomePageView
 import com.example.swordlibrary.pageview.LoginPageView
-import com.example.swordlibrary.view.*
+import com.example.swordlibrary.view.CircleView
+import com.example.swordlibrary.view.FlipPageView
+import com.example.swordlibrary.view.PointView
+import com.example.swordlibrary.view.ProvinceView
 import com.sword.LogUtil
-import com.sword.initWindowSize
 import com.sword.toast
+import kotlinx.android.synthetic.main.activity_main2.view.*
 
 class MainActivity: AppCompatActivity(), LoginPageView.LoginListener {
   private val tag = "MainActivity"
@@ -26,14 +29,23 @@ class MainActivity: AppCompatActivity(), LoginPageView.LoginListener {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    //setContentView(R.layout.activity_main)
-    setContentView(loginPageView.rootView)
+    setContentView(R.layout.activity_main2)
+    findViewById<TextView>(R.id.text_tv).apply {
+      isClickable = true
+      setOnClickListener {
+        LogUtil.debug(this@MainActivity.tag, "textview click")
+        Thread {
+          (it as TextView).text = "更新测试文本"
+        }.start()
+      }
+    }
     
+    /*setContentView(loginPageView.rootView)
     rootView = window.decorView.findViewById(android.R.id.content)
     rootView.forEach { view -> 
       LogUtil.debug(tag, view.javaClass.name)
     }
-    initWindowSize(this)
+    initWindowSize(this)*/
 
     //setContentView(webViewFragment.createView())
 
