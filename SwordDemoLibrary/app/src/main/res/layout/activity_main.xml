@@ -2,7 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <FrameLayout
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <!--<FrameLayout
         android:layout_width="match_parent"
@@ -30,11 +37,16 @@
             android:layout_height="wrap_content"/>
 
     </FrameLayout>-->
-    
-    <com.example.swordlibrary.view.ScaleableImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
+    <!-- 图片捏撑 -->
+    <!--<com.example.swordlibrary.view.ScaleableImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+
+    <!-- 单点触摸，图片滑动 -->
+    <!--<com.example.swordlibrary.view.MultiTouchView1
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>-->
 
     <!--<com.example.swordlibrary.view.DashBoardView
         android:layout_width="wrap_content"
@@ -86,7 +98,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#ffffff" />-->
-    
+
     <!--<Button
         android:id="@+id/switch_viewPager"
         android:layout_width="match_parent"
