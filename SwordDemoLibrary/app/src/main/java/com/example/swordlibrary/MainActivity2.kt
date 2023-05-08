@@ -18,6 +18,7 @@ class MainActivity2: AppCompatActivity() {
   private var multiTouchView1: MultiTouchView1? = null
   private var multiTouchView2: MultiTouchView2? = null
   private var multiTouchView3: MultiTouchView3? = null
+  private var multiTouchView4: MultiTouchView4? = null
 
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +82,27 @@ class MainActivity2: AppCompatActivity() {
         hideAllView()
         if (multiTouchView3?.visibility != View.VISIBLE) {
           multiTouchView3?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+
+
+    rootView.addView(Button(this).apply {
+      text = "MultiTouchView3 各自为战型"
+      setOnClickListener {
+        contentView.visibility = View.VISIBLE
+
+        if (multiTouchView4 == null) {
+          multiTouchView4 = MultiTouchView4(
+            this@MainActivity2)
+          contentView.addView(multiTouchView4,
+            FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+          )
+        }
+
+        hideAllView()
+        if (multiTouchView4?.visibility != View.VISIBLE) {
+          multiTouchView4?.visibility = View.VISIBLE
         }
       }
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
