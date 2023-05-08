@@ -27,36 +27,61 @@ class MultiTouchView2(context: Context, attrs: AttributeSet? = null): View(conte
   private var offsetX = 0f
   private var offsetY = 0f
   
-  private var lastDownX = 0f
-  private var lastDownY = 0f
+  private var downX = 0f
+  private var downY = 0f
   private var currentPointerId = 0
 
   
   @SuppressLint("ClickableViewAccessibility")
   override fun onTouchEvent(event: MotionEvent): Boolean {
     when (event.actionMasked) {
-      MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
+      MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN, MotionEvent.ACTION_POINTER_UP -> {
         originalOffsetX = offsetX
-        currentPointerId = event.getPointerId(event.actionIndex)
+        originalOffsetY = offsetY
+        //按下事件保存按下的手指作为跟踪手指
+        var pointerIndex = event.actionIndex
+        
+        for (i in 0 until event.pointerCount) {
+          LogUtil.debug(tag, "point $i , id: ${event.getPointerId(i)}")
+        }
+        
+        //非最后一根手指抬起，index 会发生变化，获取到需要跟踪的手指的 index。
+        //如果抬起的就是当前正在滑动的手指，则自动将上一根按下的手指作为跟踪手指（event.actionIndex - 1）
+        //如果抬起地手指不是正在滑动地手指，则获取当前跟踪的手指对应的 index
+        if (event.actionMasked == MotionEvent.ACTION_POINTER_UP) {
+          pointerIndex = if (event.getPointerId(event.actionIndex) == currentPointerId) {
+            event.actionIndex - 1
+          } else {
+            event.findPointerIndex(currentPointerId)
+          }
+          
+          LogUtil.debug(tag, "up, action index: ${event.actionIndex}, action id: ${event.getPointerId(event.actionIndex)}, currentPointerId: " +
+              "$currentPointerId, currentIndex: $pointerIndex")
+        }
+        
+        currentPointerId = event.getPointerId(pointerIndex)
+        downX = event.getX(pointerIndex)
+        downY = event.getY(pointerIndex)
+        
       }
       
       MotionEvent.ACTION_MOVE -> {
+        LogUtil.debug(tag, "move currentPointerId: $currentPointerId")
         val pointerIndex = event.findPointerIndex(currentPointerId)
+        LogUtil.debug(tag, "move current point Index: $pointerIndex, action index: ${event.actionIndex}, actionId: ${event.getPointerId(event.actionIndex)}")
         val currentX = event.getX(pointerIndex)
         val currentY = event.getY(pointerIndex)
-        originalOffsetX += (currentX - lastDownX)
-        originalOffsetY += (currentY - lastDownY)
-        lastDownX = currentX
-        lastDownY = currentY
-        LogUtil.debug(tag, "move pointerIndex: $pointerIndex， originalOffsetX：$originalOffsetX," +
-            " originalOffsetX: $originalOffsetY, currentX: $currentX, currentY: $currentY")
+        offsetX = currentX - downX + originalOffsetX
+        offsetY = currentY - downY + originalOffsetY
+        invalidate()
       }
     }
     return true
   }
 
   override fun onDraw(canvas: Canvas) {
-    canvas.drawBitmap(bitmap, originalOffsetX, originalOffsetY, paint)
+    
+    canvas.drawBitmap(bitmap, offsetX, offsetY, paint)
   }
   
   
