@@ -36,6 +36,18 @@ class MainActivity2: AppCompatActivity() {
         )
       } 
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+
+
+    rootView.addView(Button(this).apply {
+      text = "MultiTouchView1 接力型滑动"
+      setOnClickListener {
+        contentView.visibility = View.VISIBLE
+        contentView.addView(MultiTouchView2(
+          this@MainActivity2),
+          FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        )
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
     
     initWindowSize(this)
   }
