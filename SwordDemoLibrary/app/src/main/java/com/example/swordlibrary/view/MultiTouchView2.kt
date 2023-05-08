@@ -23,6 +23,9 @@ class MultiTouchView2(context: Context, attrs: AttributeSet? = null): View(conte
   
   private var originalOffsetX = 0f
   private var originalOffsetY = 0f
+
+  private var offsetX = 0f
+  private var offsetY = 0f
   
   private var lastDownX = 0f
   private var lastDownY = 0f
@@ -33,8 +36,7 @@ class MultiTouchView2(context: Context, attrs: AttributeSet? = null): View(conte
   override fun onTouchEvent(event: MotionEvent): Boolean {
     when (event.actionMasked) {
       MotionEvent.ACTION_DOWN, MotionEvent.ACTION_POINTER_DOWN -> {
-        lastDownX = event.x
-        lastDownY = event.y
+        originalOffsetX = offsetX
         currentPointerId = event.getPointerId(event.actionIndex)
       }
       
