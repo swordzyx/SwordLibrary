@@ -14,7 +14,7 @@ import com.sword.dp
 /**
  * 协作型滑动
  */
-class MultiTouchView3(context: Context, attrs: AttributeSet): View(context, attrs) {
+class MultiTouchView3(context: Context, attrs: AttributeSet? = null): View(context, attrs) {
     private val tag = "MultiTouchView3"
     private val imageWidth = dp(200).toFloat()
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -30,7 +30,7 @@ class MultiTouchView3(context: Context, attrs: AttributeSet): View(context, attr
     private var downY = 0f
     private var currentPointId = 0
     override fun onDraw(canvas: Canvas) {
-        canvas.drawBitmap(bitmap, originalOffsetX, originalOffsetY, paint)
+        canvas.drawBitmap(bitmap, offsetX, offsetY, paint)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -41,7 +41,7 @@ class MultiTouchView3(context: Context, attrs: AttributeSet): View(context, attr
         var pointerCount = event.pointerCount
         val isPointUp = event.actionMasked == MotionEvent.ACTION_POINTER_UP
         for (i in 0 until event.pointerCount) {
-            if(!(isPointUp && currentPointId == event.getPointerId(i))) {
+            if(!(isPointUp && i == event.actionIndex)) {
                 sumX += event.getX(i)
                 sumY += event.getY(i)
             }
@@ -62,7 +62,7 @@ class MultiTouchView3(context: Context, attrs: AttributeSet): View(context, attr
                 originalOffsetY = offsetY
             }
             MotionEvent.ACTION_MOVE -> {
-                offsetX = focusX - downX + originalOffsetY
+                offsetX = focusX - downX + originalOffsetX
                 offsetY = focusY - downY + originalOffsetY
                 invalidate()
             }
