@@ -1,6 +1,7 @@
 package com.example.swordlibrary
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -8,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.children
 import com.example.swordlibrary.view.*
 import com.sword.initWindowSize
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,6 +21,8 @@ class MainActivity2: AppCompatActivity() {
   private var multiTouchView2: MultiTouchView2? = null
   private var multiTouchView3: MultiTouchView3? = null
   private var multiTouchView4: MultiTouchView4? = null
+  
+  private var twoPager: TwoPager? = null
 
   @SuppressLint("SetTextI18n")
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,8 +89,7 @@ class MainActivity2: AppCompatActivity() {
         }
       }
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-
-
+    
     rootView.addView(Button(this).apply {
       text = "MultiTouchView3 各自为战型"
       setOnClickListener {
@@ -106,21 +109,44 @@ class MainActivity2: AppCompatActivity() {
         }
       }
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+
+    rootView.addView(Button(this).apply {
+      text = "TwoPager"
+      setOnClickListener {
+        contentView.visibility = View.VISIBLE
+
+        if (twoPager == null) {
+          twoPager = TwoPager(
+            this@MainActivity2)
+          
+          twoPager?.addView(View(context).apply { 
+            setBackgroundColor(Color.parseColor("#795548"))
+          })
+          twoPager?.addView(View(context).apply { 
+            setBackgroundColor(Color.parseColor("#388E3C"))
+          })
+          contentView.addView(twoPager,
+            FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+          )
+        }
+
+        hideAllView()
+        if (twoPager?.visibility != View.VISIBLE) {
+          twoPager?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
     
     initWindowSize(this)
   }
+  
+  
 
   private fun hideAllView() {
-    if (multiTouchView1?.visibility != View.GONE) {
-      multiTouchView1?.visibility = View.GONE
-    }
-
-    if (multiTouchView2?.visibility != View.GONE) {
-      multiTouchView2?.visibility = View.GONE
-    }
-
-    if (multiTouchView3?.visibility != View.GONE) {
-      multiTouchView3?.visibility = View.GONE
+    contentView.children.forEach { child -> 
+      if (child.visibility != View.GONE) {
+        child.visibility = View.GONE
+      }
     }
   }
 
