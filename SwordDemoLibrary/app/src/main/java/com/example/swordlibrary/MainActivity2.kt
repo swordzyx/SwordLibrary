@@ -3,6 +3,7 @@ package com.example.swordlibrary
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
@@ -11,6 +12,7 @@ import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import com.example.swordlibrary.view.*
+import com.sword.LogUtil
 import com.sword.initWindowSize
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -21,10 +23,11 @@ class MainActivity2: AppCompatActivity() {
   private var multiTouchView2: MultiTouchView2? = null
   private var multiTouchView3: MultiTouchView3? = null
   private var multiTouchView4: MultiTouchView4? = null
+  private var dragListenerGridView: DragListenerGridView? = null
   
   private var twoPager: TwoPager? = null
 
-  @SuppressLint("SetTextI18n")
+  @SuppressLint("SetTextI18n", "InflateParams")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -133,6 +136,26 @@ class MainActivity2: AppCompatActivity() {
         hideAllView()
         if (twoPager?.visibility != View.VISIBLE) {
           twoPager?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+
+    rootView.addView(Button(this).apply {
+      text = "DragListenerGridView"
+      setOnClickListener {
+        contentView.visibility = View.VISIBLE
+
+        if (dragListenerGridView == null) {
+          dragListenerGridView = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_listener_grid_view, null) as DragListenerGridView
+          contentView.addView(
+            dragListenerGridView, 
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        }
+
+        LogUtil.debug("DragListenerGridView", "添加 DragListenerGridView")
+        hideAllView()
+        if (dragListenerGridView?.visibility != View.VISIBLE) {
+          dragListenerGridView?.visibility = View.VISIBLE
         }
       }
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
