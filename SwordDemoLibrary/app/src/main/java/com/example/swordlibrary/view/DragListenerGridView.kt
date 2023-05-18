@@ -16,8 +16,6 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
   private val column = 2
   private val row = 3
   private val views = mutableListOf<View>()
-  
-  private var dragedView: View? = null
 
   //这里返回 false，View.onDragEvent 就会被调用
   private val dragListener = OnDragListener { v, event ->
