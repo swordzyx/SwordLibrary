@@ -164,6 +164,8 @@ class MainActivity2: AppCompatActivity() {
     addDragHelperGridView()
 
     addDragToCollectLayout()
+
+    addDragUpDownLayout()
     
     initWindowSize(this)
   }
@@ -194,7 +196,7 @@ class MainActivity2: AppCompatActivity() {
   }
 
   private var dragHelperGridView: DragHelperGridView? = null
-  @SuppressLint("SetTextI18n")
+  @SuppressLint("SetTextI18n", "InflateParams")
   private fun addDragHelperGridView() {
     rootView.addView(Button(this).apply {
       text = "DragHelperGridView"
@@ -213,6 +215,31 @@ class MainActivity2: AppCompatActivity() {
         hideAllView()
         if (dragHelperGridView?.visibility != View.VISIBLE) {
           dragHelperGridView?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+  }
+
+  private var dragUpDownLayout: DragUpDownLayout? = null
+  @SuppressLint("SetTextI18n", "InflateParams")
+  private fun addDragUpDownLayout() {
+    rootView.addView(Button(this).apply {
+      text = "DragUpDownLayout"
+      isAllCaps = false
+      setOnClickListener {
+        contentContainer?.visibility = View.VISIBLE
+
+        if (dragUpDownLayout == null) {
+          dragUpDownLayout = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_up_down, null) as DragUpDownLayout
+          contentContainer?.addView(
+            dragUpDownLayout,
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        }
+
+        LogUtil.debug("DragHelperGridView", "添加 DragHelperGridView")
+        hideAllView()
+        if (dragUpDownLayout?.visibility != View.VISIBLE) {
+          dragUpDownLayout?.visibility = View.VISIBLE
         }
       }
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
