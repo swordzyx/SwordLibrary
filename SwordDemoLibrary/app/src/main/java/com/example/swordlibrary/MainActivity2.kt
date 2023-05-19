@@ -162,10 +162,37 @@ class MainActivity2: AppCompatActivity() {
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
 
     addDragHelperGridView()
+
+    addDragToCollectLayout()
     
     initWindowSize(this)
   }
-  
+
+  private var dragToCollectLayout: DragToCollectLayout? = null
+  @SuppressLint("SetTextI18n")
+  private fun addDragToCollectLayout() {
+    rootView.addView(Button(this).apply {
+      text = "DragToCollectLayout"
+      isAllCaps = false
+      setOnClickListener {
+        contentContainer?.visibility = View.VISIBLE
+
+        if (dragToCollectLayout == null) {
+          dragToCollectLayout = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_to_collect_layout, null) as DragToCollectLayout
+          contentContainer?.addView(
+            dragToCollectLayout,
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        }
+
+        LogUtil.debug("DragHelperGridView", "添加 DragHelperGridView")
+        hideAllView()
+        if (dragToCollectLayout?.visibility != View.VISIBLE) {
+          dragToCollectLayout?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+  }
+
   private var dragHelperGridView: DragHelperGridView? = null
   @SuppressLint("SetTextI18n")
   private fun addDragHelperGridView() {
