@@ -26,6 +26,8 @@ class MainActivity2: AppCompatActivity() {
   private var dragListenerGridView: DragListenerGridView? = null
   
   private var twoPager: TwoPager? = null
+  
+  private var contentContainer: FrameLayout? = null
 
   @SuppressLint("SetTextI18n", "InflateParams")
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +35,7 @@ class MainActivity2: AppCompatActivity() {
 
     setContentView(R.layout.activity_main)
     val rootView = findViewById<LinearLayout>(R.id.rootView)
-    val contentView = findViewById<FrameLayout>(R.id.contentView)
+    contentContainer = findViewById(R.id.contentView)
     rootView.addView(Button(this).apply {
       text = "MultiTouchView1 单点触控"
       setOnClickListener {
@@ -52,8 +54,7 @@ class MainActivity2: AppCompatActivity() {
         }
       } 
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-
-
+    
     rootView.addView(Button(this).apply {
       text = "MultiTouchView2 接力型滑动"
       setOnClickListener {
@@ -159,14 +160,39 @@ class MainActivity2: AppCompatActivity() {
         }
       }
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+
+    addDragHelperGridView()
     
     initWindowSize(this)
   }
   
-  
+  private var dragHelperGridView: DragHelperGridView? = null
+  @SuppressLint("SetTextI18n")
+  private fun addDragHelperGridView() {
+    rootView.addView(Button(this).apply {
+      text = "DragHelperGridView"
+      isAllCaps = false
+      setOnClickListener {
+        contentContainer?.visibility = View.VISIBLE
+
+        if (dragHelperGridView == null) {
+          dragHelperGridView = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_helper_grid_view, null) as DragHelperGridView
+          contentContainer?.addView(
+            dragHelperGridView,
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        }
+
+        LogUtil.debug("DragHelperGridView", "添加 DragHelperGridView")
+        hideAllView()
+        if (dragHelperGridView?.visibility != View.VISIBLE) {
+          dragHelperGridView?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+  }
 
   private fun hideAllView() {
-    contentView.children.forEach { child -> 
+    contentContainer?.children?.forEach { child -> 
       if (child.visibility != View.GONE) {
         child.visibility = View.GONE
       }
@@ -174,8 +200,8 @@ class MainActivity2: AppCompatActivity() {
   }
 
   override fun onBackPressed() {
-    if (contentView.visibility != View.GONE) {
-      contentView.visibility = View.GONE
+    if (contentContainer?.visibility != View.GONE) {
+      contentContainer?.visibility = View.GONE
     } else {
       super.onBackPressed()
     }
