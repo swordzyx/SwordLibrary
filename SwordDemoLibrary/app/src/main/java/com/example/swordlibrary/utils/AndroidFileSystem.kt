@@ -1,4 +1,4 @@
-package com.example.swordlibrary.utils.kotlin
+package com.example.swordlibrary.utils
 
 import android.app.Activity
 import android.content.BroadcastReceiver
