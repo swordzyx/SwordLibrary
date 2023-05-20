@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
+import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.view.*
 import com.sword.LogUtil
 import com.sword.initWindowSize
@@ -167,7 +168,36 @@ class MainActivity2: AppCompatActivity() {
 
     addDragUpDownLayout()
     
+    addNestScrollViewLayout()
+    
+    addScaleableImageView()
+    
     initWindowSize(this)
+  }
+
+  private var scaleableImageView: ScaleableImageView? = null
+  @SuppressLint("SetTextI18n")
+  private fun addScaleableImageView() {
+    rootView.addView(Button(this).apply {
+      text = "ScaleableImageView"
+      isAllCaps = false
+      setOnClickListener {
+        contentContainer?.visibility = View.VISIBLE
+
+        if (scaleableImageView == null) {
+          scaleableImageView = ScaleableImageView(context)
+          contentContainer?.addView(
+            scaleableImageView,
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        }
+
+        LogUtil.debug("ScaleableImageView", "添加 ScaleableImageView")
+        hideAllView()
+        if (scaleableImageView?.visibility != View.VISIBLE) {
+          scaleableImageView?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
   }
 
   private var dragToCollectLayout: DragToCollectLayout? = null
@@ -240,6 +270,31 @@ class MainActivity2: AppCompatActivity() {
         hideAllView()
         if (dragUpDownLayout?.visibility != View.VISIBLE) {
           dragUpDownLayout?.visibility = View.VISIBLE
+        }
+      }
+    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+  }
+  
+  private var nestedScrollViewLayout: NestedScrollView? = null
+  @SuppressLint("SetTextI18n", "InflateParams")
+  private fun addNestScrollViewLayout() {
+    rootView.addView(Button(this).apply {
+      text = "NestScrollViewLayout"
+      isAllCaps = false
+      setOnClickListener {
+        contentContainer?.visibility = View.VISIBLE
+
+        if (nestedScrollViewLayout == null) {
+          nestedScrollViewLayout = LayoutInflater.from(this@MainActivity2).inflate(R.layout.nested_scalable_image_view, null) as NestedScrollView
+          contentContainer?.addView(
+            nestedScrollViewLayout,
+            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        }
+
+        LogUtil.debug(this@MainActivity2.tag, "添加 NestScrollViewLayout")
+        hideAllView()
+        if (nestedScrollViewLayout?.visibility != View.VISIBLE) {
+          nestedScrollViewLayout?.visibility = View.VISIBLE
         }
       }
     }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))

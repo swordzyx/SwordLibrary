@@ -19,7 +19,7 @@ import com.sword.LogUtil
 import com.sword.createBitmap1
 import com.sword.dp
 
-class ScaleableImageView(context: Context, attributeSet: AttributeSet) :
+class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
   View(context, attributeSet), Runnable {
   private val tag = "ScaleableImageView"
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)

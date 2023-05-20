@@ -11,10 +11,10 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="800dp"
             android:background="@color/colorAccent" />
 
-        <com.hencoder.nestedscroll.view.NestedScalableImageView
+        <com.example.swordlibrary.view.nestedscroll.NestedScrollScaleableImageView
             android:layout_width="match_parent"
             android:layout_height="400dp" />
 

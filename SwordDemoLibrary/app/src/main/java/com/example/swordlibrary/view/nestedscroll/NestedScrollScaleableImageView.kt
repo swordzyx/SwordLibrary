@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Point
+import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.GestureDetector.OnDoubleTapListener
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -15,6 +17,8 @@ import android.widget.OverScroller
 import androidx.core.animation.doOnEnd
 import androidx.core.view.GestureDetectorCompat
 import androidx.core.view.NestedScrollingChild3
+import androidx.core.view.NestedScrollingChildHelper
+import androidx.core.view.ViewCompat
 import com.example.swordlibrary.R
 import com.sword.LogUtil
 import com.sword.createBitmap1
@@ -82,8 +86,8 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
         }
         return false
       }
-      
-      if(currentScale != tempScale) {
+
+      if (currentScale != tempScale) {
         currentScale = tempScale
       }
       return true
@@ -125,11 +129,27 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
 
   }
 
-  private fun limitEdge(offsetX: Float, offsetY: Float) {
+  /**
+   * offsetY：往下为负，网上为正
+   * offsetX：往右为负，往左为正
+   */
+  private fun limitEdge(offsetX: Float, offsetY: Float): PointF {
     val w = (bitmap.width * bigScale - width) / 2f
     val h = (bitmap.height * bigScale - height) / 2f
     this.offsetX = offsetX.coerceAtLeast(-w).coerceAtMost(w)
     this.offsetY = offsetY.coerceAtLeast(-h).coerceAtMost(h)
+    val dxUnConsumed = when {
+      offsetX > w -> (w-offsetX)
+      offsetX < -w -> -w - offsetX
+      else -> 0f
+    }
+    val dyUnConsumed = when {
+      offsetY > h -> h - offsetY
+      offsetY < -h -> -h - offsetY
+      else -> 0f
+    }
+    
+    return PointF(dxUnConsumed, dyUnConsumed)
   }
 
   //手指捏撑
@@ -139,11 +159,13 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
   private val onGestureListener = object : SimpleOnGestureListener(), OnDoubleTapListener {
     //down 事件
     override fun onDown(e: MotionEvent): Boolean {
+      LogUtil.debug(tag, "GestureListener down")
       return true
     }
 
     //双击事件，第一次按下之后，300ms 之内按下第二次，触发此函数
     override fun onDoubleTap(e: MotionEvent): Boolean {
+      LogUtil.debug(tag, "onDoubleTap, is big: $big")
       big = !big
       if (big) {
         offsetX = (e.x - width / 2) * (1 - bigScale / currentScale)
@@ -164,14 +186,19 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
       distanceY: Float
     ): Boolean {
       LogUtil.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY")
-      if (big) {
+      return if (big) {
         offsetX -= distanceX
         offsetY -= distanceY
 
-        limitEdge(offsetX, offsetY)
+        val unConsumedDistance = limitEdge(offsetX, offsetY)
+        LogUtil.debug(tag, "unConsumed distance: $unConsumedDistance")
+        nestedScrollingChildHelper.dispatchNestedScroll(0, 0, 0, unConsumedDistance.y.toInt(), null)
         invalidate()
+        true
+      } else {
+        false
       }
-      return true
+      
     }
 
     override fun onFling(
@@ -180,6 +207,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
       velocityX: Float,
       velocityY: Float
     ): Boolean {
+      LogUtil.debug(tag, "onFling velocityX: $velocityX, velocitY: $velocityY, isBig: $big")
       if (!big) {
         return false
       }
@@ -194,7 +222,6 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
         ((bitmap.height * bigScale - height) / 2).toInt()
       )
       postOnAnimation(this@NestedScrollScaleableImageView)
-      LogUtil.debug(tag, "onFling velocityX: $velocityX, velocitY: $velocityY")
       return true
     }
 
@@ -202,15 +229,22 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
 
   private val gestureDetector = GestureDetectorCompat(context, onGestureListener)
 
-
   @SuppressLint("ClickableViewAccessibility")
   override fun onTouchEvent(event: MotionEvent): Boolean {
     //捏撑
     scaleGestureDetector.onTouchEvent(event)
     //手势
+    var gestureTouch = false 
     if (!scaleGestureDetector.isInProgress) {
-      gestureDetector.onTouchEvent(event)
+      gestureTouch = gestureDetector.onTouchEvent(event)
+      if (!gestureTouch && big) {
+        //嵌套滑动，将 onTouchEvent 报告给 NestedScrollingChildHelper
+        nestedScrollingChildHelper.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
+      } else {
+        
+      }
     }
+    LogUtil.debug(tag, "onTouchEvent, ScaleInProgress: ${scaleGestureDetector.isInProgress}, gestureTouch: $gestureTouch")
     return true
   }
 
@@ -266,18 +300,27 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     LogUtil.debug(tag, "onFling run, offsetX: $offsetX, offsetY: $offsetY")
   }
 
-  
+
   /* -------------- NestedScrollingChild3 接口方法 --------------------- */
+  private val nestedScrollingChildHelper = NestedScrollingChildHelper(this).apply { 
+    isNestedScrollingEnabled = true
+  }
   override fun startNestedScroll(axes: Int, type: Int): Boolean {
-    TODO("Not yet implemented")
+    LogUtil.debug(
+      tag, "startNestedScroll, axes(轴)：${if (axes == SCROLL_AXIS_VERTICAL) "y 轴" else "x 轴"}，" +
+          "type：$type"
+    )
+    return nestedScrollingChildHelper.startNestedScroll(axes, type)
   }
 
   override fun stopNestedScroll(type: Int) {
-    TODO("Not yet implemented")
+    LogUtil.debug(tag, "stopNestedScroll, type: $type")
+    nestedScrollingChildHelper.stopNestedScroll(type)
   }
 
   override fun hasNestedScrollingParent(type: Int): Boolean {
-    TODO("Not yet implemented")
+    LogUtil.debug(tag, "hasNestedScrollParent, type: $type")
+    return nestedScrollingChildHelper.hasNestedScrollingParent(type)
   }
 
   override fun dispatchNestedScroll(
@@ -289,7 +332,24 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     type: Int,
     consumed: IntArray
   ) {
-    TODO("Not yet implemented")
+    LogUtil.debug(
+      tag,
+      "无返回值 dispatchNestedScroll, " +
+          "dxConsumed: $dxConsumed, " +
+          "dyConsumed: $dyConsumed, " +
+          "dxUnconsumed: $dxUnconsumed, " +
+          "dyUnconsumed: $dyUnconsumed, " +
+          "type: $type, consumed: $consumed"
+    )
+    nestedScrollingChildHelper.dispatchNestedScroll(
+      dxConsumed,
+      dyConsumed,
+      dxUnconsumed,
+      dyUnconsumed,
+      offsetInWindow,
+      type,
+      consumed
+    )
   }
 
   override fun dispatchNestedScroll(
@@ -300,7 +360,21 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     offsetInWindow: IntArray?,
     type: Int
   ): Boolean {
-    TODO("Not yet implemented")
+    val result = nestedScrollingChildHelper.dispatchNestedScroll(
+      dxConsumed,
+      dyConsumed,
+      dxUnconsumed,
+      dyUnconsumed,
+      offsetInWindow,
+      type
+    )
+    LogUtil.debug(tag, "有返回值 dispatchNestedScroll, dxConsumed: $dxConsumed, " +
+        "dyConsumed: $dyConsumed, " +
+        "dxUnconsumed: $dxUnconsumed, " +
+        "dyUnconsumed: $dyUnconsumed, " +
+        "offsetInWindow: $offsetInWindow, " +
+        "type: $type, 返回结果：$result")
+    return result 
   }
 
   override fun dispatchNestedPreScroll(
@@ -310,6 +384,12 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     offsetInWindow: IntArray?,
     type: Int
   ): Boolean {
-    TODO("Not yet implemented")
+    val result = nestedScrollingChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, type)
+    LogUtil.debug(tag, "dispatchNestedPreScroll, dx: $dx," +
+        " dy: $dy, consumed: $consumed," +
+        " offsetInWindow: $offsetInWindow," +
+        " type: $type, 返回结果：$result")
+    return result
   }
+  
 }
