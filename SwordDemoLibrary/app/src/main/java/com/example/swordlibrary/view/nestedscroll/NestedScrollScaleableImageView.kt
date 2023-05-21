@@ -130,7 +130,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
   }
 
   /**
-   * offsetY：往下为负，网上为正
+   * offsetY：往下为负，往上为正
    * offsetX：往右为负，往左为正
    */
   private fun limitEdge(offsetX: Float, offsetY: Float): PointF {
@@ -180,25 +180,28 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
 
     //distanceX 和 distanceY 是这次事件距离上次事件的距离
     override fun onScroll(
-      e1: MotionEvent,
-      e2: MotionEvent,
+      downEvent: MotionEvent,
+      currentEvent: MotionEvent,
       distanceX: Float,
       distanceY: Float
     ): Boolean {
-      LogUtil.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY")
-      return if (big) {
+      LogUtil.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY，" +
+              "x 总偏移：${currentEvent.x - downEvent.x}, " +
+              "y 总偏移：${currentEvent.y - downEvent.y}")
+      if (big) {
         offsetX -= distanceX
         offsetY -= distanceY
 
         val unConsumedDistance = limitEdge(offsetX, offsetY)
         LogUtil.debug(tag, "unConsumed distance: $unConsumedDistance")
-        nestedScrollingChildHelper.dispatchNestedScroll(0, 0, 0, unConsumedDistance.y.toInt(), null)
         invalidate()
-        true
+        //传入的未使用偏移量为总的未使用偏移量
+        nestedScrollingChildHelper.dispatchNestedScroll(0, 0, 0, unConsumedDistance.y.toInt(), null)
       } else {
-        false
+        //传入的未使用偏移量为总的未使用偏移量。往下为负，往上为正
+        nestedScrollingChildHelper.dispatchNestedScroll(0, 0, 0, (downEvent.y - currentEvent.y).toInt(), null)
       }
-      
+      return true
     }
 
     override fun onFling(
@@ -240,8 +243,6 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
       if (!gestureTouch && big) {
         //嵌套滑动，将 onTouchEvent 报告给 NestedScrollingChildHelper
         nestedScrollingChildHelper.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
-      } else {
-        
       }
     }
     LogUtil.debug(tag, "onTouchEvent, ScaleInProgress: ${scaleGestureDetector.isInProgress}, gestureTouch: $gestureTouch")
