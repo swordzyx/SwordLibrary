@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
@@ -13,14 +12,13 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.R
-import com.sword.LogUtil
 import com.sword.initWindowSize
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import sword.view.*
 
-class MainActivity2 : AppCompatActivity() {
-  private val tag = "MainActivity2"
+class MainActivity : AppCompatActivity() {
+  private val tag = "MainActivity"
   private var container: FrameLayout? = null
 
   @SuppressLint("SetTextI18n", "InflateParams")
@@ -59,7 +57,7 @@ class MainActivity2 : AppCompatActivity() {
   @SuppressLint("InflateParams")
   private fun addDragListenerGridView() {
     if (dragListenerGridView == null) {
-      val dragListenerGridView = LayoutInflater.from(this@MainActivity2)
+      val dragListenerGridView = LayoutInflater.from(this@MainActivity)
         .inflate(R.layout.drag_listener_grid_view, null) as DragListenerGridView
       rootView.addView(
         createButtonToShowViewInContainer("DragListenerGridView", dragListenerGridView!!),
@@ -72,10 +70,10 @@ class MainActivity2 : AppCompatActivity() {
   private fun addTwoPager() {
     if (twoPager == null) {
       twoPager = TwoPager(this).apply {
-        addView(View(this@MainActivity2).apply {
+        addView(View(this@MainActivity).apply {
           setBackgroundColor(Color.parseColor("#795548"))
         })
-        addView(View(this@MainActivity2).apply {
+        addView(View(this@MainActivity).apply {
           setBackgroundColor(Color.parseColor("#388E3C"))
         })
       }
@@ -111,7 +109,7 @@ class MainActivity2 : AppCompatActivity() {
   private fun addMultiTouchView2() {
     if (multiTouchView2 == null) {
       multiTouchView2 = MultiTouchView2(
-        this@MainActivity2
+        this@MainActivity
       )
       contentView.addView(
         createButtonToShowViewInContainer("MultiTouchView2 接力型滑动", multiTouchView2!!),
@@ -124,7 +122,7 @@ class MainActivity2 : AppCompatActivity() {
   private fun addMultiTouchView1() {
     if (multiTouchView1 == null) {
       multiTouchView1 = MultiTouchView1(
-        this@MainActivity2
+        this@MainActivity
       )
       rootView.addView(
         createButtonToShowViewInContainer(
@@ -151,7 +149,7 @@ class MainActivity2 : AppCompatActivity() {
   @SuppressLint("InflateParams")
   private fun addDragToCollectLayout() {
     if (dragToCollectLayout == null) {
-      dragToCollectLayout = LayoutInflater.from(this@MainActivity2)
+      dragToCollectLayout = LayoutInflater.from(this@MainActivity)
         .inflate(R.layout.drag_to_collect_layout, null) as DragToCollectLayout
       rootView.addView(
         createButtonToShowViewInContainer(
@@ -167,7 +165,7 @@ class MainActivity2 : AppCompatActivity() {
   @SuppressLint("InflateParams")
   private fun addDragHelperGridView() {
     if (dragHelperGridView == null) {
-      dragHelperGridView = LayoutInflater.from(this@MainActivity2)
+      dragHelperGridView = LayoutInflater.from(this@MainActivity)
         .inflate(R.layout.drag_helper_grid_view, null) as DragHelperGridView
       rootView.addView(
         createButtonToShowViewInContainer("DragHelperGridView", dragHelperGridView!!),
@@ -180,7 +178,7 @@ class MainActivity2 : AppCompatActivity() {
   @SuppressLint("SetTextI18n", "InflateParams")
   private fun addDragUpDownLayout() {
     if (dragUpDownLayout == null) {
-      dragUpDownLayout = LayoutInflater.from(this@MainActivity2)
+      dragUpDownLayout = LayoutInflater.from(this@MainActivity)
         .inflate(R.layout.drag_up_down, null) as DragUpDownLayout
       rootView.addView(
         createButtonToShowViewInContainer(
@@ -195,7 +193,7 @@ class MainActivity2 : AppCompatActivity() {
   @SuppressLint("SetTextI18n", "InflateParams")
   private fun addNestScrollViewLayout() {
     if (nestedScrollViewLayout == null) {
-      nestedScrollViewLayout = LayoutInflater.from(this@MainActivity2)
+      nestedScrollViewLayout = LayoutInflater.from(this@MainActivity)
         .inflate(R.layout.nested_scalable_image_view, null) as NestedScrollView
       rootView.addView(
         createButtonToShowViewInContainer("NestedScrollViewLayout", nestedScrollViewLayout!!),

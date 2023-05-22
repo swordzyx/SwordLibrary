@@ -42,7 +42,7 @@
         </activity>
 
         <activity
-            android:name="sword.MainActivity2"
+            android:name="sword.MainActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
             android:exported="true">
             <intent-filter>
