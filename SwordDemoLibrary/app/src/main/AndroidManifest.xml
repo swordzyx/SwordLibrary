@@ -31,7 +31,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,UnusedAttribute">
         <activity
-            android:name=".MainActivity"
+            android:name="sword.MainActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
             android:exported="true">
             <!--<intent-filter>
@@ -42,7 +42,7 @@
         </activity>
 
         <activity
-            android:name=".MainActivity2"
+            android:name="sword.MainActivity2"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
             android:exported="true">
             <intent-filter>
@@ -51,7 +51,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".camera.GalleryActivity" />
+        <activity android:name="sword.camera.GalleryActivity" />
     </application>
 
 </manifest>

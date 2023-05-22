@@ -9,7 +9,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
-import com.example.swordlibrary.MainActivity
 import com.sword.LogUtil
 import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers

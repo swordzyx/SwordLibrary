@@ -2,6 +2,7 @@ package com.example.swordlibrary.logic
 
 import org.junit.Assert
 import org.junit.Test
+import sword.logic.LoginLogic
 
 class LoginLogicTest {
   @Test

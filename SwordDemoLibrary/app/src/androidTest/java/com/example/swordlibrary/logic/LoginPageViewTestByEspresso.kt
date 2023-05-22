@@ -8,7 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.MediumTest
-import com.example.swordlibrary.MainActivity
+import sword.MainActivity
 import org.hamcrest.Matchers.*
 import org.junit.Test
 

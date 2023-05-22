@@ -1,11 +1,12 @@
 package com.example.swordlibrary.logic
 
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.swordlibrary.data.SharedPreferencesUtils
+import sword.data.SharedPreferencesUtils
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import sword.logic.LoginLogic
 
 @RunWith(RobolectricTestRunner::class)
 class LoginPageViewTestByRobolectric {
