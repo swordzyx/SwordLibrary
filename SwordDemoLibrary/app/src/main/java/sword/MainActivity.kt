@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.R
+import com.sword.dp
 import com.sword.initWindowSize
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -60,8 +61,8 @@ class MainActivity : AppCompatActivity() {
       val dragListenerGridView = LayoutInflater.from(this@MainActivity)
         .inflate(R.layout.drag_listener_grid_view, null) as DragListenerGridView
       rootView.addView(
-        createButtonToShowViewInContainer("DragListenerGridView", dragListenerGridView!!),
-        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        createButtonToShowViewInContainer("DragListenerGridView", dragListenerGridView),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -80,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
       rootView.addView(
         createButtonToShowViewInContainer("TwoPager", twoPager!!),
-        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
       multiTouchView4 = MultiTouchView4(this)
       rootView.addView(
         createButtonToShowViewInContainer("MultiTouchView4 各自为战型", multiTouchView4!!),
-        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     multiTouchView3 = MultiTouchView3(this)
     rootView.addView(
       createButtonToShowViewInContainer("MultiTouchView3 协作型滑动", multiTouchView3!!),
-      LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
     )
   }
 
@@ -113,7 +114,7 @@ class MainActivity : AppCompatActivity() {
       )
       contentView.addView(
         createButtonToShowViewInContainer("MultiTouchView2 接力型滑动", multiTouchView2!!),
-        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -128,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         createButtonToShowViewInContainer(
           "MultiTouchView1 单点触控",
           multiTouchView1!!
-        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -139,7 +140,7 @@ class MainActivity : AppCompatActivity() {
       scaleableImageView = ScaleableImageView(this)
       rootView.addView(
         createButtonToShowViewInContainer("ScaleableImageView", scaleableImageView!!),
-        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -155,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         createButtonToShowViewInContainer(
           "DragToCollectLayout",
           dragToCollectLayout!!
-        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
 
@@ -169,7 +170,7 @@ class MainActivity : AppCompatActivity() {
         .inflate(R.layout.drag_helper_grid_view, null) as DragHelperGridView
       rootView.addView(
         createButtonToShowViewInContainer("DragHelperGridView", dragHelperGridView!!),
-        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -184,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         createButtonToShowViewInContainer(
           "DragUpDownLayout",
           dragUpDownLayout!!
-        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -197,7 +198,7 @@ class MainActivity : AppCompatActivity() {
         .inflate(R.layout.nested_scalable_image_view, null) as NestedScrollView
       rootView.addView(
         createButtonToShowViewInContainer("NestedScrollViewLayout", nestedScrollViewLayout!!),
-        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
   }
@@ -211,9 +212,14 @@ class MainActivity : AppCompatActivity() {
     buttonName: String,
     showView: View
   ): AppCompatButton {
+    val padding = dp(20);
     return AppCompatButton(this).apply {
       text = buttonName
       isAllCaps = false
+      
+      setPadding(padding, 0, padding, 0)
+      setBackgroundResource(R.drawable.button_background_circle_corner)
+      setTextColor(Color.WHITE)
       setOnClickListener {
         container?.visibility = View.VISIBLE
         container?.addView(
@@ -243,5 +249,11 @@ class MainActivity : AppCompatActivity() {
     } else {
       super.onBackPressed()
     }
+  }
+  
+  private val defaultMargin = dp(2)
+  private fun LayoutParams.setVerticalMargin(margin: Int = defaultMargin): LayoutParams{
+    setMargins(0, margin, 0, margin)
+    return this
   }
 }

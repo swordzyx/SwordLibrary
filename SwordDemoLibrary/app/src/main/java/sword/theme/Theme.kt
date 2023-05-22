@@ -15,7 +15,7 @@ class Theme {
     companion object {
         fun createCircleButton(context: Context): AppCompatButton {
             return AppCompatButton(context).apply {
-                background = ResourcesCompat.getDrawable(context.resources, R.drawable.button_circle_background, null)
+                background = ResourcesCompat.getDrawable(context.resources, R.drawable.button_background_circle_corner, null)
                 setPadding(dp(20), dp(10), dp(20), dp(10))
                 setTextColor(Color.WHITE)
                 textSize = dp2px(10f)
