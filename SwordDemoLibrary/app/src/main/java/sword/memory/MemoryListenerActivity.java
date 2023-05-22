@@ -7,8 +7,7 @@ import android.content.ComponentCallbacks2;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.example.swordlibrary.R;
+import android.widget.FrameLayout;
 
 public class MemoryListenerActivity extends AppCompatActivity implements ComponentCallbacks2 {
     String TAG = "SWORD";
@@ -16,7 +15,7 @@ public class MemoryListenerActivity extends AppCompatActivity implements Compone
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_memory_listener);
+        setContentView(new FrameLayout(this));
 
         getMemoryInfo();
     }
@@ -37,6 +36,7 @@ public class MemoryListenerActivity extends AppCompatActivity implements Compone
     @Override
     public void onTrimMemory(int level) {
         //通过 level 确定触发了哪个生命周期或系统事件
+        super.onTrimMemory(level);
         switch (level) {
             case ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN:
                 //UI 已对用户隐藏，释放所有占用了内存的 UI 对象

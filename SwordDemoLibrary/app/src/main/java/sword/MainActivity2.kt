@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -20,162 +19,189 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import sword.view.*
 
-class MainActivity2: AppCompatActivity() {
+class MainActivity2 : AppCompatActivity() {
   private val tag = "MainActivity2"
-  private var multiTouchView1: MultiTouchView1? = null
-  private var multiTouchView2: MultiTouchView2? = null
-  private var multiTouchView3: MultiTouchView3? = null
-  private var multiTouchView4: MultiTouchView4? = null
-  private var dragListenerGridView: DragListenerGridView? = null
-  
-  private var twoPager: TwoPager? = null
-  
   private var container: FrameLayout? = null
 
   @SuppressLint("SetTextI18n", "InflateParams")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    initWindowSize(this)
 
     setContentView(R.layout.activity_main)
-    val rootView = findViewById<LinearLayout>(R.id.rootView)
     container = findViewById(R.id.contentView)
 
-    //扔物线课程触摸反馈练习代码
+    //自定义 View 触摸反馈：多点触控的原理和写法全解析练习代码
     addMultiTouchView1()
-    val multiTouchView2 = MultiTouchView2(
-      this@MainActivity2)
-    contentView.addView(multiTouchView2,
-      FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     addMultiTouchView2()
+    addMultiTouchView3()
+    addMultiTouchView4()
 
-    rootView.addView(Button(this).apply {
-      text = "MultiTouchView3 协作型滑动"
-      setOnClickListener {
-        contentView.visibility = View.VISIBLE
-        
-        if (multiTouchView3 == null) {
-          multiTouchView3 = MultiTouchView3(
-            this@MainActivity2)
-          contentView.addView(multiTouchView3,
-            FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-          )
-        }
+    //自定义 View 触摸反馈：ViewGroup 的触摸反馈，自定义 ViewPager
+    addTwoPager()
 
-        hideAllView()
-        if (multiTouchView3?.visibility != View.VISIBLE) {
-          multiTouchView3?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-    
-    rootView.addView(Button(this).apply {
-      text = "MultiTouchView3 各自为战型"
-      setOnClickListener {
-        contentView.visibility = View.VISIBLE
-
-        if (multiTouchView4 == null) {
-          multiTouchView4 = MultiTouchView4(
-            this@MainActivity2)
-          contentView.addView(multiTouchView4,
-            FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-          )
-        }
-
-        hideAllView()
-        if (multiTouchView4?.visibility != View.VISIBLE) {
-          multiTouchView4?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-
-    rootView.addView(Button(this).apply {
-      text = "TwoPager"
-      setOnClickListener {
-        contentView.visibility = View.VISIBLE
-
-        if (twoPager == null) {
-          twoPager = TwoPager(
-            this@MainActivity2)
-          
-          twoPager?.addView(View(context).apply { 
-            setBackgroundColor(Color.parseColor("#795548"))
-          })
-          twoPager?.addView(View(context).apply { 
-            setBackgroundColor(Color.parseColor("#388E3C"))
-          })
-          contentView.addView(twoPager,
-            FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-          )
-        }
-
-        hideAllView()
-        if (twoPager?.visibility != View.VISIBLE) {
-          twoPager?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-
-    rootView.addView(Button(this).apply {
-      text = "DragListenerGridView"
-      setOnClickListener {
-        contentView.visibility = View.VISIBLE
-
-        if (dragListenerGridView == null) {
-          dragListenerGridView = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_listener_grid_view, null) as DragListenerGridView
-          contentView.addView(
-            dragListenerGridView, 
-            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        }
-
-        LogUtil.debug("DragListenerGridView", "添加 DragListenerGridView")
-        hideAllView()
-        if (dragListenerGridView?.visibility != View.VISIBLE) {
-          dragListenerGridView?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-
+    //自定义 View 触摸反馈：自定义触摸算法之拖拽 API 详解练习代码
+    addDragListenerGridView()
     addDragHelperGridView()
-
     addDragToCollectLayout()
-
     addDragUpDownLayout()
-    
+
+    //自定义 View 触摸反馈：嵌套滑动
     addNestScrollViewLayout()
-    
+
+    //自定义 View 触摸反馈：双向滑动的 ScalableImageView 
     addScaleableImageView()
-    
-    initWindowSize(this)
   }
 
-  @SuppressLint("SetTextI18n")
-  private fun addMultiTouchView1() {
-    rootView.addView(Button(this).apply {
-      text = "MultiTouchView1 单点触控"
-      isAllCaps = false
-      setOnClickListener {
-        contentView.visibility = View.VISIBLE
-        if (multiTouchView1 == null) {
-          multiTouchView1 = MultiTouchView1(
-            this@MainActivity2)
-          contentView.addView(multiTouchView1,
-            FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-          )
-        }
 
-        hideAllView()
-        if (multiTouchView1?.visibility != View.VISIBLE) {
-          multiTouchView1?.visibility = View.VISIBLE
-        }
+  private var dragListenerGridView: DragListenerGridView? = null
+
+  @SuppressLint("InflateParams")
+  private fun addDragListenerGridView() {
+    if (dragListenerGridView == null) {
+      val dragListenerGridView = LayoutInflater.from(this@MainActivity2)
+        .inflate(R.layout.drag_listener_grid_view, null) as DragListenerGridView
+      rootView.addView(
+        createButtonToShowViewInContainer("DragListenerGridView", dragListenerGridView!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+  }
+
+  private var twoPager: TwoPager? = null
+  private fun addTwoPager() {
+    if (twoPager == null) {
+      twoPager = TwoPager(this).apply {
+        addView(View(this@MainActivity2).apply {
+          setBackgroundColor(Color.parseColor("#795548"))
+        })
+        addView(View(this@MainActivity2).apply {
+          setBackgroundColor(Color.parseColor("#388E3C"))
+        })
       }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+
+      rootView.addView(
+        createButtonToShowViewInContainer("TwoPager", twoPager!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
   }
 
-  @SuppressLint("SetTextI18n")
-  private fun addScaleableImageView() {
+  private var multiTouchView4: MultiTouchView4? = null
+  private fun addMultiTouchView4() {
+    if (multiTouchView4 == null) {
+      multiTouchView4 = MultiTouchView4(this)
+      rootView.addView(
+        createButtonToShowViewInContainer("MultiTouchView4 各自为战型", multiTouchView4!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+  }
+
+  private var multiTouchView3: MultiTouchView3? = null
+  private fun addMultiTouchView3() {
+    multiTouchView3 = MultiTouchView3(this)
     rootView.addView(
-      createButtonToShowViewInContainer("ScaleableImageView", ScaleableImageView(this)),
-      LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
+      createButtonToShowViewInContainer("MultiTouchView3 协作型滑动", multiTouchView3!!),
+      LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+    )
+  }
+
+  private var multiTouchView2: MultiTouchView2? = null
+  private fun addMultiTouchView2() {
+    if (multiTouchView2 == null) {
+      multiTouchView2 = MultiTouchView2(
+        this@MainActivity2
+      )
+      contentView.addView(
+        createButtonToShowViewInContainer("MultiTouchView2 接力型滑动", multiTouchView2!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+  }
+
+  private var multiTouchView1: MultiTouchView1? = null
+  private fun addMultiTouchView1() {
+    if (multiTouchView1 == null) {
+      multiTouchView1 = MultiTouchView1(
+        this@MainActivity2
+      )
+      rootView.addView(
+        createButtonToShowViewInContainer(
+          "MultiTouchView1 单点触控",
+          multiTouchView1!!
+        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+  }
+
+  private var scaleableImageView: ScaleableImageView? = null
+  private fun addScaleableImageView() {
+    if (scaleableImageView == null) {
+      scaleableImageView = ScaleableImageView(this)
+      rootView.addView(
+        createButtonToShowViewInContainer("ScaleableImageView", scaleableImageView!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+  }
+
+  private var dragToCollectLayout: DragToCollectLayout? = null
+
+  @SuppressLint("InflateParams")
+  private fun addDragToCollectLayout() {
+    if (dragToCollectLayout == null) {
+      dragToCollectLayout = LayoutInflater.from(this@MainActivity2)
+        .inflate(R.layout.drag_to_collect_layout, null) as DragToCollectLayout
+      rootView.addView(
+        createButtonToShowViewInContainer(
+          "DragToCollectLayout",
+          dragToCollectLayout!!
+        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+
+  }
+
+  private var dragHelperGridView: DragHelperGridView? = null
+  @SuppressLint("InflateParams")
+  private fun addDragHelperGridView() {
+    if (dragHelperGridView == null) {
+      dragHelperGridView = LayoutInflater.from(this@MainActivity2)
+        .inflate(R.layout.drag_helper_grid_view, null) as DragHelperGridView
+      rootView.addView(
+        createButtonToShowViewInContainer("DragHelperGridView", dragHelperGridView!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+  }
+
+  private var dragUpDownLayout: DragUpDownLayout? = null
+  @SuppressLint("SetTextI18n", "InflateParams")
+  private fun addDragUpDownLayout() {
+    if (dragUpDownLayout == null) {
+      dragUpDownLayout = LayoutInflater.from(this@MainActivity2)
+        .inflate(R.layout.drag_up_down, null) as DragUpDownLayout
+      rootView.addView(
+        createButtonToShowViewInContainer(
+          "DragUpDownLayout",
+          dragUpDownLayout!!
+        ), LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
+  }
+
+  private var nestedScrollViewLayout: NestedScrollView? = null
+  @SuppressLint("SetTextI18n", "InflateParams")
+  private fun addNestScrollViewLayout() {
+    if (nestedScrollViewLayout == null) {
+      nestedScrollViewLayout = LayoutInflater.from(this@MainActivity2)
+        .inflate(R.layout.nested_scalable_image_view, null) as NestedScrollView
+      rootView.addView(
+        createButtonToShowViewInContainer("NestedScrollViewLayout", nestedScrollViewLayout!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+      )
+    }
   }
 
   /**
@@ -183,7 +209,10 @@ class MainActivity2: AppCompatActivity() {
    * [buttonName]: 按钮显示的文本
    * [showView]: 点击按钮后要添加到 [container] 中并显示的 view
    */
-  private fun createButtonToShowViewInContainer(buttonName: String, showView: View): AppCompatButton {
+  private fun createButtonToShowViewInContainer(
+    buttonName: String,
+    showView: View
+  ): AppCompatButton {
     return AppCompatButton(this).apply {
       text = buttonName
       isAllCaps = false
@@ -191,7 +220,8 @@ class MainActivity2: AppCompatActivity() {
         container?.visibility = View.VISIBLE
         container?.addView(
           showView,
-          LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+          LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        )
 
         hideAllView()
         if (showView.visibility != View.VISIBLE) {
@@ -199,106 +229,6 @@ class MainActivity2: AppCompatActivity() {
         }
       }
     }
-  }
-
-  private var dragToCollectLayout: DragToCollectLayout? = null
-  @SuppressLint("SetTextI18n")
-  private fun addDragToCollectLayout() {
-    rootView.addView(Button(this).apply {
-      text = "DragToCollectLayout"
-      isAllCaps = false
-      setOnClickListener {
-        container?.visibility = View.VISIBLE
-
-        if (dragToCollectLayout == null) {
-          dragToCollectLayout = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_to_collect_layout, null) as DragToCollectLayout
-          container?.addView(
-            dragToCollectLayout,
-            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        }
-
-        LogUtil.debug("DragHelperGridView", "添加 DragHelperGridView")
-        hideAllView()
-        if (dragToCollectLayout?.visibility != View.VISIBLE) {
-          dragToCollectLayout?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-  }
-
-  private var dragHelperGridView: DragHelperGridView? = null
-  @SuppressLint("SetTextI18n", "InflateParams")
-  private fun addDragHelperGridView() {
-    rootView.addView(Button(this).apply {
-      text = "DragHelperGridView"
-      isAllCaps = false
-      setOnClickListener {
-        container?.visibility = View.VISIBLE
-
-        if (dragHelperGridView == null) {
-          dragHelperGridView = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_helper_grid_view, null) as DragHelperGridView
-          container?.addView(
-            dragHelperGridView,
-            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        }
-
-        LogUtil.debug("DragHelperGridView", "添加 DragHelperGridView")
-        hideAllView()
-        if (dragHelperGridView?.visibility != View.VISIBLE) {
-          dragHelperGridView?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-  }
-
-  private var dragUpDownLayout: DragUpDownLayout? = null
-  @SuppressLint("SetTextI18n", "InflateParams")
-  private fun addDragUpDownLayout() {
-    rootView.addView(Button(this).apply {
-      text = "DragUpDownLayout"
-      isAllCaps = false
-      setOnClickListener {
-        container?.visibility = View.VISIBLE
-
-        if (dragUpDownLayout == null) {
-          dragUpDownLayout = LayoutInflater.from(this@MainActivity2).inflate(R.layout.drag_up_down, null) as DragUpDownLayout
-          container?.addView(
-            dragUpDownLayout,
-            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        }
-
-        LogUtil.debug("DragHelperGridView", "添加 DragHelperGridView")
-        hideAllView()
-        if (dragUpDownLayout?.visibility != View.VISIBLE) {
-          dragUpDownLayout?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
-  }
-  
-  private var nestedScrollViewLayout: NestedScrollView? = null
-  @SuppressLint("SetTextI18n", "InflateParams")
-  private fun addNestScrollViewLayout() {
-    rootView.addView(Button(this).apply {
-      text = "NestScrollViewLayout"
-      isAllCaps = false
-      setOnClickListener {
-        container?.visibility = View.VISIBLE
-
-        if (nestedScrollViewLayout == null) {
-          nestedScrollViewLayout = LayoutInflater.from(this@MainActivity2).inflate(R.layout.nested_scalable_image_view, null) as NestedScrollView
-          container?.addView(
-            nestedScrollViewLayout,
-            LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        }
-
-        LogUtil.debug(this@MainActivity2.tag, "添加 NestScrollViewLayout")
-        hideAllView()
-        if (nestedScrollViewLayout?.visibility != View.VISIBLE) {
-          nestedScrollViewLayout?.visibility = View.VISIBLE
-        }
-      }
-    }, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
   }
 
   private fun hideAllView() {

@@ -11,13 +11,13 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-//import com.example.swordlibrary.webcontent.BaseWebChromeClient;
-import com.example.swordlibrary.webcontent.BaseWebClient;
-import com.example.swordlibrary.webcontent.JsBridge;
 import com.sword.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import sword.webcontent.BaseWebClient;
+import sword.webcontent.JsBridge;
 
 public class WebViewContainer extends ViewGroup {
   private boolean isAttachedToWindow = false;
@@ -61,7 +61,6 @@ public class WebViewContainer extends ViewGroup {
 
     webView.setWebViewClient(new BaseWebClient(progressBar));
     //webView.setWebChromeClient(new BaseWebChromeClient());
-    
   }
 
   @Override

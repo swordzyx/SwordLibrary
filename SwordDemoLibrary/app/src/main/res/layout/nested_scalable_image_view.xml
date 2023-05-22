@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.swordlibrary.view.nestedscroll.SwordNestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<sword.view.nestedscroll.SwordNestedScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/nested_scroll_view_1"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -14,7 +15,7 @@
             android:layout_height="800dp"
             android:background="@color/colorAccent" />
 
-        <com.example.swordlibrary.view.nestedscroll.NestedScrollScaleableImageView
+        <sword.view.nestedscroll.NestedScrollScaleableImageView
             android:layout_width="match_parent"
             android:layout_height="400dp" />
 
@@ -41,4 +42,4 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>-->
     </LinearLayout>
-</com.example.swordlibrary.view.nestedscroll.SwordNestedScrollView>
+</sword.view.nestedscroll.SwordNestedScrollView>
