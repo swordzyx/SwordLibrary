@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/popup_list_edit_only"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingRight="10dp"
-    android:drawableRight="@drawable/bg_sdk_shanchu"
-    style="@style/InputEditText"/>
