@@ -14,7 +14,7 @@ import com.example.swordlibrary.R;
 import com.sword.ScreenSize;
 
 
-public class ViewFactory {
+public class ViewFactoryJava {
 
     @SuppressLint("Range")
     public static int makeAtMostMeasureSpec() {
@@ -58,5 +58,7 @@ public class ViewFactory {
         textView.setTextSize(ScreenSize.dp(4));
         return textView;
     }
+    
+    
 }
 

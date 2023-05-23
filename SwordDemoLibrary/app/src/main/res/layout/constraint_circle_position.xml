@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--圆形定位示例布局，相关属性：layout_constraintCircleRadius（半径）、layout_constraintCircleAngle（角度）、layout_constraintCircle（圆心）-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sun"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/sun"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--  earth 位于 sun 正上方顺时针 45 度位置，距离 sun 中心 120dp  -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/earth"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/earth"
+        app:layout_constraintCircle="@id/sun"
+        app:layout_constraintCircleAngle="45"
+        app:layout_constraintCircleRadius="120dp"
+        tools:ignore="MissingConstraints" />
+
+    <!--  moon 位于 earth 正上方顺时针 45 度位置，距离 earth 中心 35dp  -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/moon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/moon"
+        app:layout_constraintCircle="@id/earth"
+        app:layout_constraintCircleAngle="270"
+        app:layout_constraintCircleRadius="35dp"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

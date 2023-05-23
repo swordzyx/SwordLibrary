@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.sword.initWindowSize
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import sword.view.*
+import sword.view.constraint.ConstraintLayoutSampleContainer
 
 class MainActivity : AppCompatActivity() {
   private val tag = "MainActivity"
@@ -50,6 +52,9 @@ class MainActivity : AppCompatActivity() {
 
     //自定义 View 触摸反馈：双向滑动的 ScalableImageView 
     addScaleableImageView()
+
+    //约束布局
+    addConstraintLayout()
   }
 
 
@@ -198,6 +203,19 @@ class MainActivity : AppCompatActivity() {
         .inflate(R.layout.nested_scalable_image_view, null) as NestedScrollView
       rootView.addView(
         createButtonToShowViewInContainer("NestedScrollViewLayout", nestedScrollViewLayout!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
+      )
+    }
+  }
+  
+  //约束布局示例
+  private var constraintLayoutContainer: ConstraintLayoutSampleContainer? = null
+  private fun addConstraintLayout() {
+    if (constraintLayoutContainer == null) {
+      constraintLayoutContainer = ConstraintLayoutSampleContainer(this)
+      rootView.addView(
+        createButtonToShowViewInContainer(
+          "约束布局相关示例", constraintLayoutContainer!!),
         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }

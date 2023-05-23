@@ -45,12 +45,12 @@ public class ErrorView extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         imageView.measure(
-                ViewFactory.makeExactlyMeasureSpec((int) ScreenSize.dp(15)),
-                ViewFactory.makeExactlyMeasureSpec((int) ScreenSize.dp(15))
+                ViewFactoryJava.makeExactlyMeasureSpec((int) ScreenSize.dp(15)),
+                ViewFactoryJava.makeExactlyMeasureSpec((int) ScreenSize.dp(15))
         );
         errorTextView.measure(
-                ViewFactory.makeAtMostMeasureSpec(),
-                ViewFactory.makeAtMostMeasureSpec()
+                ViewFactoryJava.makeAtMostMeasureSpec(),
+                ViewFactoryJava.makeAtMostMeasureSpec()
         );
 
         setMeasuredDimension(
