@@ -10,10 +10,10 @@
         android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="东风未肯入东门，走马还寻去岁村。人似秋鸿有来信，事如春梦了无痕。"
         android:layout_marginBottom="5dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:text="东风未肯入东门，走马还寻去岁村。人似秋鸿有来信，事如春梦了无痕。"
         app:layout_constrainedWidth="false"
         app:layout_constraintBottom_toTopOf="@id/text2"
         app:layout_constraintLeft_toLeftOf="@id/view"
@@ -25,15 +25,17 @@
         android:id="@+id/text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="东风未肯入东门，走马还寻去岁村。人似秋鸿有来信，事如春梦了无痕。"
         android:layout_marginBottom="5dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
+        android:text="东风未肯入东门，走马还寻去岁村。人似秋鸿有来信，事如春梦了无痕。"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toTopOf="@id/view"
         app:layout_constraintLeft_toLeftOf="@id/view"
         app:layout_constraintRight_toRightOf="@id/view"
         tools:ignore="HardcodedText" />
+    
+    
 
     <!--  view 居中于父容器  -->
     <View
@@ -46,6 +48,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- view1 位于其 left 约束 80% 的位置，其 top 约束 20% 的位置 -->
+    <View
+        android:id="@+id/view1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@color/common_accent_color"
+        app:layout_constraintLeft_toLeftOf="@id/view"
+        app:layout_constraintRight_toRightOf="@id/view"
+        app:layout_constraintTop_toTopOf="@id/view"
+        app:layout_constraintBottom_toBottomOf="@id/view" 
+        app:layout_constraintVertical_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.8"/>
+
     <!--  buton 居中于 view 底部  -->
     <Button
         android:id="@+id/button"
@@ -54,11 +69,11 @@
         android:background="@drawable/button_background_circle_corner"
         android:text="关注"
         android:textColor="@android:color/white"
+        app:layout_goneMarginStart="100dp"
         app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintEnd_toEndOf="@id/view"
         app:layout_constraintStart_toStartOf="@id/view"
         app:layout_constraintTop_toBottomOf="@+id/view" />
-
 
     <!--  文字基准线对齐  -->
     <androidx.appcompat.widget.AppCompatTextView
@@ -95,6 +110,7 @@
         android:textSize="80dp"
         app:layout_constraintLeft_toRightOf="@id/textview2"
         app:layout_constraintTop_toBottomOf="@id/button"
+        app:layout_goneMarginStart="20dp"
         tools:ignore="HardcodedText,SpUsage" />
     <!--  textview4 基准线对齐 textview3 基准线-->
     <TextView
