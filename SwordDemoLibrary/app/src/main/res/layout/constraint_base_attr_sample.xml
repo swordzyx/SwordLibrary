@@ -5,6 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="50dp"/>
+
+    <!--  百分比布局属性  -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@color/color_orange"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
+
     <!--  约束限制  -->
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/text1"
@@ -34,14 +50,13 @@
         app:layout_constraintLeft_toLeftOf="@id/view"
         app:layout_constraintRight_toRightOf="@id/view"
         tools:ignore="HardcodedText" />
-    
-    
+
 
     <!--  view 居中于父容器  -->
     <View
         android:id="@+id/view"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:background="@color/color_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,12 +69,12 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:background="@color/common_accent_color"
+        app:layout_constraintBottom_toBottomOf="@id/view"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintLeft_toLeftOf="@id/view"
         app:layout_constraintRight_toRightOf="@id/view"
         app:layout_constraintTop_toTopOf="@id/view"
-        app:layout_constraintBottom_toBottomOf="@id/view" 
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintHorizontal_bias="0.8"/>
+        app:layout_constraintVertical_bias="0.2" />
 
     <!--  buton 居中于 view 底部  -->
     <Button
@@ -69,11 +84,11 @@
         android:background="@drawable/button_background_circle_corner"
         android:text="关注"
         android:textColor="@android:color/white"
-        app:layout_goneMarginStart="100dp"
         app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintEnd_toEndOf="@id/view"
         app:layout_constraintStart_toStartOf="@id/view"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_goneMarginStart="100dp" />
 
     <!--  文字基准线对齐  -->
     <androidx.appcompat.widget.AppCompatTextView
