@@ -21,6 +21,7 @@ class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeS
   init {
     addView(container, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT))
     addBaseAttrSample()
+    addCircularRevealConstraintHelperSample()
   }
   
   @SuppressLint("InflateParams")
@@ -29,6 +30,17 @@ class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeS
     addView(
       createButtonToShowViewInContainer(
         "约束布局基础属性示例",
+        view,
+        container),
+      LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+    )
+  }
+
+  private fun addCircularRevealConstraintHelperSample() {
+    val view = LayoutInflater.from(context).inflate(R.layout.circular_reveal_constraint_helper, null)
+    addView(
+      createButtonToShowViewInContainer(
+        "ConstraintHelper 示例",
         view,
         container),
       LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
