@@ -6,7 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+    <sword.view.constraint.CircularRevealConstraintHelper
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="image, image2, image3, image4"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -14,7 +22,9 @@
         android:id="@+id/image"
         android:src="@mipmap/ic_launcher_round"
         tools:ignore="ContentDescription" />
-    <ImageView android:layout_width="80dp" android:layout_height="80dp"
+
+    <ImageView android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,6 +34,7 @@
         app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintVertical_bias="0.299"
         tools:ignore="ContentDescription" />
+
     <ImageView android:layout_width="80dp" android:layout_height="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +45,7 @@
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintVertical_bias="0.299"
         tools:ignore="ContentDescription"/>
+
     <ImageView android:layout_width="80dp" android:layout_height="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,10 +56,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintVertical_bias="0.3"
         tools:ignore="ContentDescription"/>
-    <sword.view.constraint.CircularRevealConstraintHelper
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="image, image2, image3, image4"
-        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
