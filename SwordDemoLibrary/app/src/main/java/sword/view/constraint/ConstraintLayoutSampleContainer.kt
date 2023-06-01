@@ -33,6 +33,7 @@ class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeS
         addCircularRevealConstraintHelperSample()
         addConstraintSetSample()
         addConstraintSetLinearSample()
+        addConstrintSetTransitionSample()
     }
 
     private var baseAttrLayout: ConstraintLayout? = null
@@ -168,24 +169,30 @@ class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeS
         if (constraintSetTransition == null) {
             constraintSetTransition = LayoutInflater.from(context)
                 .inflate(R.layout.constraint_transition_start, null) as ConstraintLayout
-            constraintSetTransition!!.setOnClickListener {
-                ConstraintSet().apply {
-                    isForceId = false
-                    if (startScene) {
-                        clone(context, R.layout.constraint_transition_end)
-                    } else {
-                        clone(context, R.layout.constraint_transition_start)
+            constraintSetTransition!!.setOnClickListener(object: OnClickListener {
+                override fun onClick(v: View?) {
+                    ConstraintSet().apply {
+                        isForceId = false
+                        startScene = if (startScene) {
+                            clone(context, R.layout.constraint_transition_end)
+                            false
+                        } else {
+                            clone(context, R.layout.constraint_transition_start)
+                            true
+                        }
+                        //当先显示的是 constraintSetTransition 布局，此接口以动画的形式在下一个渲染帧显示改变之后的 constraintSetTransition
+                        TransitionManager.beginDelayedTransition(constraintSetTransition)
+                        applyTo(constraintSetTransition)
                     }
-                    //当先显示的是 constraintSetTransition 布局，此接口以动画的形式在下一个渲染帧显示改变之后的 constraintSetTransition
-                    TransitionManager.beginDelayedTransition(constraintSetTransition)
-                    applyTo(constraintSetTransition)
                 }
-            }
-            addView(createButtonToShowViewInContainer(
+            })
+            addView(
+                createButtonToShowViewInContainer(
                 "ConstraintSet 示例三，ConstraintLayout 的场景过渡",
                 constraintSetTransition!!,
-                container
-            ))
+                container), 
+                LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
+            )
         }
         if (constraintSetTransition?.visibility != View.VISIBLE) {
             constraintSetTransition?.visibility = View.VISIBLE
