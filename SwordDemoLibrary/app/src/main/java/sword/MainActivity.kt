@@ -11,8 +11,10 @@ import android.widget.LinearLayout.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.children
+import androidx.core.view.forEach
 import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.R
+import com.sword.LogUtil
 import com.sword.dp
 import com.sword.initWindowSize
 import kotlinx.android.synthetic.main.activity_main.*
@@ -262,6 +264,12 @@ class MainActivity : AppCompatActivity() {
   }
 
   override fun onBackPressed() {
+    container?.children?.forEach { child ->
+      if (child is INavigationLayout && child.onBackPressed()) {
+        return
+      }
+    }
+    
     if (container?.visibility != View.GONE) {
       container?.visibility = View.GONE
     } else {
@@ -272,6 +280,7 @@ class MainActivity : AppCompatActivity() {
   private val defaultMargin = dp(2)
   private fun LayoutParams.setVerticalMargin(margin: Int = defaultMargin): LayoutParams{
     setMargins(0, margin, 0, margin)
+    LogUtil.debug(tag, "defaultMargin: $defaultMargin")
     return this
   }
 }

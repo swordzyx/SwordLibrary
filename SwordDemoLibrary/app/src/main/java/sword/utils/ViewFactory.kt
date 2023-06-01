@@ -29,14 +29,15 @@ fun createButtonToShowViewInContainer(
     setTextColor(Color.WHITE)
     setOnClickListener {
       container.visibility = View.VISIBLE
-      container.addView(
-        showView,
-        LinearLayout.LayoutParams(
-          LinearLayout.LayoutParams.MATCH_PARENT,
-          LinearLayout.LayoutParams.MATCH_PARENT
+      if(!container.children.contains(showView)) {
+        container.addView(
+          showView,
+          LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+          )
         )
-      )
-
+      }
       container.hideChildren()
       if (showView.visibility != View.VISIBLE) {
         showView.visibility = View.VISIBLE
