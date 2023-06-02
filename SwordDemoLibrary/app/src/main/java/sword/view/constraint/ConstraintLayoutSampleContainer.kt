@@ -15,20 +15,11 @@ import com.sword.LogUtil
 import com.sword.dp
 import sword.utils.createButtonToShowViewInContainer
 import sword.view.INavigationLayout
+import sword.view.VerticalLinearContainer
 
 class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeSet? = null) :
-    LinearLayout(context, attributeSet), INavigationLayout {
-    private val tag = "ConstraintLayoutSampleContainer"
-    private val container = FrameLayout(context).apply {
-        visibility = View.GONE
-    }
-
-    //需要放在初始化代码块之前，否则 init 代码块中使用这个变量时，变量还未初始化，得到的值是 0
-    private val defaultMargin = dp(2)
-
+    VerticalLinearContainer(context, attributeSet) {
     init {
-        orientation = VERTICAL
-        addView(container, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         addBaseAttrSample()
         addCircularRevealConstraintHelperSample()
         addConstraintSetSample()
@@ -197,18 +188,5 @@ class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeS
         if (constraintSetTransition?.visibility != View.VISIBLE) {
             constraintSetTransition?.visibility = View.VISIBLE
         }
-    }
-
-    override fun onBackPressed(): Boolean {
-        LogUtil.debug(tag, "onBackPressed")
-        if (container.visibility != View.GONE) {
-            container.visibility = View.GONE
-        }
-        return true
-    }
-
-    private fun LayoutParams.setVerticalMargin(verticalMargin: Int = defaultMargin): LayoutParams {
-        setMargins(0, verticalMargin, 0, verticalMargin)
-        return this
     }
 }

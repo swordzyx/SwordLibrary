@@ -8,15 +8,23 @@ import kotlinx.coroutines.runBlocking
 import java.util.concurrent.Executors
 
 
+class ClassSample {
+  
+}
+
 fun main() = main4()
 
 
 fun main4() {
-  print(String.format(
+  /*print(String.format(
     "%s, %,.1f msec elpased",
     "122456121",
     16.891
-  ))
+  ))*/
+  
+  val classSample = ClassSample()
+  print("canonicalName: ${classSample.javaClass.canonicalName}, simpleName: ${classSample.javaClass.simpleName}" +
+      ", name: ${classSample.javaClass.name}, String ClassName: ${"".javaClass.name}")
 }
 
 /**

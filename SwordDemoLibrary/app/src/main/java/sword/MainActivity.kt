@@ -19,6 +19,7 @@ import com.sword.dp
 import com.sword.initWindowSize
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import sword.motionlayout.MotionLayoutContainer
 import sword.view.*
 import sword.view.constraint.ConstraintLayoutSampleContainer
 
@@ -57,6 +58,9 @@ class MainActivity : AppCompatActivity() {
 
     //约束布局
     addConstraintLayout()
+    
+    //MotionLayout 示例
+    addMotionLayoutContainer()
   }
 
 
@@ -218,6 +222,20 @@ class MainActivity : AppCompatActivity() {
       rootView.addView(
         createButtonToShowViewInContainer(
           "约束布局相关示例", constraintLayoutContainer!!),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
+      )
+    }
+  }
+
+
+  //MotionLayout 示例
+  private var motionLayoutContainer: MotionLayoutContainer? = null
+  private fun addMotionLayoutContainer() {
+    if (motionLayoutContainer == null) {
+      motionLayoutContainer = MotionLayoutContainer(this)
+      rootView.addView(
+        createButtonToShowViewInContainer(
+          "MotionLayout 相关示例", motionLayoutContainer!!),
         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
     }
