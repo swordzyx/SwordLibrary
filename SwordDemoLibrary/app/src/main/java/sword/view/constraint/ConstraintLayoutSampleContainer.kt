@@ -6,15 +6,11 @@ import android.transition.TransitionManager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.example.swordlibrary.R
 import com.sword.LogUtil
-import com.sword.dp
 import sword.utils.createButtonToShowViewInContainer
-import sword.view.INavigationLayout
 import sword.view.VerticalLinearContainer
 
 class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeSet? = null) :
