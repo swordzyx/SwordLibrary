@@ -14,13 +14,15 @@ import sword.view.VerticalLinearContainer
 class MotionLayoutContainer(context: Context, attrs: AttributeSet? = null) :
   VerticalLinearContainer(context, attrs) {
 
-  private var hencoderMotionLayout: MotionLayout? = null
+  
   private var showDebug = false
   
   init {
     addHenCoderMotionSampleButton()
+    addYouTubeMotionSampleButton()
   }
 
+  private var hencoderMotionLayout: MotionLayout? = null
   @SuppressLint("InflateParams")
   private fun addHenCoderMotionSampleButton() {
     if (hencoderMotionLayout == null) {
@@ -39,6 +41,24 @@ class MotionLayoutContainer(context: Context, attrs: AttributeSet? = null) :
         createButtonToShowViewInContainer(
           "MotionLayout Sample 1",
           hencoderMotionLayout!!, 
+          container),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
+      )
+    }
+
+  }
+
+  private var youtubeMotionLayout: MotionLayout? = null
+  @SuppressLint("InflateParams")
+  private fun addYouTubeMotionSampleButton() {
+    if (youtubeMotionLayout == null) {
+      youtubeMotionLayout =
+        LayoutInflater.from(context).inflate(R.layout.motion_layout_youtube, null) as MotionLayout
+      youtubeMotionLayout!!.setDebugMode(MotionLayout.DEBUG_SHOW_PATH)
+      addView(
+        createButtonToShowViewInContainer(
+          "MotionLayout Youtube",
+          youtubeMotionLayout!!,
           container),
         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
