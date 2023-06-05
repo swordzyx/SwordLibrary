@@ -14,4 +14,6 @@
     <color name="common_button_pressed_color">#AA5A8DDF</color>
     <!-- 按钮禁用时的颜色 -->
     <color name="common_button_disable_color">#BBBBBB</color>
+    
+    <color name="color_red_1">#D81B60</color>
 </resources>

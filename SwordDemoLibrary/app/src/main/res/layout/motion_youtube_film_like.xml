@@ -4,15 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/header_container"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:constraint_referenced_ids="film_image, film_title, film_rating"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/file_image"
+        android:id="@+id/film_image"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:scaleType="fitStart"
         android:src="@drawable/film_cover"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="@id/header_container"
+        app:layout_constraintTop_toTopOf="@id/header_container" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/film_title"
@@ -23,8 +32,8 @@
         android:text="@string/film_title"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintLeft_toRightOf="@id/file_image"
-        app:layout_constraintTop_toTopOf="@id/file_image" />
+        app:layout_constraintLeft_toRightOf="@id/film_image"
+        app:layout_constraintTop_toTopOf="@id/film_image" />
 
     <RatingBar
         android:id="@+id/film_rating"
@@ -38,13 +47,38 @@
         app:layout_constraintLeft_toLeftOf="@id/film_title"
         app:layout_constraintTop_toBottomOf="@id/film_title" />
 
-    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_favourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_bookmark_24dp"
-        android:tint="@color/color_orange"
+        android:tint="@android:color/white"
+        android:backgroundTint="@color/color_red_1"
+        app:fabSize="mini"
+        app:layout_constraintLeft_toLeftOf="@id/header_container"
+        app:layout_constraintRight_toRightOf="@id/header_container"
+        app:layout_constraintTop_toBottomOf="@id/header_container"
+        app:layout_constraintBottom_toBottomOf="@id/header_container"/>
+    
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/film_desc_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/file_description_title"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:padding="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>-->
+        app:layout_constraintTop_toBottomOf="@id/header_container"/>
+    
+    <TextView
+        android:id="@+id/film_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/film_description"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/film_desc_title"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
