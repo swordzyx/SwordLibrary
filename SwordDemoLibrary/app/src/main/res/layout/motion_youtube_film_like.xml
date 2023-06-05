@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:motionDebug="SHOW_PATH"
+    app:layoutDescription="@xml/motion_layout_youtube_film_like">
 
-    <androidx.constraintlayout.helper.widget.Flow
+    <View
         android:id="@+id/header_container"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        app:constraint_referenced_ids="film_image, film_title, film_rating"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/film_image"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:scaleType="fitStart"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:src="@drawable/film_cover"
         android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="@id/header_container"
-        app:layout_constraintTop_toTopOf="@id/header_container" />
+        app:layout_constraintTop_toTopOf="@id/header_container"
+        app:layout_constraintBottom_toBottomOf="@id/header_container"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/film_title"
@@ -32,8 +38,8 @@
         android:text="@string/film_title"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintLeft_toRightOf="@id/film_image"
-        app:layout_constraintTop_toTopOf="@id/film_image" />
+        app:layout_constraintStart_toEndOf="@id/film_image"
+        app:layout_constraintTop_toTopOf="@id/film_image"/>
 
     <RatingBar
         android:id="@+id/film_rating"
@@ -55,10 +61,7 @@
         android:tint="@android:color/white"
         android:backgroundTint="@color/color_red_1"
         app:fabSize="mini"
-        app:layout_constraintLeft_toLeftOf="@id/header_container"
-        app:layout_constraintRight_toRightOf="@id/header_container"
-        app:layout_constraintTop_toBottomOf="@id/header_container"
-        app:layout_constraintBottom_toBottomOf="@id/header_container"/>
+        tools:ignore="ContentDescription" />
     
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/film_desc_title"
@@ -81,4 +84,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/film_desc_title"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>

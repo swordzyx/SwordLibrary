@@ -20,6 +20,7 @@ class MotionLayoutContainer(context: Context, attrs: AttributeSet? = null) :
   init {
     addHenCoderMotionSampleButton()
     addYouTubeMotionSampleButton()
+    addYouTubeFilmLikeMotionSampleButton()
   }
 
   private var hencoderMotionLayout: MotionLayout? = null
@@ -59,6 +60,25 @@ class MotionLayoutContainer(context: Context, attrs: AttributeSet? = null) :
         createButtonToShowViewInContainer(
           "MotionLayout Youtube",
           youtubeMotionLayout!!,
+          container),
+        LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
+      )
+    }
+
+  }
+
+
+  private var youtubeFilmLikeMotionLayout: MotionLayout? = null
+  @SuppressLint("InflateParams")
+  private fun addYouTubeFilmLikeMotionSampleButton() {
+    if (youtubeFilmLikeMotionLayout == null) {
+      youtubeFilmLikeMotionLayout =
+        LayoutInflater.from(context).inflate(R.layout.motion_youtube_film_like, null) as MotionLayout
+      youtubeFilmLikeMotionLayout!!.setDebugMode(MotionLayout.DEBUG_SHOW_PATH)
+      addView(
+        createButtonToShowViewInContainer(
+          "MotionLayout Youtube",
+          youtubeFilmLikeMotionLayout!!,
           container),
         LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).setVerticalMargin()
       )
