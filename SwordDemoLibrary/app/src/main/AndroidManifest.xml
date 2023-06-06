@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="sword.camera.GalleryActivity" />
+        <activity android:name="sword.data.photopicker.GalleryActivity" />
     </application>
 
 </manifest>

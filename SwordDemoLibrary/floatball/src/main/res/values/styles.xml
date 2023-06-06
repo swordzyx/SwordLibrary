@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="dialog_anim_default" parent="android:Animation">
-        <item name="android:windowEnterAnimation"></item>
-        <item name="android:windowExitAnimation"></item>
-    </style>
-</resources>

@@ -14,6 +14,12 @@
     <color name="common_button_pressed_color">#AA5A8DDF</color>
     <!-- 按钮禁用时的颜色 -->
     <color name="common_button_disable_color">#BBBBBB</color>
-    
+
     <color name="color_red_1">#D81B60</color>
+
+
+    <!--  zxing 二维码扫描相关配置  -->
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <color name="possible_result_points">#c0ffbd21</color>
 </resources>
