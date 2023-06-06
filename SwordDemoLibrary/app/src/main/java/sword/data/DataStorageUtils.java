@@ -1,4 +1,4 @@
-package com.sword;
+package sword.data;
 
 import android.content.Context;
 import android.os.Environment;
