@@ -33,8 +33,12 @@ class MainActivity : AppCompatActivity() {
     initWindowSize(this)
 
     setContentView(R.layout.activity_main)
+    
+  }
+  
+  private fun initView() {
     container = findViewById(R.id.contentView)
-
+    
     //自定义 View 触摸反馈：多点触控的原理和写法全解析练习代码
     addMultiTouchView1()
     addMultiTouchView2()
@@ -58,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     //约束布局
     addConstraintLayout()
-    
+
     //MotionLayout 示例
     addMotionLayoutContainer()
   }

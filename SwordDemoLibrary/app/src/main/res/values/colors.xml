@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="theme1_color_light">#FEFEFE</color>
+    <color name="theme1_title_color">#2D2D2D</color>
 
     <color name="login_dialog_phone_hint">#D6D6D6</color>
     <color name="color_orange">#F27920</color>

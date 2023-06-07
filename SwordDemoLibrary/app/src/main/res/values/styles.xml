@@ -14,7 +14,7 @@
 
 
     <!-- Base application theme.   <item name="actionBarStyle">@style/ActionBar.Transparent.Start</item> -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
