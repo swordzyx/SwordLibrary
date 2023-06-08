@@ -12,11 +12,11 @@ import android.webkit.WebViewClient
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import sword.thread.ThreadExecutorJava
 import com.example.swordlibrary.webcontent.defaultSetting
 import com.google.gson.Gson
 import com.sword.LogUtil
 import org.json.JSONException
+import sword.thread.ThreadExecutor
 
 @SuppressLint("JavascriptInterface")
 open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context, attrs), LifecycleEventObserver {
@@ -185,7 +185,7 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
       }
     }
     Runnable {
-      ThreadExecutorJava.execute(runnable)
+      ThreadExecutor.getThreadExecutor().execute(runnable)
     }
   }
     

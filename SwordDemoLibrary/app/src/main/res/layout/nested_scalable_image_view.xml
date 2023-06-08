@@ -13,7 +13,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="800dp"
-            android:background="@color/colorAccent" />
+            android:background="@color/common_accent_color" />
 
         <sword.view.nestedscroll.NestedScrollScaleableImageView
             android:layout_width="match_parent"

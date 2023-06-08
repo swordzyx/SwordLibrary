@@ -12,7 +12,7 @@
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorAccent"
+        android:background="@color/common_accent_color"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -22,7 +22,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/common_accent_color"
         tools:ignore="MissingConstraints" />
 
 
@@ -31,7 +31,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/common_accent_color"
         tools:ignore="MissingConstraints" />
 
 
@@ -40,7 +40,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorAccent"
+        android:background="@color/common_accent_color"
         tools:ignore="MissingConstraints" />
 
     <sword.view.constraint.ConstraintHelperLinear

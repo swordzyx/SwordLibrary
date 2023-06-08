@@ -90,7 +90,7 @@
             
             <CustomAttribute
                 app:attributeName="textColor"
-                app:customColorValue="@color/colorAccent"/>
+                app:customColorValue="@color/common_accent_color"/>
         </Constraint>
         
         <Constraint

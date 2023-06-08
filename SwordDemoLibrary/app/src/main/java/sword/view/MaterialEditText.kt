@@ -18,7 +18,7 @@ class MaterialEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
     private val tag = "MaterialEditText"
 
     private val labelMarginBottom = dp2px(10f)
-    private val labelTextColor = sword.utils.Theme.getColor(context, R.color.colorAccent)
+    private val labelTextColor = sword.utils.Theme.getColor(context, R.color.common_accent_color)
     private val labelTextSize = dp2px(10f)
     private val labelAnimateOffset = dp2px(20f)
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {

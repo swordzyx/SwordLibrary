@@ -29,6 +29,12 @@ android {
 			includeAndroidResources = true
 		}
 	}
+	
+	sourceSets {
+		main {
+			
+		}
+	}
 }
 
 dependencies {

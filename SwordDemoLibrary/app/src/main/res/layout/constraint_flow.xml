@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/colorAccent"
+        android:background="@color/common_accent_color"
         android:orientation="horizontal"
         app:flow_verticalBias="0.1"
         app:flow_firstHorizontalStyle="packed"
@@ -29,37 +29,37 @@
         android:id="@+id/view1"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/common_accent_color" />
 
     <View
         android:id="@+id/view2"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/common_button_disable_color" />
 
     <View
         android:id="@+id/view3"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="8dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/common_accent_color" />
 
     <View
         android:id="@+id/view4"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/common_accent_color" />
 
     <View
         android:id="@+id/view5"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/common_accent_color" />
 
     <View
         android:id="@+id/view6"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@color/common_accent_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

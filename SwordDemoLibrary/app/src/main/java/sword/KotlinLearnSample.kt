@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
+import sword.thread.ThreadSample
 import java.util.concurrent.Executors
 
 
@@ -22,9 +23,11 @@ fun main4() {
     16.891
   ))*/
   
-  val classSample = ClassSample()
+  /*val classSample = ClassSample()
   print("canonicalName: ${classSample.javaClass.canonicalName}, simpleName: ${classSample.javaClass.simpleName}" +
-      ", name: ${classSample.javaClass.name}, String ClassName: ${"".javaClass.name}")
+      ", name: ${classSample.javaClass.name}, String ClassName: ${"".javaClass.name}")*/
+  
+  ThreadSample.threadFactory()
 }
 
 /**
