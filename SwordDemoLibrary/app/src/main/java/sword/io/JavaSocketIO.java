@@ -19,7 +19,8 @@ import java.nio.charset.Charset;
 
 public class JavaSocketIO {
   public static void main(String[] args) {
-    
+    JavaSocketIO javaSocketIO = new JavaSocketIO();
+    javaSocketIO.startSocketServerNIO(80);
   }
 
   /**
@@ -49,8 +50,8 @@ public class JavaSocketIO {
         //非阻塞
         serverSocketChannel.configureBlocking(false);
         Selector selector = Selector.open();
-        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
-        
+        SelectionKey acceptKey = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+        System.out.println("acceptKey" + acceptKey);
         while (true) {
           selector.select();
           for (SelectionKey key : selector.keys()) {
