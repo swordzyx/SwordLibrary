@@ -75,6 +75,14 @@ object OkioIO {
         LogUtil.debug(tag, "读取 $path 耗时 ${System.currentTimeMillis() - startTime}ms")
     }
 
+    fun readFileUseBuffer(path: String) {
+        File(path).source().let { source ->
+            val buffer = Buffer()
+            source.read(buffer, 1024)
+            println(buffer.readUtf8Line())
+        }
+    }
+
     interface LineCollector {
         fun readLine(line: String)
     }

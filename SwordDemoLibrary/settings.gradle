@@ -4,3 +4,5 @@ include ":codelibrary"
 include ":compose"
 include ':leetcode'
 include ':datastruct'
+
+println "Hello setting.gradle"
