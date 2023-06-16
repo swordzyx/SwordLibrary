@@ -1,9 +1,9 @@
 package com.sword.plugin
 
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
+import org.gradle.api.Plugin
+import org.gradle.api.Project
 
-public class SwordPlugin implements Plugin<Project> {
+class SwordPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         //其实就相当与创建一个 SwordExtension 类的实例
@@ -12,5 +12,10 @@ public class SwordPlugin implements Plugin<Project> {
         project.afterEvaluate {
             println "apply ${extension.name}"
         }
+
+        def transform = SwordTransform()
+        def baseExtension = project.extensions.getByType(BaseExtension)
+        baseExtension.registerTransform(transform)
+
     }
 }
