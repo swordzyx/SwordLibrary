@@ -17,6 +17,5 @@ class SwordPlugin implements Plugin<Project> {
         def transform = new SwordTransform()
         def baseExtension = project.extensions.getByType(BaseExtension)
         baseExtension.registerTransform(transform)
-
     }
 }

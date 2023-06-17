@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.widget.Button
 import androidx.constraintlayout.motion.widget.MotionLayout
 import com.example.swordlibrary.R
-import kotlinx.android.synthetic.main.motion_layout_hen_coder.view.*
 import sword.utils.createButtonToShowViewInContainer
 import sword.view.VerticalLinearContainer
 

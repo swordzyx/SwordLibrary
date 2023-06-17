@@ -1,16 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'com.plugin.sword'
+apply plugin: 'com.plugin.sword'
 
 
 android {
 	compileSdkVersion 33 //compileSdkVersion 被丢弃
-	buildToolsVersion "31.0.0"  //buildToolsVersion 函数被丢弃
+	buildToolsVersion "30.0.2"  //buildToolsVersion 函数被丢弃
 	defaultConfig {
 		applicationId "com.example.swordlibrary"
 		minSdk 22 //minSdkVersion 被丢弃
-		targetSdkVersion 31 //targetSdkVersion 被丢弃
+		targetSdkVersion 30 //targetSdkVersion 被丢弃
 		versionCode 1
 		versionName "1.0"
 

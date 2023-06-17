@@ -34,13 +34,13 @@ class SwordTransform extends Transform {
         transformInvocation.inputs.forEach { input ->
             input.jarInputs.forEach { jarInput ->
                 def targetFile = transformInvocation.outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
-                println "源文件：${jarInput.file.absolutePath}, 目标文件：${targetFile.absolutePath}"
+                println "Jar: ${jarInput.file.absolutePath}, Target: ${targetFile.absolutePath}"
                 FileUtils.copyFile(jarInput.file, targetFile)
             }
             input.directoryInputs.forEach { dirInput ->
                 def targetFile = transformInvocation.outputProvider.getContentLocation(dirInput.name, dirInput.contentTypes, dirInput.scopes,
                         Format.DIRECTORY)
-                println "源文件：${dirInput.file.absolutePath}, 目标文件：${targetFile.absolutePath}"
+                println "Dir: ${dirInput.file.absolutePath}, Target: ${targetFile.absolutePath}"
                 FileUtils.copyDirectory(dirInput.file, targetFile)
             }
         }
