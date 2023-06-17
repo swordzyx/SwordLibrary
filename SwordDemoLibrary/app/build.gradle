@@ -5,112 +5,111 @@ apply plugin: 'com.plugin.sword'
 
 
 android {
-    compileSdkVersion 33 //compileSdkVersion 被丢弃
-    buildToolsVersion "31.0.0"  //buildToolsVersion 函数被丢弃
-    defaultConfig {
-        applicationId "com.example.swordlibrary"
-        minSdk 22 //minSdkVersion 被丢弃
-        targetSdkVersion 31 //targetSdkVersion 被丢弃
-        versionCode 1
-        versionName "1.0"
+	compileSdkVersion 33 //compileSdkVersion 被丢弃
+	buildToolsVersion "31.0.0"  //buildToolsVersion 函数被丢弃
+	defaultConfig {
+		applicationId "com.example.swordlibrary"
+		minSdk 22 //minSdkVersion 被丢弃
+		targetSdkVersion 31 //targetSdkVersion 被丢弃
+		versionCode 1
+		versionName "1.0"
 
-        multiDexEnabled true
+		multiDexEnabled true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+	}
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
-    sourceSets {
-        main {
-
-        }
-    }
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+	}
+	
+	testOptions {
+		unitTests {
+			includeAndroidResources = true
+		}
+	}
+	
+	sourceSets {
+		main {
+			
+		}
+	}
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    //kotlin
+	//kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.20"
-    //协程相关依赖
-    //implementation "org.jetbrains.kotlinx:kotlinx:kotlinx-coroutines-core:1.6.0"
+	//协程相关依赖
+	//implementation "org.jetbrains.kotlinx:kotlinx:kotlinx-coroutines-core:1.6.0"
     implementation 'androidx.core:core-ktx:1.9.0' //compileSdkVersion 至少为 33
-
+	
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    //约束布局相关依赖
+	//约束布局相关依赖
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation "androidx.activity:activity-ktx:1.7.2"
+	implementation "androidx.activity:activity-ktx:1.7.2"
 
-    //implementation "androidx.window:window-java:1.0.0"
+	//implementation "androidx.window:window-java:1.0.0"
 
     implementation project(":codelibrary")
     //log4j
     // https://mvnrepository.com/artifact/log4j/log4j
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
 
-    //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    //Converter 依赖，用于将响应转成
-    implementation "com.squareup.retrofit2:converter-gson"
+	//retrofit
+	implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+	//Converter 依赖，用于将响应转成 
+	implementation "com.squareup.retrofit2:converter-gson"
+	
+	implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+	implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
+	implementation 'io.reactivex.rxjava3:rxjava:3.0.13'
+	implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+	implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8'
+	implementation 'com.google.android.material:material:1.4.0'
+	
+	//Glide 库依赖，用于图片加载
+	implementation 'com.github.bumptech.glide:glide:4.14.2'
+	annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
-    implementation 'io.reactivex.rxjava3:rxjava:3.0.13'
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0-RC8'
-    implementation 'com.google.android.material:material:1.4.0'
+	//LeakCanary：内存泄漏检测库
+	debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+	//debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+	
+	//lifecycle-livedata
+	implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.1'
+	implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
 
-    //Glide 库依赖，用于图片加载
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+	//zxing library：zxing 二维码扫描相关依赖
+	implementation 'com.google.zxing:core:3.5.1'
+	implementation 'com.google.zxing:android-core:3.3.0'
+	
+	//compileOnly "com.android.tools.build:gradle:7.0.4"
 
-    //LeakCanary：内存泄漏检测库
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-    //debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
-
-    //lifecycle-livedata
-    implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.1'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-
-    //zxing library：zxing 二维码扫描相关依赖
-    implementation 'com.google.zxing:core:3.5.1'
-    implementation 'com.google.zxing:android-core:3.3.0'
-
-
+	
     testImplementation 'junit:junit:4.13.2'
-    //Robolectric 依赖，用于测试
-    testImplementation 'org.robolectric:robolectric:4.9'
-
+	//Robolectric 依赖，用于测试
+	testImplementation 'org.robolectric:robolectric:4.9'
+	
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    //Android 设备上自动执行测试所需要的依赖库
-    androidTestImplementation 'androidx.test:runner:1.5.2'
-    //Espresso Intent 相关，用于在测试时启动 Activity
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
-    //UI Automator 测试库，用于大型测试
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0-alpha02'
+	//Android 设备上自动执行测试所需要的依赖库
+	androidTestImplementation 'androidx.test:runner:1.5.2'
+	//Espresso Intent 相关，用于在测试时启动 Activity
+	androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+	//UI Automator 测试库，用于大型测试
+	androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0-alpha02'
 
 }
 
 afterEvaluate {
-    def packageTask = this.tasks.findByName("packageRelease")
-
-    this.tasks.all {
-        println "${getName()}"
-    }
+	def packageTask = this.tasks.findByName("packageRelease")
+	this.tasks.all {
+		println "${getName()}"
+	}
 }
-
-apply plugin: 'com.plugin.sword'
 

@@ -93,3 +93,7 @@ dependencies {
     //noinspection GradleDependency
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 }
+
+afterEvaluate {
+    println "after compose config"
+}
