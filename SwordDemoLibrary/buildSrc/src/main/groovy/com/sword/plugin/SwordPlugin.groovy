@@ -1,5 +1,6 @@
 package com.sword.plugin
 
+import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -13,7 +14,7 @@ class SwordPlugin implements Plugin<Project> {
             println "apply ${extension.name}"
         }
 
-        def transform = SwordTransform()
+        def transform = new SwordTransform()
         def baseExtension = project.extensions.getByType(BaseExtension)
         baseExtension.registerTransform(transform)
 

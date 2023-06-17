@@ -1,4 +1,4 @@
-package com.sword.plugin;
+package com.sword.plugin
 
 class SwordExtension {
     def name = "sword_extension"

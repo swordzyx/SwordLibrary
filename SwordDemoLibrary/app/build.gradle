@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.plugin.sword'
+//apply plugin: 'com.plugin.sword'
 
 
 android {
@@ -112,4 +112,3 @@ afterEvaluate {
 		println "${getName()}"
 	}
 }
-
