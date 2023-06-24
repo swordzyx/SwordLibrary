@@ -11,7 +11,7 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 class SwordTransform extends Transform {
     @Override
     String getName() {
-        return "sword"
+        return "Sowrd"
     }
 
     @Override
@@ -31,6 +31,7 @@ class SwordTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        println "Sword Transform call transform 1"
         transformInvocation.inputs.forEach { input ->
             input.jarInputs.forEach { jarInput ->
                 def targetFile = transformInvocation.outputProvider.getContentLocation(jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR)
