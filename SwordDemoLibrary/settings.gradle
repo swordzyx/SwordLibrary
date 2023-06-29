@@ -6,3 +6,6 @@ include ':leetcode'
 include ':datastruct'
 
 println "Hello setting.gradle"
+include ':processor'
+include ':lib_processor'
+include ':lib_annotation'
