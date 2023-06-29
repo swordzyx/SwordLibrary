@@ -41,6 +41,8 @@
             </intent-filter>
         </activity>
         <activity android:name="sword.data.photopicker.GalleryActivity" />
+
+        <activity android:name="sword.annotation.AnnotationActivity"/>
     </application>
 
 </manifest>

@@ -88,6 +88,10 @@ dependencies {
 	implementation 'com.google.zxing:android-core:3.3.0'
 	
 	//compileOnly "com.android.tools.build:gradle:7.0.4"
+	//自定义 BufferKnife 库
+	implementation project(":lib_annotation")
+	implementation project(":lib_processor")
+	annotationProcessor project(":processor")
 
 	
     testImplementation 'junit:junit:4.13.2'
