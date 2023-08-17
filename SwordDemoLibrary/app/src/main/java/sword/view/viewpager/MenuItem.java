@@ -1,4 +1,4 @@
-package sword.viewpager;
+package sword.view.viewpager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

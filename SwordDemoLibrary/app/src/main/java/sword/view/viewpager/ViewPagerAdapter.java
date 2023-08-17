@@ -1,4 +1,4 @@
-package sword.viewpager;
+package sword.view.viewpager;
 
 import android.view.View;
 import android.view.ViewGroup;

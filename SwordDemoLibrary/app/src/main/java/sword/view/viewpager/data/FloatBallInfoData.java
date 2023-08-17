@@ -1,4 +1,4 @@
-package sword.viewpager.data;
+package sword.view.viewpager.data;
 
 import org.json.JSONObject;
 

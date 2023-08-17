@@ -1,11 +1,10 @@
-package sword.viewpager
+package sword.view.viewpager
 
 import android.content.Context
 import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.viewpager.widget.ViewPager
-import sword.utils.SwordDialog
 import com.sword.dp
 import com.sword.windowHeight
 import com.sword.windowWidth
@@ -26,7 +25,7 @@ class ViewPagerFragment(val context: Context) {
       orientation = LinearLayout.HORIZONTAL
     }
     
-    val tabLayout = sword.viewpager.TabLayout(context).apply {
+    val tabLayout = TabLayout(context).apply {
       setBackgroundColor(Color.parseColor("#2B2B2B"))
       orientation = LinearLayout.VERTICAL
       currentClickIndex(0)
@@ -36,7 +35,7 @@ class ViewPagerFragment(val context: Context) {
     val viewPager = ViewPager(context).apply {
       setBackgroundColor(Color.WHITE)
       currentItem = 0
-      adapter = sword.viewpager.ViewPagerAdapter()
+      adapter = ViewPagerAdapter()
     }
     val lp = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT).apply {
       weight = 1f
