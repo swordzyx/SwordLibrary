@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.collect
 
 private const val tag = "ScreenSizeUtil"
 
-private val windowSize: Point = getWindowSizeExcludeSystem(SwordApplication.getGlobalContext()) 
+private val windowSize: Point = getWindowSizeExcludeSystem(sword.SwordApplication.getGlobalContext()) 
 
 val windowWidth: Int
   get() = windowSize.x
