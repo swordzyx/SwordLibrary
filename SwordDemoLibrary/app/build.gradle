@@ -36,7 +36,6 @@ android {
 			
 		}
 	}
-	namespace 'com.example.swordlibrary'
 }
 
 dependencies {
@@ -77,7 +76,7 @@ dependencies {
 	annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 
 	//LeakCanary：内存泄漏检测库
-	debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+	debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
 	//debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
 	
 	//lifecycle-livedata
