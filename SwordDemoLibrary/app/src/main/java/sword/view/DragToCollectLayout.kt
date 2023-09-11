@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
-import com.sword.LogUtil
+import sword.SwordLog
 
 class DragToCollectLayout(context: Context, attrs: AttributeSet? = null): ConstraintLayout(context, attrs) {
     private val tag = "DragToCollectLayout"
@@ -38,12 +38,12 @@ class DragToCollectLayout(context: Context, attrs: AttributeSet? = null): Constr
         when(event.action) {
             DragEvent.ACTION_DROP -> {
                 val clipdata = event.clipData
-                LogUtil.debug(tag, "拖拽内容：$clipdata")
+                SwordLog.debug(tag, "拖拽内容：$clipdata")
 
                 for (i in 0 until clipdata.itemCount) {
                     val description = clipdata.description.getMimeType(i)
                     val item = clipdata.getItemAt(i)
-                    LogUtil.debug(tag, "clipData $i, mime type: $description, data: ${item.text}")
+                    SwordLog.debug(tag, "clipData $i, mime type: $description, data: ${item.text}")
 
                     val textView = TextView(context)
                     textView.text = item.text

@@ -8,7 +8,7 @@ import android.view.DragEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
-import com.sword.LogUtil
+import sword.SwordLog
 
 class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
   ViewGroup(context, attrs) {
@@ -22,7 +22,7 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
     when (event.action) {
       DragEvent.ACTION_DRAG_STARTED -> {
         //某个 View 开始被拖拽
-        LogUtil.debug(
+        SwordLog.debug(
           tag, "view#${views.indexOf(v)} 开始被拖拽，" +
               "localState：${views.indexOf((event.localState as View))}，" +
               "v==localState: ${v == event.localState}"
@@ -32,7 +32,7 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
         }
       }
       DragEvent.ACTION_DRAG_ENTERED -> {
-        LogUtil.debug(
+        SwordLog.debug(
           tag, "进入 view#${views.indexOf(v)}，" +
               "localState：${views.indexOf((event.localState as View))}，" +
               "v==localState: ${v == event.localState}" +
@@ -45,7 +45,7 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
 
         val originIndex = views.indexOf(event.localState as View)
         val aimIndex = views.indexOf(v)
-        LogUtil.debug(tag, "被拖拽的 View 索引：$originIndex, 目标 View 索引：$aimIndex")
+        SwordLog.debug(tag, "被拖拽的 View 索引：$originIndex, 目标 View 索引：$aimIndex")
         /*if (aimIndex > originIndex) {
           for (i in originIndex until aimIndex) {
             views[i] = views[i + 1]
@@ -61,10 +61,10 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
 
         val columnWidth = width / column
         val rowHeight = height / row
-        LogUtil.debug(tag, "列宽：$columnWidth，行高：${rowHeight}")
+        SwordLog.debug(tag, "列宽：$columnWidth，行高：${rowHeight}")
         views.forEachIndexed { index, child ->
           val childPoint = calculateLocation(index, columnWidth, rowHeight)
-          LogUtil.debug(tag, "原始左：${child.left}，目标左：${childPoint.x}，原始上：${child.top}，目标上：${childPoint.y}， index：$index")
+          SwordLog.debug(tag, "原始左：${child.left}，目标左：${childPoint.x}，原始上：${child.top}，目标上：${childPoint.y}， index：$index")
           child.animate()
             .translationX(childPoint.x.toFloat() - child.left)
             .translationY(childPoint.y.toFloat() - child.top)
@@ -73,21 +73,21 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
         }
       }
       DragEvent.ACTION_DRAG_LOCATION -> {
-        LogUtil.debug(
+        SwordLog.debug(
           tag, "当前所在 view#${views.indexOf(v)}，x: ${event.x}, y: ${event.y}" +
               "localState：${views.indexOf(event.localState as View)}，" +
               "v==localState: ${v == event.localState}"
         )
       }
       DragEvent.ACTION_DRAG_EXITED -> {
-        LogUtil.debug(
+        SwordLog.debug(
           tag, "退出 view#${views.indexOf(v)}，" +
               "localState：${views.indexOf((event.localState as View))}，" +
               "v==localState: ${v == event.localState}"
         )
       }
       DragEvent.ACTION_DRAG_ENDED -> {
-        LogUtil.debug(
+        SwordLog.debug(
           tag, "拖拽结束 view#${views.indexOf(v)}，" +
               "localState：${views.indexOf((event.localState as View))}，" +
               "v==localState: ${v == event.localState}，getResult: ${event.result}"
@@ -97,7 +97,7 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
         }
       }
       DragEvent.ACTION_DROP -> {
-        LogUtil.debug(
+        SwordLog.debug(
           tag, "拖拽取消 view#${views.indexOf(v)}，" +
               "localState：${views.indexOf(event.localState as View)}，" +
               "v==localState: ${v == event.localState}"
@@ -112,7 +112,7 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
 
   override fun onFinishInflate() {
     super.onFinishInflate()
-    LogUtil.debug(tag, "onFinishInflate, 子 View 数量：$childCount")
+    SwordLog.debug(tag, "onFinishInflate, 子 View 数量：$childCount")
     children.forEach { child ->
       views.add(child)
       child.setOnDragListener(dragListener)
@@ -125,7 +125,7 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
         }
       }
     }
-    LogUtil.debug(tag, "onFinishInflate, views 数量：${views.size}")
+    SwordLog.debug(tag, "onFinishInflate, views 数量：${views.size}")
   }
 
   override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -166,7 +166,7 @@ class DragListenerGridView(context: Context, attrs: AttributeSet? = null) :
     
     val left = columnIndex * columnWidth
     val top = rowIndex * rowHeight
-    LogUtil.debug(tag, "$rowIndex 行 $columnIndex 列，左：$left，上：$top， index：$index")
+    SwordLog.debug(tag, "$rowIndex 行 $columnIndex 列，左：$left，上：$top， index：$index")
     return Point(left, top)
   }
 }

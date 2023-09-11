@@ -4,8 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.sword.LogUtil
-import com.sword.dp
+import sword.SwordLog
 import com.sword.dp2px
 
 class TextDisplayView(context: Context, attrs: AttributeSet): View(context, attrs) {
@@ -49,7 +48,7 @@ class TextDisplayView(context: Context, attrs: AttributeSet): View(context, attr
         //绘制文字
         paint.style = Paint.Style.FILL
         paint.getTextBounds(centerText, 0, centerText.length, textBounds)
-        LogUtil.debug(tag, "textBounds left: ${textBounds.left}, top: ${textBounds.top}, right: ${textBounds.right}, bottom: ${textBounds.bottom}")
+        SwordLog.debug(tag, "textBounds left: ${textBounds.left}, top: ${textBounds.top}, right: ${textBounds.right}, bottom: ${textBounds.bottom}")
         val textStartX = ringRect.left + radius - (textBounds.left + textBounds.right) / 2
         val textStartY = ringRect.top + radius - (textBounds.top + textBounds.bottom) / 2
         canvas.drawText(centerText, textStartX, textStartY, paint)

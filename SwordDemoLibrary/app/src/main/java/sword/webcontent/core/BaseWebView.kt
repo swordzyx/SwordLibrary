@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.swordlibrary.webcontent.defaultSetting
 import com.google.gson.Gson
-import com.sword.LogUtil
+import sword.SwordLog
 import org.json.JSONException
 import sword.thread.ThreadExecutor
 
@@ -103,12 +103,12 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
 
   //TODO：可以使用协程的延时和取消实现，delay 函数
   fun postBlankMonitorRunnable() {
-    LogUtil.debug(tag, "5s 后执行白屏检测")
+    SwordLog.debug(tag, "5s 后执行白屏检测")
     postDelayed(blankMonitorExecRunnable, 5000)
   }
 
   fun cancelBlankMonitorRunnable() {
-    LogUtil.debug(tag, "白屏检测任务取消执行")
+    SwordLog.debug(tag, "白屏检测任务取消执行")
     removeCallbacks(blankMonitorExecRunnable)
   }
 
@@ -120,7 +120,7 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
     if (json.isNullOrEmpty()) return
     
     try {
-      LogUtil.debug(tag, "receive command from web: $json")
+      SwordLog.debug(tag, "receive command from web: $json")
       val message = Gson().fromJson(json, JsBridgeMessage::class.java)
       
     } catch (e: JSONException) {
@@ -149,7 +149,7 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
   
   private val blankMonitorExecRunnable by lazy {
     val runnable = Runnable {
-      LogUtil.debug(tag, "-------- 开始执行白屏检测 ----------------")
+      SwordLog.debug(tag, "-------- 开始执行白屏检测 ----------------")
       val startTime = System.currentTimeMillis()
       val dstWidth = measuredWidth / 6
       val dstHeight = measuredHeight / 6
@@ -181,7 +181,7 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
         post {
           blankMonitorCallback?.onBlank()
         }
-        LogUtil.debug(tag, "---------------- 白屏检测结束，耗时：${System.currentTimeMillis() - startTime}s --------------------")
+        SwordLog.debug(tag, "---------------- 白屏检测结束，耗时：${System.currentTimeMillis() - startTime}s --------------------")
       }
     }
     Runnable {

@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import sword.logic.LoginLogic
 import com.sword.dp
 import sword.theme.Theme
-import com.sword.LogUtil
+import sword.SwordLog
 
 class LoginPageView(val context: Context, private val loginListener: LoginListener? = null) : PageView {
   private val tag = "LoginPageView"
@@ -20,7 +20,7 @@ class LoginPageView(val context: Context, private val loginListener: LoginListen
   }
 
   private fun createView(): View {
-    LogUtil.debug(tag, "createView")
+    SwordLog.debug(tag, "createView")
     return LinearLayout(context).apply {
       orientation = LinearLayout.VERTICAL
 

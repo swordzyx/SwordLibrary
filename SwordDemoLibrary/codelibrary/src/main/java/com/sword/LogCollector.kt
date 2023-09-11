@@ -19,7 +19,7 @@ class LogCollector {
             logFile.createNewFile()
             logFile.setWritable(true)
         }
-      LogUtil.debug("logFilePath: $logFilePath")
+      sword.LogUtil.debug("logFilePath: $logFilePath")
     }
     
     fun collectLog() {
@@ -33,7 +33,7 @@ class LogCollector {
             }
             reader.close()
             writer.close()
-          LogUtil.debug("collect complete")
+          sword.LogUtil.debug("collect complete")
         }.start()
     }
 }

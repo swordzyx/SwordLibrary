@@ -13,7 +13,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.R
-import com.sword.LogUtil
 import com.sword.dp
 import com.sword.initWindowSize
 import sword.motionlayout.MotionLayoutContainer
@@ -305,7 +304,7 @@ class MainActivity : AppCompatActivity() {
   private val defaultMargin = dp(2)
   private fun LayoutParams.setVerticalMargin(margin: Int = defaultMargin): LayoutParams{
     setMargins(0, margin, 0, margin)
-    LogUtil.debug(tag, "defaultMargin: $defaultMargin")
+    SwordLog.debug(tag, "defaultMargin: $defaultMargin")
     return this
   }
 }

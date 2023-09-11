@@ -21,7 +21,7 @@ fun createBitmap(resource: Resources, resId: Int, targetWidth: Float, targetHeig
         while (sampleSize < scale) {
             sampleSize *= 2f
         }
-        LogUtil.debug("targetWidth: $targetWidth, targetHeight: $targetHeight, oldWidth: $oldWidth, oldHeight: $oldHeight, sampleSize: $sampleSize, scale: $scale")
+        sword.LogUtil.debug("targetWidth: $targetWidth, targetHeight: $targetHeight, oldWidth: $oldWidth, oldHeight: $oldHeight, sampleSize: $sampleSize, scale: $scale")
         inJustDecodeBounds = false
         inSampleSize = sampleSize.toInt()
     }

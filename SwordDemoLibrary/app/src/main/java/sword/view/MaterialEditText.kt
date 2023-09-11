@@ -10,8 +10,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.example.swordlibrary.R
-import sword.utils.Theme
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.dp2px
 
 class MaterialEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs) {
@@ -93,14 +92,14 @@ class MaterialEditText(context: Context, attrs: AttributeSet) : AppCompatEditTex
         })
 
         //打印所有的属性
-        LogUtil.debug(tag, "attributeCount: ${attrs.attributeCount}")
+        SwordLog.debug(tag, "attributeCount: ${attrs.attributeCount}")
         for (i in 0 until attrs.attributeCount) {
-            LogUtil.debug(tag, "key: ${attrs.getAttributeName(i)}, value: ${attrs.getAttributeValue(i)}")
+            SwordLog.debug(tag, "key: ${attrs.getAttributeName(i)}, value: ${attrs.getAttributeValue(i)}")
         }
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.MaterialEditText) //拿到 R.txt 中 int[] styleable MaterialEditText { 0x7f0403f8 }
 
-        LogUtil.debug(tag, "enableFloatLabel index: ${typedArray.getIndex(R.styleable.MaterialEditText_enableFloatLabel)}")
+        SwordLog.debug(tag, "enableFloatLabel index: ${typedArray.getIndex(R.styleable.MaterialEditText_enableFloatLabel)}")
         //typedArray.getIndex(R.styleable.MaterialEditText_enableFloatLabel) 拿到 int styleable MaterialEditText_enableFloatLabel 0，即 attrs 中 MaterialEditText 这个 styleable 里面声明的第一个属性值
         //下面这一行代码等价于 typedArray.getBoolean(0, true)
         enableFloatLabel = typedArray.getBoolean(typedArray.getIndex(R.styleable.MaterialEditText_enableFloatLabel), true)

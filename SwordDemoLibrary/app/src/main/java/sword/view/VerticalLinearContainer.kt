@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.dp
 
 abstract class VerticalLinearContainer(context: Context, attrs: AttributeSet? = null) :
@@ -25,7 +25,7 @@ abstract class VerticalLinearContainer(context: Context, attrs: AttributeSet? = 
   }
   
   override fun onBackPressed(): Boolean {
-    LogUtil.debug(tag, "onBackPressed")
+    SwordLog.debug(tag, "onBackPressed")
     if (container.visibility != View.GONE) {
       container.visibility = View.GONE
     }

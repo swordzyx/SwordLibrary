@@ -15,7 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 
-import com.sword.LogUtil;
+import sword.SwordLog;
 import com.sword.ToastUtilKt;
 
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ public class GalleryActivity extends Activity {
     if (m_imagePath != null) {
       return;
     }
-    LogUtil.debug(LOG_TAG, "Sdk层:打开系统相册");
+    SwordLog.debug(LOG_TAG, "Sdk层:打开系统相册");
     super.onCreate(savedInstanceState);
 
     fileCrop = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "crop_photo.jpg");
@@ -65,7 +65,7 @@ public class GalleryActivity extends Activity {
       doOpenAlbum();
     } else {
       //系统重建Activity,不执行逻辑，但不能finish,重启后才会执行onActivityResult
-      LogUtil.debug(LOG_TAG, "Sdk层: bundle不为空，不打开相册");
+      SwordLog.debug(LOG_TAG, "Sdk层: bundle不为空，不打开相册");
     }
   }
 
@@ -85,31 +85,31 @@ public class GalleryActivity extends Activity {
       intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
       startActivityForResult(intent, ALBUM_CODE);
     } catch (Exception e) {
-      LogUtil.debug(LOG_TAG, "Sdk层:Sdk层:打开系统相册 错误" + e.toString());
+      SwordLog.debug(LOG_TAG, "Sdk层:Sdk层:打开系统相册 错误" + e.toString());
     }
   }
 
   @Override
   protected void onSaveInstanceState(Bundle outState) {
-    LogUtil.debug(LOG_TAG, "Sdk层: onSaveInstanceState");
+    SwordLog.debug(LOG_TAG, "Sdk层: onSaveInstanceState");
     super.onSaveInstanceState(outState);
   }
 
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    LogUtil.debug(LOG_TAG, "Sdk层: onRestoreInstanceState");
+    SwordLog.debug(LOG_TAG, "Sdk层: onRestoreInstanceState");
     super.onRestoreInstanceState(savedInstanceState);
   }
 
   @Override
   protected void onDestroy() {
-    LogUtil.debug(LOG_TAG, "Sdk层: onDestroy");
+    SwordLog.debug(LOG_TAG, "Sdk层: onDestroy");
     super.onDestroy();
   }
 
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
-    LogUtil.debug(LOG_TAG, "--- Sdk层: onConfigurationChanged ---");
+    SwordLog.debug(LOG_TAG, "--- Sdk层: onConfigurationChanged ---");
     super.onConfigurationChanged(newConfig);
   }
 
@@ -128,7 +128,7 @@ public class GalleryActivity extends Activity {
       Uri uri = data.getData();
       if (uri == null) {
         //没有在相册选中图片
-        LogUtil.debug(LOG_TAG, "Sdk层:没有选择相片");
+        SwordLog.debug(LOG_TAG, "Sdk层:没有选择相片");
         finish();
       } else if (hasSdcard()) {
         if (cropPhoto) {
@@ -139,7 +139,7 @@ public class GalleryActivity extends Activity {
           returnImgToGame(uri);
         }
       } else {
-        LogUtil.debug(LOG_TAG, "SDK层：设备没有 SD 卡");
+        SwordLog.debug(LOG_TAG, "SDK层：设备没有 SD 卡");
         finish();
       }
     } else if (requestCode == CODE_RESULT_REQUEST) {
@@ -227,7 +227,7 @@ public class GalleryActivity extends Activity {
     try {
       obj.put("path", getImagePath(uri));
       
-      LogUtil.debug("object: " + obj);
+      SwordLog.debug("object: " + obj);
       //ToastUtilKt.toast(this, obj.toString());
       ToastUtilKt.snackBar(getParent(), obj.toString(), true);
     } catch (Exception e) {

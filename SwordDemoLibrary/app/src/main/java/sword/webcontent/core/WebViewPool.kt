@@ -2,7 +2,7 @@ package sword.webcontent.core
 
 import android.content.Context
 import android.content.MutableContextWrapper
-import com.sword.LogUtil
+import sword.SwordLog
 import java.util.*
 
 /**
@@ -52,12 +52,12 @@ open class WebViewPool private constructor() {
    */
   fun getWebview(context: Context): BaseWebView {
     val webview = if (webviewPool.size > 0) {
-      LogUtil.debug(tag, "getWebview >> get from webviewPool")
+      SwordLog.debug(tag, "getWebview >> get from webviewPool")
       webviewPool.pop().apply {
         (this.context as MutableContextWrapper).baseContext = context
       }
     } else {
-      LogUtil.debug(tag, "getWebview >> create new Webview")
+      SwordLog.debug(tag, "getWebview >> create new Webview")
       BaseWebView(MutableContextWrapper(context))
     }
     webview.webViewClient = CustomWebviewClient()

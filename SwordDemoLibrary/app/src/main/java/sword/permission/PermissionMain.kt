@@ -3,10 +3,9 @@ package sword.permission
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.sword.LogUtil
+import sword.SwordLog
 
 class PermissionMain {
   private val tag = "PermissionMain"
@@ -17,7 +16,7 @@ class PermissionMain {
         Manifest.permission.WRITE_EXTERNAL_STORAGE
       ) != PackageManager.PERMISSION_GRANTED
     ) {
-      LogUtil.debug(tag, "requestPermission")
+      SwordLog.debug(tag, "requestPermission")
       ActivityCompat.requestPermissions(
         activity,
         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),

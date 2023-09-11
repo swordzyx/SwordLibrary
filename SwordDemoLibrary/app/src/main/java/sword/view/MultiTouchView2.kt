@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.example.swordlibrary.R
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.createBitmap1
 import com.sword.dp
 
@@ -42,7 +42,7 @@ class MultiTouchView2(context: Context, attrs: AttributeSet? = null): View(conte
         var pointerIndex = event.actionIndex
         
         for (i in 0 until event.pointerCount) {
-          LogUtil.debug(tag, "point $i , id: ${event.getPointerId(i)}")
+          SwordLog.debug(tag, "point $i , id: ${event.getPointerId(i)}")
         }
         
         //非最后一根手指抬起，index 会发生变化，获取到需要跟踪的手指的 index。
@@ -55,7 +55,7 @@ class MultiTouchView2(context: Context, attrs: AttributeSet? = null): View(conte
             event.findPointerIndex(currentPointerId)
           }
           
-          LogUtil.debug(tag, "up, action index: ${event.actionIndex}, action id: ${event.getPointerId(event.actionIndex)}, currentPointerId: " +
+          SwordLog.debug(tag, "up, action index: ${event.actionIndex}, action id: ${event.getPointerId(event.actionIndex)}, currentPointerId: " +
               "$currentPointerId, currentIndex: $pointerIndex")
         }
         
@@ -66,9 +66,9 @@ class MultiTouchView2(context: Context, attrs: AttributeSet? = null): View(conte
       }
       
       MotionEvent.ACTION_MOVE -> {
-        LogUtil.debug(tag, "move currentPointerId: $currentPointerId")
+        SwordLog.debug(tag, "move currentPointerId: $currentPointerId")
         val pointerIndex = event.findPointerIndex(currentPointerId)
-        LogUtil.debug(tag, "move current point Index: $pointerIndex, action index: ${event.actionIndex}, actionId: ${event.getPointerId(event.actionIndex)}")
+        SwordLog.debug(tag, "move current point Index: $pointerIndex, action index: ${event.actionIndex}, actionId: ${event.getPointerId(event.actionIndex)}")
         val currentX = event.getX(pointerIndex)
         val currentY = event.getY(pointerIndex)
         offsetX = currentX - downX + originalOffsetX

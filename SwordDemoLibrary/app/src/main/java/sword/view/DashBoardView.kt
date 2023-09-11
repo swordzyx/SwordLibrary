@@ -3,9 +3,9 @@ package sword.view
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Size
 import android.view.View
 import com.sword.*
+import sword.SwordLog
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -42,7 +42,7 @@ class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attr
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val measureWidth = paddingLeft + 2 * radius.toInt() + paddingRight
         val measureHeight = paddingTop + 2 * radius.toInt() + paddingBottom
-        LogUtil.debug(tag, "measureWidth: $measureWidth, measuredHeight: $measureHeight, screenWidth: $windowWidth, screenHeight: $windowHeight")
+        SwordLog.debug(tag, "measureWidth: $measureWidth, measuredHeight: $measureHeight, screenWidth: $windowWidth, screenHeight: $windowHeight")
         setMeasuredDimension(
             measureWidth,
             measureHeight
@@ -77,7 +77,7 @@ class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attr
     }
 
     override fun onDraw(canvas: Canvas) {
-        LogUtil.debug(tag, "left: $left, top: $top, right: $right, bottom: $bottom")
+        SwordLog.debug(tag, "left: $left, top: $top, right: $right, bottom: $bottom")
         //绘制弧形
         paint.strokeWidth = strokeWidth
         canvas.drawPath(arcPath, paint)

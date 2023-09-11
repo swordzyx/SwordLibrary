@@ -10,7 +10,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
 import com.example.swordlibrary.R
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.createBitmap1
 import com.sword.dp
 
@@ -48,7 +48,7 @@ class MultiTouchView1(context: Context, attrs: AttributeSet? = null): View(conte
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
           slopSquare *= viewConfiguration.scaledAmbiguousGestureMultiplier * viewConfiguration.scaledAmbiguousGestureMultiplier
         }
-        LogUtil.debug(tag, "deltaX: $deltaX, deltaY: $deltaY, distances: $distances")
+        SwordLog.debug(tag, "deltaX: $deltaX, deltaY: $deltaY, distances: $distances")
 
         if (distances > slopSquare) {
           offsetX = deltaX

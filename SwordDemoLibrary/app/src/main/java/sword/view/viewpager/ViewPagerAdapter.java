@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.sword.LogUtil;
+import sword.SwordLog;
 
 public class ViewPagerAdapter extends PagerAdapter {
 	public static final String TAG = "ViewPagerAdapter";
@@ -28,7 +28,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
 	@Override
 	public int getItemPosition(@NonNull Object object) {
-		LogUtil.debug(TAG, "getItemPosition, object: " + object);
+		SwordLog.debug(TAG, "getItemPosition, object: " + object);
 		return super.getItemPosition(object);
 	}
 

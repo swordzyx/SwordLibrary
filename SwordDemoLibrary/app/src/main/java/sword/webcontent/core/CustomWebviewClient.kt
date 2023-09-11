@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import sword.webcontent.ApiService
 import com.example.swordlibrary.webcontent.getWebViewCachePath
-import com.sword.LogUtil
+import sword.SwordLog
 import kotlinx.coroutines.runBlocking
 import okio.ByteString.Companion.encodeUtf8
 import retrofit2.Retrofit
@@ -46,7 +46,7 @@ class CustomWebviewClient : WebViewClient() {
    * 证书校验错误
    */
   override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-    LogUtil.debug(TAG, "onReceivedSslError")
+    SwordLog.debug(TAG, "onReceivedSslError")
     AlertDialog.Builder(view.context)
       .setTitle("提示")
       .setMessage("当前网站安全证书已过期或不可信\n是否继续浏览")
@@ -71,7 +71,7 @@ class CustomWebviewClient : WebViewClient() {
     request: WebResourceRequest,
     error: WebResourceError
   ) {
-    LogUtil.debug(TAG, "onReceivedError, WebResourceRequest: ${request.logString()}")
+    SwordLog.debug(TAG, "onReceivedError, WebResourceRequest: ${request.logString()}")
     if (request.isForMainFrame) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
         onReceivedError(view, error.errorCode, error.description.toString(), request.url.toString())
@@ -91,7 +91,7 @@ class CustomWebviewClient : WebViewClient() {
     description: String,
     failingUrl: String
   ) {
-    LogUtil.debug(
+    SwordLog.debug(
       TAG,
       "onReceivedError, errorCode: $errorCode, description: $description, failingUrl: $failingUrl"
     )
@@ -105,7 +105,7 @@ class CustomWebviewClient : WebViewClient() {
    * 返回 false，Webview 会继续加载 url；
    */
   override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-    LogUtil.debug(TAG, "shouldOverrideUrlLoading, \n\n WebResourceRequest: ${request.logString()}")
+    SwordLog.debug(TAG, "shouldOverrideUrlLoading, \n\n WebResourceRequest: ${request.logString()}")
 
     return shouldOverrideUrlLoading(view, request.url.toString())
   }
@@ -117,7 +117,7 @@ class CustomWebviewClient : WebViewClient() {
     )
   )
   override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-    LogUtil.debug(TAG, "shouldOverrideUrlLoading, url: $url")
+    SwordLog.debug(TAG, "shouldOverrideUrlLoading, url: $url")
     val schema = Uri.parse(url).scheme ?: return false
     when (schema) {
       "http", "https" -> view.loadUrl(url)
@@ -136,7 +136,7 @@ class CustomWebviewClient : WebViewClient() {
     view: WebView,
     request: WebResourceRequest
   ): WebResourceResponse? {
-    LogUtil.debug(TAG, "shouldInterceptRequest >> \n ${request.logString()}")
+    SwordLog.debug(TAG, "shouldInterceptRequest >> \n ${request.logString()}")
     var webResourceResponse: WebResourceResponse? = null
     val urlString = request.url.toString()
     if (isAssetsResource(urlString)) {

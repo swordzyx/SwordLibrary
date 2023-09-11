@@ -3,7 +3,7 @@ package sword.webcontent.core
 import android.os.Handler
 import android.os.Looper
 import android.util.ArrayMap
-import com.sword.LogUtil
+import sword.SwordLog
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -17,7 +17,7 @@ class JsBridgeInvokeDispatcher {
   }
   
   fun sendCommand(view: BaseWebView, message: JsBridgeMessage) {
-    LogUtil.debug(tag, "sendCommand, message: $message")
+    SwordLog.debug(tag, "sendCommand, message: $message")
     if (checkMessage(message)) {
       executeCommand(view, message)
     }

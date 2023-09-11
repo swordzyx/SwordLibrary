@@ -35,12 +35,12 @@ fun initWindowSize(context: Context) {
   val point = getWindowSizeExcludeSystem(context)
   windowSize.x = point.x
   windowSize.y = point.y
-  LogUtil.debug(tag, "screenWidth: ${windowSize.x}, screentHeight: ${windowSize.y}")
+  sword.LogUtil.debug(tag, "screenWidth: ${windowSize.x}, screentHeight: ${windowSize.y}")
 }
 
 fun publicApiTest(activity: Activity, window: Window) {
   val point: Point = getWindowSizeExcludeSystem(activity)
-  LogUtil.debug(tag, "屏幕尺寸: ${point.x} - ${point.y}")
+  sword.LogUtil.debug(tag, "屏幕尺寸: ${point.x} - ${point.y}")
 
   notchScreenAdapte(activity, window, true)
 }
@@ -50,15 +50,15 @@ fun test(activity: Activity) {
   var point: Point
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
     point = getScreenSizeByMetrics(activity)
-    LogUtil.debug(tag, "getScreenSizeByMetrics: ${point.x} - ${point.y}")
+    sword.LogUtil.debug(tag, "getScreenSizeByMetrics: ${point.x} - ${point.y}")
   } else {
-    LogUtil.debug(tag, "Android version smaller than 11, ignore getScreenSizeByMetrics(...)")
+    sword.LogUtil.debug(tag, "Android version smaller than 11, ignore getScreenSizeByMetrics(...)")
   }
   point = getScreenSizeByDisplay(activity)
-  LogUtil.debug(tag, "getScreenSizeByDisplay: ${point.x} - ${point.y}")
+  sword.LogUtil.debug(tag, "getScreenSizeByDisplay: ${point.x} - ${point.y}")
   
   getCutoutRect(activity)?.forEachIndexed { index, rect ->  
-    LogUtil.debug(tag, "getCutoutRect-$index, rect: $rect")
+    sword.LogUtil.debug(tag, "getCutoutRect-$index, rect: $rect")
   }
 
   printDisplayInfo(activity)
@@ -87,7 +87,7 @@ fun getWindowSizeExcludeSystem(context: Context): Point {
 fun notchScreenAdapte(context: Context, window: Window, useNotch: Boolean) {
   if (isNotchScreenHW(window)) {
     getNotchHeightHw(window).forEach {
-      LogUtil.debug(tag, "getNotchHeightHw: $it")
+      sword.LogUtil.debug(tag, "getNotchHeightHw: $it")
     }
     
     if (useNotch) useNotchInFullScreenHw(window) else excludeNotchInFullScreenHw(window) 
@@ -96,14 +96,14 @@ fun notchScreenAdapte(context: Context, window: Window, useNotch: Boolean) {
   }
   
   if (isNotchScreenXiaomi(window)) {
-    LogUtil.debug(tag, "getNotchHeightXiaomi: ${getNotchHeightXiaomi(context)}")
+    sword.LogUtil.debug(tag, "getNotchHeightXiaomi: ${getNotchHeightXiaomi(context)}")
     if (useNotch) useNotchInFullScreenXiaomi(window) else  excludeNotchInFullScreenXiaomi(window)
     return
   }
 
   //oppo 手机设置使用刘海区域，OPPO 手机在全屏状态下默认是占用刘海屏区域的，只需将应用设置为全屏沉浸式即可
   if (isNotchScreenOppo(window)) {
-    LogUtil.debug(tag, "getNotchHeightOppo: ${getNotchHeightOppo(window)}")
+    sword.LogUtil.debug(tag, "getNotchHeightOppo: ${getNotchHeightOppo(window)}")
     if (useNotch) fullScreen(window)
   }
 }
@@ -157,18 +157,18 @@ fun getStatusHeight(context: Context): Int {
  */
 private fun printDisplayInfo(activity: Activity) {
 
-  LogUtil.debug(tag, "onCreate configuration: " + activity.resources.configuration)
+  sword.LogUtil.debug(tag, "onCreate configuration: " + activity.resources.configuration)
   
-  LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
+  sword.LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
     val dm = activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     for (d: Display in dm.displays) {
-      LogUtil.debug(tag, d.toString())
+      sword.LogUtil.debug(tag, d.toString())
     }
   } else {
-    LogUtil.debug(tag, "Android 系统版本小于 4.2（API 17），不支持 Display Api")
+    sword.LogUtil.debug(tag, "Android 系统版本小于 4.2（API 17），不支持 Display Api")
   }
-  LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
+  sword.LogUtil.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
 }
 
 
@@ -182,14 +182,14 @@ private suspend fun printFlodInfo(activity: Activity) {
   val windowInfoTracker = WindowInfoTracker.getOrCreate(activity)
 
   windowInfoTracker.windowLayoutInfo(activity).collect { windowLayoutInfo ->
-    LogUtil.debug(tag, "LayoutStateChange: $windowLayoutInfo")
+    sword.LogUtil.debug(tag, "LayoutStateChange: $windowLayoutInfo")
 
     for (df in windowLayoutInfo.displayFeatures) {
       if (df is FoldingFeature) {
-        LogUtil.debug(tag, "Folding State")
-        LogUtil.debug(tag, "State: " + (df as FoldingFeature).state)
-        LogUtil.debug(tag, "OcclusionType: " + (df as FoldingFeature).occlusionType)
-        LogUtil.debug(tag, "Orientation: " + (df as FoldingFeature).orientation)
+        sword.LogUtil.debug(tag, "Folding State")
+        sword.LogUtil.debug(tag, "State: " + (df as FoldingFeature).state)
+        sword.LogUtil.debug(tag, "OcclusionType: " + (df as FoldingFeature).occlusionType)
+        sword.LogUtil.debug(tag, "Orientation: " + (df as FoldingFeature).orientation)
       }
     }
   }
@@ -226,11 +226,11 @@ private fun getScreenSizeByMetrics(context: Context): Point {
   val insets = metrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.navigationBars() or WindowInsets.Type.displayCutout())
   val insetsWidth = insets.left + insets.right
   val insetsHeight = insets.top + insets.bottom
-  LogUtil.debug("ScreenSizeUtil", "insets: $insets")
-  LogUtil.debug("ScreenSizeUtil", "metrics: ${metrics.bounds}")
+  sword.LogUtil.debug("ScreenSizeUtil", "insets: $insets")
+  sword.LogUtil.debug("ScreenSizeUtil", "metrics: ${metrics.bounds}")
   
   val insets1 = metrics.windowInsets.getInsets(0)
-  LogUtil.debug("ScreenSizeUtil", "insets1, $insets1")
+  sword.LogUtil.debug("ScreenSizeUtil", "insets1, $insets1")
 
   return Point(metrics.bounds.width() - insetsWidth, metrics.bounds.height() - insetsHeight)
 }
@@ -423,17 +423,17 @@ private fun getCutoutRect(context: Context): List<Rect?>? {
   val cutouts: List<Rect>? = null
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {  //Android 11
     val cutout = windowManager.currentWindowMetrics.windowInsets.displayCutout ?: return null
-    LogUtil.debug(tag, "windowInsets.displayCutout: $cutout")
+    sword.LogUtil.debug(tag, "windowInsets.displayCutout: $cutout")
     
     cutout.boundingRects.forEachIndexed { index, r ->
-      LogUtil.debug("bounding-$index, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom) 
+      sword.LogUtil.debug("bounding-$index, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom)
     }
   } else {
     if (Build.VERSION.SDK_INT >= 29) { // Android 10 
       val cutout = windowManager.defaultDisplay.cutout ?: return null
-      LogUtil.debug(tag, "WindowManager.defaultDisplay.cutout: $cutout")
+      sword.LogUtil.debug(tag, "WindowManager.defaultDisplay.cutout: $cutout")
       cutout.boundingRects.forEachIndexed { index, r ->
-        LogUtil.debug("bounding-$index, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom)
+        sword.LogUtil.debug("bounding-$index, left: " + r.left + "; top: " + r.top + "; right: " + r.right + "; bottom: " + r.bottom)
       }
     }
   }

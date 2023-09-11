@@ -1,7 +1,7 @@
 package sword.webcontent.core
 
 import com.google.gson.annotations.SerializedName
-import com.sword.LogUtil
+import sword.SwordLog
 import sword.SwordApplication
 import com.sword.toast
 import org.json.JSONObject
@@ -24,7 +24,7 @@ interface JsBridgeCommand {
 class ToastCommand : JsBridgeCommand {
     override fun exec(params: JSONObject?) {
         val msg = params?.optString("message")
-        LogUtil.debug("showToast, msg: $msg")
+        SwordLog.debug("showToast, msg: $msg")
         msg?.let {
             toast(SwordApplication.globalContext, it)
         }

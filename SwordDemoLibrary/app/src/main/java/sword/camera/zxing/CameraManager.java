@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.view.SurfaceHolder;
 
 import com.google.zxing.PlanarYUVLuminanceSource;
-import com.sword.LogUtil;
+import sword.SwordLog;
 
 import java.io.IOException;
 
@@ -59,8 +59,8 @@ public class CameraManager {
             //设置需要的相机参数，曝光模式，场景模式，闪光灯，预览尺寸等
             configurationManager.setDesiredCameraParameters(camera, false);
         } catch (RuntimeException re) {
-            LogUtil.warn("Camera reject parameters. Setting only minimal safe-mode parameters");
-            LogUtil.debug("Resetting to saved camera params: " + paramFlattened);
+            SwordLog.warn("Camera reject parameters. Setting only minimal safe-mode parameters");
+            SwordLog.debug("Resetting to saved camera params: " + paramFlattened);
             
             re.printStackTrace();
             if (paramFlattened != null) {
@@ -69,7 +69,7 @@ public class CameraManager {
                     configurationManager.setDesiredCameraParameters(camera, true);
                 } catch (RuntimeException ex2) {
                     ex2.printStackTrace();
-                    LogUtil.warn("Camera reject even safe-mode parameters");
+                    SwordLog.warn("Camera reject even safe-mode parameters");
                 }
             }
         }
@@ -98,7 +98,7 @@ public class CameraManager {
             return null;
         }
         //返回 PlanarYUVLuminanceSource 对象，代表一个二维码扫描源，传入对应的数据，以及扫描区域的尺寸
-        LogUtil.debug("build srouce width: " + width + "----height: " + height);
+        SwordLog.debug("build srouce width: " + width + "----height: " + height);
         return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
     }
 
@@ -120,23 +120,23 @@ public class CameraManager {
             Rect rect = new Rect(framingRect);
             Point cameraResolution = configurationManager.getCameraResolution();
             Point screenResolution = configurationManager.getScreenResolution();
-            LogUtil.debug("cameraResolution x: " + cameraResolution.x + "----y: " + cameraResolution.y);
-            LogUtil.debug("screenResolution x: " + screenResolution.x + "----y: " + screenResolution.y);
+            SwordLog.debug("cameraResolution x: " + cameraResolution.x + "----y: " + cameraResolution.y);
+            SwordLog.debug("screenResolution x: " + screenResolution.x + "----y: " + screenResolution.y);
 
             //计算矩形扫描区域的显示位置
-            LogUtil.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
+            SwordLog.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
             rect.top = (cameraResolution.y - framingRect.height()) / 2;
             rect.bottom = rect.top + framingRect.height();
             rect.left = (cameraResolution.x - framingRect.width()) / 2;
             rect.right = rect.left + framingRect.width();
-            LogUtil.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
+            SwordLog.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
 
             framingRectInPreview = rect;
 //            LogUtil.debug("ratio x: " + scaleX);
 //            LogUtil.debug("ratio y: " + scaleY);
 
 
-            LogUtil.debug("framingRectInPreview.left: " + framingRectInPreview.left + "---framingRectInPreview.right: " + framingRectInPreview.right + "----framingRectInPreview.top: " + framingRectInPreview.top + "---framingRectInPreview.bottom: " + framingRectInPreview.bottom + "---framingRectInPreview.width: " + framingRectInPreview.width() + "----framingRectInPreview.height: " + framingRectInPreview.height());
+            SwordLog.debug("framingRectInPreview.left: " + framingRectInPreview.left + "---framingRectInPreview.right: " + framingRectInPreview.right + "----framingRectInPreview.top: " + framingRectInPreview.top + "---framingRectInPreview.bottom: " + framingRectInPreview.bottom + "---framingRectInPreview.width: " + framingRectInPreview.width() + "----framingRectInPreview.height: " + framingRectInPreview.height());
         }
         return framingRectInPreview;
     }

@@ -6,7 +6,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.ViewGroup
 import androidx.core.view.*
-import com.sword.LogUtil
+import sword.SwordLog
 import kotlin.math.max
 
 class TagLayout(context: Context, attrs: AttributeSet? = null): ViewGroup(context, attrs) {
@@ -28,7 +28,7 @@ class TagLayout(context: Context, attrs: AttributeSet? = null): ViewGroup(contex
         var lineMaxHeight = 0
 
         children.forEachIndexed { index, child ->
-            LogUtil.debug(tag, "child $index ")
+            SwordLog.debug(tag, "child $index ")
             measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, heightUsed)
 
             if ((widthUsed + child.measuredWidth) > maxWidth) {
@@ -53,7 +53,7 @@ class TagLayout(context: Context, attrs: AttributeSet? = null): ViewGroup(contex
             lineMaxHeight = max(child.measuredHeight + child.marginTop + child.marginBottom, lineMaxHeight)
             lineMaxWidth = max(widthUsed, lineMaxWidth)
         }
-        LogUtil.debug(tag, "childBound count: ${childBounds.size}")
+        SwordLog.debug(tag, "childBound count: ${childBounds.size}")
 
         setMeasuredDimension(lineMaxWidth, heightUsed + lineMaxHeight)
     }
@@ -61,7 +61,7 @@ class TagLayout(context: Context, attrs: AttributeSet? = null): ViewGroup(contex
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         children.forEachIndexed { index, child ->
             val bounds = childBounds[index]
-            LogUtil.debug(tag, "text: ${(child as ColorTextView).text}, 左：${bounds.left}, 上：${bounds.top}, 右：${bounds.right}, 下：${bounds.bottom}")
+            SwordLog.debug(tag, "text: ${(child as ColorTextView).text}, 左：${bounds.left}, 上：${bounds.top}, 右：${bounds.right}, 下：${bounds.bottom}")
             child.layout(bounds.left, bounds.top, bounds.right, bounds.bottom)
         }
     }

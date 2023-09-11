@@ -1,7 +1,7 @@
 package sword.devicedetail
 
 import sword.ShellAdbUtil
-import com.sword.LogUtil
+import sword.SwordLog
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
@@ -17,7 +17,7 @@ fun getCpuAbi(): String {
       Runtime.getRuntime().exec("getprop ro.product.cpu.abi").inputStream
     )
   ).readLine()
-  LogUtil.debug(tag, "getCpuAbi, abi string: $abi")
+  SwordLog.debug(tag, "getCpuAbi, abi string: $abi")
   return if (abi.contains("x86")) {
     "x86"
   } else if (abi.contains("armeabi-v7a")) {
@@ -54,5 +54,5 @@ fun getIpAddress() {
           http://pv.sohu.com/cityjson?ie=utf-8
           http://ip.chinaz.com/getip.aspx
     */
-  LogUtil.debug(tag, "shell 获取外网 ip：${ShellAdbUtil.execShellCommand(false, "curl ifconfig.me").successString}")
+  SwordLog.debug(tag, "shell 获取外网 ip：${ShellAdbUtil.execShellCommand(false, "curl ifconfig.me").successString}")
 }

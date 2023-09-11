@@ -9,7 +9,7 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.dp2px
 
 class TextReadViewStaticLayout(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
@@ -38,7 +38,7 @@ class TextReadViewStaticLayout(context: Context, attributeSet: AttributeSet) : V
             }
         }
 
-        LogUtil.debug(tag, "width: $measureWidth, height: ${staticLayout!!.height}")
+        SwordLog.debug(tag, "width: $measureWidth, height: ${staticLayout!!.height}")
         setMeasuredDimension(measureWidth, staticLayout!!.height)
     }
 

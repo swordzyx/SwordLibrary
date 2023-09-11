@@ -9,7 +9,7 @@ import android.graphics.RectF
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.dp
 import kotlin.math.cos
 import kotlin.math.sin
@@ -40,13 +40,13 @@ class PieView(context: Context, attrs: AttributeSet): View(context, attrs) {
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        LogUtil.debug(tag, "width: $w, height: $h")
-        LogUtil.debug(tag, "onSizeChanged left: $left, top: $top, right: $right, bottom: $bottom")
+        SwordLog.debug(tag, "width: $w, height: $h")
+        SwordLog.debug(tag, "onSizeChanged left: $left, top: $top, right: $right, bottom: $bottom")
         arcRect = RectF(paddingLeft.toFloat(), paddingLeft.toFloat(), paddingLeft.toFloat() + 2 * arcRadius, paddingTop + 2f * arcRadius)
     }
 
     override fun onDraw(canvas: Canvas) {
-        LogUtil.debug(tag, "left: $left, top: $top, right: $right, bottom: $bottom")
+        SwordLog.debug(tag, "left: $left, top: $top, right: $right, bottom: $bottom")
         //绘制扇形
         var startAngle = 0f
         angles.forEachIndexed { index, angle ->
@@ -56,7 +56,7 @@ class PieView(context: Context, attrs: AttributeSet): View(context, attrs) {
             val dx = cos(arcRadian).toFloat() * selectedArcOffset
             val dy = sin(arcRadian).toFloat() * selectedArcOffset
             if (index == selectedArc) {
-                LogUtil.debug("dx: $dx, dy: $dy")
+                SwordLog.debug("dx: $dx, dy: $dy")
                 canvas.translate(dx, dy)
             }
             canvas.drawArc(arcRect, startAngle, sweepAngle, true, paint)

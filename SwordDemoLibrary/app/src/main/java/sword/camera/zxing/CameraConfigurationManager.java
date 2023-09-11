@@ -8,7 +8,7 @@ import android.view.Surface;
 import android.view.WindowManager;
 
 import com.google.zxing.client.android.camera.CameraConfigurationUtils;
-import com.sword.LogUtil;
+import sword.SwordLog;
 
 public class CameraConfigurationManager {
     private final Context context;
@@ -57,11 +57,11 @@ public class CameraConfigurationManager {
                 }
                 break;
         }
-        LogUtil.debug("display rotation: " + displayRotationFromNature);
+        SwordLog.debug("display rotation: " + displayRotationFromNature);
         
         //获取相机旋转角度，也就是图片或者相机预览图像的旋转角度。
         int cameraRotation = camera.getOrientation();
-        LogUtil.debug("camera rotation: " + cameraRotation);
+        SwordLog.debug("camera rotation: " + cameraRotation);
         
         if (camera.getFacing() == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             cameraRotationNeed = (cameraRotation + displayRotationFromNature) % 360;
@@ -69,7 +69,7 @@ public class CameraConfigurationManager {
         } else {
             cameraRotationNeed = (cameraRotation - displayRotationFromNature + 360) % 360;
         }
-        LogUtil.debug("Clock rotation from display to camera: " + cameraRotationNeed);
+        SwordLog.debug("Clock rotation from display to camera: " + cameraRotationNeed);
 
         //获取预览界面的大小
         //获取相机的硬件参数
@@ -77,9 +77,9 @@ public class CameraConfigurationManager {
         //获取屏幕的大小
         screenResolution = new Point();
         display.getSize(screenResolution);
-        LogUtil.debug("screenResolution: x-" + screenResolution.x + "  y-" + screenResolution.y);
+        SwordLog.debug("screenResolution: x-" + screenResolution.x + "  y-" + screenResolution.y);
         cameraResolution = CameraConfigurationUtils.findBestPreviewSizeValue(parameters, screenResolution);
-        LogUtil.debug("screenResolution: x-" + cameraResolution.x + "  y-" + cameraResolution.y);
+        SwordLog.debug("screenResolution: x-" + cameraResolution.x + "  y-" + cameraResolution.y);
         
         boolean isScreenPortrait = screenResolution.x < screenResolution.y;
         boolean isPreviewPortrait = cameraResolution.x < cameraResolution.y;
@@ -89,7 +89,7 @@ public class CameraConfigurationManager {
         } else {
             bestPreviewSize = new Point(cameraResolution.y, cameraResolution.x);
         }
-        LogUtil.debug("Preview size on screen: " + bestPreviewSize);
+        SwordLog.debug("Preview size on screen: " + bestPreviewSize);
     }
 
 
@@ -104,15 +104,15 @@ public class CameraConfigurationManager {
     public void setDesiredCameraParameters(Camera camera, boolean safeMode) {
         Camera.Parameters parameters = camera.getParameters();
         if(parameters == null) {
-            LogUtil.warn("Device error: no camera parameters are available. Proceeding without configuration");
+            SwordLog.warn("Device error: no camera parameters are available. Proceeding without configuration");
             return;
         }
 
-        LogUtil.debug("Initial camera parameters: " + parameters.flatten());
+        SwordLog.debug("Initial camera parameters: " + parameters.flatten());
 
         //? 这里没有理解是什么意思
         if (safeMode) {
-            LogUtil.warn("In camera config safe mode -- most settings will not be honored");
+            SwordLog.warn("In camera config safe mode -- most settings will not be honored");
         }
 
         //初始化曝光补偿以及是否开启闪光灯，默认不开启曝光补偿和闪光灯
@@ -127,7 +127,7 @@ public class CameraConfigurationManager {
         }*/
 
         //设置预览尺寸
-        LogUtil.debug("set best preview：" + bestPreviewSize.x + "---" + bestPreviewSize.y);
+        SwordLog.debug("set best preview：" + bestPreviewSize.x + "---" + bestPreviewSize.y);
         //parameters.setPreviewSize(bestPreviewSize.x, bestPreviewSize.y);
         
         //设置参数，使参数生效

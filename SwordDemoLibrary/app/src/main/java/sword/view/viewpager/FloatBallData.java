@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import sword.view.viewpager.data.FloatBallInfoData;
 
 import com.sword.Encryption;
-import com.sword.LogUtil;
+import sword.SwordLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +70,7 @@ public class FloatBallData {
     client.newCall(request).enqueue(new Callback() {
       @Override
       public void onFailure(@NonNull Call call, @NonNull IOException e) {
-        LogUtil.error(TAG, "getInfoById 请求失败");
+        SwordLog.error(TAG, "getInfoById 请求失败");
       }
 
       @Override
@@ -78,7 +78,7 @@ public class FloatBallData {
         ResponseBody responseBody = response.body();
         if (responseBody != null) {
           String bodyString = responseBody.string();
-          LogUtil.debug(TAG, bodyString);
+          SwordLog.debug(TAG, bodyString);
 
           try {
             JSONObject jsonObject = new JSONObject(bodyString);
@@ -89,7 +89,7 @@ public class FloatBallData {
             e.printStackTrace();
           }
         } else {
-          LogUtil.error(TAG, "getInfoById 响应内容为空");
+          SwordLog.error(TAG, "getInfoById 响应内容为空");
         }
       }
     });

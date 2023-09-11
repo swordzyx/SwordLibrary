@@ -9,7 +9,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.example.swordlibrary.R
-import com.sword.LogUtil
+import sword.SwordLog
 import sword.utils.createButtonToShowViewInContainer
 import sword.view.VerticalLinearContainer
 
@@ -143,7 +143,7 @@ class ConstraintLayoutSampleContainer(context: Context, attributeSet: AttributeS
             constraintSetLinear?.visibility = View.VISIBLE
         }
 
-        LogUtil.debug(tag, "addConstraintSetLinearSample defaultVerticalMargin: $defaultMargin")
+        SwordLog.debug(tag, "addConstraintSetLinearSample defaultVerticalMargin: $defaultMargin")
     }
 
     /**

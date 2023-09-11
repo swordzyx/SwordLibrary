@@ -9,7 +9,7 @@ import android.view.ViewConfiguration
 import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.customview.widget.ViewDragHelper
-import com.sword.LogUtil
+import sword.SwordLog
 import kotlin.math.abs
 
 class DragUpDownLayout(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {
@@ -34,7 +34,7 @@ class DragUpDownLayout(context: Context, attrs: AttributeSet? = null) : LinearLa
         }
 
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
-            LogUtil.debug(
+            SwordLog.debug(
                 tag, "view#${children.indexOf(releasedChild)} 释放，" +
                         "水平方向速度：$xvel，垂直方向速度：$yvel, " +
                         "view 坐标：(${releasedChild.left}, ${releasedChild.top})"

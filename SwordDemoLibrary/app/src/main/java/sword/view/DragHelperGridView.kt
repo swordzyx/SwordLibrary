@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.customview.widget.ViewDragHelper
-import com.sword.LogUtil
+import sword.SwordLog
 
 class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
     ViewGroup(context, attrs) {
@@ -22,7 +22,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
     private val viewDragHelperCallback: ViewDragHelper.Callback = object : ViewDragHelper.Callback() {
         //尝试开始拖拽
         override fun tryCaptureView(child: View, pointerId: Int): Boolean {
-            LogUtil.debug(
+            SwordLog.debug(
                 tag,
                 "tryCaptureView，view 索引：${children.indexOf(child)}, pointerId: $pointerId"
             )
@@ -31,7 +31,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
 
         //View 开始被拖拽
         override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
-            LogUtil.debug(
+            SwordLog.debug(
                 tag,
                 "onViewCaptured, view 索引：${children.indexOf(capturedChild)}, pointerId: $activePointerId"
             )
@@ -41,7 +41,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
 
         //水平方向上发生偏移
         override fun clampViewPositionHorizontal(child: View, left: Int, dx: Int): Int {
-            LogUtil.debug(
+            SwordLog.debug(
                 tag,
                 "clampViewPositionHorizontal，view 索引：${children.indexOf(child)}, left: $left, dx: $dx"
             )
@@ -50,7 +50,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
 
         //垂直方向上发生偏移
         override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
-            LogUtil.debug(
+            SwordLog.debug(
                 tag,
                 "clampViewPositionVertical，view 索引：${children.indexOf(child)}, top: $top, dy: $dy"
             )
@@ -64,7 +64,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
             dx: Int,
             dy: Int
         ) {
-            LogUtil.debug(
+            SwordLog.debug(
                 tag,
                 "onViewPositionChanged, view 索引：${children.indexOf(changedView)}, " +
                         "left: $left, top: $top, dx: $dx, dy: $dy"
@@ -72,7 +72,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
         }
 
         override fun onViewDragStateChanged(state: Int) {
-            LogUtil.debug(tag, "onViewDragStateChanged, state: $state")
+            SwordLog.debug(tag, "onViewDragStateChanged, state: $state")
             if (state == ViewDragHelper.STATE_IDLE) {
                 draggedView!!.elevation -= 1
             }
@@ -81,7 +81,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
         //手指松开
         override fun onViewReleased(releasedChild: View, xvel: Float, yvel: Float) {
             val point = calculateLocation(children.indexOf(releasedChild), width / column, height / row)
-            LogUtil.debug(
+            SwordLog.debug(
                 tag, "onViewReleased, " +
                     "被松开的 View 的索引：${children.indexOf(releasedChild)}, xvel: $xvel, yvel: $yvel" + 
                     "，目标 x：${point.x}，目标 y：${point.y}"
@@ -147,7 +147,7 @@ class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
 
         val left = columnIndex * columnWidth
         val top = rowIndex * rowHeight
-        LogUtil.debug(tag, "$rowIndex 行 $columnIndex 列，左：$left，上：$top， index：$index")
+        SwordLog.debug(tag, "$rowIndex 行 $columnIndex 列，左：$left，上：$top， index：$index")
         return Point(left, top)
     }
 

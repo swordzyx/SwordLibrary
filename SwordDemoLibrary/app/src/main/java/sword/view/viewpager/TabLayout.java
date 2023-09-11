@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.swordlibrary.R;
-import com.sword.LogUtil;
+import sword.SwordLog;
 import com.sword.ScreenSize;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class TabLayout extends LinearLayout {
         @Override
         public void onClick(View v) {
           viewPager.setCurrentItem((int)itemView.getTag());
-          LogUtil.debug(TAG, "click tab " + itemView.getTag());
+          SwordLog.debug(TAG, "click tab " + itemView.getTag());
         }
       });
       
@@ -64,18 +64,18 @@ public class TabLayout extends LinearLayout {
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        LogUtil.debug("onPageScrolled, position: " + position + ", positinoOffset: " + positionOffset + ", positionOffsetPixels: " + positionOffsetPixels);
+        SwordLog.debug("onPageScrolled, position: " + position + ", positinoOffset: " + positionOffset + ", positionOffsetPixels: " + positionOffsetPixels);
       }
 
       @Override
       public void onPageSelected(int position) {
-        LogUtil.debug(TAG, "onPageSelected, position: " + position);
+        SwordLog.debug(TAG, "onPageSelected, position: " + position);
         onSelected(position);
       }
 
       @Override
       public void onPageScrollStateChanged(int state) {
-        LogUtil.debug(TAG, "onPageScrollStateChanged, state: " + state);
+        SwordLog.debug(TAG, "onPageScrollStateChanged, state: " + state);
       }
     });
   }

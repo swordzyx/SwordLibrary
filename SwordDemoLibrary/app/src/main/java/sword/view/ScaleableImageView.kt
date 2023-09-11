@@ -15,7 +15,7 @@ import android.widget.OverScroller
 import androidx.core.animation.doOnEnd
 import androidx.core.view.GestureDetectorCompat
 import com.example.swordlibrary.R
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.createBitmap1
 import com.sword.dp
 
@@ -67,7 +67,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
     override fun onScale(detector: ScaleGestureDetector): Boolean {
       //通过 detector.scaleFactor 可以获取到实时的缩放系数，当前状态和上一个状态的比值
       val tempScale = currentScale * detector.scaleFactor
-      LogUtil.debug(tag, "onScale tempScale: $tempScale")
+      SwordLog.debug(tag, "onScale tempScale: $tempScale")
       if (tempScale < smallScale) {
         if (currentScale != smallScale) {
           currentScale = smallScale
@@ -92,7 +92,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
     override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
       offsetX = (detector.focusX - width / 2) * (1 - animatorEndValue / animatorStartValue)
       offsetY = (detector.focusY - height / 2) * (1 - animatorEndValue / animatorStartValue)
-      LogUtil.debug(tag, "onScaleBegin, offsetX: $offsetX, offsetY: $offsetY")
+      SwordLog.debug(tag, "onScaleBegin, offsetX: $offsetX, offsetY: $offsetY")
       limitEdge(offsetX, offsetY)
       return true
     }
@@ -116,7 +116,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
         }
       }
       scaleAnimator.setFloatValues(animatorStartValue, animatorEndValue)
-      LogUtil.debug(
+      SwordLog.debug(
         tag,
         "onScaleEnd, offsetX: $offsetX, offsetY: $offsetY, animatorEndValue: $animatorEndValue, animatorStartValue: $animatorStartValue"
       )
@@ -162,7 +162,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
       distanceX: Float,
       distanceY: Float
     ): Boolean {
-      LogUtil.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY")
+      SwordLog.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY")
       if (big) {
         offsetX -= distanceX
         offsetY -= distanceY
@@ -193,7 +193,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
         ((bitmap.height * bigScale - height) / 2).toInt()
       )
       postOnAnimation(this@ScaleableImageView)
-      LogUtil.debug(tag, "onFling velocityX: $velocityX, velocitY: $velocityY")
+      SwordLog.debug(tag, "onFling velocityX: $velocityX, velocitY: $velocityY")
       return true
     }
 
@@ -220,11 +220,11 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
 
     //计算外贴边图和内贴边图的缩放比例
     if ((bitmap.width / bitmap.height) < (w / h)) {
-      LogUtil.debug(tag, "瘦图")
+      SwordLog.debug(tag, "瘦图")
       smallScale = h / bitmap.height.toFloat()
       bigScale = w / bitmap.width.toFloat() * SCALE_FACTOR
     } else {
-      LogUtil.debug(tag, "胖图")
+      SwordLog.debug(tag, "胖图")
       smallScale = w / bitmap.width.toFloat()
       bigScale = h / bitmap.height.toFloat() * SCALE_FACTOR
     }
@@ -232,7 +232,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
     animatorStartValue = smallScale
     animatorEndValue = bigScale
     scaleAnimator.setFloatValues(smallScale, bigScale)
-    LogUtil.debug(
+    SwordLog.debug(
       tag,
       "onSizeChange, bitmap width: ${bitmap.width} , height: ${bitmap.height}, bigScale $bigScale, smallScale: $smallScale"
     )
@@ -246,7 +246,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
     canvas.scale(currentScale, currentScale, width / 2f, height / 2f)
     //居中绘制图片
     canvas.drawBitmap(bitmap, originalOffsetX, originalOffsetY, paint)
-    LogUtil.debug(
+    SwordLog.debug(
       tag,
       "onDraw smallScale: $smallScale, bigScale: $bigScale, currentScale: $currentScale, animatorStartValue: $animatorStartValue, animatorEndValue: $animatorEndValue, offsetX: $offsetX, offsetY: $offsetY, fraction: $fraction"
     )
@@ -262,6 +262,6 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
       //使用匿名内部类对象无法通过 this 定位当前 Runnable
       postOnAnimation(this)
     }
-    LogUtil.debug(tag, "onFling run, offsetX: $offsetX, offsetY: $offsetY")
+    SwordLog.debug(tag, "onFling run, offsetX: $offsetX, offsetY: $offsetY")
   }
 }

@@ -1,6 +1,6 @@
 package sword.thread;
 
-import com.sword.LogUtil;
+import sword.SwordLog;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -42,7 +42,7 @@ public class ThreadExecutor {
       boolean terminated = executor.awaitTermination(10L, TimeUnit.SECONDS);
       if (!terminated) {
         if (!executor.isTerminated()) {
-          LogUtil.error(tag, "killing non-finished task");
+          SwordLog.error(tag, "killing non-finished task");
         }
         executor.shutdown();
       }

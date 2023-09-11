@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.example.swordlibrary.R
 import com.sword.*
+import sword.SwordLog
 
 class CircleXfermodeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val tag = "CircleXfermodeView"
@@ -28,7 +29,7 @@ class CircleXfermodeView(context: Context, attrs: AttributeSet) : View(context, 
     private var bitmap: Bitmap? = null
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        LogUtil.debug(tag, "strokeWidth: ${paint.strokeWidth}")
+        SwordLog.debug(tag, "strokeWidth: ${paint.strokeWidth}")
         setMeasuredDimension(
             paddingLeft + (radius + paint.strokeWidth.toInt() + 5) * 2 + paddingRight,
             paddingTop + (radius + paint.strokeWidth.toInt() + 5) * 2 + paddingBottom

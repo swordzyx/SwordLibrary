@@ -1,9 +1,11 @@
-package com.sword;
+package sword;
 
 import android.annotation.SuppressLint;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.sword.Encryption;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class LogUtil {
+public class SwordLog {
   private static final String TAG = "Sword";
   private static final String LOG_SWITCH_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "LoggerSwitch";
   private static final File LOG_SWITCH_FILE = new File(LOG_SWITCH_DIR
@@ -26,7 +28,7 @@ public class LogUtil {
   private static final File logFile = new File(SwordApplication.getGlobalContext().getExternalFilesDir(null).getAbsoluteFile(), "log.log");
   @SuppressLint("SimpleDateFormat")
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-  private static final String packageName = SwordApplication.getGlobalContext().getPackageName(); 
+  private static final String packageName = SwordApplication.getGlobalContext().getPackageName();
   private static final boolean DEBUG = true; 
   
   public static boolean isDebug() {

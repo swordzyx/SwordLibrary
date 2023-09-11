@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.sword.LogUtil;
+import sword.SwordLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +50,7 @@ public class WebViewContainer extends ViewGroup {
     try {
       jsonObject.put("command", "GetRedContent");
       jsBridge.returnToWebView(webView, jsonObject.toString());
-      LogUtil.debug("jsonString: " + jsonString + ", jsonObject: " + jsonObject);
+      SwordLog.debug("jsonString: " + jsonString + ", jsonObject: " + jsonObject);
     } catch (JSONException e) {
       e.printStackTrace();
     }

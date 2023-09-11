@@ -9,7 +9,7 @@ import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.OverScroller
 import androidx.core.view.children
-import com.sword.LogUtil
+import sword.SwordLog
 import kotlin.math.abs
 
 /**
@@ -98,7 +98,7 @@ class TwoPager(context: Context, attrs: AttributeSet? = null) : ViewGroup(contex
         )
         //往左为负，往右为正
         val vx = velocityTracker.xVelocity
-        LogUtil.debug(tag, "xVelocity: $vx")
+        SwordLog.debug(tag, "xVelocity: $vx")
 
         val distanceX = if (abs(vx) < viewConfiguration.scaledMinimumFlingVelocity) {
           if (scrollX > width / 2) {
@@ -122,7 +122,7 @@ class TwoPager(context: Context, attrs: AttributeSet? = null) : ViewGroup(contex
 
   override fun computeScroll() {
     if (overScroll.computeScrollOffset()) {
-      LogUtil.debug(tag, "computeScroll, currX: ${overScroll.currX}, currY: ${overScroll.currY}")
+      SwordLog.debug(tag, "computeScroll, currX: ${overScroll.currX}, currY: ${overScroll.currY}")
       scrollTo(overScroll.currX, overScroll.currY)
       postInvalidateOnAnimation()
     }

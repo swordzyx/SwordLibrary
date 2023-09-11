@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Point
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.GestureDetector.OnDoubleTapListener
@@ -20,7 +19,7 @@ import androidx.core.view.NestedScrollingChild3
 import androidx.core.view.NestedScrollingChildHelper
 import androidx.core.view.ViewCompat
 import com.example.swordlibrary.R
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.createBitmap1
 import com.sword.dp
 
@@ -72,7 +71,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     override fun onScale(detector: ScaleGestureDetector): Boolean {
       //通过 detector.scaleFactor 可以获取到实时的缩放系数，当前状态和上一个状态的比值
       val tempScale = currentScale * detector.scaleFactor
-      LogUtil.debug(tag, "onScale tempScale: $tempScale")
+      SwordLog.debug(tag, "onScale tempScale: $tempScale")
       if (tempScale < smallScale) {
         if (currentScale != smallScale) {
           currentScale = smallScale
@@ -97,7 +96,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     override fun onScaleBegin(detector: ScaleGestureDetector): Boolean {
       offsetX = (detector.focusX - width / 2) * (1 - animatorEndValue / animatorStartValue)
       offsetY = (detector.focusY - height / 2) * (1 - animatorEndValue / animatorStartValue)
-      LogUtil.debug(tag, "onScaleBegin, offsetX: $offsetX, offsetY: $offsetY")
+      SwordLog.debug(tag, "onScaleBegin, offsetX: $offsetX, offsetY: $offsetY")
       limitEdge(offsetX, offsetY)
       return true
     }
@@ -121,7 +120,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
         }
       }
       scaleAnimator.setFloatValues(animatorStartValue, animatorEndValue)
-      LogUtil.debug(
+      SwordLog.debug(
         tag,
         "onScaleEnd, offsetX: $offsetX, offsetY: $offsetY, animatorEndValue: $animatorEndValue, animatorStartValue: $animatorStartValue"
       )
@@ -159,13 +158,13 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
   private val onGestureListener = object : SimpleOnGestureListener(), OnDoubleTapListener {
     //down 事件
     override fun onDown(e: MotionEvent): Boolean {
-      LogUtil.debug(tag, "GestureListener down")
+      SwordLog.debug(tag, "GestureListener down")
       return true
     }
 
     //双击事件，第一次按下之后，300ms 之内按下第二次，触发此函数
     override fun onDoubleTap(e: MotionEvent): Boolean {
-      LogUtil.debug(tag, "onDoubleTap, is big: $big")
+      SwordLog.debug(tag, "onDoubleTap, is big: $big")
       big = !big
       if (big) {
         offsetX = (e.x - width / 2) * (1 - bigScale / currentScale)
@@ -185,7 +184,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
       distanceX: Float,
       distanceY: Float
     ): Boolean {
-      LogUtil.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY，" +
+      SwordLog.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY，" +
               "x 总偏移：${currentEvent.x - downEvent.x}, " +
               "y 总偏移：${currentEvent.y - downEvent.y}")
       if (big) {
@@ -193,7 +192,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
         offsetY -= distanceY
 
         val unConsumedDistance = limitEdge(offsetX, offsetY)
-        LogUtil.debug(tag, "unConsumed distance: $unConsumedDistance")
+        SwordLog.debug(tag, "unConsumed distance: $unConsumedDistance")
         invalidate()
         //传入的未使用偏移量为总的未使用偏移量
         nestedScrollingChildHelper.dispatchNestedScroll(0, 0, 0, unConsumedDistance.y.toInt(), null)
@@ -210,7 +209,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
       velocityX: Float,
       velocityY: Float
     ): Boolean {
-      LogUtil.debug(tag, "onFling velocityX: $velocityX, velocitY: $velocityY, isBig: $big")
+      SwordLog.debug(tag, "onFling velocityX: $velocityX, velocitY: $velocityY, isBig: $big")
       if (!big) {
         return false
       }
@@ -245,7 +244,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
         nestedScrollingChildHelper.startNestedScroll(ViewCompat.SCROLL_AXIS_VERTICAL)
       }
     }
-    LogUtil.debug(tag, "onTouchEvent, ScaleInProgress: ${scaleGestureDetector.isInProgress}, gestureTouch: $gestureTouch")
+    SwordLog.debug(tag, "onTouchEvent, ScaleInProgress: ${scaleGestureDetector.isInProgress}, gestureTouch: $gestureTouch")
     return true
   }
 
@@ -256,11 +255,11 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
 
     //计算外贴边图和内贴边图的缩放比例
     if ((bitmap.width / bitmap.height) < (w / h)) {
-      LogUtil.debug(tag, "瘦图")
+      SwordLog.debug(tag, "瘦图")
       smallScale = h / bitmap.height.toFloat()
       bigScale = w / bitmap.width.toFloat() * SCALE_FACTOR
     } else {
-      LogUtil.debug(tag, "胖图")
+      SwordLog.debug(tag, "胖图")
       smallScale = w / bitmap.width.toFloat()
       bigScale = h / bitmap.height.toFloat() * SCALE_FACTOR
     }
@@ -268,7 +267,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     animatorStartValue = smallScale
     animatorEndValue = bigScale
     scaleAnimator.setFloatValues(smallScale, bigScale)
-    LogUtil.debug(
+    SwordLog.debug(
       tag,
       "onSizeChange, bitmap width: ${bitmap.width} , height: ${bitmap.height}, bigScale $bigScale, smallScale: $smallScale"
     )
@@ -282,7 +281,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     canvas.scale(currentScale, currentScale, width / 2f, height / 2f)
     //居中绘制图片
     canvas.drawBitmap(bitmap, originalOffsetX, originalOffsetY, paint)
-    LogUtil.debug(
+    SwordLog.debug(
       tag,
       "onDraw smallScale: $smallScale, bigScale: $bigScale, currentScale: $currentScale, animatorStartValue: $animatorStartValue, animatorEndValue: $animatorEndValue, offsetX: $offsetX, offsetY: $offsetY, fraction: $fraction"
     )
@@ -298,7 +297,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
       //使用匿名内部类对象无法通过 this 定位当前 Runnable
       postOnAnimation(this)
     }
-    LogUtil.debug(tag, "onFling run, offsetX: $offsetX, offsetY: $offsetY")
+    SwordLog.debug(tag, "onFling run, offsetX: $offsetX, offsetY: $offsetY")
   }
 
 
@@ -307,7 +306,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     isNestedScrollingEnabled = true
   }
   override fun startNestedScroll(axes: Int, type: Int): Boolean {
-    LogUtil.debug(
+    SwordLog.debug(
       tag, "startNestedScroll, axes(轴)：${if (axes == SCROLL_AXIS_VERTICAL) "y 轴" else "x 轴"}，" +
           "type：$type"
     )
@@ -315,12 +314,12 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
   }
 
   override fun stopNestedScroll(type: Int) {
-    LogUtil.debug(tag, "stopNestedScroll, type: $type")
+    SwordLog.debug(tag, "stopNestedScroll, type: $type")
     nestedScrollingChildHelper.stopNestedScroll(type)
   }
 
   override fun hasNestedScrollingParent(type: Int): Boolean {
-    LogUtil.debug(tag, "hasNestedScrollParent, type: $type")
+    SwordLog.debug(tag, "hasNestedScrollParent, type: $type")
     return nestedScrollingChildHelper.hasNestedScrollingParent(type)
   }
 
@@ -333,7 +332,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     type: Int,
     consumed: IntArray
   ) {
-    LogUtil.debug(
+    SwordLog.debug(
       tag,
       "无返回值 dispatchNestedScroll, " +
           "dxConsumed: $dxConsumed, " +
@@ -369,7 +368,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
       offsetInWindow,
       type
     )
-    LogUtil.debug(tag, "有返回值 dispatchNestedScroll, dxConsumed: $dxConsumed, " +
+    SwordLog.debug(tag, "有返回值 dispatchNestedScroll, dxConsumed: $dxConsumed, " +
         "dyConsumed: $dyConsumed, " +
         "dxUnconsumed: $dxUnconsumed, " +
         "dyUnconsumed: $dyUnconsumed, " +
@@ -386,7 +385,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     type: Int
   ): Boolean {
     val result = nestedScrollingChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow, type)
-    LogUtil.debug(tag, "dispatchNestedPreScroll, dx: $dx," +
+    SwordLog.debug(tag, "dispatchNestedPreScroll, dx: $dx," +
         " dy: $dy, consumed: $consumed," +
         " offsetInWindow: $offsetInWindow," +
         " type: $type, 返回结果：$result")

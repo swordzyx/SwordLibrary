@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.swordlibrary.R;
 import com.google.zxing.Result;
-import com.sword.LogUtil;
+import sword.SwordLog;
 import com.sword.PermissionUtilKt;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.debug("onCreate");
+        SwordLog.debug("onCreate");
 
         //设置屏幕常亮
         Window window = getWindow();
@@ -63,7 +63,7 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
     @Override
     protected void onResume() {
         super.onResume();
-        LogUtil.debug("onResume");
+        SwordLog.debug("onResume");
         
         setRequestedOrientation(getCurrentOrientation());
 
@@ -74,7 +74,7 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
         viewfinderView.setVisibility(View.VISIBLE);
 
         //onResume 会在 surfaceCreated 之前调用，因为执行了 addCallback 之后，才会触发 surfaceCreated 的执行。
-        LogUtil.debug("hasSurface: " + hasSurface);
+        SwordLog.debug("hasSurface: " + hasSurface);
 
         SurfaceView surfaceView = findViewById(R.id.preview_view);
         surfaceView.setVisibility(View.VISIBLE);
@@ -89,7 +89,7 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
     @Override
     protected void onPause() {
         super.onPause();
-        LogUtil.debug("onPause");
+        SwordLog.debug("onPause");
         if (handler != null) {
             handler.quitSync();
             handler = null;
@@ -108,13 +108,13 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
 
     @Override
     protected void onDestroy() {
-        LogUtil.debug("onDestroy");
+        SwordLog.debug("onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        LogUtil.debug("surfaceCreated");
+        SwordLog.debug("surfaceCreated");
         if (!hasSurface) {
             hasSurface = true;
             //初始化相机
@@ -156,14 +156,14 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
     }
 
     private void initCamera(SurfaceHolder holder) {
-        LogUtil.debug("initCamera");
+        SwordLog.debug("initCamera");
         if (holder == null) {
             throw new IllegalStateException("No SurfaceHolder");
         }
 
         //相机已经处于开启状态，则直接返回
         if (cameraManager.isOpen()) {
-            LogUtil.warn("camera has been open");
+            SwordLog.warn("camera has been open");
             return;
         }
         
@@ -217,13 +217,13 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
     }
 
     public void setCodeImage(Bitmap barcode) {
-        LogUtil.debug("bitmap.width: " + barcode.getWidth() + "---bitmap.height: " + barcode.getHeight());
+        SwordLog.debug("bitmap.width: " + barcode.getWidth() + "---bitmap.height: " + barcode.getHeight());
         ((ImageView)findViewById(R.id.code_image)).setVisibility(View.VISIBLE);
         ((ImageView)findViewById(R.id.code_image)).setImageBitmap(barcode);
     }
 
     public void setOriginalCapture(Bitmap bitmap) {
-        LogUtil.debug("original width: " + bitmap.getWidth() + "---original height: " + bitmap.getHeight());
+        SwordLog.debug("original width: " + bitmap.getWidth() + "---original height: " + bitmap.getHeight());
         ((ImageView)findViewById(R.id.source_image)).setVisibility(View.VISIBLE);
         ((ImageView)findViewById(R.id.source_image)).setImageBitmap(bitmap);
     }

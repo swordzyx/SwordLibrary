@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Environment
-import com.sword.LogUtil
+import sword.SwordLog
 
 object AndroidFileSystem {
   private const val tag = "AndroidFileSystem"
@@ -16,17 +16,17 @@ object AndroidFileSystem {
    * 打印 Android 文件系统相关信息
    */
   fun Activity.printFileSystemInfo(activity: Activity) {
-    LogUtil.debug(tag, "FilesDir: ${filesDir.absolutePath}")
-    LogUtil.debug(tag, "cacheDir: ${cacheDir.absolutePath}")
+    SwordLog.debug(tag, "FilesDir: ${filesDir.absolutePath}")
+    SwordLog.debug(tag, "cacheDir: ${cacheDir.absolutePath}")
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      LogUtil.debug(tag, "dataDir: ${dataDir.absolutePath}")
+      SwordLog.debug(tag, "dataDir: ${dataDir.absolutePath}")
     }
-    LogUtil.debug(tag, "codeCacheDir: ${codeCacheDir.absolutePath}")
+    SwordLog.debug(tag, "codeCacheDir: ${codeCacheDir.absolutePath}")
     externalCacheDirs?.forEach {
-      LogUtil.debug(tag, "externalCacheDir: ${it.absolutePath}")
+      SwordLog.debug(tag, "externalCacheDir: ${it.absolutePath}")
     }
     externalMediaDirs?.forEach {
-      LogUtil.debug(tag, "externalMediaDir: ${it.absolutePath}")
+      SwordLog.debug(tag, "externalMediaDir: ${it.absolutePath}")
     }
   }
 
@@ -36,7 +36,7 @@ object AndroidFileSystem {
   fun startWatchingExternalStorage(context: Context) {
     val externalStorageReceiver: BroadcastReceiver = object : BroadcastReceiver() {
       override fun onReceive(context: Context, intent: Intent) {
-        LogUtil.debug("Storage: " + intent.data)
+        SwordLog.debug("Storage: " + intent.data)
         updateExternalStorageState()
       }
     }
@@ -54,11 +54,11 @@ object AndroidFileSystem {
   private fun updateExternalStorageState() {
     val state = Environment.getExternalStorageState()
     if (Environment.MEDIA_MOUNTED == state) {
-      LogUtil.debug("externalStorageState：Environment.MEDIA_MOUNTED，外部存储是否可用：true，外部存储是否可写: true")
+      SwordLog.debug("externalStorageState：Environment.MEDIA_MOUNTED，外部存储是否可用：true，外部存储是否可写: true")
     } else if (Environment.MEDIA_MOUNTED_READ_ONLY == state) {
-      LogUtil.debug("externalStorageState：Environment.MEDIA_MOUNTED_READ_ONLY，外部存储是否可用：true，外部存储是否可写: false")
+      SwordLog.debug("externalStorageState：Environment.MEDIA_MOUNTED_READ_ONLY，外部存储是否可用：true，外部存储是否可写: false")
     } else {
-      LogUtil.debug("externalStorageState：未知，外部存储是否可用：true，外部存储是否可写: false")
+      SwordLog.debug("externalStorageState：未知，外部存储是否可用：true，外部存储是否可写: false")
     }
 
     //todo: handleExternalStorageState(externalStorageAvailable, externalStorageWritable)

@@ -1,0 +1,80 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android)
+SHA1-Digest-Manifest: jzK6tBwZPzG5XMtH9Z5FwZuCSKs=
+X-Android-APK-Signed: 2, 3
+
+Name: AndroidManifest.xml
+SHA1-Digest: N2i/O66Dzho2GrP+8J/JrFqDciA=
+
+Name: classes.dex
+SHA1-Digest: VLZyKHdaMjDFlgTo+42OA+LGIW4=
+
+Name: res/drawable-v1/ic_launcher_background.xml
+SHA1-Digest: xthSOByCJUR4HLxtuTm2pqaammA=
+
+Name: res/drawable-v21/ic_launcher_background.xml
+SHA1-Digest: 9w1FLkKOaB0XdMCYuz/2vzekals=
+
+Name: res/drawable-v24/$ic_launcher_foreground__0.xml
+SHA1-Digest: GOoMkZ6fg8RLdH7DojsYZim/RQE=
+
+Name: res/drawable-v24/ic_launcher_foreground.xml
+SHA1-Digest: EsoRH4jXhqJyya3XhSusc8zc0MI=
+
+Name: res/drawable/ic_launcher_background.xml
+SHA1-Digest: p0oUQK5gRwg4ZahPCzSffP/XS3M=
+
+Name: res/layout-v1/activity_main.xml
+SHA1-Digest: 9dQaygxxUErhoR9ptTs9hlELd2I=
+
+Name: res/layout/activity_main.xml
+SHA1-Digest: 7VkUH9fGvjkIG8MB3RYf7uy7zwg=
+
+Name: res/mipmap-anydpi-v26/ic_launcher.xml
+SHA1-Digest: BFcr4HIS7eqNfMzdltuqs+6XLfE=
+
+Name: res/mipmap-anydpi-v26/ic_launcher_round.xml
+SHA1-Digest: 1NhMGhuL1AJn+EyoXPySHWkOGUQ=
+
+Name: res/mipmap-anydpi-v33/ic_launcher.xml
+SHA1-Digest: nboOY1AURaJorbOeZJS/WT3ctI0=
+
+Name: res/mipmap-hdpi-v4/ic_launcher.webp
+SHA1-Digest: oXMVidFqogZBWM4vni8BLeIfrVU=
+
+Name: res/mipmap-hdpi-v4/ic_launcher_round.webp
+SHA1-Digest: vDAkSYG0zoYLxC73FvbUGh+OSPw=
+
+Name: res/mipmap-mdpi-v4/ic_launcher.webp
+SHA1-Digest: MYTk+Q8cSongY5SuhK+tO9lB9WU=
+
+Name: res/mipmap-mdpi-v4/ic_launcher_round.webp
+SHA1-Digest: e/6lKba/tGNteHar2ApnGinTaac=
+
+Name: res/mipmap-xhdpi-v4/ic_launcher.webp
+SHA1-Digest: C26KMSRBywgX9oRN4zioO8goN9Q=
+
+Name: res/mipmap-xhdpi-v4/ic_launcher_round.webp
+SHA1-Digest: jq2VSpurPG9GhUIYltFpmQSk6kU=
+
+Name: res/mipmap-xxhdpi-v4/ic_launcher.webp
+SHA1-Digest: 62nAseYMRMtjgQVRagUmG7zoN+Q=
+
+Name: res/mipmap-xxhdpi-v4/ic_launcher_round.webp
+SHA1-Digest: Xo3ZvtRz9dcEba7vGzdnmP0UmqQ=
+
+Name: res/mipmap-xxxhdpi-v4/ic_launcher.webp
+SHA1-Digest: /c5JdG+pBU7p2kJrWR5w4HqUJ68=
+
+Name: res/mipmap-xxxhdpi-v4/ic_launcher_round.webp
+SHA1-Digest: zK37yVejTbt6doOQTlXeR+FcOTY=
+
+Name: res/xml/backup_rules.xml
+SHA1-Digest: 55uFD3rupUAHd/SapM7WaDulWzc=
+
+Name: res/xml/data_extraction_rules.xml
+SHA1-Digest: JrKy+pMNGxWuH/btcApyrx9kLQs=
+
+Name: resources.arsc
+SHA1-Digest: cyQZc9hX0ykgLZbQlcTm+WKFWc0=
+

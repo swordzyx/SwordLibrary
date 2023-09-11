@@ -1,6 +1,6 @@
 package sword.io
 
-import com.sword.LogUtil
+import sword.SwordLog
 import okio.*
 import okio.Path.Companion.toPath
 import java.io.File
@@ -72,7 +72,7 @@ object OkioIO {
                 lineCollector?.readLine(line)
             }
         }
-        LogUtil.debug(tag, "读取 $path 耗时 ${System.currentTimeMillis() - startTime}ms")
+        SwordLog.debug(tag, "读取 $path 耗时 ${System.currentTimeMillis() - startTime}ms")
     }
 
     fun readFileUseBuffer(path: String) {

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import androidx.constraintlayout.widget.ConstraintHelper
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.sword.LogUtil
+import sword.SwordLog
 import kotlin.math.hypot
 
 /**
@@ -21,7 +21,7 @@ class CircularRevealConstraintHelper(context: Context, attrs: AttributeSet) :
      */
     override fun updatePostLayout(container: ConstraintLayout) {
         super.updatePostLayout(container)
-        LogUtil.debug(tag, "updatePostLayout，布局加载之后回调")
+        SwordLog.debug(tag, "updatePostLayout，布局加载之后回调")
 
         referencedIds.forEach { id ->
             val view = container.findViewById<View>(id)
@@ -35,16 +35,16 @@ class CircularRevealConstraintHelper(context: Context, attrs: AttributeSet) :
 
     override fun updatePreLayout(container: ConstraintLayout) {
         super.updatePreLayout(container)
-        LogUtil.debug(tag, "updatePreLayout，布局加载之前回调")
+        SwordLog.debug(tag, "updatePreLayout，布局加载之前回调")
     }
 
     override fun updatePostConstraints(container: ConstraintLayout) {
         super.updatePostConstraints(container)
-        LogUtil.debug(tag, "updatePostConstraints")
+        SwordLog.debug(tag, "updatePostConstraints")
     }
 
     override fun updatePostMeasure(container: ConstraintLayout?) {
         super.updatePostMeasure(container)
-        LogUtil.debug(tag, "updatePostMeasure")
+        SwordLog.debug(tag, "updatePostMeasure")
     }
 }

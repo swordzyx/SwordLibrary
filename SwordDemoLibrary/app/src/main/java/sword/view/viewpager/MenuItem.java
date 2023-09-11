@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.sword.LogUtil;
+import sword.SwordLog;
 import com.sword.ScreenSize;
 
 /**
@@ -46,8 +46,8 @@ class MenuItem {
         int titleTop = top + icon.getMeasuredHeight() + verticalPadding;
         title.layout(left, titleTop, left + title.getMeasuredWidth(), titleTop + title.getMeasuredHeight());
         
-        LogUtil.debug("FloatMenuView - title - top: " + title.getTop() + "; left: " + title.getLeft() + "; bottom: " + title.getBottom() + "; right: " + title.getRight());
-        LogUtil.debug("FloatMenuView - icon - top: " + icon.getTop() + "; left: " + icon.getLeft() + "; bottom: " + icon.getBottom() + "; right: " + icon.getRight());
+        SwordLog.debug("FloatMenuView - title - top: " + title.getTop() + "; left: " + title.getLeft() + "; bottom: " + title.getBottom() + "; right: " + title.getRight());
+        SwordLog.debug("FloatMenuView - icon - top: " + icon.getTop() + "; left: " + icon.getLeft() + "; bottom: " + icon.getBottom() + "; right: " + icon.getRight());
     }
 
     int getWidth() {
@@ -68,6 +68,6 @@ class MenuItem {
 
         int titleWidthSpec = View.MeasureSpec.makeMeasureSpec(icon.getMeasuredWidth(), View.MeasureSpec.EXACTLY);
         title.measure(titleWidthSpec, defaultSpec);
-        LogUtil.verbose("FloatMenuView - icon width: " + icon.getMeasuredWidth() + "; height: " + icon.getMeasuredHeight());
+        SwordLog.verbose("FloatMenuView - icon width: " + icon.getMeasuredWidth() + "; height: " + icon.getMeasuredHeight());
     }
 }

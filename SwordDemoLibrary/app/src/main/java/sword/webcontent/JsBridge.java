@@ -1,12 +1,11 @@
 package sword.webcontent;
 
 import android.net.Uri;
-import android.os.Build;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 
-import com.sword.LogUtil;
+import sword.SwordLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +20,7 @@ public class JsBridge {
    */
   @JavascriptInterface
   public void logout(String msg) {
-    LogUtil.debug(tag, msg);
+    SwordLog.debug(tag, msg);
   }
 
   /**
@@ -58,7 +57,7 @@ public class JsBridge {
     webView.evaluateJavascript("javascript:receiveFromNative(\"" + info + "\")", new ValueCallback<String>() {
       @Override
       public void onReceiveValue(String value) {
-        LogUtil.debug(tag, "evaluatejavascript receive: " + value);
+        SwordLog.debug(tag, "evaluatejavascript receive: " + value);
       }
     });
   }

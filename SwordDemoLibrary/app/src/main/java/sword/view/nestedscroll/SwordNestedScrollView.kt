@@ -5,22 +5,21 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.view.NestedScrollingParent3
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
-import com.sword.LogUtil
+import sword.SwordLog
 
 class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): NestedScrollView(context, attrs) {
     private val tag = "SwordNestedScrollView"
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray) {
         super.onNestedPreScroll(target, dx, dy, consumed)
-        LogUtil.debug(tag, "调用 NestedScrollingParent 的 onNestedPreScroll, " +
+        SwordLog.debug(tag, "调用 NestedScrollingParent 的 onNestedPreScroll, " +
                 "target: ${target.contentDescription}-${target.javaClass.canonicalName}, " +
                 "dx: $dx, dy: $dy, consumed: $consumed")
     }
 
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
-        LogUtil.debug(tag, "调用 NestedScrollingParent2 的 onNestedPreScroll, " +
+        SwordLog.debug(tag, "调用 NestedScrollingParent2 的 onNestedPreScroll, " +
                 "target: ${target.contentDescription}-${target.javaClass.canonicalName}, " +
                 "dx: $dx, dy: $dy, consumed: $consumed, type: $type")
         super.onNestedPreScroll(target, dx, dy, consumed, type)
@@ -33,7 +32,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
         dxUnconsumed: Int,
         dyUnconsumed: Int
     ) {
-        LogUtil.debug(tag, "调用 NestedScrollingParent 的 onNestedScroll 方法，" +
+        SwordLog.debug(tag, "调用 NestedScrollingParent 的 onNestedScroll 方法，" +
                 "target：${target.contentDescription}--${target.javaClass.canonicalName}, " +
                 "dxComsumed: $dxConsumed, " +
                 "dyComsumed: $dyConsumed, " +
@@ -63,7 +62,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
         type: Int,
         consumed: IntArray
     ) {
-        LogUtil.debug(tag, "调用 NestedScrollingParent3 的 onNestedScroll 方法，" +
+        SwordLog.debug(tag, "调用 NestedScrollingParent3 的 onNestedScroll 方法，" +
                 "target：${target.contentDescription}--${target.javaClass.canonicalName}, " +
                 "dxComsumed: $dxConsumed, " +
                 "dyComsumed: $dyConsumed, " +
@@ -81,7 +80,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
     }
 
     override fun onNestedScrollAccepted(child: View, target: View, axes: Int) {
-        LogUtil.debug(tag, "调用 NestedScrollingParent 的 onNestedScrollAccepted 函数， " +
+        SwordLog.debug(tag, "调用 NestedScrollingParent 的 onNestedScrollAccepted 函数， " +
                 "child：${child.contentDescription}--${child.javaClass.canonicalName}, " +
                 "target: ${target.contentDescription}--${target.javaClass.canonicalName}, " +
                 "axes: ${getAxesString(axes)}")
@@ -89,7 +88,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
     }
 
     override fun onNestedScrollAccepted(child: View, target: View, axes: Int, type: Int) {
-        LogUtil.debug(tag, "调用 NestedScrollingParent2 的 onNestedScrollAccepted 函数， " +
+        SwordLog.debug(tag, "调用 NestedScrollingParent2 的 onNestedScrollAccepted 函数， " +
                 "child：${child.contentDescription}--${child.javaClass.canonicalName}, " +
                 "target: ${target.contentDescription}--${target.javaClass.canonicalName}, " +
                 "axes: ${getAxesString(axes)}, type: $type")
@@ -98,14 +97,14 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         val isInterceptTouchEvent = super.onInterceptTouchEvent(ev)
-        LogUtil.debug(tag, "onInterceptTouchEvent 是否拦截：$isInterceptTouchEvent")
+        SwordLog.debug(tag, "onInterceptTouchEvent 是否拦截：$isInterceptTouchEvent")
         return isInterceptTouchEvent
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         val result = super.onTouchEvent(ev)
-        LogUtil.debug(tag, "onTouchEvent, result: $result")
+        SwordLog.debug(tag, "onTouchEvent, result: $result")
         return result
     }
 
@@ -116,7 +115,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
             ViewCompat.SCROLL_AXIS_VERTICAL -> "y 轴"
             else -> "none"
         }
-        LogUtil.debug(tag, "调用 NestedScrollingParent2 的 onStartNestedScroll 方法, " +
+        SwordLog.debug(tag, "调用 NestedScrollingParent2 的 onStartNestedScroll 方法, " +
                 "child: ${child.contentDescription}--${child.javaClass.canonicalName}, " +
                 "target: ${target.contentDescription}--${target.javaClass.canonicalName}, " +
                 "axes: $axesS, type: $type, 结果：$result")
@@ -130,7 +129,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
             ViewCompat.SCROLL_AXIS_VERTICAL -> "y 轴"
             else -> "none"
         }
-        LogUtil.debug(tag, "调用 NestedScrollingParent 的 onStartNestedScroll 方法, " +
+        SwordLog.debug(tag, "调用 NestedScrollingParent 的 onStartNestedScroll 方法, " +
                 "child: ${child.contentDescription}--${child.javaClass.canonicalName}, " +
                 "target: ${target.contentDescription}--${target.javaClass.canonicalName}, " +
                 "axes: $axesS, 结果：$result")
@@ -139,7 +138,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
 
     override fun onNestedPreFling(target: View, velocityX: Float, velocityY: Float): Boolean {
         val result = super.onNestedPreFling(target, velocityX, velocityY)
-        LogUtil.debug(tag, "onNestedPreFling, 拦截 Fling 事件，" +
+        SwordLog.debug(tag, "onNestedPreFling, 拦截 Fling 事件，" +
                 "target: ${target.contentDescription}--${target.javaClass.canonicalName}, " +
                 "velocityX: $velocityX, velocityY: $velocityY, 拦截结果：$result")
         return result
@@ -152,7 +151,7 @@ class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): Nest
         consumed: Boolean
     ): Boolean {
         val result = super.onNestedFling(target, velocityX, velocityY, consumed)
-        LogUtil.debug(tag, "onNestedFling，收到 Fling 事件, " +
+        SwordLog.debug(tag, "onNestedFling，收到 Fling 事件, " +
                 "target: ${target.contentDescription}--${target.javaClass.canonicalName}，" +
                 "velocityX: ${velocityX}, velocityY: ${velocityY}, 是否消耗：$result")
         return result

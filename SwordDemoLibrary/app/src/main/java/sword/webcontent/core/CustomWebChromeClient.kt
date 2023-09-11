@@ -2,7 +2,7 @@ package sword.webcontent.core
 
 import android.webkit.*
 import androidx.appcompat.app.AlertDialog
-import com.sword.LogUtil
+import sword.SwordLog
 
 class CustomWebChromeClient : WebChromeClient() {
   private val TAG = "SwordWebChromeClient"
@@ -11,7 +11,7 @@ class CustomWebChromeClient : WebChromeClient() {
    * 网页端控制台打印
    */
   override fun onConsoleMessage(consoleMessage: ConsoleMessage): Boolean {
-    LogUtil.debug(TAG, "onConsoleMessage -> ${consoleMessage.message()}")
+    SwordLog.debug(TAG, "onConsoleMessage -> ${consoleMessage.message()}")
     return super.onConsoleMessage(consoleMessage)
   }
 
@@ -24,7 +24,7 @@ class CustomWebChromeClient : WebChromeClient() {
     message: String,
     result: JsResult
   ): Boolean {
-    LogUtil.debug(TAG, "url: $url, message：$message" )
+    SwordLog.debug(TAG, "url: $url, message：$message" )
     AlertDialog.Builder(view.context).setTitle("警告").setMessage(message)
       .setPositiveButton("确认") {dialog, which -> 
         dialog.dismiss()
@@ -47,7 +47,7 @@ class CustomWebChromeClient : WebChromeClient() {
     message: String,
     result: JsResult
   ): Boolean {
-    LogUtil.debug(TAG, "url: $url, message: $message")
+    SwordLog.debug(TAG, "url: $url, message: $message")
     AlertDialog.Builder(view.context)
       .setTitle("警告")
       .setMessage(message)
@@ -73,7 +73,7 @@ class CustomWebChromeClient : WebChromeClient() {
     defaultValue: String,
     result: JsPromptResult
   ): Boolean {
-    LogUtil.debug(TAG, "url: $url, message: $message, defaultValue: $defaultValue")
+    SwordLog.debug(TAG, "url: $url, message: $message, defaultValue: $defaultValue")
     result.confirm("onJsPrompt result")
     return true
   }

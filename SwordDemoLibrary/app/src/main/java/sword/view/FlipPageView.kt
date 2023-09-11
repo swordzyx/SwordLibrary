@@ -10,7 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.withSave
 import com.example.swordlibrary.R
-import com.sword.LogUtil
+import sword.SwordLog
 import com.sword.createBitmap1
 import com.sword.dp2px
 
@@ -75,20 +75,20 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
         animatorSet = AnimatorSet().apply {
             addListener(object : Animator.AnimatorListener{
                 override fun onAnimationStart(animation: Animator) {
-                    LogUtil.debug(tag, "onAnimationStart")
+                    SwordLog.debug(tag, "onAnimationStart")
                 }
 
                 override fun onAnimationEnd(animation: Animator) {
-                    LogUtil.debug(tag, "onAnimationEnd")
+                    SwordLog.debug(tag, "onAnimationEnd")
                     start()
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
-                    LogUtil.debug(tag, "onAnimationCancel")
+                    SwordLog.debug(tag, "onAnimationCancel")
                 }
 
                 override fun onAnimationRepeat(animation: Animator) {
-                    LogUtil.debug(tag, "onAnimationRepeat")
+                    SwordLog.debug(tag, "onAnimationRepeat")
                 }
 
             })
