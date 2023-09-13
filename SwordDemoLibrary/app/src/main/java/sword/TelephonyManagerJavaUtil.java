@@ -1,4 +1,4 @@
-package com.sword;
+package sword;
 
 import android.Manifest;
 import android.app.Activity;

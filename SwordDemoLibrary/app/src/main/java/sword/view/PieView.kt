@@ -10,7 +10,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import sword.SwordLog
-import com.sword.dp
+import sword.dp
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.random.Random

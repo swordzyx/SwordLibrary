@@ -1,4 +1,4 @@
-package com.sword
+package sword
 
 import java.util.*
 import java.util.regex.Pattern

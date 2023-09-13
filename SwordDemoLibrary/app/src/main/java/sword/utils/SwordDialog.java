@@ -16,7 +16,8 @@ import android.widget.ScrollView;
 import androidx.annotation.LayoutRes;
 
 import com.example.swordlibrary.R;
-import com.sword.ScreenSize;
+
+import sword.ScreenSize;
 
 
 public class SwordDialog extends Dialog {

@@ -10,7 +10,7 @@ import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
 import sword.SwordLog
-import com.sword.dp2px
+import sword.dp2px
 
 class TextReadViewStaticLayout(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
     private val tag = "TextReadViewStaticLayout"

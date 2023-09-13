@@ -23,8 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.swordlibrary.R;
 import com.google.zxing.Result;
+
+import sword.PermissionUtilKt;
 import sword.SwordLog;
-import com.sword.PermissionUtilKt;
 
 import java.io.IOException;
 

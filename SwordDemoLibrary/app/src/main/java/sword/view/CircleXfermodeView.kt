@@ -6,8 +6,10 @@ import android.graphics.Paint.Style
 import android.util.AttributeSet
 import android.view.View
 import com.example.swordlibrary.R
-import com.sword.*
 import sword.SwordLog
+import sword.createBitmap1
+import sword.dp
+import sword.dp2px
 
 class CircleXfermodeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val tag = "CircleXfermodeView"

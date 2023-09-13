@@ -5,7 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import sword.SwordLog
-import com.sword.dp2px
+import sword.dp2px
 
 class TextDisplayView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private val tag = "TextDisplayView"

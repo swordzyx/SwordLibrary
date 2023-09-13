@@ -6,8 +6,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.widget.ImageView;
 
-import com.sword.ScreenSize;
-
+import sword.ScreenSize;
 import sword.view.CircleView;
 
 

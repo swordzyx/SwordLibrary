@@ -1,4 +1,4 @@
-package com.sword
+package sword
 
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -21,7 +21,7 @@ fun createBitmap(resource: Resources, resId: Int, targetWidth: Float, targetHeig
         while (sampleSize < scale) {
             sampleSize *= 2f
         }
-        sword.LogUtil.debug("targetWidth: $targetWidth, targetHeight: $targetHeight, oldWidth: $oldWidth, oldHeight: $oldHeight, sampleSize: $sampleSize, scale: $scale")
+        SwordLog.debug("targetWidth: $targetWidth, targetHeight: $targetHeight, oldWidth: $oldWidth, oldHeight: $oldHeight, sampleSize: $sampleSize, scale: $scale")
         inJustDecodeBounds = false
         inSampleSize = sampleSize.toInt()
     }

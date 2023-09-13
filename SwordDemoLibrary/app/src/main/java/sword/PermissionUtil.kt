@@ -1,4 +1,4 @@
-package com.sword
+package sword
 
 import android.app.Activity
 import android.content.Context

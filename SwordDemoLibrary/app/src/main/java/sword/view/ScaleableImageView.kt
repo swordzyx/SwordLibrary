@@ -16,8 +16,8 @@ import androidx.core.animation.doOnEnd
 import androidx.core.view.GestureDetectorCompat
 import com.example.swordlibrary.R
 import sword.SwordLog
-import com.sword.createBitmap1
-import com.sword.dp
+import sword.createBitmap1
+import sword.dp
 
 class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
   View(context, attributeSet), Runnable {

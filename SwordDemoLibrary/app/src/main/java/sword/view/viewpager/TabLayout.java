@@ -10,8 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.swordlibrary.R;
+
+import sword.ScreenSize;
 import sword.SwordLog;
-import com.sword.ScreenSize;
 
 import java.util.ArrayList;
 import java.util.List;

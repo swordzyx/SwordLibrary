@@ -1,4 +1,4 @@
-package com.sword;
+package sword;
 
 public class CommandResult {
     private String errorString;

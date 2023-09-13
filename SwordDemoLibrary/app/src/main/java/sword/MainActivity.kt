@@ -13,8 +13,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.R
-import com.sword.dp
-import com.sword.initWindowSize
 import sword.motionlayout.MotionLayoutContainer
 import sword.view.*
 import sword.view.constraint.ConstraintLayoutSampleContainer
@@ -31,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     initWindowSize(this)
 
     setContentView(R.layout.activity_main)
+    
+    SwordLog.printStackTrace("打印堆栈")
     
     rootView = findViewById(R.id.rootView)
     contentView = findViewById(R.id.contentView)

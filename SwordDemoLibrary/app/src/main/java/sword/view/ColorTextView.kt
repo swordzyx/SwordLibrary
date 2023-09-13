@@ -6,8 +6,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import com.sword.dp
-import com.sword.dp2px
+import sword.dp
+import sword.dp2px
 import kotlin.random.Random
 
 private val COLORS = intArrayOf(

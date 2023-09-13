@@ -4,11 +4,12 @@ apply plugin: 'com.plugin.sword'
 
 
 android {
+	namespace 'com.example.swordlibrary'
 	compileSdkVersion 33 //compileSdkVersion 被丢弃
 	//buildToolsVersion 函数被丢弃
 	defaultConfig {
 		applicationId "com.example.swordlibrary"
-		minSdk 22 //minSdkVersion 被丢弃
+		minSdk 24 //minSdkVersion 被丢弃
 		targetSdkVersion 30 //targetSdkVersion 被丢弃
 		versionCode 1
 		versionName "1.0"
@@ -45,16 +46,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.10"
 	//协程相关依赖
 	//implementation "org.jetbrains.kotlinx:kotlinx:kotlinx-coroutines-core:1.6.0"
-    implementation 'androidx.core:core-ktx:1.12.0' //compileSdkVersion 至少为 33
+    implementation 'androidx.core:core-ktx:1.10.0' //compileSdkVersion 至少为 33
 	
     implementation 'androidx.appcompat:appcompat:1.6.1'
 	//约束布局相关依赖
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 	implementation "androidx.activity:activity-ktx:1.7.2"
 
-	//implementation "androidx.window:window-java:1.0.0"
+	implementation "androidx.window:window-java:1.0.0"
 
-    implementation project(":codelibrary")
     //log4j
     // https://mvnrepository.com/artifact/log4j/log4j
     implementation group: 'log4j', name: 'log4j', version: '1.2.17'
@@ -78,6 +78,7 @@ dependencies {
 	//LeakCanary：内存泄漏检测库
 	debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
 	//debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+	debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
 	
 	//lifecycle-livedata
 	implementation 'androidx.lifecycle:lifecycle-livedata-core-ktx:2.6.1'

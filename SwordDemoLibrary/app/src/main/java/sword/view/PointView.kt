@@ -10,8 +10,8 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.View
-import com.sword.dp
-import com.sword.dp2px
+import sword.dp
+import sword.dp2px
 
 class PointView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
     var point = PointF(paddingLeft.toFloat(), paddingTop.toFloat())

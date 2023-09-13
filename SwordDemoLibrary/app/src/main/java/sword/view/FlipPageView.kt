@@ -11,8 +11,8 @@ import android.view.View
 import androidx.core.graphics.withSave
 import com.example.swordlibrary.R
 import sword.SwordLog
-import com.sword.createBitmap1
-import com.sword.dp2px
+import sword.createBitmap1
+import sword.dp2px
 
 /**
  * 翻页效果 View

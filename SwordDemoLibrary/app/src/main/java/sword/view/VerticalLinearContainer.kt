@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import sword.SwordLog
-import com.sword.dp
+import sword.dp
 
 abstract class VerticalLinearContainer(context: Context, attrs: AttributeSet? = null) :
   LinearLayout(context, attrs), INavigationLayout {

@@ -1,4 +1,4 @@
-package com.example.utilclass.net.dongliu.apk.parser
+package sword
 
 import android.text.TextUtils
 import java.lang.StringBuilder

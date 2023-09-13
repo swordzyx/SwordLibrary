@@ -1,4 +1,4 @@
-package com.sword;
+package sword;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;

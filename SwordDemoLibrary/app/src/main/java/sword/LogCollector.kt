@@ -1,4 +1,4 @@
-package com.sword
+package sword
 
 import android.os.Environment
 import java.io.*
@@ -19,7 +19,7 @@ class LogCollector {
             logFile.createNewFile()
             logFile.setWritable(true)
         }
-      sword.LogUtil.debug("logFilePath: $logFilePath")
+      SwordLog.debug("logFilePath: $logFilePath")
     }
     
     fun collectLog() {
@@ -33,7 +33,7 @@ class LogCollector {
             }
             reader.close()
             writer.close()
-          sword.LogUtil.debug("collect complete")
+          SwordLog.debug("collect complete")
         }.start()
     }
 }

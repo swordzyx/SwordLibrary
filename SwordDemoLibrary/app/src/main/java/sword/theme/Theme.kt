@@ -8,8 +8,8 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.res.ResourcesCompat
 import com.example.swordlibrary.R
-import com.sword.dp
-import com.sword.dp2px
+import sword.dp
+import sword.dp2px
 
 class Theme {
     companion object {

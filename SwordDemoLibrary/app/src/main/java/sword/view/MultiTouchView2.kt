@@ -9,8 +9,8 @@ import android.view.MotionEvent
 import android.view.View
 import com.example.swordlibrary.R
 import sword.SwordLog
-import com.sword.createBitmap1
-import com.sword.dp
+import sword.createBitmap1
+import sword.dp
 
 /**
  * 多点触控 - 接力型

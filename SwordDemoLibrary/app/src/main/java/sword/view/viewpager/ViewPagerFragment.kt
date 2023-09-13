@@ -5,9 +5,9 @@ import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.viewpager.widget.ViewPager
-import com.sword.dp
-import com.sword.windowHeight
-import com.sword.windowWidth
+import sword.dp
+import sword.windowHeight
+import sword.windowWidth
 
 class ViewPagerFragment(val context: Context) {
   

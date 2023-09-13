@@ -5,8 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import com.sword.dp
-import com.sword.dp2px
+import sword.dp
+import sword.dp2px
 
 class CircleImageView(context: Context, attrs: AttributeSet? = null): View(context, attrs) {
     private val radius = dp2px(100f)

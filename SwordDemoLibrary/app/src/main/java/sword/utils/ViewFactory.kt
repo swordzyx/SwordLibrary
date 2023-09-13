@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.children
 import com.example.swordlibrary.R
-import com.sword.dp
+import sword.dp
 
 /**
  * 创建一个蓝底白字的椭圆型 Button

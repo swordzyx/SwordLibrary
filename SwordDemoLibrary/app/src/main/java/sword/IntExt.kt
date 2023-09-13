@@ -1,4 +1,4 @@
-package com.sword
+package sword
 
 import android.content.res.Resources
 import android.util.TypedValue

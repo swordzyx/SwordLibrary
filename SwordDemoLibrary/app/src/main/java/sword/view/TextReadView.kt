@@ -7,8 +7,8 @@ import android.util.AttributeSet
 import android.view.View
 import com.example.swordlibrary.R
 import sword.SwordLog
-import com.sword.createBitmap1
-import com.sword.dp2px
+import sword.createBitmap1
+import sword.dp2px
 
 
 /**

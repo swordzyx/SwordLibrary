@@ -12,7 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.swordlibrary.R;
-import com.sword.ScreenSize;
+
+import sword.ScreenSize;
 
 /**
  * 悬浮菜单封装类

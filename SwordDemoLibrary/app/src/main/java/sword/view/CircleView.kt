@@ -10,8 +10,8 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
-import com.sword.dp
-import com.sword.dp2px
+import sword.dp
+import sword.dp2px
 
 class CircleView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
     private val tag = "CircleView"

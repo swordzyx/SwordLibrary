@@ -1,4 +1,4 @@
-package com.sword
+package sword
 
 import android.annotation.SuppressLint
 import android.app.Activity

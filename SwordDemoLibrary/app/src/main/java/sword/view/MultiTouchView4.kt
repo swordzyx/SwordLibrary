@@ -9,7 +9,7 @@ import android.graphics.Path
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import com.sword.dp
+import sword.dp
 
 /**
  * 各自为战型滑动

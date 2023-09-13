@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewConfiguration
 import com.example.swordlibrary.R
 import sword.SwordLog
-import com.sword.createBitmap1
-import com.sword.dp
+import sword.createBitmap1
+import sword.dp
 
 /**
  * 单点触摸

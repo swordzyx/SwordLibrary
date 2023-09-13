@@ -9,8 +9,8 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateInterpolator
-import com.sword.dp
-import com.sword.dp2px
+import sword.dp
+import sword.dp2px
 import kotlin.math.max
 
 private val provinces = listOf(

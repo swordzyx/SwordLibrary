@@ -8,7 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.swordlibrary.R;
-import com.sword.ScreenSize;
+
+import sword.ScreenSize;
 
 
 public class ErrorView extends ViewGroup {

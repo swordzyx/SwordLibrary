@@ -5,7 +5,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import sword.logic.LoginLogic
-import com.sword.dp
+import sword.dp
 import sword.theme.Theme
 import sword.SwordLog
 

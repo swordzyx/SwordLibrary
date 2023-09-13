@@ -3,7 +3,7 @@ package sword.logger
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import sword.SwordLog
-import com.sword.dp
+import sword.dp
 
 open class LoggerActivity: AppCompatActivity() {
   private val tag = this::class.java.name

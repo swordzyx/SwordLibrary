@@ -1,4 +1,4 @@
-package com.sword;
+package sword;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,7 +37,7 @@ public class EmulatorCheck {
     boolean b4 = judgeBuildInfo();
     boolean b5 = checkAppInstalled(context.getPackageManager(), "com.android.server.telecom");
     emulatorResult = "resolveTelPhone is Emulator: " + b1 + ", hasLightSensor is Emulator: : " + b2 + ", checkEmulatorByCpuInfoFile is Emulator: : " + b3 + ", judgeBuildInfo is Emulator: : " + b4 + ", check com.android.server.telecom exist: " + b5;
-    LogUtil.debug(TAG, emulatorResult);
+    SwordLog.debug(TAG, emulatorResult);
     return /*b1 || */b2 || b3 || b4 /*|| b5*/;
   }
 
@@ -55,12 +56,12 @@ public class EmulatorCheck {
 
   @SuppressLint("PackageManagerGetSignatures")
   private static boolean checkAppInstalled(PackageManager pm, String packageName) {
-    LogUtil.debug(TAG, "checkAppInstalled, packageName: " + packageName);
+    SwordLog.debug(TAG, "checkAppInstalled, packageName: " + packageName);
     try {
       return pm.getPackageInfo(packageName, 0) != null;
     } catch (Exception exception) {
       exception.printStackTrace();
-      LogUtil.debug("checkAppInstalled ");
+      SwordLog.debug("checkAppInstalled ");
       return false;
     }
   }
@@ -101,7 +102,7 @@ public class EmulatorCheck {
         lineNum++;
 
         String lowerContent = readLine.toLowerCase();
-        LogUtil.debug(TAG, "cpu info, line " + lineNum + " - " + readLine);
+        SwordLog.debug(TAG, "cpu info, line " + lineNum + " - " + readLine);
         if (lowerContent.contains("intel")) {
           return true;
         }
@@ -144,7 +145,7 @@ public class EmulatorCheck {
    * 与上面的 {@link EmulatorCheck#checkEmulatorByCpuInfoFile()} 是一致的。
    */
   private boolean checkEmulatorCatCpuInfoShell() {
-    CommandResult result = ShellAdbUtil.execShellCommand(false, "cat /proc/cpuinfo");
+    ShellAdbUtil.CommandResult result = ShellAdbUtil.execShellCommand(false, "cat /proc/cpuinfo");
     String cpuinfo = result.getSuccessString();
     if (cpuinfo.toLowerCase().contains("intel") || cpuinfo.toLowerCase().contains("amd")) {
       return true;
@@ -175,18 +176,18 @@ public class EmulatorCheck {
    */
   public static boolean isEmulatorFromAbi() {
     String abi = Build.CPU_ABI;
-    LogUtil.debug(TAG, "cpu abi: " + abi);
+    SwordLog.debug(TAG, "cpu abi: " + abi);
     return !TextUtils.isEmpty(abi) && abi.contains("x86");
   }
 
   private static boolean isEmulatorFromDevice() {
-    LogUtil.debug(TAG, "isEmulatorFromDevice, Device: " + Build.DEVICE);
+    SwordLog.debug(TAG, "isEmulatorFromDevice, Device: " + Build.DEVICE);
     return Build.DEVICE.toLowerCase().contains("generic");
   }
 
   private static boolean isEmulatorFromMode() {
     String model = Build.MODEL;
-    LogUtil.debug(TAG, "model: " + model);
+    SwordLog.debug(TAG, "model: " + model);
     return model.contains("google_sdk")
         || model.contains("Emulator")
         || model.toLowerCase().contains("sdk")
@@ -195,31 +196,31 @@ public class EmulatorCheck {
 
   private static boolean isEmulatorFromFingerPrint() {
     String fingerprint = Build.FINGERPRINT;
-    LogUtil.debug(TAG, "isEmulatorFromFingerPrint, fingerprint: " + fingerprint);
+    SwordLog.debug(TAG, "isEmulatorFromFingerPrint, fingerprint: " + fingerprint);
     return fingerprint.startsWith("generic")
         || fingerprint.contains("vbox")
         || fingerprint.contains("test-keys");
   }
 
   private static boolean isEmulatorFromManufacturer() {
-    LogUtil.debug(TAG, "isEmulatorFromManufacturer, Manufacturer: " + Build.MANUFACTURER);
+    SwordLog.debug(TAG, "isEmulatorFromManufacturer, Manufacturer: " + Build.MANUFACTURER);
     return Build.MANUFACTURER.contains("Genymotion")
         || Build.MANUFACTURER.toLowerCase().contains("unknown");
   }
 
   @SuppressLint("HardwareIds")
   private static boolean isEmulatorFromSerial() {
-    LogUtil.debug(TAG, "isEmulatorFromSerial, Serial: " + Build.SERIAL);
+    SwordLog.debug(TAG, "isEmulatorFromSerial, Serial: " + Build.SERIAL);
     return Build.SERIAL.equalsIgnoreCase("android");
   }
 
   private static boolean isEmulatorFromBrand() {
-    LogUtil.debug(TAG, "isEmulatorFromBrand, Brand: " + Build.BRAND);
+    SwordLog.debug(TAG, "isEmulatorFromBrand, Brand: " + Build.BRAND);
     return Build.BRAND.startsWith("generic");
   }
 
   private static boolean isEmulatorFromProduct() {
-    LogUtil.debug(TAG, "isEmulatorFromProduct, Product: " + Build.PRODUCT);
+    SwordLog.debug(TAG, "isEmulatorFromProduct, Product: " + Build.PRODUCT);
     return "google_sdk".equals(Build.PRODUCT);
   }
 
@@ -229,7 +230,7 @@ public class EmulatorCheck {
   }
 
   private static boolean mayOnEmulatorViaQEMU() {
-    CommandResult result = ShellAdbUtil.execShellCommand(false, "getprop ro.kernel.qemu");
+    ShellAdbUtil.CommandResult result = ShellAdbUtil.execShellCommand(false, "getprop ro.kernel.qemu");
 
     String qemu = result.getSuccessString();
     return "1".equals(qemu);
@@ -250,7 +251,7 @@ public class EmulatorCheck {
     } catch (InvocationTargetException e) {
       e.printStackTrace();
     }
-    LogUtil.debug(TAG, "getQemuPropertyValue: " + value);
+    SwordLog.debug(TAG, "getQemuPropertyValue: " + value);
     return value;
   }
 

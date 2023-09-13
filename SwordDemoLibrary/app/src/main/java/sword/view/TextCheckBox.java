@@ -12,8 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 
-import com.sword.ScreenSize;
-import com.sword.codelibrary.R;
+import com.example.swordlibrary.R;
+
+import sword.ScreenSize;
 
 public class TextCheckBox extends AppCompatTextView implements Checkable {
     private boolean checked = false;

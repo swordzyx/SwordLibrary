@@ -20,8 +20,8 @@ import androidx.core.view.NestedScrollingChildHelper
 import androidx.core.view.ViewCompat
 import com.example.swordlibrary.R
 import sword.SwordLog
-import com.sword.createBitmap1
-import com.sword.dp
+import sword.createBitmap1
+import sword.dp
 
 class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSet) :
   View(context, attributeSet), Runnable, NestedScrollingChild3 {

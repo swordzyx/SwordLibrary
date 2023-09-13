@@ -4,8 +4,11 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.sword.*
 import sword.SwordLog
+import sword.dp
+import sword.dp2px
+import sword.windowHeight
+import sword.windowWidth
 import kotlin.math.cos
 import kotlin.math.sin
 

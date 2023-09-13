@@ -7,9 +7,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.StateSet;
 
-import androidx.appcompat.widget.AppCompatButton;
-
-import com.sword.ScreenSize;
+import sword.ScreenSize;
 
 
 public class Theme {
@@ -30,8 +28,8 @@ public class Theme {
 
     public static Drawable createButtonStateDrawable(int enableColor, int disableColor) {
         StateListDrawable stateListDrawable = new StateListDrawable();
-        stateListDrawable.addState(new int[]{android.R.attr.state_enabled}, createRoundRectDrawable((int)ScreenSize.dp(4), enableColor));
-        stateListDrawable.addState(StateSet.WILD_CARD, createButtonStateDrawable((int)ScreenSize.dp(4), disableColor));
+        stateListDrawable.addState(new int[]{android.R.attr.state_enabled}, createRoundRectDrawable((int) ScreenSize.dp(4), enableColor));
+        stateListDrawable.addState(StateSet.WILD_CARD, createButtonStateDrawable((int) ScreenSize.dp(4), disableColor));
         return stateListDrawable;
     }
 
