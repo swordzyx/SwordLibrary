@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
   @SuppressLint("SetTextI18n", "InflateParams")
   override fun onCreate(savedInstanceState: Bundle?) {
-    Trace.beginSection("MainActivity-onCreate")
+    Trace.beginSection("$tag-onCreate")
     super.onCreate(savedInstanceState)
     initWindowSize(this)
 
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
   }
   
   private fun initView() {
+    Trace.beginSection("$tag-initView")
     container = findViewById(R.id.contentView)
     
     //自定义 View 触摸反馈：多点触控的原理和写法全解析练习代码
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
 
     //MotionLayout 示例
     addMotionLayoutContainer()
+    Trace.endSection()
   }
 
 
