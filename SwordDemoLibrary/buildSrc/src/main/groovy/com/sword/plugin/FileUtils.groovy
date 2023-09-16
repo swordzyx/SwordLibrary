@@ -4,6 +4,9 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption;
 
 class FileUtils {
+    /**
+     * 拷贝 source 目录中内容到 target 所指向的目录下
+     */
     static void copyDirectory(File source, File target) {
         if (!source.exists()) {
             println "Source path is not a directory"
