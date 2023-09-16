@@ -31,7 +31,11 @@ class TraceTransform : Transform() {
   }
   
   private fun traceDirectoryFiles(directoryInput: DirectoryInput, outputProvider: TransformOutputProvider) {
-    
+    directoryInput.file.walkTopDown()
+      .filter { it.isFile }
+      .forEach {
+        ClassReader
+      }
   }
   
   private fun traceJarFiles(jarInput: JarInput, outputProvider: TransformOutputProvider) {
