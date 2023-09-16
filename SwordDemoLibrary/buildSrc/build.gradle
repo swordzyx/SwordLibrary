@@ -16,4 +16,9 @@ repositories {
 
 dependencies {
     implementation 'com.android.tools.build:gradle:7.4.2'
+
+    //asm 官网：https://asm.ow2.io/
+    implementation "org.ow2.asm:asm:9.5"
+    implementation("org.ow2.asm:asm-commons:9.5")
+
 }
