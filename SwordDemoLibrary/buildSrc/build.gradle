@@ -2,11 +2,19 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10"
     }
+}
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.8.10"
 }
 
 repositories {
@@ -21,4 +29,5 @@ dependencies {
     implementation "org.ow2.asm:asm:9.5"
     implementation("org.ow2.asm:asm-commons:9.5")
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.7.10"
 }
