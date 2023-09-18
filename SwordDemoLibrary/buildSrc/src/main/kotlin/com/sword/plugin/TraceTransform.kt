@@ -8,18 +8,17 @@ import com.android.build.api.transform.Transform
 import com.android.build.api.transform.TransformInvocation
 import com.android.build.api.transform.TransformOutputProvider
 import com.android.build.gradle.internal.pipeline.TransformManager
-import org.gradle.internal.impldep.org.apache.commons.io.IOUtils
-import org.gradle.internal.io.IoUtils
+import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.AdviceAdapter
+import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.jar.JarFile
-import java.util.jar.JarInputStream
 import java.util.jar.JarOutputStream
 import java.util.zip.ZipEntry
 
@@ -50,9 +49,14 @@ class TraceTransform : Transform() {
     private fun traceDirectoryFiles(
         directoryInput: DirectoryInput, outputProvider: TransformOutputProvider
     ) {
+        Logger.debug("traceDirectoryFiles, 目录名：${directoryInput.file.absolutePath}")
         //遍历目录下的文件
-        directoryInput.file.walkTopDown().filter { it.isFile }.forEach { file ->
+        directoryInput.file
+            .walkTopDown()
+            .filter { it.isFile && it.absolutePath.endsWith("class") }
+            .forEach { file ->
             FileInputStream(file).use { fis ->
+                Logger.debug("读取 class 文件 ${file.absolutePath}")
                 //读取 class 文件
                 val classReader = ClassReader(fis)
 
@@ -63,6 +67,8 @@ class TraceTransform : Transform() {
                 val classWriterVisitor = TraceClassVisitor(classWriter)
                 //accept 方法将 ClassReader 和 ClassVisitor 链接起来，EXPAND_FRAMES 表示读取完整的 StackMapFrame
                 classReader.accept(classWriterVisitor, ClassReader.EXPAND_FRAMES)
+
+                file.writeBytes(classWriter.toByteArray())
             }
         }
 
@@ -74,14 +80,19 @@ class TraceTransform : Transform() {
         )
         Logger.debug("拷贝 ${directoryInput.file} 目录下的内容到目标目录 $dest 中")
         //将 class 文件拷贝到目标目录，确保有内容可以继续构建
-        FileUtils.copyDirectory(directoryInput.file, dest)
+        FileUtilsKt.copyDirectory(directoryInput.file, dest)
     }
 
     //jar 文件修改之后要创建一个新的 jar 文件来接收修改之后的内容
     private fun traceJarFiles(jarInput: JarInput, outputProvider: TransformOutputProvider) {
-        val tempFile = outputProvider.getContentLocation(
-            jarInput.name, jarInput.contentTypes, jarInput.scopes, Format.JAR
-        )
+        if (!jarInput.file.absolutePath.endsWith(".jar")) {
+            Logger.debug("非 jar 文件：${jarInput.file.absolutePath}")
+            return
+        }
+
+        val tempFile = File(jarInput.file.parentFile, "${jarInput.file.name}.temp").also {
+            it.createNewFile()
+        }
         Logger.debug("tempFile: ${tempFile.absolutePath}")
         //构造一个 jar 文件对象，用于读取 jar 文件中的内容
         JarFile(jarInput.file).use { jarFile ->
@@ -90,12 +101,12 @@ class TraceTransform : Transform() {
                 //遍历 jar 文件的每一个条目，获取条目的输入流，将其写入新的 jar 文件中
                 jarFile.entries().iterator().forEach { jarEntry ->
                     Logger.debug("遍历到 ${jarEntry.name}")
-
                     val zipEntry = ZipEntry(jarEntry.name)
+
                     jarFile.getInputStream(zipEntry).use { jarInputStream ->
                         jarOutputStream.putNextEntry(zipEntry)
                         //如果是 class 文件，就修改 class 文件中的字节码，然后在拷贝到新的 jar 文件中
-                        if (jarFile.name.endsWith("class")) {
+                        if (jarFile.name.endsWith(".class")) {
                             val classReader = ClassReader(IOUtils.toByteArray(jarInputStream))
                             val classWriter = ClassWriter(classReader, ClassWriter.COMPUTE_MAXS)
                             classReader.accept(
@@ -115,7 +126,7 @@ class TraceTransform : Transform() {
     /*
     类被访问到时，此类中的方法会被触发
      */
-    class TraceClassVisitor(private val classWriter: ClassWriter) :
+    class TraceClassVisitor(classWriter: ClassWriter) :
         ClassVisitor(Opcodes.ASM9, classWriter) {
         private lateinit var className: String
 
@@ -123,9 +134,9 @@ class TraceTransform : Transform() {
             version: Int,
             access: Int,
             name: String,
-            signature: String,
+            signature: String?,
             superName: String?,
-            interfaces: Array<out String>
+            interfaces: Array<out String>?
         ) {
             super.visit(version, access, name, signature, superName, interfaces)
             className = name
@@ -136,8 +147,8 @@ class TraceTransform : Transform() {
             access: Int,
             name: String,
             descriptor: String,
-            signature: String,
-            exceptions: Array<out String>
+            signature: String?,
+            exceptions: Array<out String>?
         ): MethodVisitor {
 
             Logger.debug("访问方法，name: $name, descriptor: $descriptor, signature: $signature, exception: $exceptions")
@@ -164,6 +175,7 @@ class TraceTransform : Transform() {
         //方法开始，需求是插入 Trace.beginSection("类名/方法名")
         override fun onMethodEnter() {
             super.onMethodEnter()
+            Logger.debug("进入方法 $className/$name")
             //1. 将"类名/方法名"压入操作数栈中
             visitLdcInsn("$className/$name")
             //2. 调用 Trace.beginSection 方法
@@ -178,8 +190,9 @@ class TraceTransform : Transform() {
 
         //方法结束，需求是插入 Trace.endSection("类名/方法名")
         override fun onMethodExit(opcode: Int) {
+            Logger.debug("退出方法 $className/$name")
             //调用 Trace.endSection() 方法
-            visitMethodInsn(
+            mv.visitMethodInsn(
                 Opcodes.INVOKESTATIC,
                 "android/os/Trace",
                 "endSection",
