@@ -3,6 +3,9 @@ apply plugin: 'kotlin-android'
 //apply plugin: 'com.plugin.sword'
 apply plugin: 'com.plugin.trace'
 
+//微信应用性能检测插件
+apply plugin: 'com.tencent.matrix-plugin'
+
 
 android {
 	namespace 'com.example.swordlibrary'
@@ -37,6 +40,14 @@ android {
 		main {
 			
 		}
+	}
+}
+
+matrix {
+	trace {
+		enable = true //if you don't want to use trace canary, set false
+		baseMethodMapFile = "${project.buildDir}/matrix_output/Debug.methodmap"
+		blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
 	}
 }
 
@@ -99,6 +110,17 @@ dependencies {
 	implementation project(":lib_annotation")
 	implementation project(":lib_processor")
 	annotationProcessor project(":processor")
+
+	//微信应用性能检测依赖库
+	//implementation group: "com.tencent.matrix", name: "matrix-android-lib", version: matrix_version, changing: true
+	//implementation group: "com.tencent.matrix", name: "matrix-android-commons", version: matrix_version, changing: true
+	implementation group: "com.tencent.matrix", name: "matrix-trace-canary", version: rootProject.matrix_version, changing: true
+	//implementation group: "com.tencent.matrix", name: "matrix-resource-canary-android", version: matrix_version, changing: true
+	//implementation group: "com.tencent.matrix", name: "matrix-resource-canary-common", version: matrix_version, changing: true
+	//implementation group: "com.tencent.matrix", name: "matrix-io-canary", version: matrix_version, changing: true
+	//implementation group: "com.tencent.matrix", name: "matrix-sqlite-lint-android-sdk", version: matrix_version, changing: true
+	//implementation group: "com.tencent.matrix", name: "matrix-battery-canary", version: matrix_version, changing: true
+	//implementation group: "com.tencent.matrix", name: "matrix-hooks", version: matrix_version, changing: true
 
 	
     testImplementation 'junit:junit:4.13.2'
