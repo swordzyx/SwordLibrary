@@ -7,9 +7,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcompose.ui.theme.SwordDemoLibraryTheme
+
+
+val LocalName = compositionLocalOf<String> {
+  throw IllegalStateException("name 没有提供值")
+}
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +25,10 @@ class MainActivity : ComponentActivity() {
     setContent {
       SwordDemoLibraryTheme {
         WeBottomBar()
+      }
+
+      LocalContext
+      CompositionLocalProvider(LocalName provides "sword") {
       }
     }
   }

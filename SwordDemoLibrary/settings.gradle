@@ -1,6 +1,6 @@
 rootProject.name = "SwordDemoLibrary"
 include ':app'
-//include ":compose"
+include ":compose"
 //include ':leetcode'
 //include ':datastruct'
 
