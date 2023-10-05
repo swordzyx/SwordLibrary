@@ -35,12 +35,6 @@ android {
 			includeAndroidResources = true
 		}
 	}
-	
-	sourceSets {
-		main {
-			
-		}
-	}
 }
 
 matrix {
