@@ -3,43 +3,43 @@ package com.example.jetpackcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.jetpackcompose.ui.theme.SwordDemoLibraryTheme
 
 
-val LocalName = compositionLocalOf<String> {
+/*val LocalName = compositionLocalOf<String> {
   throw IllegalStateException("name 没有提供值")
-}
+}*/
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    var big by mutableStateOf(false)
     setContent {
       SwordDemoLibraryTheme {
-        WeBottomBar()
+        //WeBottomBar()
+        val anim = animateDpAsState(if (big) 48.dp else 96.dp)
+        Box(
+          Modifier
+            .size(anim.value)
+            .background(Color.Green)
+            .clickable {
+              big = !big
+            }
+        )
       }
-
-      LocalContext
-      CompositionLocalProvider(LocalName provides "sword") {
-      }
+      /*CompositionLocalProvider(LocalName provides "sword") {
+      }*/
     }
-  }
-
-  @Composable
-  private fun WeBottomBar() {
-    Column {
-      Icon(painter = painterResource(id = R.drawable.ic_me_filled), contentDescription = "我")
-      Text(text = "")
-    }
-    
-    
   }
 }
