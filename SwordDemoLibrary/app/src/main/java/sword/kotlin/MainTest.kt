@@ -1,6 +1,7 @@
 package sword.kotlin
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,7 @@ fun main() = runBlocking(mySingleDispatcher) {
   logx(user)*/
   
   val scope = CoroutineScope(Job() + mySingleDispatcher)
-  scope.launch { 
+  scope.launch(CoroutineName("FirstCoroutine")) { 
     logx(coroutineContext[CoroutineDispatcher] == mySingleDispatcher)
     delay(1000)
     logx("First end")
