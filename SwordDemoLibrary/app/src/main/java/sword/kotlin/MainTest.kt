@@ -15,7 +15,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
@@ -38,9 +37,45 @@ import kotlin.system.measureTimeMillis
 
 
 fun main() {
-    flowSample()
+    flowSample4()
 }
 
+fun flowSample4() = runBlocking { 
+    flow {
+        withContext(Dispatchers.IO) {
+            emit(1)
+        }
+    }.map { it * 2 }.collect()
+}
+
+fun flowSample3() = runBlocking { 
+    fun loadData () =  flow {
+        repeat(3) {
+            delay(1000)
+            emit(it)
+            logx("emit: $it")
+        }
+    }
+    
+    fun updateUI(newData: Int) { logx("update UI: $newData") }
+    fun showLoading() { logx("showLoading") }
+    fun hideLoading() { logx("hideLoading") }
+    
+    val uiScope = CoroutineScope(mySingleDispatcher)
+    
+    loadData()
+        .onStart { showLoading() }
+        .map { it * 2 }
+        .flowOn(Dispatchers.IO)
+        .catch { throwable -> 
+            println(throwable)
+            hideLoading()
+            emit(-1)
+        }
+        .onEach { updateUI(it) }
+        .onCompletion { hideLoading() }
+        .launchIn(uiScope)
+}
 
 fun flowSample2() = runBlocking {
     val scope = CoroutineScope(mySingleDispatcher)
@@ -62,6 +97,8 @@ fun flowSample2() = runBlocking {
             logx("onEach $it")
         }
         .launchIn(scope)
+    
+    //flow.launchIn(scope) 等价于 scope.launch{ flow.collect() }
 }
 
 fun flowSample() = runBlocking {
