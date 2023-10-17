@@ -6,12 +6,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
@@ -30,6 +32,7 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.selects.select
 import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 import kotlin.random.Random
@@ -37,8 +40,87 @@ import kotlin.system.measureTimeMillis
 
 
 fun main() {
-    flowSample4()
+    //flowSample4()
+    selectSample2()
 }
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun selectSample2() = runBlocking { 
+    val startTime = System.currentTimeMillis()
+    val channel1 = produce {
+        send("1")
+        delay(200L)
+        send("2")
+        delay(200L)
+        send("3")
+        delay(150L)
+    }
+    
+    val channel2 = produce { 
+        delay(100L)
+        send("a")
+        delay(200L)
+        send("b")
+        delay(200L)
+        send("c")
+    }
+    
+    suspend fun selectChannel(channel1: ReceiveChannel<String>, channel2: ReceiveChannel<String>) = select {
+        channel1.onReceive {
+            logx("receive channel1: $it")
+        }
+        channel2.onReceive {
+            logx("receive channel2: $it")
+        }
+    }
+    
+    repeat(6) {
+        selectChannel(channel1, channel2)
+    }
+    channel1.cancel()
+    channel2.cancel()
+    
+    println("Time cost: ${System.currentTimeMillis() - startTime}")
+}
+
+fun selectSample1() = runBlocking {
+    suspend fun getCacheInfo(productId: String): Product? { 
+        delay(200L)
+        return Product(productId, 9.9)
+    }
+    
+    suspend fun getNetworkInfo(productId: String): Product? {
+        delay(100L)
+        return Product(productId, 9.8)
+    }
+    
+    fun updateUI(product: Product) {
+        logx("${product.productId}==${product.price}")
+    }
+    
+    val startTime = System.currentTimeMillis()
+    val productId = "product_xxxxx"
+    val product = select {
+        async { 
+            getCacheInfo(productId)
+        }.onAwait {
+            it
+        }
+        
+        async {
+            getNetworkInfo(productId)
+        }.onAwait {
+            it
+        }
+    }
+    
+    product?.let { 
+        updateUI(it)
+        logx("Time code: ${System.currentTimeMillis() - startTime}")
+    }
+}
+
+data class Product(val productId: String, val price: Double)
 
 fun flowSample4() = runBlocking { 
     flow {
