@@ -1,17 +1,22 @@
 package sword.kotlin
 
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.ReceiveChannel
+import kotlinx.coroutines.channels.actor
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.delay
@@ -28,8 +33,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.selects.select
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 import kotlin.random.Random
@@ -37,8 +46,201 @@ import kotlin.system.measureTimeMillis
 
 
 fun main() {
-    flowSample4()
+    //flowSample4()
+    //selectSample2()
+    synchronizedSample5()
 }
+
+fun synchronizedSample5() = runBlocking { 
+    var i = 0
+    val jobs = mutableListOf<Job>()
+    repeat(10) {
+        val job = launch { 
+            repeat(1000) {
+                i++
+                logx("i++, i = $i")
+            }
+        }
+        jobs.add(job)
+    }
+    jobs.joinAll()
+    logx("i = $i")
+}
+
+fun synchronizedSample4() = runBlocking {
+    val deferreds = (1..10).map { 
+        async { 
+            var count = 0
+            repeat(1000) {
+                count ++
+            }
+            return@async count
+        }
+    }
+    
+    var result = 0
+    deferreds.forEach { deferred -> 
+        result += deferred.await()
+    }
+    logx("result: $result")
+}
+
+sealed class Msg
+object AddMsg: Msg()
+
+class ResultMsg(val result: CompletableDeferred<Int>): Msg()
+@OptIn(ObsoleteCoroutinesApi::class)
+fun synchronizedSample3() = runBlocking { 
+    val actor = actor<Msg> { 
+        var count = 0
+        for (msg in channel) {
+            when (msg) {
+                is AddMsg -> count++
+                is ResultMsg -> msg.result.complete(count)
+            }
+        }
+    }
+    
+    val jobs = mutableListOf<Job>()
+    repeat(10) {
+        val job = launch(Dispatchers.Default) {
+            repeat(1000) {
+                actor.send(AddMsg)
+                logx("send AddMsg")
+            }
+        }
+        jobs.add(job)
+    }
+    jobs.joinAll()
+    
+    val deferred = CompletableDeferred<Int>()
+    actor.send(ResultMsg(deferred))
+    logx("send ResultMsg")
+    val result = deferred.await()
+    actor.close()
+    
+    println("result: $result")
+    
+}
+
+fun synchronizedSample2() = runBlocking {
+    val mutex = Mutex()
+    
+    var i = 0
+    val jobs = mutableListOf<Job>()
+    
+    repeat(10) {
+        val job = launch(Dispatchers.Default) { 
+            repeat(1000) {
+                mutex.withLock {
+                    i++
+                }
+            }
+        }
+        jobs.add(job)
+    }
+    println("i = $i")
+}
+
+fun synchronizedSample() = runBlocking { 
+    
+    var i = 0
+    val lock = Any()
+    
+    val jobs = mutableListOf<Job>()
+    
+    repeat(10) {
+        val job = launch(Dispatchers.Default) { 
+            repeat(1000) {
+                synchronized(lock) {
+                    i++
+                }
+            }
+        }
+        jobs.add(job)
+    }
+    
+    jobs.joinAll()
+    println("i = $i")
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun selectSample2() = runBlocking { 
+    val startTime = System.currentTimeMillis()
+    val channel1 = produce {
+        send("1")
+        delay(200L)
+        send("2")
+        delay(200L)
+        send("3")
+        delay(150L)
+    }
+    
+    val channel2 = produce { 
+        delay(100L)
+        send("a")
+        delay(200L)
+        send("b")
+        delay(200L)
+        send("c")
+    }
+    
+    suspend fun selectChannel(channel1: ReceiveChannel<String>, channel2: ReceiveChannel<String>) = select {
+        channel1.onReceive {
+            logx("receive channel1: $it")
+        }
+        channel2.onReceive {
+            logx("receive channel2: $it")
+        }
+    }
+    
+    repeat(6) {
+        selectChannel(channel1, channel2)
+    }
+    channel1.cancel()
+    channel2.cancel()
+    
+    println("Time cost: ${System.currentTimeMillis() - startTime}")
+}
+
+fun selectSample1() = runBlocking {
+    suspend fun getCacheInfo(productId: String): Product? { 
+        delay(200L)
+        return Product(productId, 9.9)
+    }
+    
+    suspend fun getNetworkInfo(productId: String): Product? {
+        delay(100L)
+        return Product(productId, 9.8)
+    }
+    
+    fun updateUI(product: Product) {
+        logx("${product.productId}==${product.price}")
+    }
+    
+    val startTime = System.currentTimeMillis()
+    val productId = "product_xxxxx"
+    val product = select {
+        async { 
+            getCacheInfo(productId)
+        }.onAwait {
+            it
+        }
+        
+        async {
+            getNetworkInfo(productId)
+        }.onAwait {
+            it
+        }
+    }
+    
+    product?.let { 
+        updateUI(it)
+        logx("Time code: ${System.currentTimeMillis() - startTime}")
+    }
+}
+
+data class Product(val productId: String, val price: Double)
 
 fun flowSample4() = runBlocking { 
     flow {
