@@ -6,13 +6,17 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.KeyframesSpec
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.repeatable
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -42,6 +46,7 @@ class MainActivity : ComponentActivity() {
 
             /*CompositionLocalProvider(LocalName provides "sword") {
             }*/
+            SpringSpecSample()
         }
     }
 
@@ -61,6 +66,18 @@ class MainActivity : ComponentActivity() {
                     big = !big
                 }
         )
+    }
+
+    @Composable
+    fun RepeatableSpecSample() {
+        var start by remember { mutableStateOf(false) }
+        val targetValue = remember(start) { if (start) 0.dp else 200.dp }
+        val animable = remember { Animatable(targetValue, Dp.VectorConverter) }
+
+        //启动动画
+        LaunchedEffect(targetValue) {
+            animable.animateTo(targetValue, repeatable(3, tween(), RepeatMode.Reverse, StartOffset(500)))
+        }
     }
 
     @Composable
@@ -139,7 +156,16 @@ class MainActivity : ComponentActivity() {
         val animable = remember { Animatable(targetValue, Dp.VectorConverter) }
 
         LaunchedEffect(key1 = targetValue) {
-            animable.animateTo(targetValue, SpringSpec())
+            animable.animateTo(targetValue, SpringSpec(Spring.DampingRatioNoBouncy))
         }
+
+        Box(
+            Modifier
+                .size(animable.value)
+                .background(Color.Green)
+                .clickable {
+                    big = !big
+                }
+        )
     }
 }
