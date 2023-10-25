@@ -17,7 +17,6 @@ public class BubbleSort<T extends Comparable<T>> extends Sort<T> {
                     datas[start] = datas[i];
                     datas[i] = temp;
                 }
-                
             }
         }
     }
