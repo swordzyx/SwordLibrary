@@ -17,15 +17,13 @@ public class SelectSort<T extends Comparable<T>> extends Sort<T> {
     for (int end = datas.length - 1; end > 0; end--) {
       int max = 0;
       for (int i = 1; i <= end; i++) {
-        if (datas[i].compareTo(datas[max]) > 0) {
+        if (compare(i, max) > 0) {
           max = i;
         }
       }
 
       if (max != end) {
-        T temp = datas[max];
-        datas[max] = datas[end];
-        datas[end] = temp;
+        swap(max, end);
       }
     }
   }

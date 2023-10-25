@@ -2,6 +2,7 @@ package com.sword.mylibrary;
 
 import com.sword.mylibrary.sort.BubbleSort;
 import com.sword.mylibrary.sort.BubbleSort1;
+import com.sword.mylibrary.sort.InsertionSort;
 import com.sword.mylibrary.sort.SelectSort;
 import com.sword.mylibrary.sort.Sort;
 
@@ -25,9 +26,14 @@ public class Main {
         System.out.println(bubbleSort1);*/
 
 
-        SelectSort<Integer> selectSort = new SelectSort<>();
+        /*SelectSort<Integer> selectSort = new SelectSort<>();
         selectSort.sort(Arrays.copyOf(array, array.length));
         System.out.println("-----------------------------------------------------");
-        System.out.println(selectSort);
+        System.out.println(selectSort);*/
+
+        InsertionSort<Integer> insertionSort = new InsertionSort<>();
+        insertionSort.sort(Arrays.copyOf(array, array.length));
+        System.out.println("-----------------------------------------------------");
+        System.out.println(insertionSort);
     }
 }

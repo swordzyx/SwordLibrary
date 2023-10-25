@@ -29,6 +29,11 @@ public abstract class Sort<T extends Comparable<T>>  {
         compareCount++;
         return datas[i1].compareTo(datas[i2]);
     }
+
+    public int compare(T d1, T d2) {
+        compareCount++;
+        return d1.compareTo(d2);
+    }
     
     public void swap(int i1, int i2) {
         swapCount++;
@@ -47,10 +52,10 @@ public abstract class Sort<T extends Comparable<T>>  {
         }
         printInfo.append("\n")
             .append("【").append(getName()).append("】\n")
-            .append("稳定性：").append(isStable()).append("】\n")
-            .append("比较次数：").append(compareCount).append("\n")
-            .append("交换次数：").append(swapCount).append("\n")
-            .append(" 耗时：").append((timeCost / 1000)).append("s(").append(timeCost).append("ms)");
+            .append("\t稳定性：").append(isStable()).append("\n")
+            .append("\t比较次数：").append(compareCount).append("\n")
+            .append("\t交换次数：").append(swapCount).append("\n")
+            .append("\t耗时：").append((timeCost / 1000)).append("s(").append(timeCost).append("ms)");
         return printInfo.toString();
     }
     
@@ -68,7 +73,7 @@ public abstract class Sort<T extends Comparable<T>>  {
         
         Student[] students = new Student[10];
         for (int i = 1; i<=10; i++) {
-            students[i] = new Student(10, i * 10);
+            students[i-1] = new Student(10, i * 10);
         }
         sort((T[]) students);
         for (int i=0; i<10; i++) {
