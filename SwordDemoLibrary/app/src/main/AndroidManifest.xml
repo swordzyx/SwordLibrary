@@ -41,6 +41,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="sword.ChangeUIOnThreadActivity"/>
+
         <activity android:name="sword.data.photopicker.GalleryActivity" />
 
         <activity android:name="sword.annotation.AnnotationActivity"/>
