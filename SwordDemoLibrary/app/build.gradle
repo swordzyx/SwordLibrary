@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 //apply plugin: 'com.plugin.sword'
-apply plugin: 'com.plugin.trace'
+//apply plugin: 'com.plugin.trace'
 
 //微信应用性能检测插件
 apply plugin: 'com.tencent.matrix-plugin'

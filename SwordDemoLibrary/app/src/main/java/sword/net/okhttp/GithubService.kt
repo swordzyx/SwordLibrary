@@ -22,7 +22,13 @@ class GithubService {
             println("body: ${response.body?.string()}, response: $response")
             response
         }
+        .addInterceptor { interceptorChain ->
+            val response = (interceptorChain as RealInterceptorChain).proceed(interceptorChain.request())
+            println("body: ${response.body?.string()}, response: $response")
+            response
+        }
         .build()
+
     private val scope = CoroutineScope(Dispatchers.Default)
 
     fun listRepos(user: String) {
