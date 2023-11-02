@@ -17,13 +17,17 @@ fun main() = runBlocking {
 class GithubService {
     private val baseUrl = "https://api.github.com"
     private val okHttpClient = OkHttpClient.Builder()
-        .addNetworkInterceptor {
-            val response = (it as RealInterceptorChain).proceed(it.request())
+        .addNetworkInterceptor { interceptor ->
+            val request = interceptor.request()
+            println("interceptor 拦截：$request")
+            val response = interceptor.proceed(interceptor.request())
             println("body: ${response.body?.string()}, response: $response")
             response
         }
         .addInterceptor { interceptorChain ->
-            val response = (interceptorChain as RealInterceptorChain).proceed(interceptorChain.request())
+            val request = interceptorChain.request()
+            println("interceptor 拦截：$request")
+            val response = (interceptorChain as RealInterceptorChain).proceed(request)
             println("body: ${response.body?.string()}, response: $response")
             response
         }
