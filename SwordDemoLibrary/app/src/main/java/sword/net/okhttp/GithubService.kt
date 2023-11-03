@@ -3,9 +3,13 @@ package sword.net.okhttp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import okhttp3.Call
+import okhttp3.EventListener
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.internal.http.RealInterceptorChain
+import sword.SwordLog
+import sword.net.okhttp.library.string
 import java.io.IOException
 
 fun main() = runBlocking {
@@ -15,6 +19,7 @@ fun main() = runBlocking {
 }
 
 class GithubService {
+    private val tag = "GithubService"
     private val baseUrl = "https://api.github.com"
     private val okHttpClient = OkHttpClient.Builder()
         .addNetworkInterceptor { interceptor ->
@@ -31,6 +36,19 @@ class GithubService {
             println("body: ${response.body?.string()}, response: $response")
             response
         }
+        .eventListener(object : EventListener() {
+            override fun callEnd(call: Call) {
+                SwordLog.debug(tag, "call end: ${call.string()}")
+            }
+
+            override fun callFailed(call: Call, ioe: IOException) {
+                SwordLog.debug(tag, "call failed: ${call.string()}, exception: " + ioe.toString())
+            }
+
+            override fun callStart(call: Call) {
+                SwordLog.debug(tag, "call start: ${call.string()}")
+            }
+        })
         .build()
 
     private val scope = CoroutineScope(Dispatchers.Default)
