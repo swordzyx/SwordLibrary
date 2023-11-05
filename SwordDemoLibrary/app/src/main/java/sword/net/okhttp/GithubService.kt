@@ -3,6 +3,7 @@ package sword.net.okhttp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import okhttp3.Cache
 import okhttp3.Call
 import okhttp3.EventListener
 import okhttp3.OkHttpClient

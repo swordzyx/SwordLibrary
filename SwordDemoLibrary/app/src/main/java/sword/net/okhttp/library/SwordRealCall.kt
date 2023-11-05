@@ -1,24 +1,30 @@
 package sword.net.okhttp.library
 
 import java.io.IOException
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.atomic.AtomicInteger
 
 
 class SwordRealCall(val client: SwordOkHttpClient, val reqeust: Request, val forWebSocket: Boolean) {
   private var callStackTrace: Any? = null
-  private val eventListener: SwordEventListener = object : SwordEventListener() {
-    
-  }
   
   fun enqueue(callback: Callback) {
+    //保存当前所在的堆栈、回调 callStart 给 EventListener
     callStart()
+    client.dispatcher.enqueue(AsyncCall(callback))
+  }
+  
+  fun execute(): Response {
+    callStart()
+    client.dispatcher.execute(this)
+    return getResponseWithInterceptorChain()
   }
   
   private fun callStart() {
     //在出错的时候去做出错分析用的，保存发起请求时所在的堆栈
     callStackTrace = Platform.get().getStackTraceForCloseable("response.body.close()")
     //通知 evenListener 开始发送请求
-    eventListener.callStart(this)
+    client.eventListenerFactory.create(this).callStart(this)
   }
 
   internal inner class AsyncCall(
@@ -26,6 +32,11 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: Request, val for
   ): Runnable {
     @Volatile var callsPerHost = AtomicInteger(0)
       private set
+    
+    fun reuseCallFromSameHostCall(call: AsyncCall) {
+      this.callsPerHost = call.callsPerHost
+    }
+    
     override fun run() {
       try {
         //1. 发送网络请求
@@ -38,11 +49,31 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: Request, val for
       } catch (th: Throwable) {
         val ioe = IOException("cancel due to $th")
         ioe.addSuppressed(th)
-        callback.onResponse(this@SwordRealCall, ioe)
+        callback.onFailure(this@SwordRealCall, ioe)
       }
-
+    }
+    
+    //在线程池上执行
+    fun executeOn(executorService: ExecutorService) {
+      var success = false
+      try {
+        //开始执行
+        executorService.execute(this)
+        success = true
+      } catch (e: Exception) {
+        e.printStackTrace()
+      } finally {
+        //执行结束，将这个 call 从 dispatcher 的队列中移除
+        if (success) {
+          
+        }
+      }
+      
+      
     }
   }
 
-
+  fun getResponseWithInterceptorChain(): Response {
+    
+  }
 }

@@ -1,5 +1,8 @@
 package sword.net.okhttp.library
 
+import java.util.concurrent.ThreadFactory
+
+
 fun threadName(name: String, block: () -> Unit) {
     val oldName = Thread.currentThread().name
     Thread.currentThread().name = name
@@ -8,4 +11,8 @@ fun threadName(name: String, block: () -> Unit) {
     } finally {
         Thread.currentThread().name = oldName
     }
+}
+
+fun threadFactory(name: String, daemon: Boolean) : ThreadFactory = ThreadFactory { 
+    
 }
