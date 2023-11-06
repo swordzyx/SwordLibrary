@@ -1,7 +1,11 @@
-package sword.net.okhttp.library
+package sword.net.okhttp.library.interceptor
+
+import sword.net.okhttp.library.SwordRealCall
+import sword.net.okhttp.library.SwordRequest
+import sword.net.okhttp.library.SwordResponse
 
 fun interface SwordInterceptor {
-  fun intercept(interceptorChain: SwordInterceptorChain): SwordResponse?
+  fun intercept(chain: SwordInterceptorChain): SwordResponse?
 }
 
 class SwordInterceptorChain(

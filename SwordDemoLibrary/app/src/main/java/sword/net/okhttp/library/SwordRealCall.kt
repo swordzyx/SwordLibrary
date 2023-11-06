@@ -1,5 +1,7 @@
 package sword.net.okhttp.library
 
+import sword.net.okhttp.library.interceptor.SwordInterceptor
+import sword.net.okhttp.library.interceptor.SwordInterceptorChain
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.util.concurrent.ExecutorService
@@ -9,6 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class SwordRealCall(val client: SwordOkHttpClient, val reqeust: SwordRequest, val forWebSocket: Boolean) {
   private var callStackTrace: Any? = null
+  private val eventListener = client.eventListenerFactory.create(this)
+  private var exchangeFinder: SwordExchangeFinder? = null
   
   fun enqueue(callback: Callback) {
     //保存当前所在的堆栈、回调 callStart 给 EventListener
@@ -27,6 +31,13 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: SwordRequest, va
     callStackTrace = Platform.get().getStackTraceForCloseable("response.body.close()")
     //通知 evenListener 开始发送请求
     client.eventListenerFactory.create(this).callStart(this)
+  }
+  
+  fun enterNetworkInterceptorExchange(request: SwordRequest, newExchangeFinder: Boolean) {
+    if (newExchangeFinder) {
+      val address = SwordAddress()
+      exchangeFinder = SwordExchangeFinder(client.connectionPool, this@SwordRealCall, address)
+    }
   }
 
   internal inner class AsyncCall(
@@ -86,6 +97,21 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: SwordRequest, va
     //todo: 增加请求和重试相关的 Interceptor
     //todo：增加 BridgeInterceptor，完善请求报文中的 Header
     //todo：增加缓存管理相关的 Interceptor
-    //todo：建立连接，发起请求相关的 Interceptor
+    //todo：建立连接相关的 Interceptor
+    interceptors += client.networkInterceptors
+    //todo: 往连接中些内容，从连接中读取内容
+    val interceptorChain = SwordInterceptorChain(this, interceptors, 0, this.reqeust)
+    
+    try {
+      val response = interceptorChain.proceed(this.reqeust)
+      return response
+    } catch (e: IOException) {
+      //通知 EventListener 请求失败
+      eventListener.callFailed(this, e)
+      throw e
+    } finally {
+      //通知 EventListener 请求结束
+      eventListener.callEnd(this)
+    }
   }
 }
