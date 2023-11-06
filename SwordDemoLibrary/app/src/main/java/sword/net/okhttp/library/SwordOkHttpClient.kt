@@ -5,7 +5,7 @@ class SwordOkHttpClient {
     internal var eventListenerFactory = object : SwordEventListener() {
         
     }.asFactory()
-    fun newCall(request: Request): SwordRealCall = SwordRealCall(this, request, false)
+    fun newCall(request: SwordRequest): SwordRealCall = SwordRealCall(this, request, false)
     
     fun dispatcher(dispatcher: SwordDispatcher) {
         this.dispatcher = dispatcher

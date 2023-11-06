@@ -7,7 +7,7 @@ import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.atomic.AtomicInteger
 
 
-class SwordRealCall(val client: SwordOkHttpClient, val reqeust: Request, val forWebSocket: Boolean) {
+class SwordRealCall(val client: SwordOkHttpClient, val reqeust: SwordRequest, val forWebSocket: Boolean) {
   private var callStackTrace: Any? = null
   
   fun enqueue(callback: Callback) {
@@ -16,7 +16,7 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: Request, val for
     client.dispatcher.enqueue(AsyncCall(callback))
   }
   
-  fun execute(): Response {
+  fun execute(): SwordResponse {
     callStart()
     client.dispatcher.execute(this)
     return getResponseWithInterceptorChain()
@@ -80,7 +80,8 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: Request, val for
     }
   }
 
-  fun getResponseWithInterceptorChain(): Response {
+  fun getResponseWithInterceptorChain(): SwordResponse {
+    val interceptors = mutableListOf<SwordInterceptor>()
     
   }
 }
