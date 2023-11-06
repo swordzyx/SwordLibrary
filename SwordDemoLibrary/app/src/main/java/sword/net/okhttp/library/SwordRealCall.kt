@@ -1,7 +1,9 @@
 package sword.net.okhttp.library
 
 import java.io.IOException
+import java.io.InterruptedIOException
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.atomic.AtomicInteger
 
 
@@ -60,12 +62,17 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: Request, val for
         //开始执行
         executorService.execute(this)
         success = true
-      } catch (e: Exception) {
-        e.printStackTrace()
+      } catch (e: RejectedExecutionException) {
+        //Call 的执行请求被拒绝了
+        val ioException = InterruptedIOException("executor reject")
+        ioException.initCause(e)
+        callback.onFailure(this@SwordRealCall, ioException)
+
+        //todo：释放这个 Call 所占用的资源（连接、），通知 EventListener 这个 Call 请求结束
       } finally {
         //执行结束，将这个 call 从 dispatcher 的队列中移除
-        if (success) {
-          
+        if (!success) {
+          client.dispatcher.finish(this)
         }
       }
       
