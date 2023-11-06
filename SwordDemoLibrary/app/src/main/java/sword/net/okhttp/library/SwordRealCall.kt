@@ -82,6 +82,10 @@ class SwordRealCall(val client: SwordOkHttpClient, val reqeust: SwordRequest, va
 
   fun getResponseWithInterceptorChain(): SwordResponse {
     val interceptors = mutableListOf<SwordInterceptor>()
-    
+    interceptors += client.interceptors
+    //todo: 增加请求和重试相关的 Interceptor
+    //todo：增加 BridgeInterceptor，完善请求报文中的 Header
+    //todo：增加缓存管理相关的 Interceptor
+    //todo：建立连接，发起请求相关的 Interceptor
   }
 }

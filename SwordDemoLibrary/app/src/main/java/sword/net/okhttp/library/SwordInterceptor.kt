@@ -6,7 +6,7 @@ fun interface SwordInterceptor {
 
 class SwordInterceptorChain(
   val call: SwordRealCall,
-  val interceptors: List<SwordInterceptor>,
+  private val interceptors: List<SwordInterceptor>,
   val index: Int,
   val request: SwordRequest 
 ) {
@@ -28,7 +28,11 @@ class SwordInterceptorChain(
     
     // 然后执行这个 Interceptor 的 intercept 方法
     val response =  interceptor.intercept(next) ?: throw NullPointerException("interceptor $interceptor return null")
-    
-    check(response)
+
+    //检查响应报文的 body 是否为 null，如果为 null，则抛异常
+    check(response.body != null) {
+      "interceptor $interceptor return response with no body"
+    }
+    return response
   }
 }

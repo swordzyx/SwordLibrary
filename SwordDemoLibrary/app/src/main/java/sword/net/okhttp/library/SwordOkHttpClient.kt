@@ -5,6 +5,7 @@ class SwordOkHttpClient {
     internal var eventListenerFactory = object : SwordEventListener() {
         
     }.asFactory()
+    internal var interceptors = mutableListOf<SwordInterceptor>()
     fun newCall(request: SwordRequest): SwordRealCall = SwordRealCall(this, request, false)
     
     fun dispatcher(dispatcher: SwordDispatcher) {
@@ -13,5 +14,9 @@ class SwordOkHttpClient {
     
     fun eventListener(eventListener: SwordEventListener) {
         this.eventListenerFactory = eventListener.asFactory()
+    }
+
+    fun interceptor(interceptor: SwordInterceptor) {
+        interceptors += interceptor
     }
 }
