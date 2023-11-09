@@ -10,7 +10,13 @@ class SwordRequest(
   @get: JvmName("body") val body: SwordRequestBody
 ) {
   
+  fun copy(): SwordRequest {
+    return SwordRequest(url, method, headers, body)
+  }
   
+  fun header(name: String, value: String) {
+    headers[name] = value
+  }
 }
 
 
