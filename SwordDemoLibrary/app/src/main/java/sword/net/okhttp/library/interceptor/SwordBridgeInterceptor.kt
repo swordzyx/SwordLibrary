@@ -11,10 +11,10 @@ class SwordBridgeInterceptor: SwordInterceptor {
   override fun intercept(chain: SwordInterceptorChain): SwordResponse? {
     val request = chain.request
     //todo：填充 Content-Type Header
-    //todo：填充 Content-Length 和 Transfer-Encoding 这两个 Header
+    //todo：填充 Content-Length 或者 Transfer-Encoding，分块传输的情况下传添加 Transfer-Encoding，非分块传输的情况下传 Content-Length
     //todo：填充 Host Header
     //todo：填充 Connection Header
-    //todo：如果请求报文中没有 Accept-Encoding 这个 Header，则填充 Accept-Encoding Header
+    //todo：如果请求报文中没有 Accept-Encoding 这个 Header，则填充 Accept-Encoding Header，默认填充为 gzip
     //todo：填充 Cookie Header
     //todo：填充 User-Agent Header
     val response = chain.proceed(request)

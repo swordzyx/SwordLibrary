@@ -14,5 +14,7 @@ fun threadName(name: String, block: () -> Unit) {
 }
 
 fun threadFactory(name: String, daemon: Boolean) : ThreadFactory = ThreadFactory { 
-    
+    Thread(name).apply { 
+        this.isDaemon =  daemon
+    }
 }
