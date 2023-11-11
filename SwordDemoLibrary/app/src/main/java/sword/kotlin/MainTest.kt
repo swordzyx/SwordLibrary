@@ -48,7 +48,10 @@ import kotlin.system.measureTimeMillis
 fun main() {
     //flowSample4()
     //selectSample2()
-    synchronizedSample5()
+    //synchronizedSample5()
+
+    println(String.format("Unexpected char %#x at %d in %s value", 120, 1, "name"))
+    
 }
 
 fun synchronizedSample5() = runBlocking { 
@@ -80,7 +83,7 @@ fun synchronizedSample4() = runBlocking {
     
     var result = 0
     deferreds.forEach { deferred -> 
-        result += deferred.await()
+        result += deferred.await() 
     }
     logx("result: $result")
 }
