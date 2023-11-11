@@ -1,9 +1,11 @@
 package sword.net.okhttp
 
+import android.app.Application
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import okhttp3.Cache
+import okhttp3.CacheControl
 import okhttp3.Call
 import okhttp3.EventListener
 import okhttp3.OkHttpClient
@@ -11,6 +13,7 @@ import okhttp3.Request
 import okhttp3.internal.http.RealInterceptorChain
 import sword.SwordLog
 import sword.net.okhttp.library.string
+import java.io.File
 import java.io.IOException
 
 fun main() = runBlocking {
@@ -22,6 +25,7 @@ fun main() = runBlocking {
 class GithubService {
     private val tag = "GithubService"
     private val baseUrl = "https://api.github.com"
+    private val cachePath = "cacheFolder"
     private val okHttpClient = OkHttpClient.Builder()
         .addNetworkInterceptor { interceptor ->
             val request = interceptor.request()
@@ -37,6 +41,7 @@ class GithubService {
             println("body: ${response.body?.string()}, response: $response")
             response
         }
+        .cache(Cache(File(cachePath), 8 * 1000 * 1000))
         .eventListener(object : EventListener() {
             override fun callEnd(call: Call) {
                 SwordLog.debug(tag, "call end: ${call.string()}")

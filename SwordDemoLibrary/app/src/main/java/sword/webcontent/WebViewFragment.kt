@@ -1,11 +1,11 @@
 package sword.webcontent
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.text.TextUtils
 import android.view.View
 import android.widget.LinearLayout
-import androidx.appcompat.app.AlertDialog
 import sword.webcontent.core.BaseWebView
 import sword.webcontent.core.WebViewPool
 
