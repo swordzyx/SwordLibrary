@@ -1,4 +1,8 @@
 package sword.net.okhttp.library
 
-class SwordHttpUrl {
+class SwordHttpUrl(
+    @get: JvmName("schema") val schema: String,
+    @get: JvmName("host") val host: String,
+    @get: JvmName("port") val port: Int
+) {
 }
