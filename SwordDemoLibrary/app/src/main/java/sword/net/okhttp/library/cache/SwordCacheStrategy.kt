@@ -11,9 +11,10 @@ class SwordCacheStrategy {
   
   private var computeRequest: SwordRequest? = null
   private var computeCachedResponse: SwordResponse? = null 
-  fun compute(request: SwordRequest, cachedResponse: SwordResponse) {
+  fun compute(request: SwordRequest, cachedResponse: SwordResponse?) {
     //本地判断缓存是否可用
     //todo：获取当前时间
+    val currentTime = System.currentTimeMillis()
     
     //todo：获取 Expired 这个 Header，与当前时间比较
     //todo：如果当前时间大于 Expired，缓存过期，要重新获取
