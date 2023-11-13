@@ -1,5 +1,6 @@
 package sword.net.okhttp.library
 
+import sword.net.okhttp.library.connect.SwordExchangeFinder
 import sword.net.okhttp.library.interceptor.SwordInterceptor
 import sword.net.okhttp.library.interceptor.SwordInterceptorChain
 import java.io.IOException
