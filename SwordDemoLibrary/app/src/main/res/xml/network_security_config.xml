@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><!--官方文档：https://developer.android.com/privacy-and-security/security-config -->
+<!--这里面配置网络传输相关的配置，比如配置是否支持明文传输（即 HTTP）-->
+<network-security-config>
+    <!--  允许使用 HTTP 协议（明文传输）  -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
