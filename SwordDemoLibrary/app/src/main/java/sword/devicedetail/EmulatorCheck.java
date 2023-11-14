@@ -1,4 +1,4 @@
-package sword;
+package sword.devicedetail;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import sword.ShellAdbUtil;
+import sword.SwordLog;
 
 /**
  * 参考：[CacheEmulatorChecker](https://github.com/happylishang/CacheEmulatorChecker)

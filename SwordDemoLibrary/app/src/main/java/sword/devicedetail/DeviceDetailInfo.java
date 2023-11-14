@@ -1,4 +1,4 @@
-package sword;
+package sword.devicedetail;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
