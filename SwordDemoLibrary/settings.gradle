@@ -8,3 +8,4 @@ println "Hello setting.gradle"
 include ':processor'
 include ':lib_processor'
 include ':lib_annotation'
+include ':networklib'
