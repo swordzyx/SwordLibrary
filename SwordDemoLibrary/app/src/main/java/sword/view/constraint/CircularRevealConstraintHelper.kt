@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewAnimationUtils
 import androidx.constraintlayout.widget.ConstraintHelper
 import androidx.constraintlayout.widget.ConstraintLayout
-import sword.SwordLog
+import sword.logger.SwordLog
 import kotlin.math.hypot
 
 /**

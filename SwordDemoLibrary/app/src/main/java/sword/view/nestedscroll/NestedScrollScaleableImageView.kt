@@ -19,7 +19,7 @@ import androidx.core.view.NestedScrollingChild3
 import androidx.core.view.NestedScrollingChildHelper
 import androidx.core.view.ViewCompat
 import com.example.swordlibrary.R
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.createBitmap1
 import sword.dp
 

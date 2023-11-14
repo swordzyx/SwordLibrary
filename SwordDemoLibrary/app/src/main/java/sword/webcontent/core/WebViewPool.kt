@@ -2,7 +2,7 @@ package sword.webcontent.core
 
 import android.content.Context
 import android.content.MutableContextWrapper
-import sword.SwordLog
+import sword.logger.SwordLog
 import java.util.*
 
 /**

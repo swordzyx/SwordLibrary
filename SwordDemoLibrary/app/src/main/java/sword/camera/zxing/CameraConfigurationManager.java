@@ -8,7 +8,7 @@ import android.view.Surface;
 import android.view.WindowManager;
 
 import com.google.zxing.client.android.camera.CameraConfigurationUtils;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 public class CameraConfigurationManager {
     private final Context context;

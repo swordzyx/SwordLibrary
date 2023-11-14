@@ -9,7 +9,7 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.dp2px
 
 class TextReadViewStaticLayout(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {

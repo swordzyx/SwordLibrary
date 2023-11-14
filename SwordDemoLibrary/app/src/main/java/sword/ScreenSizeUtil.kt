@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
 import kotlinx.coroutines.*
+import sword.logger.SwordLog
 
 private const val tag = "ScreenSizeUtil"
 

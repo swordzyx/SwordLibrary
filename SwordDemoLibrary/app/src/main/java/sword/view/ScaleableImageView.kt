@@ -15,7 +15,7 @@ import android.widget.OverScroller
 import androidx.core.animation.doOnEnd
 import androidx.core.view.GestureDetectorCompat
 import com.example.swordlibrary.R
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.createBitmap1
 import sword.dp
 

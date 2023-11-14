@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.swordlibrary.webcontent.defaultSetting
 import com.google.gson.Gson
-import sword.SwordLog
+import sword.logger.SwordLog
 import org.json.JSONException
 import sword.thread.ThreadExecutor
 

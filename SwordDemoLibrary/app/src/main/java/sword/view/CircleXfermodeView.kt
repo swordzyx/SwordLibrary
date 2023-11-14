@@ -6,7 +6,7 @@ import android.graphics.Paint.Style
 import android.util.AttributeSet
 import android.view.View
 import com.example.swordlibrary.R
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.createBitmap1
 import sword.dp
 import sword.dp2px

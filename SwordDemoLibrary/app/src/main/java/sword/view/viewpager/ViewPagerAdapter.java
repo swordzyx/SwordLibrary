@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 public class ViewPagerAdapter extends PagerAdapter {
 	public static final String TAG = "ViewPagerAdapter";

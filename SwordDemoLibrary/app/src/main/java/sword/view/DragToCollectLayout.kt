@@ -10,7 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
-import sword.SwordLog
+import sword.logger.SwordLog
 
 class DragToCollectLayout(context: Context, attrs: AttributeSet? = null): ConstraintLayout(context, attrs) {
     private val tag = "DragToCollectLayout"

@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import sword.SwordLog
+import sword.logger.SwordLog
 
 class PermissionMain {
   private val tag = "PermissionMain"

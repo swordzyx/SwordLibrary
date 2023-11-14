@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import sword.ShellAdbUtil;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 /**
  * 参考：(<a href="https://github.com/happylishang/CacheEmulatorChecker">CacheEmulatorChecker</a>)

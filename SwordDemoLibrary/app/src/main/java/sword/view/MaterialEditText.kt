@@ -10,7 +10,7 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.example.swordlibrary.R
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.dp2px
 
 class MaterialEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs) {

@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.customview.widget.ViewDragHelper
-import sword.SwordLog
+import sword.logger.SwordLog
 
 class DragHelperGridView(context: Context, attrs: AttributeSet? = null) :
     ViewGroup(context, attrs) {

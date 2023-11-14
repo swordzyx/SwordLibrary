@@ -9,7 +9,7 @@ import android.graphics.RectF
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.dp
 import kotlin.math.cos
 import kotlin.math.sin

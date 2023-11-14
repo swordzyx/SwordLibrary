@@ -12,7 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.swordlibrary.R;
 
 import sword.ScreenSize;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 import java.util.ArrayList;
 import java.util.List;

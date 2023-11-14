@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Environment
-import sword.SwordLog
+import sword.logger.SwordLog
 
 object AndroidFileSystem {
   private const val tag = "AndroidFileSystem"

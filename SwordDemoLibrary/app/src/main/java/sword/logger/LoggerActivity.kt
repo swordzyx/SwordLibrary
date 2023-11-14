@@ -2,7 +2,6 @@ package sword.logger
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
-import sword.SwordLog
 import sword.dp
 
 open class LoggerActivity: AppCompatActivity() {

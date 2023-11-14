@@ -9,7 +9,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.example.swordlibrary.R
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.utils.createButtonToShowViewInContainer
 import sword.view.VerticalLinearContainer
 

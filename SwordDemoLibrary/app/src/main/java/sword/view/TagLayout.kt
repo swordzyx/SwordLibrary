@@ -6,7 +6,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.ViewGroup
 import androidx.core.view.*
-import sword.SwordLog
+import sword.logger.SwordLog
 import kotlin.math.max
 
 class TagLayout(context: Context, attrs: AttributeSet? = null): ViewGroup(context, attrs) {

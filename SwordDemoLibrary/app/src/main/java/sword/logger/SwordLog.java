@@ -1,4 +1,4 @@
-package sword;
+package sword.logger;
 
 import android.annotation.SuppressLint;
 import android.icu.util.RangeValueIterator;
@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.Objects;
 
 import kotlinx.coroutines.internal.StackTraceRecoveryKt;
+import sword.Encryption;
+import sword.SwordApplication;
 
 public class SwordLog {
   private static final String TAG = "Sword";

@@ -3,7 +3,6 @@ package sword
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Trace
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
@@ -14,6 +13,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.children
 import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.R
+import sword.logger.SwordLog
 import sword.motionlayout.MotionLayoutContainer
 import sword.view.*
 import sword.view.constraint.ConstraintLayoutSampleContainer

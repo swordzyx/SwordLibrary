@@ -1,4 +1,4 @@
-package sword
+package sword.logger
 
 import android.os.Environment
 import java.io.*

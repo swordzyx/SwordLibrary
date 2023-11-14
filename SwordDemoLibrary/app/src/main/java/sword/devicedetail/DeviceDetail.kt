@@ -1,9 +1,8 @@
 @file: JvmName("DeviceDetail")
 package sword.devicedetail
 
-import android.os.FileUtils
 import sword.ShellAdbUtil
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.io.JavaFileIO
 import java.io.BufferedReader
 import java.io.InputStreamReader

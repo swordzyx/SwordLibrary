@@ -25,7 +25,7 @@ import com.example.swordlibrary.R;
 import com.google.zxing.Result;
 
 import sword.PermissionUtilKt;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 import java.io.IOException;
 

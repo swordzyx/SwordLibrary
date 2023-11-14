@@ -8,7 +8,7 @@ import android.os.Handler;
 import android.view.SurfaceHolder;
 
 import com.google.zxing.PlanarYUVLuminanceSource;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 import java.io.IOException;
 

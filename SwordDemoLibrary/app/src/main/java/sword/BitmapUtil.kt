@@ -3,6 +3,7 @@ package sword
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import sword.logger.SwordLog
 import kotlin.math.max
 
 /**

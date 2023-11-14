@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import sword.view.viewpager.data.FloatBallInfoData;
 
 import sword.Encryption;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;

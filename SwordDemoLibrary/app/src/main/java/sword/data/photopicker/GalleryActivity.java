@@ -15,7 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 
-import sword.SwordLog;
+import sword.logger.SwordLog;
 import sword.ToastUtilKt;
 
 import org.json.JSONObject;

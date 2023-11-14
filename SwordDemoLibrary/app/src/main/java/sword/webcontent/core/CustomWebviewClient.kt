@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import sword.webcontent.ApiService
 import com.example.swordlibrary.webcontent.getWebViewCachePath
-import sword.SwordLog
+import sword.logger.SwordLog
 import kotlinx.coroutines.runBlocking
 import okio.ByteString.Companion.encodeUtf8
 import retrofit2.Retrofit

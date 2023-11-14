@@ -1,6 +1,6 @@
 package sword.thread;
 
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;

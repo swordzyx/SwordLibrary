@@ -3,7 +3,7 @@ package sword.camera.zxing;
 
 import android.hardware.Camera;
 
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 public class OpenCameraInterface {
     public static final int NO_REQUEST_CAMERA = -1;

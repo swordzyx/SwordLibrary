@@ -9,7 +9,7 @@ import android.view.ViewConfiguration
 import android.widget.LinearLayout
 import androidx.core.view.children
 import androidx.customview.widget.ViewDragHelper
-import sword.SwordLog
+import sword.logger.SwordLog
 import kotlin.math.abs
 
 class DragUpDownLayout(context: Context, attrs: AttributeSet? = null) : LinearLayout(context, attrs) {

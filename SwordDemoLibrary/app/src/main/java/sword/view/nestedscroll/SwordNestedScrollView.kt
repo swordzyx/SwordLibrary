@@ -7,7 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.ViewCompat
 import androidx.core.widget.NestedScrollView
-import sword.SwordLog
+import sword.logger.SwordLog
 
 class SwordNestedScrollView(context: Context, attrs: AttributeSet? = null): NestedScrollView(context, attrs) {
     private val tag = "SwordNestedScrollView"

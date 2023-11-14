@@ -1,7 +1,7 @@
 package sword.webcontent.core
 
 import com.google.gson.annotations.SerializedName
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.SwordApplication
 import sword.toast
 import org.json.JSONObject

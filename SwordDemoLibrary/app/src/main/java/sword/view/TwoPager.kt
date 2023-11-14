@@ -9,7 +9,7 @@ import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.OverScroller
 import androidx.core.view.children
-import sword.SwordLog
+import sword.logger.SwordLog
 import kotlin.math.abs
 
 /**

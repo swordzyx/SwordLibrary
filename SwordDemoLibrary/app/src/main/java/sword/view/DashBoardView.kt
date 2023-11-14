@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import sword.SwordLog
+import sword.logger.SwordLog
 import sword.dp
 import sword.dp2px
 import sword.windowHeight

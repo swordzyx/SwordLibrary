@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import sword.ScreenSize;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 /**
  * 悬浮菜单封装类

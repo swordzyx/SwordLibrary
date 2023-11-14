@@ -17,7 +17,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 public class BaseWebClient extends WebViewClient {
   private final ProgressBar progressBar;

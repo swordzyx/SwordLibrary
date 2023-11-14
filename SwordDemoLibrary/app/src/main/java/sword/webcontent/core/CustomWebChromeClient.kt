@@ -2,7 +2,7 @@ package sword.webcontent.core
 
 import android.webkit.*
 import androidx.appcompat.app.AlertDialog
-import sword.SwordLog
+import sword.logger.SwordLog
 
 class CustomWebChromeClient : WebChromeClient() {
   private val TAG = "SwordWebChromeClient"

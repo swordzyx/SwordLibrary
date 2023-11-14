@@ -1,6 +1,6 @@
 package sword.io
 
-import sword.SwordLog
+import sword.logger.SwordLog
 import okio.*
 import okio.Path.Companion.toPath
 import java.io.File

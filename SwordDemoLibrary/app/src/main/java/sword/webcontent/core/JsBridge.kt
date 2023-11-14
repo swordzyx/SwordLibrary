@@ -3,7 +3,7 @@ package sword.webcontent.core
 import android.os.Handler
 import android.os.Looper
 import android.util.ArrayMap
-import sword.SwordLog
+import sword.logger.SwordLog
 import org.json.JSONException
 import org.json.JSONObject
 

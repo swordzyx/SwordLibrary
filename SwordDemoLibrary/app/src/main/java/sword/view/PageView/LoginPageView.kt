@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import sword.logic.LoginLogic
 import sword.dp
 import sword.theme.Theme
-import sword.SwordLog
+import sword.logger.SwordLog
 
 class LoginPageView(val context: Context, private val loginListener: LoginListener? = null) : PageView {
   private val tag = "LoginPageView"

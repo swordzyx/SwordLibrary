@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;

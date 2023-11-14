@@ -5,7 +5,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebView;
 
-import sword.SwordLog;
+import sword.logger.SwordLog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
