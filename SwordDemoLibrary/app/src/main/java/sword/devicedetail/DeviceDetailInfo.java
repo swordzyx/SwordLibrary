@@ -8,6 +8,8 @@ import android.provider.Settings;
 import java.util.UUID;
 
 public class DeviceDetailInfo {
+    
+    
     public String getDeviceId(Context context) {
         String uuid = loadDeviceUUID(context);
         if (uuid == null) {

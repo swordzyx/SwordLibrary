@@ -9,6 +9,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * 通过传统 IO 实现文件操作
+ */
 public class JavaFileIO {
     private static final String tag = "JavaIO";
 
@@ -21,21 +24,30 @@ public class JavaFileIO {
     public static String readFile(String filePath) {
         StringBuilder fileInfo = new StringBuilder();
 
+        readFile(filePath, fileInfo::append);
+
+        return fileInfo.toString();
+    }
+
+
+    public static void readFile(String filePath, Callback callback) {
+        if (callback == null) {
+            return;
+        }
+        
         File file = new File(filePath);
         if (!file.exists()) {
-            return null;
+            return;
         }
 
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-            String message;
-            while ((message = fileReader.readLine()) != null) {
-                fileInfo.append(message).append("\n");
+            String line;
+            while ((line = fileReader.readLine()) != null) {
+                callback.onReadLine(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return fileInfo.toString();
     }
 
     public static int copyFile(File sourceFile, File targetFile) {
@@ -99,5 +111,9 @@ public class JavaFileIO {
         }
         System.out.println("拷贝 " + byteCopied + " 字节总共耗时: " + (System.currentTimeMillis() - startTime) + "ms");
         return byteCopied;
+    }
+    
+    public interface Callback {
+        void onReadLine(String line);
     }
 }

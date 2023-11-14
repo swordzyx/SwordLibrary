@@ -1,7 +1,10 @@
+@file: JvmName("DeviceDetail")
 package sword.devicedetail
 
+import android.os.FileUtils
 import sword.ShellAdbUtil
 import sword.SwordLog
+import sword.io.JavaFileIO
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
@@ -27,6 +30,20 @@ fun getCpuAbi(): String {
   } else {
     "armeabi"
   }
+}
+
+fun getCpuInfo(): Map<String, String> {
+  val result = mutableMapOf<String, String>()
+  
+  JavaFileIO.readFile("/proc/cpuinfo") { line ->
+    SwordLog.debug(tag, "read cpuinfo: $line")
+    if (line.contains(":")) {
+      line.split(":").let { 
+        result[it[0]] = it[1]
+      }
+    }
+  }
+  return result
 }
 
 

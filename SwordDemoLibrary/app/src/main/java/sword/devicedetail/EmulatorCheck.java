@@ -10,29 +10,22 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
-import androidx.annotation.RequiresApi;
-
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 
 import sword.ShellAdbUtil;
 import sword.SwordLog;
 
 /**
- * 参考：[CacheEmulatorChecker](https://github.com/happylishang/CacheEmulatorChecker)
+ * 参考：(<a href="https://github.com/happylishang/CacheEmulatorChecker">CacheEmulatorChecker</a>)
  * TODO: 测试数据
  */
 public class EmulatorCheck {
   private static final String TAG = "EmulatorCheck";
   public static String emulatorResult = "";
 
-  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
   public static boolean isEmulator(Context context) {
     boolean b1 = !resolveTelPhone(context);
     boolean b2 = !hasLightSensor(context);
@@ -96,64 +89,14 @@ public class EmulatorCheck {
     if (!file.exists()) {
       return true;
     }
-
-    int lineNum = 0;
-    int lineNumWithHardware = 0;
-    try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-      String readLine;
-      while ((readLine = fileReader.readLine()) != null) {
-        lineNum++;
-
-        String lowerContent = readLine.toLowerCase();
-        SwordLog.debug(TAG, "cpu info, line " + lineNum + " - " + readLine);
-        if (lowerContent.contains("intel")) {
-          return true;
-        }
-        if (lowerContent.contains("amd")) {
-          return true;
-        }
-
-        if (readLine.contains("hardware")) {
-          lineNumWithHardware = lineNum;
-          if (readLine.contains("placeholder")) {
-            return true;
-          }
-        } else if (readLine.contains("Revision")) {
-          if (readLine.contains("000b")) {
-            return true;
-          }
-        } else if (lineNumWithHardware - lineNum <= 2) {
-          if (readLine.contains("Serial")) {
-            if (readLine.contains("0000000000000001")) {
-              // 针对BlueStacks 5.4.100.1026 N32 模拟器进行适配
-              return true;
-            } else if (readLine.contains("0000000000000000")) {
-              // 针对 MuMu 模拟器进行适配
-              return true;
-            }
-          }
-        }
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
-   * 通过 shell 命令获取 cpuinfo 文件的信息，以此判断是否为模拟器
-   * <p>
-   * 与上面的 {@link EmulatorCheck#checkEmulatorByCpuInfoFile()} 是一致的。
-   */
-  private boolean checkEmulatorCatCpuInfoShell() {
-    ShellAdbUtil.CommandResult result = ShellAdbUtil.execShellCommand(false, "cat /proc/cpuinfo");
-    String cpuinfo = result.getSuccessString();
-    if (cpuinfo.toLowerCase().contains("intel") || cpuinfo.toLowerCase().contains("amd")) {
-      return true;
-    }
-    return false;
+    
+    Map<String, String> cpuinfo = DeviceDetail.getCpuInfo();
+    return cpuinfo.containsKey("intel") ||
+        cpuinfo.containsKey("amd") ||
+        (cpuinfo.containsKey("hardware") && cpuinfo.get("hardware").contains("placeholder")) ||
+        (cpuinfo.containsKey("Revision") && cpuinfo.get("Revision").contains("000b")) ||
+        (cpuinfo.containsKey("Serial") && cpuinfo.get("Serial").contains("0000000000000001")) || // 针对BlueStacks 5.4.100.1026 N32 模拟器进行适配
+        (cpuinfo.containsKey("Serial") && cpuinfo.get("Serial").contains("0000000000000000")); //针对 MuMu 模拟器进行适配
   }
 
   /**
@@ -245,13 +188,8 @@ public class EmulatorCheck {
       @SuppressLint("PrivateApi") Class<?> c = Class.forName("android.os.SytemProperties");
       Method m = c.getDeclaredMethod("get", String.class);
       value = (String) m.invoke(null, key);
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
+    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException |
+             InvocationTargetException e) {
       e.printStackTrace();
     }
     SwordLog.debug(TAG, "getQemuPropertyValue: " + value);
@@ -260,8 +198,8 @@ public class EmulatorCheck {
 
 
   //Intel(R) Core(TM) i7-7700CPU@3.60GHz
-  private static boolean isIntelCpu(String content) {
-    String c = content.toLowerCase();
+  private static boolean isIntelCpu(String cpuinfo) {
+    String c = cpuinfo.toLowerCase();
     
     //String intelRegion = "intel.*(core|xeon|pentium)";
     return c.contains("intel") && (c.contains("core") || c.contains("xeon") || c.contains("pentium") || c.contains("celeron"));
