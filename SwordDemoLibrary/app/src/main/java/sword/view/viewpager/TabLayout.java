@@ -13,6 +13,8 @@ import com.example.swordlibrary.R;
 
 import sword.ScreenSize;
 import sword.logger.SwordLog;
+import sword.view.floatball.FloatBallData;
+import sword.view.floatball.MenuItemView;
 
 import java.util.ArrayList;
 import java.util.List;

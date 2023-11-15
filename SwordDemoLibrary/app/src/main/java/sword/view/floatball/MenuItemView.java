@@ -1,4 +1,4 @@
-package sword.view.viewpager;
+package sword.view.floatball;
 
 import android.content.Context;
 import android.graphics.Canvas;

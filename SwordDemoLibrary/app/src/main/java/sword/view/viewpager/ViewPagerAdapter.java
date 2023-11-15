@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import sword.logger.SwordLog;
+import sword.view.floatball.FloatBallData;
+import sword.view.floatball.WebViewContainer;
 
 public class ViewPagerAdapter extends PagerAdapter {
 	public static final String TAG = "ViewPagerAdapter";

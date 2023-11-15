@@ -1,9 +1,9 @@
-package sword.view.viewpager;
+package sword.view.floatball;
 
 
 import androidx.annotation.NonNull;
 
-import sword.view.viewpager.data.FloatBallInfoData;
+import sword.view.floatball.data.FloatBallInfoData;
 
 import sword.Encryption;
 import sword.logger.SwordLog;
