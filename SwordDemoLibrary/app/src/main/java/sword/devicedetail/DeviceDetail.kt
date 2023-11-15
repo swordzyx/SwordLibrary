@@ -1,7 +1,13 @@
 @file: JvmName("DeviceDetail")
 package sword.devicedetail
 
-import sword.ShellAdbUtil
+import android.annotation.SuppressLint
+import android.os.Build
+import android.text.TextUtils
+import kotlinx.coroutines.suspendCancellableCoroutine
+import sword.CommandExecutor
+import sword.CommandExecutor.Callback
+import sword.TextUtil
 import sword.logger.SwordLog
 import sword.io.JavaFileIO
 import java.io.BufferedReader
@@ -31,6 +37,16 @@ fun getCpuAbi(): String {
   }
 }
 
+fun getCpuModel(): String? {
+  val cpuInfo = getCpuInfo()
+  return if (TextUtils.isEmpty(cpuInfo["Hardware"])) {
+    "${cpuInfo["ro.soc.manufacturer"]} ${cpuInfo["ro.soc.model"]}"
+  } else {
+    cpuInfo["Hardware"]
+  }
+}
+
+//todo：
 fun getCpuInfo(): Map<String, String> {
   val result = mutableMapOf<String, String>()
   
@@ -38,12 +54,53 @@ fun getCpuInfo(): Map<String, String> {
     SwordLog.debug(tag, "read cpuinfo: $line")
     if (line.contains(":")) {
       line.split(":").let { 
-        result[it[0]] = it[1]
+        result[it[0].trim()] = it[1]
+        SwordLog.debug("${it[0]} = ${it[1]}")
       }
     }
   }
+  
+  val propertiesList = listOf("ro.soc.manufacturer", "ro.soc.model")
+  if (TextUtils.isEmpty(result["Hardware"])) {
+    result.putAll(getSystemProperties(propertiesList))
+  }
   return result
 }
+
+
+//todo: 统计耗时
+@SuppressLint("DiscouragedPrivateApi")
+private fun getSystemProperties(propNames: List<String>): Map<String, String> {
+  SwordLog.info(tag, "----------------- getSystemProperties ---------------")
+  val startTime = System.currentTimeMillis()
+  val result = mutableMapOf<String, String>()
+  val getStringMethod = Build::class.java.getDeclaredMethod("getString", String::class.java)
+  getStringMethod.isAccessible = true
+  propNames.forEach { propName ->
+    val value = getStringMethod.invoke(null, propName) as String
+    SwordLog.debug(tag, "$propName=$value")
+    result[propName] = value
+  }
+  val costTime = System.currentTimeMillis() - startTime
+  SwordLog.info(tag, "----------------- end getSystemProperties time: $costTime ---------------")
+  return result
+}
+
+//todo：实现多个 getprop 命令放在一个 Process 中执行，目前是一个 getprop 命令
+private fun getSystemPropertiesByShell(propNames: List<String>): Map<String, String> {
+  SwordLog.info(tag, "----------------- getSystemPropertiesByShell ---------------")
+  val startTime = System.currentTimeMillis()
+  val results = mutableMapOf<String, String>()
+  propNames.forEach { propName -> 
+    val propValue = CommandExecutor.executeCommand("getprop $propName")
+    results[propName] = propValue
+    SwordLog.info(tag, "$propName=$propValue")
+  }
+  val costTime = System.currentTimeMillis() - startTime
+  SwordLog.info(tag, "----------------- end getSystemPropertiesByShell time: $costTime ---------------")
+  return results
+}
+
 
 
 /**
@@ -70,5 +127,5 @@ fun getIpAddress() {
           http://pv.sohu.com/cityjson?ie=utf-8
           http://ip.chinaz.com/getip.aspx
     */
-  SwordLog.debug(tag, "shell 获取外网 ip：${ShellAdbUtil.execShellCommand(false, "curl ifconfig.me").successString}")
+  SwordLog.debug(tag, "shell 获取外网 ip：${CommandExecutor.execShellCommand(false, "curl ifconfig.me").successString}")
 }

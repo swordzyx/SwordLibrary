@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import sword.ShellAdbUtil;
+import sword.CommandExecutor;
 import sword.logger.SwordLog;
 
 /**
@@ -176,7 +176,7 @@ public class EmulatorCheck {
   }
 
   private static boolean mayOnEmulatorViaQEMU() {
-    ShellAdbUtil.CommandResult result = ShellAdbUtil.execShellCommand(false, "getprop ro.kernel.qemu");
+    CommandExecutor.CommandResult result = CommandExecutor.execShellCommand(false, "getprop ro.kernel.qemu");
 
     String qemu = result.getSuccessString();
     return "1".equals(qemu);
