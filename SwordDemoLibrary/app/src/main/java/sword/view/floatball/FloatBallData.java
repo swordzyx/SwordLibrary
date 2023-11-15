@@ -24,8 +24,8 @@ import okhttp3.ResponseBody;
 
 public class FloatBallData {
   public static final String TAG = "FloatBallData";
-  final String[] urls;
-  final String[] titleStringArray;
+  public final String[] urls;
+  public final String[] titleStringArray;
   FloatBallInfoData floatBallInfoData;
 
   public static final FloatBallData floatBallData = new FloatBallData();

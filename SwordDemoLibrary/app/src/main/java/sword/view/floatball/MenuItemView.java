@@ -18,7 +18,7 @@ import sword.ScreenSize;
 /**
  * 悬浮菜单封装类
  */
-class MenuItemView extends LinearLayout {
+public class MenuItemView extends LinearLayout {
     private final ImageView iconView;
     private final TextView titleView;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -53,12 +53,12 @@ class MenuItemView extends LinearLayout {
         unRead(canvas, 0);
     }
 
-    void setItemViewData(int resId, String title) {
+    public void setItemViewData(int resId, String title) {
         iconView.setImageResource(resId);
         titleView.setText(title);
     }
     
-    void setIconView(int resId) {
+    public void setIconView(int resId) {
         iconView.setImageResource(resId);
     }
 

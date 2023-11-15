@@ -1,112 +1,94 @@
-package sword.view.viewpager;
+package sword.view.viewpager
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import sword.dp
+import sword.logger.SwordLog
+import sword.view.floatball.FloatBallData
+import sword.view.floatball.MenuItemView
 
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
+class TabLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+  LinearLayout(context, attrs) {
+  private val tag = "TabLayout"
+  private val marginEdge = dp(8)
+  private val menuItemViews: MutableList<MenuItemView>?
+  lateinit var iconSelectedResArray: IntArray
+  lateinit var iconResArray: IntArray
 
-import com.example.swordlibrary.R;
-
-import sword.ScreenSize;
-import sword.logger.SwordLog;
-import sword.view.floatball.FloatBallData;
-import sword.view.floatball.MenuItemView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class TabLayout extends LinearLayout {
-  public static final String TAG = "TabLayout";
-  public static final int marginEdge = ScreenSize.dp(8);
-  
-  private final List<MenuItemView> menuItemViews;
-  
-  final int[] iconSelectedResArray;
-  final int[] iconResArray;
-  
-  public TabLayout(Context context) {
-    this(context, null);
+  init {
+    menuItemViews = ArrayList()
   }
 
-  public TabLayout(Context context, @Nullable AttributeSet attrs) {
-    super(context, attrs);
-
-    iconResArray = new int[]{R.drawable.user, R.drawable.feedback, R.drawable.float_menu_auth, R.drawable.switch_account};
-    iconSelectedResArray = new int[]{R.drawable.user_selected, R.drawable.feedback_selected, R.drawable.float_menu_auth_selected, R.drawable.switch_account_selected};
-    
-    menuItemViews = new ArrayList<>();
-  }
-  
-  public void currentClickIndex(int index) {
-    menuItemViews.get(index).performClick();
+  fun currentClickIndex(index: Int) {
+    menuItemViews!![index].performClick()
   }
 
-  public void bind(ViewPager viewPager) {
-    LinearLayout.LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-    params.weight = 1;
-    for (int i = 0; i<iconResArray.length; i++) {
-      MenuItemView itemView = new MenuItemView(getContext());
-      itemView.setItemViewData(iconResArray[i], FloatBallData.floatBallData.titleStringArray[i]);
-      itemView.setTag(i);
-      itemView.setOnClickListener(new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          viewPager.setCurrentItem((int)itemView.getTag());
-          SwordLog.debug(TAG, "click tab " + itemView.getTag());
-        }
-      });
-      
-      menuItemViews.add(itemView);
-      addView(itemView);
+  fun bind(viewPager: ViewPager) {
+    val params = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0).apply {
+      weight = 1f
+    }
+    iconResArray.forEach { i ->
+      val itemView = MenuItemView(context)
+      itemView.setItemViewData(iconResArray[i], FloatBallData.floatBallData.titleStringArray[i])
+      itemView.tag = i
+      itemView.setOnClickListener {
+        viewPager.currentItem = itemView.tag as Int
+        SwordLog.debug(tag, "click tab " + itemView.tag)
+      }
+      menuItemViews!!.add(itemView)
+      addView(itemView)
     }
     
-    viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-      @Override
-      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        SwordLog.debug("onPageScrolled, position: " + position + ", positinoOffset: " + positionOffset + ", positionOffsetPixels: " + positionOffsetPixels);
+    viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+      override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        SwordLog.debug("onPageScrolled, position: $position, positinoOffset: $positionOffset, positionOffsetPixels: $positionOffsetPixels")
       }
 
-      @Override
-      public void onPageSelected(int position) {
-        SwordLog.debug(TAG, "onPageSelected, position: " + position);
-        onSelected(position);
+      override fun onPageSelected(position: Int) {
+        SwordLog.debug(tag, "onPageSelected, position: $position")
+        onSelected(position)
       }
 
-      @Override
-      public void onPageScrollStateChanged(int state) {
-        SwordLog.debug(TAG, "onPageScrollStateChanged, state: " + state);
+      override fun onPageScrollStateChanged(state: Int) {
+        SwordLog.debug(tag, "onPageScrollStateChanged, state: $state")
       }
-    });
+    })
   }
 
-  @Override
-  protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    int h = (b - t - (marginEdge << 1)) / menuItemViews.size();
-    LinearLayout.LayoutParams lp;
-    for (MenuItemView menuItemView : menuItemViews) {
-      lp = (LinearLayout.LayoutParams) menuItemView.getLayoutParams();
-      lp.topMargin = lp.bottomMargin = (h - menuItemView.getMeasuredHeight()) >> 1;
+  override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+    val h = (b - t - (marginEdge shl 1)) / menuItemViews!!.size
+    var lp: LayoutParams
+    for (menuItemView in menuItemViews) {
+      lp = menuItemView.layoutParams as LayoutParams
+      lp.bottomMargin = h - menuItemView.measuredHeight shr 1
+      lp.topMargin = lp.bottomMargin
     }
-    super.onLayout(changed, l, t, r, b);
+    super.onLayout(changed, l, t, r, b)
   }
 
-  private void onSelected(int position) {
-    if (menuItemViews == null || menuItemViews.size() <= 0) {
-      return;
+  private fun onSelected(position: Int) {
+    if (menuItemViews == null || menuItemViews.size <= 0) {
+      return
     }
-    
-    for (int i=0; i<menuItemViews.size(); i++) {
-      int iconResId;
-      if (position == i) {
-        iconResId = iconSelectedResArray[i];
+    for (i in menuItemViews.indices) {
+      var iconResId: Int
+      iconResId = if (position == i) {
+        iconSelectedResArray[i]
       } else {
-        iconResId = iconResArray[i];
+        iconResArray[i]
       }
-      menuItemViews.get(i).setIconView(iconResId);
+      menuItemViews[i].setIconView(iconResId)
     }
   }
+  
+  class TabItemView {
+    private val iconView: ImageView? = null
+    private val titleView: TextView? = null
+  } 
 }

@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/image"
-        android:src="@mipmap/ic_launcher_round"
+        android:src="@mipmap/app_icon"
         tools:ignore="ContentDescription" />
 
     <ImageView android:layout_width="80dp"
