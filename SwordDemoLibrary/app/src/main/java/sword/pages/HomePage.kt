@@ -1,4 +1,4 @@
-package com.example.swordlibrary.pageview
+package sword.pages
 
 import android.content.Context
 import android.view.Gravity
@@ -6,10 +6,11 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
 
-class HomePageView(val context: Context): PageView {
+class HomePage(val context: Context): Page {
   override val rootView by lazy { 
     createView()
   }
+  
   private fun createView(): View {
     return LinearLayout(context).apply {
       contentDescription = "首页"

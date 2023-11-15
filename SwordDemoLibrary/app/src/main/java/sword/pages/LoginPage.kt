@@ -1,4 +1,4 @@
-package com.example.swordlibrary.pageview
+package sword.pages
 
 import android.content.Context
 import android.view.Gravity
@@ -9,7 +9,7 @@ import sword.dp
 import sword.theme.Theme
 import sword.logger.SwordLog
 
-class LoginPageView(val context: Context, private val loginListener: LoginListener? = null) : PageView {
+class LoginPage(val context: Context, private val loginListener: LoginListener? = null) : Page {
   private val tag = "LoginPageView"
   private val marginHorizontal = dp(10)
   private val loginLogic = LoginLogic()
