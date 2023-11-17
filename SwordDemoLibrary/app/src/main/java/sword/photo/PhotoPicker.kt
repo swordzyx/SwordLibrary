@@ -1,4 +1,4 @@
-package sword.data.photopicker
+package sword.photo
 
 import android.app.Activity
 import android.content.Context
@@ -21,7 +21,7 @@ class PhotoPicker {
   }
 
   fun showGallery(context: Context, isCrop: Boolean) {
-    val intent: Intent = Intent(context, GalleryActivity::class.java)
+    val intent: Intent = Intent(context, XlcwGalleryActivity::class.java)
     intent.putExtra("crop_photo", isCrop)
     context.startActivity(intent)
   }

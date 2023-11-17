@@ -27,7 +27,7 @@
 
         <activity android:name="sword.ChangeUIOnThreadActivity"/>
 
-        <activity android:name="sword.data.photopicker.GalleryActivity" />
+        <activity android:name="sword.photo.XlcwGalleryActivity" />
 
         <activity android:name="sword.annotation.AnnotationActivity"/>
     </application>

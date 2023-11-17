@@ -1,11 +1,10 @@
-package sword.data.photopicker;
+package sword.photo;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,7 +27,7 @@ import java.io.InputStreamReader;
 /**
  * 启动系统相册Activity
  */
-public class GalleryActivity extends Activity {
+public class XlcwGalleryActivity extends Activity {
 
   public static final String LOG_TAG = "AlbumActivity";
   public static final int ALBUM_CODE = 1;
@@ -85,32 +84,8 @@ public class GalleryActivity extends Activity {
       intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
       startActivityForResult(intent, ALBUM_CODE);
     } catch (Exception e) {
-      SwordLog.debug(LOG_TAG, "Sdk层:Sdk层:打开系统相册 错误" + e.toString());
+      SwordLog.debug(LOG_TAG, "Sdk层:Sdk层:打开系统相册 错误" + e);
     }
-  }
-
-  @Override
-  protected void onSaveInstanceState(Bundle outState) {
-    SwordLog.debug(LOG_TAG, "Sdk层: onSaveInstanceState");
-    super.onSaveInstanceState(outState);
-  }
-
-  @Override
-  protected void onRestoreInstanceState(Bundle savedInstanceState) {
-    SwordLog.debug(LOG_TAG, "Sdk层: onRestoreInstanceState");
-    super.onRestoreInstanceState(savedInstanceState);
-  }
-
-  @Override
-  protected void onDestroy() {
-    SwordLog.debug(LOG_TAG, "Sdk层: onDestroy");
-    super.onDestroy();
-  }
-
-  @Override
-  public void onConfigurationChanged(Configuration newConfig) {
-    SwordLog.debug(LOG_TAG, "--- Sdk层: onConfigurationChanged ---");
-    super.onConfigurationChanged(newConfig);
   }
 
   /**
