@@ -22,11 +22,26 @@ android {
 
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
+	
+	signingConfigs {
+		sword_debug {
+			def jksFile = file(rootProject.getRootDir().getParentFile().absolutePath + File.separator + "keystore${File.separator}sworddebug.jks")
+			println("签名文件路径：${jksFile.absolutePath}")
+			storeFile jksFile 
+			storePassword "swordzhoudebug"
+			keyAlias "sworddebug"
+			keyPassword "swordzhoudebug"
+		}
+	}
 
 	buildTypes {
+		debug {
+			signingConfig signingConfigs.sword_debug
+		}
 		release {
 			minifyEnabled false
 			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+			signingConfig signingConfigs.sword_debug
 		}
 	}
 	

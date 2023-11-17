@@ -34,7 +34,7 @@ class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attr
     private var centerY = 0f
 
     init {
-        setPadding(paddingLeft + dp(10), paddingTop + dp(10), paddingRight + dp(10), paddingBottom + dp(10))
+        setPadding(paddingLeft + 10.dp, paddingTop + 10.dp, paddingRight + 10.dp, paddingBottom + 10.dp)
     }
 
     private val dashPath = Path().apply {
@@ -107,7 +107,7 @@ class DashBoardView(context: Context, attrs: AttributeSet?) : View(context, attr
         val pointerAngle = ((90 + angle/2f + pointerSweepAngle) * Math.PI / 180).toFloat()
 
         //通过角度计算出直针的终点坐标
-        val pointerLength = radius - dp(18)
+        val pointerLength = radius - 18.dp
         return listOf(centerX + cos(pointerAngle) * pointerLength, centerY + sin(pointerAngle) * pointerLength)
     }
 }

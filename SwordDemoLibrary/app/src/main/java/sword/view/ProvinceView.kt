@@ -56,8 +56,8 @@ class ProvinceView(context: Context, attrs: AttributeSet? = null) : View(context
     }
     private val textBounds = Rect()
 
-    private val minWidth = paint.textSize * 10 + dp(10)
-    private val minHeight = paint.fontMetrics.bottom - paint.fontMetrics.top + dp(10)
+    private val minWidth = paint.textSize * 10 + 10.dp
+    private val minHeight = paint.fontMetrics.bottom - paint.fontMetrics.top + 10.dp
 
     private val provinceAnimator = ObjectAnimator.ofInt(this, "provinceIndex", 0, provinces.size - 1).apply {
         duration = 3000

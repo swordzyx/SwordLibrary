@@ -13,7 +13,7 @@ import sword.dp2px
 
 class CircleXfermodeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val tag = "CircleXfermodeView"
-    private val radius = dp(100)
+    private val radius = 100.dp
     private val proterDuffXfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Style.STROKE

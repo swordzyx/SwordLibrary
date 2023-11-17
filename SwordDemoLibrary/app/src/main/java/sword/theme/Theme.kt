@@ -16,13 +16,11 @@ class Theme {
         fun createCircleButton(context: Context): AppCompatButton {
             return AppCompatButton(context).apply {
                 background = ResourcesCompat.getDrawable(context.resources, R.drawable.button_background_circle_corner, null)
-                setPadding(dp(20), dp(10), dp(20), dp(10))
+                setPadding(20.dp, 10.dp, 20.dp, 10.dp)
                 setTextColor(Color.WHITE)
                 textSize = dp2px(10f)
                 gravity = Gravity.CENTER
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    foreground = null
-                }
+                foreground = null
             }
         }
         

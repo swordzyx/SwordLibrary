@@ -16,7 +16,7 @@ import sword.dp
  */
 class MultiTouchView3(context: Context, attrs: AttributeSet? = null): View(context, attrs) {
     private val tag = "MultiTouchView3"
-    private val imageWidth = dp(200).toFloat()
+    private val imageWidth = 200f.dp
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val bitmap = createBitmap1(resources, R.drawable.avatar_rengwuxian, imageWidth, imageWidth)
 

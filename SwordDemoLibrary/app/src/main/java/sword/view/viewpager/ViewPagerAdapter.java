@@ -3,6 +3,7 @@ package sword.view.viewpager;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
@@ -10,33 +11,32 @@ import androidx.viewpager.widget.PagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import kotlin.collections.ArrayDeque;
 import sword.logger.SwordLog;
-import sword.view.floatball.FloatBallData;
-import sword.view.floatball.WebViewContainer;
 
-public class ViewPagerAdapter extends PagerAdapter {
+ public class ViewPagerAdapter extends PagerAdapter {
 	public static final String TAG = "ViewPagerAdapter";
-	private final String[] dataList = FloatBallData.floatBallData.urls;
-	private List<View> viewList = new ArrayList<>();
-
-	public void setViewList(List<View> viewList, String[] dataList) {
-		this.viewList = viewList;
+	private final String[] dataList;
+	private final List<TextView> viewList = new ArrayList<>();
+	
+	public ViewPagerAdapter(String[] dataList) {
+		this.dataList = dataList;
 	}
 
 	@NonNull
 	@Override
 	public Object instantiateItem(@NonNull ViewGroup container, int position) {
-		View view;
-		if (viewList.get(position) == null) {
-			view = new View(container.getContext());
-			view.setBackgroundColor(Color.WHITE);
+		TextView textview;
+		if (position >= viewList.size()) {
+			textview = new TextView(container.getContext());
+			viewList.add(position, textview);
 		} else {
-			view = viewList.get(position);
+			textview = (TextView)viewList.get(position);
 		}
-		container.addView(view,
+		
+		textview.setText(dataList[position]);
+		container.addView(textview,
 				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-		return view;
+		return textview;
 	}
 
 	@Override

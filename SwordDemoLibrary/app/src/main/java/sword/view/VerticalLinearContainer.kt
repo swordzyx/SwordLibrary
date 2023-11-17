@@ -18,7 +18,7 @@ abstract class VerticalLinearContainer(context: Context, attrs: AttributeSet? = 
     this@VerticalLinearContainer.addView(this, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
   }
   //需要放在初始化代码块之前，否则 init 代码块中使用这个变量时，变量还未初始化，得到的值是 0
-  protected val defaultMargin = dp(2)
+  protected val defaultMargin = 2.dp
   
   init {
     orientation = VERTICAL

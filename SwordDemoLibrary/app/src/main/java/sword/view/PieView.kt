@@ -21,9 +21,9 @@ class PieView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Style.FILL_AND_STROKE
     }
-    private val arcRadius = dp(100)
+    private val arcRadius = 100.dp
     private val selectedArc = 1
-    private val selectedArcOffset = dp(15)
+    private val selectedArcOffset = 15.dp
 
     private lateinit var arcRect: RectF
 

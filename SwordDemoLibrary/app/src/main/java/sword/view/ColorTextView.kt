@@ -25,8 +25,8 @@ private val COLORS = intArrayOf(
 class ColorTextView(context: Context, attrs: AttributeSet? = null) :
     AppCompatTextView(context, attrs) {
     private val textSizes = floatArrayOf(12f, 16f, 20f)
-    private val paddingHori = dp(16)
-    private val paddingVert = dp(18)
+    private val paddingHori = 16.dp
+    private val paddingVert = 18.dp
     private val cornerRadius = dp2px(5f)
 
     val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {

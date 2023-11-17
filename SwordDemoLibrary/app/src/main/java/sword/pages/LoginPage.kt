@@ -11,7 +11,7 @@ import sword.logger.SwordLog
 
 class LoginPage(val context: Context, private val loginListener: LoginListener? = null) : Page {
   private val tag = "LoginPageView"
-  private val marginHorizontal = dp(10)
+  private val marginHorizontal = 10.dp
   private val loginLogic = LoginLogic()
 
 

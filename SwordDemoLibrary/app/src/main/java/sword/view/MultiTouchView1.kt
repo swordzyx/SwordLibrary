@@ -19,7 +19,7 @@ import sword.dp
  */
 class MultiTouchView1(context: Context, attrs: AttributeSet? = null): View(context, attrs) {
   private val tag = "MutlTouchView1-单点触摸"
-  private val imageSize = dp(300).toFloat()
+  private val imageSize = 300f.dp
   private val bitmap = createBitmap1(resources, R.drawable.avatar_rengwuxian, imageSize, imageSize)
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
   private var offsetX = 0f

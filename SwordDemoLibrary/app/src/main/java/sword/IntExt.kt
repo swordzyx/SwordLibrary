@@ -9,3 +9,6 @@ fun dp2px(dp: Float): Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_
 
 val Int.dp
     get() = dp2px(this.toFloat()).toInt()
+
+val Float.dp
+    get() = dp2px(this)

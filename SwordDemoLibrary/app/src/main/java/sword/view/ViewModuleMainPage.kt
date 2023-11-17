@@ -274,7 +274,7 @@ class ViewModuleMainPage {
         showView: View,
         parent: ViewGroup
     ): AppCompatButton {
-        val padding = dp(20)
+        val padding = 20.dp
         return AppCompatButton(parent.context).apply {
             text = buttonName
             isAllCaps = false
@@ -308,7 +308,7 @@ class ViewModuleMainPage {
         }
     }
 
-    private val defaultMargin = dp(2)
+    private val defaultMargin = 2.dp
     private fun LinearLayout.LayoutParams.setVerticalMargin(margin: Int = defaultMargin): LinearLayout.LayoutParams {
         setMargins(0, margin, 0, margin)
         SwordLog.debug(tag, "defaultMargin: $defaultMargin")

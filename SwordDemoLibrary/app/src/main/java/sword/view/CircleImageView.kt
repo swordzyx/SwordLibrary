@@ -10,7 +10,7 @@ import sword.dp2px
 
 class CircleImageView(context: Context, attrs: AttributeSet? = null): View(context, attrs) {
     private val radius = dp2px(100f)
-    private val padding = dp(100)
+    private val padding = 100.dp
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

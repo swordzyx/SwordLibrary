@@ -36,7 +36,7 @@ class PointView(context: Context, attrs: AttributeSet? = null) : View(context, a
         }
 
     init {
-        setPadding(dp(5), dp(5), 0, 0)
+        setPadding(5.dp, 5.dp, 0, 0)
     }
 
     override fun onDraw(canvas: Canvas) {

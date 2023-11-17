@@ -20,7 +20,7 @@ class ViewPagerFragment(val context: Context) {
   /**
    * 初始化 ViewPager 和侧边的 TabLayout，
    */
-  private fun createViewWithHorizontalTab(tabWidth: Int = dp(40)): ViewGroup {
+  private fun createViewWithHorizontalTab(tabWidth: Int = 40.dp): ViewGroup {
     val contentView = LinearLayout(context).apply {
       orientation = LinearLayout.HORIZONTAL
     }
@@ -35,7 +35,7 @@ class ViewPagerFragment(val context: Context) {
     val viewPager = ViewPager(context).apply {
       setBackgroundColor(Color.WHITE)
       currentItem = 0
-      adapter = ViewPagerAdapter()
+      adapter = ViewPagerAdapter(arrayOf(""))
     }
     val lp = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT).apply {
       weight = 1f

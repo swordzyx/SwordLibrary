@@ -19,7 +19,7 @@ fun createButtonToShowViewInContainer(
   showView: View,
   container: ViewGroup
 ): AppCompatButton {
-  val padding = dp(20);
+  val padding = 20.dp
   return AppCompatButton(container.context).apply {
     text = buttonName
     isAllCaps = false

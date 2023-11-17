@@ -66,7 +66,7 @@ class CircleView(context: Context, attrs: AttributeSet? = null) : View(context, 
     }
 
     private fun initKeyFrameAnimator() {
-        val length = dp(200)
+        val length = 200.dp
         val keyFrame1 = Keyframe.ofFloat(0f, 0f)
         val keyFrame2 = Keyframe.ofFloat(0.2f, 0.4f * length)
         val keyFrame3 = Keyframe.ofFloat(0.8f, 0.6f * length)

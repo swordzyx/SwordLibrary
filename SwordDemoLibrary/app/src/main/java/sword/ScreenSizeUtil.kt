@@ -135,10 +135,10 @@ fun fullScreen(window: Window) {
  * 
  * 返回的值其实是：dp * density（屏幕密度缩放因子，当前屏幕密度/标准屏幕密度（160dpi））
  */
-fun dp(dp: Int): Int {
+fun Int.dp(): Int {
   return TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
-    dp.toFloat(),
+    this.toFloat(),
     Resources.getSystem().displayMetrics
   ).toInt()
 }

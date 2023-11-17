@@ -18,7 +18,7 @@ class MultiTouchView4(context: Context, attrs: AttributeSet? = null): View(conte
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { 
     style = Paint.Style.STROKE
     color = Color.BLACK
-    strokeWidth = dp(2).toFloat()
+    strokeWidth = 2f.dp
   }
   private val paths = mutableMapOf<Int, Path>()
 

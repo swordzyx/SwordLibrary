@@ -15,7 +15,7 @@ open class LoggerActivity: AppCompatActivity() {
       SwordLog.debug(tag, "onConfigurationChanged, newConfig: $newConfig")
       SwordLog.debug(
         tag,
-        "newConfig width: " + dp(newConfig.screenWidthDp) + ", height: " + dp(newConfig.screenHeightDp)
+        "newConfig width: " + newConfig.screenWidthDp.dp + ", height: " + newConfig.screenHeightDp.dp
       )
     }
   }

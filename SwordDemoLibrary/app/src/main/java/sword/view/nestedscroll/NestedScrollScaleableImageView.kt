@@ -27,7 +27,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
   View(context, attributeSet), Runnable, NestedScrollingChild3 {
   private val tag = "NestedScrollScaleableImageView"
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-  private val IMAGE_SIZE = dp(300)
+  private val IMAGE_SIZE = 300.dp
   private val SCALE_FACTOR = 2
   private val bitmap = createBitmap1(
     context.resources,
