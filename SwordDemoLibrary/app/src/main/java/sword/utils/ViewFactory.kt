@@ -25,7 +25,7 @@ fun createButtonToShowViewInContainer(
     isAllCaps = false
 
     setPadding(padding, 0, padding, 0)
-    setBackgroundResource(R.drawable.button_background_circle_corner)
+    setBackgroundResource(R.drawable.background_circle_corner_blue)
     setTextColor(Color.WHITE)
     setOnClickListener {
       container.visibility = View.VISIBLE

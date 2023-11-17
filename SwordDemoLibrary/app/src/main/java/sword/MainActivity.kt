@@ -1,6 +1,7 @@
 package sword
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -20,9 +21,17 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     initWindowSize(this)
+    
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+      fullScreenByFlag(window)
+    }
 
     rootView = HomePage(this).rootView
     setContentView(rootView)
+    
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      fullScreenByInsetController(window)
+    }
   }
   
   

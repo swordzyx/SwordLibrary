@@ -2,7 +2,6 @@ package sword.theme
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Build
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
@@ -15,7 +14,7 @@ class Theme {
     companion object {
         fun createCircleButton(context: Context): AppCompatButton {
             return AppCompatButton(context).apply {
-                background = ResourcesCompat.getDrawable(context.resources, R.drawable.button_background_circle_corner, null)
+                background = ResourcesCompat.getDrawable(context.resources, R.drawable.background_circle_corner_blue, null)
                 setPadding(20.dp, 10.dp, 20.dp, 10.dp)
                 setTextColor(Color.WHITE)
                 textSize = dp2px(10f)

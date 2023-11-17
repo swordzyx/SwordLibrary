@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 //apply plugin: 'com.plugin.trace'
 
 //微信应用性能检测插件
-apply plugin: 'com.tencent.matrix-plugin'
+//apply plugin: 'com.tencent.matrix-plugin'
 
 
 android {
@@ -52,13 +52,13 @@ android {
 	}
 }
 
-matrix {
+/*matrix {
 	trace {
 		enable = true //if you don't want to use trace canary, set false
 		baseMethodMapFile = "${project.buildDir}/matrix_output/Debug.methodmap"
 		blackListFile = "${project.projectDir}/matrixTrace/blackMethodList.txt"
 	}
-}
+}*/
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])

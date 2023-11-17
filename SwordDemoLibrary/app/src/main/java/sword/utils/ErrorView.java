@@ -25,7 +25,7 @@ public class ErrorView extends ViewGroup {
         super(context);
 
         imageView = new ImageView(context);
-        imageView.setImageResource(R.drawable.error_alert_icon);
+        //imageView.setImageResource(R.drawable.error_alert_icon);
         addView(imageView);
 
         errorTextView = new TextView(context);
@@ -34,7 +34,7 @@ public class ErrorView extends ViewGroup {
         errorTextView.setGravity(Gravity.CENTER);
         addView(errorTextView);
 
-        setBackground(Theme.getDrawableByResId(context, R.drawable.error_alert_background));
+        //setBackground(Theme.getDrawableByResId(context, R.drawable.error_alert_background));
         setPadding(getPaddingLeft() + (int) ScreenSize.dp(30), getPaddingTop(), getPaddingRight() + (int) ScreenSize.dp(30), getPaddingBottom());
     }
 

@@ -104,30 +104,27 @@ fun notchScreenAdapte(context: Context, window: Window, useNotch: Boolean) {
   //oppo 手机设置使用刘海区域，OPPO 手机在全屏状态下默认是占用刘海屏区域的，只需将应用设置为全屏沉浸式即可
   if (isNotchScreenOppo(window)) {
     SwordLog.debug(tag, "getNotchHeightOppo: ${getNotchHeightOppo(window)}")
-    if (useNotch) fullScreen(window)
+    if (useNotch) fullScreenByFlag(window)
   }
+}
+
+fun fullScreenByFlag(window: Window) {
+  val systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+
+  window.decorView.systemUiVisibility = systemUiVisibility
 }
 
 /**
  * 设置全屏
  */
-fun fullScreen(window: Window) {
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { //Android 11
-    //假定 window 的按照全屏的模式布局（即隐藏状态栏和导航栏）
-    window.setDecorFitsSystemWindows(false)
-    //隐藏状态栏
-    window.insetsController?.hide(WindowInsets.Type.statusBars())
-    //隐藏导航栏
-    window.insetsController?.hide(WindowInsets.Type.navigationBars())
-  } else {
-    var systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      systemUiVisibility = systemUiVisibility or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-    }
-
-    window.decorView.systemUiVisibility = systemUiVisibility
-  }
+@RequiresApi(Build.VERSION_CODES.R)
+fun fullScreenByInsetController(window: Window) {
+  //假定 window 的按照全屏的模式布局（即隐藏状态栏和导航栏）
+  window.setDecorFitsSystemWindows(false)
+  //隐藏状态栏
+  window.insetsController?.hide(WindowInsets.Type.statusBars())
+  //隐藏导航栏
+  window.insetsController?.hide(WindowInsets.Type.navigationBars())
 }
 
 /**

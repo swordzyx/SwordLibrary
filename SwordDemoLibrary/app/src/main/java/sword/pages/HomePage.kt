@@ -2,30 +2,46 @@ package sword.pages
 
 import android.content.Context
 import android.graphics.Color
-import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.viewpager.widget.ViewPager
+import com.example.swordlibrary.R
+import sword.dp
+import sword.view.viewpager.TabLayout
+import sword.view.viewpager.ViewPagerAdapter
 
 class HomePage(val context: Context): Page {
   override val rootView by lazy { 
-    createView()
+    createHomeView()
   }
   
-  private fun createView(): View {
+  private val navigateContent = mapOf(
+    "首页" to R.drawable.home_page,
+    "发现" to R.drawable.discover,
+    "消息" to R.drawable.message,
+    "我的" to R.drawable.mime
+  )
+  
+  private fun createHomeView(): View {
     val viewPager = ViewPager(context).apply {
-      setBackgroundColor(Color.WHITE)
-      adapter =
+      adapter = ViewPagerAdapter(navigateContent.keys.toTypedArray())
+    }
+    val tabLayout = TabLayout(context).apply {
+      navigateContent.forEach { item ->
+        addItem(TabLayout.TabItemView(context, item.key, item.value))
+      }
+      bind(viewPager)
     }
 
     return LinearLayout(context).apply {
-      contentDescription = "首页"
-      val textView = AppCompatTextView(context).apply { 
-        text = "登录成功"
-        gravity = Gravity.CENTER
-      }
-      addView(textView, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT))
+      orientation = LinearLayout.VERTICAL
+      addView(
+        viewPager, 
+        LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0).apply { 
+          weight = 1f 
+        })
+      addView(tabLayout, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50.dp))
     }
   }
 

@@ -15,7 +15,9 @@
         <activity
             android:name="sword.MainActivity"
             android:exported="true"
-            android:enabled="true">
+            android:screenOrientation="portrait"
+            android:enabled="true"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

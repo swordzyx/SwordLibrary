@@ -32,7 +32,7 @@ public class MenuItemView extends LinearLayout {
 
         iconView = new ImageView(context);
         iconView.setPadding(ScreenSize.dp(3), ScreenSize.dp(3), ScreenSize.dp(3), ScreenSize.dp(3));
-        iconView.setBackgroundResource(R.drawable.feedback_background);
+        iconView.setBackgroundResource(R.drawable.background_circle_corner_gray);
         iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ScreenSize.dp(28), ScreenSize.dp(28));
         params.gravity = Gravity.CENTER;

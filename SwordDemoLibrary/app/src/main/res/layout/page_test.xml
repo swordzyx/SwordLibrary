@@ -4,5 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     
+    <sword.view.viewpager.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_gray"/>
+    
 
 </LinearLayout>

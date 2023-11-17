@@ -66,7 +66,7 @@
         android:id="@+id/button"
         android:layout_width="80dp"
         android:layout_height="50dp"
-        android:background="@drawable/button_background_circle_corner"
+        android:background="@drawable/background_circle_corner_blue"
         android:text="关注"
         android:textColor="@android:color/white"
         app:layout_goneMarginStart="100dp"

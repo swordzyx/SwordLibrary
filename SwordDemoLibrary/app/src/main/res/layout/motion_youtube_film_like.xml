@@ -57,7 +57,7 @@
         android:id="@+id/fab_favourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_bookmark_24dp"
+        android:src="@drawable/bookmark"
         android:tint="@android:color/white"
         android:backgroundTint="@color/color_red_1"
         app:fabSize="mini"

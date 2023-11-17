@@ -38,18 +38,3 @@ private fun expendCheckBoxClickable(parent: View, left: Int, right: Int, top: In
 		false
 	})
 }
-
-/**
- * 全屏适配
- */
-fun fullScreen(activity: Activity) {
-	val uiFlag = View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-	
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-		activity.window.decorView.systemUiVisibility = uiFlag or View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-	}
-}
-
-fun hideSystemBars() {
-	
-}
