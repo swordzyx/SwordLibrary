@@ -22,7 +22,7 @@ public class ViewPagerAdapter extends PagerAdapter {
   private static final int INVALID_LAYOUT_ID = -1;
   private static final String DEFAULT_TEXTVIEW_CONTENT = "默认的 TextView";
 
-  private final int[] viewLayoutResList = new int[]{R.layout.view_home, INVALID_LAYOUT_ID, INVALID_LAYOUT_ID, INVALID_LAYOUT_ID};
+  private final int[] viewLayoutResList = new int[]{R.layout.view_photo_picker, INVALID_LAYOUT_ID, INVALID_LAYOUT_ID, INVALID_LAYOUT_ID};
   private final List<View> viewList = new ArrayList<>();
 
   @NonNull
@@ -32,8 +32,8 @@ public class ViewPagerAdapter extends PagerAdapter {
     if (position >= viewList.size()) {
       if (viewLayoutResList[position] != INVALID_LAYOUT_ID) {
         int layoutId = viewLayoutResList[position];
-        if (layoutId == R.layout.view_home) {
-          HomeView homeView = new HomeView(container.getContext(), R.layout.view_home);
+        if (layoutId == R.layout.view_photo_picker) {
+          HomeView homeView = new HomeView(container.getContext(), R.layout.view_photo_picker);
           view = homeView.view();
         } else {
           view = LayoutInflater.from(container.getContext()).inflate(layoutId, null);

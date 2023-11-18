@@ -13,7 +13,7 @@ android {
 	//buildToolsVersion 函数被丢弃
 	defaultConfig {
 		applicationId "com.example.swordlibrary"
-		minSdk 24 //minSdkVersion 被丢弃
+		minSdk 21 //minSdkVersion 被丢弃
 		targetSdkVersion 30 //targetSdkVersion 被丢弃
 		versionCode 1
 		versionName "1.0"

@@ -109,7 +109,7 @@ public class XlcwGalleryActivity extends Activity {
         if (cropPhoto) {
           //调用系统裁剪功能
           cropUri = Uri.fromFile(fileCrop);
-          cropImageUri(this, uri, cropUri, 1, 1, 400, 400, CODE_RESULT_REQUEST);
+          XlcwPhotoUtility.cropImageUri(this, uri, cropUri, 1, 1, 400, 400, CODE_RESULT_REQUEST);
         } else {
           returnImgToGame(uri);
         }
@@ -122,26 +122,6 @@ public class XlcwGalleryActivity extends Activity {
         returnImgToGame(cropUri);
       }
     }
-  }
-
-  private void cropImageUri(Activity activity, Uri orgUri, Uri desUri, int aspectX, int aspectY, int width, int height, int requestCode) {
-    Intent intent = new Intent("com.android.camera.action.CROP");
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-    }
-    intent.setDataAndType(orgUri, "image/*");
-    intent.putExtra("crop", "false");
-    intent.putExtra("aspectX", aspectX);
-    intent.putExtra("aspectY", aspectY);
-    intent.putExtra("outputX", width);
-    intent.putExtra("outputY", height);
-    intent.putExtra("scale", true);
-    //将剪切的图片保存到目标Uri中
-    intent.putExtra(MediaStore.EXTRA_OUTPUT, desUri);
-    intent.putExtra("return-data", false);
-    intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-    intent.putExtra("noFaceDetection", true);
-    activity.startActivityForResult(intent, requestCode);
   }
 
   private boolean hasSdcard() {
@@ -203,7 +183,6 @@ public class XlcwGalleryActivity extends Activity {
       obj.put("path", getImagePath(uri));
       
       SwordLog.debug("object: " + obj);
-      //ToastUtilKt.toast(this, obj.toString());
       ToastUtilKt.snackBar(getParent(), obj.toString(), true);
     } catch (Exception e) {
       e.printStackTrace();

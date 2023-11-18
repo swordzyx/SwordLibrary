@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+    
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidline"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+    
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flowLeft"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="pick_single_image_or_video, pick_single_image, pick_single_video, pick_mime_type"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        app:flow_wrapMode="none"
+        app:flow_verticalGap="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/guidline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flowRight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="pick_multi_image_or_video, pick_multi_image, pick_multi_video"
+        android:orientation="vertical"
+        android:layout_margin="5dp"
+        app:flow_wrapMode="none"
+        app:flow_verticalGap="5dp"
+        app:layout_constraintLeft_toRightOf="@id/guidline"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    
+    <Button
+        android:id="@+id/pick_single_image_or_video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="选取单个图片或视频"
+        android:background="@drawable/background_right_angle_fill_blue"
+        android:layout_margin="6dp"
+        android:paddingHorizontal="8dp"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/pick_multi_image_or_video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="选取多个图片或视频"
+        android:background="@drawable/background_right_angle_fill_blue"
+        android:layout_margin="6dp"
+        android:paddingHorizontal="8dp"
+        tools:ignore="HardcodedText,MissingConstraints"/>
+
+    <Button
+        android:id="@+id/pick_single_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="选取单个图片"
+        android:background="@drawable/background_right_angle_fill_blue"
+        android:layout_margin="6dp"
+        android:paddingHorizontal="8dp"
+        tools:ignore="HardcodedText,MissingConstraints"/>
+
+    <Button
+        android:id="@+id/pick_multi_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="选取多个图片"
+        android:background="@drawable/background_right_angle_fill_blue"
+        android:layout_margin="6dp"
+        android:paddingHorizontal="8dp"
+        tools:ignore="HardcodedText,MissingConstraints" />
+
+    <Button
+        android:id="@+id/pick_single_video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="选取单个视频"
+        android:background="@drawable/background_right_angle_fill_blue"
+        android:layout_margin="6dp"
+        android:paddingHorizontal="8dp"
+        tools:ignore="HardcodedText,HardcodedText,MissingConstraints"/>
+
+    <Button
+        android:id="@+id/pick_multi_video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="选取多个视频"
+        android:background="@drawable/background_right_angle_fill_blue"
+        android:layout_margin="6dp"
+        android:paddingHorizontal="8dp"
+        tools:ignore="HardcodedText,MissingConstraints"
+        />
+    
+    <Button
+        android:id="@+id/pick_mime_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="选取指定mime的媒体文件"
+        android:textAllCaps="false"
+        android:background="@drawable/background_right_angle_fill_blue"
+        android:layout_margin="6dp"
+        android:paddingHorizontal="8dp"
+        tools:ignore="HardcodedText,MissingConstraints"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

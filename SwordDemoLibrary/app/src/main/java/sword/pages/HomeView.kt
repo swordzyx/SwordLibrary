@@ -8,7 +8,7 @@ import com.example.swordlibrary.R
 
 class HomeView(private val context: Context, private val layoutId: Int) {
   @SuppressLint("InflateParams")
-  fun view(): View = LayoutInflater.from(context).inflate(R.layout.view_home, null)
+  fun view(): View = LayoutInflater.from(context).inflate(R.layout.view_photo_picker, null)
   
   //todo: 选取图片
 }

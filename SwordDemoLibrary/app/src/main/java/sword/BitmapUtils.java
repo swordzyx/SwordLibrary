@@ -337,7 +337,7 @@ public class BitmapUtils {
 	/**
 	* bitmap 保存到指定路径
 	* @param file 图片的绝对路径
-	* @param file 位图
+	* @param bmp 位图
 	* @return bitmap
 	*/
 	public static boolean saveFile(String file, Bitmap bmp) {
@@ -365,7 +365,6 @@ public class BitmapUtils {
 
 	/**
 	* 回收一个未被回收的Bitmap
-	*@param bitmap
 	*/
 	public static void doRecycledIfNot(Bitmap bitmap) {
 		if (!bitmap.isRecycled()) {
