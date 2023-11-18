@@ -35,7 +35,7 @@ class ViewPagerFragment(val context: Context) {
     val viewPager = ViewPager(context).apply {
       setBackgroundColor(Color.WHITE)
       currentItem = 0
-      adapter = ViewPagerAdapter(arrayOf(""))
+      adapter = ViewPagerAdapter()
     }
     val lp = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT).apply {
       weight = 1f

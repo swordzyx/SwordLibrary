@@ -25,7 +25,7 @@ class HomePage(val context: Context): Page {
   
   private fun createHomeView(): View {
     val viewPager = ViewPager(context).apply {
-      adapter = ViewPagerAdapter(navigateContent.keys.toTypedArray())
+      adapter = ViewPagerAdapter()
     }
     val tabLayout = TabLayout(context).apply {
       navigateContent.forEach { item ->
