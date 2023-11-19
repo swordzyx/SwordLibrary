@@ -8,8 +8,13 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import androidx.core.content.res.ResourcesCompat;
+
+import com.example.swordlibrary.R;
 
 import org.json.JSONObject;
 
@@ -17,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import sword.ScreenSize;
 import sword.logger.SwordLog;
 
 
@@ -25,14 +31,65 @@ import sword.logger.SwordLog;
  */
 public class XlcwPhotoPicker {
   
-  private final String tag = "XlcwPhotoPicker";
+  private final static String tag = "XlcwPhotoPicker";
   
-  public static View mainView(Context context) {
-    LinearLayout view = new LinearLayout(context) {
+  public static View mainView(Activity activity) {
+    FrameLayout view = new FrameLayout(activity) {
+      @Override
+      protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        for (int i = 0; i < getChildCount(); i++) {
+          if ((i & 1) == 0) {
 
+          } else {
+
+          }
+        }
+      }
+
+      @Override
+      protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+      }
     };
+
+    Button buttonShowPhoneAlbum = createButton(activity, "选取图片", v -> ShowPhoneAlbum(activity, true));
+    view.addView(buttonShowPhoneAlbum);
+
+    //todo: 填充参数
+    JSONObject paramJson = new JSONObject();
+    Button buttonCompressPic = createButton(activity, "图片压缩", v -> { _compressPic(paramJson.toString());});
+    view.addView(buttonCompressPic);
+
+    Button buttonSelectAvtar = createButton(activity, "选取头像", v -> {
+      //todo：查看平台工程里面的 flag 传的是什么？
+      selectAvatar(activity, 0);
+    });
+    view.addView(buttonSelectAvtar);
+
+    Button buttonSelectPictureScan = createButton(activity, "选取二维码扫描", v -> {
+      scanPicture(activity);
+    });
+    view.addView(buttonSelectPictureScan);
+
+    Button buttonSaveImageToGallery = createButton(activity, "保存图片到相册", v -> {
+      //todo: 参考平台工程填充一个实际的 Bitmap
+      Bitmap bitmap = Bitmap.createBitmap(ScreenSize.dp(20), ScreenSize.dp(20), Bitmap.Config.ARGB_8888);
+      //todo：参考平台工程填充实际的文件名称
+      String fileName = "";
+      saveImageToGallery(activity, bitmap, fileName);
+    });
     return view;
   }
+
+  private static Button createButton(Context context, String title, View.OnClickListener clickListener) {
+    Button button = new Button(context);
+    button.setBackground(ResourcesCompat.getDrawable(context.getResources(), R.drawable.background_right_angle_fill_blue, null));
+    button.setText(title);
+    button.setOnClickListener(clickListener);
+    return button;
+  }
+
   
   /**
    * 选取图片
@@ -47,7 +104,7 @@ public class XlcwPhotoPicker {
   /**
    * 图片压缩 
    */
-  public void _compressPic(String json) {
+  public static void _compressPic(String json) {
     SwordLog.debug(tag, "_compressPic >> json:" + json);
 
     try {
@@ -84,7 +141,7 @@ public class XlcwPhotoPicker {
   /**
    * 选择头像
    */
-  public static void SelectAvatar(Activity activity, int flag) {
+  public static void selectAvatar(Activity activity, int flag) {
     Intent intent = new Intent(activity, XlcwAvatarActivity.class);
     intent.putExtra("FLAG", flag);
     activity.startActivity(intent);
@@ -100,7 +157,7 @@ public class XlcwPhotoPicker {
   /**
    * 保存图片到相册
    */
-  private void saveImageToGallery(Activity activity, Bitmap bmp, String fileName) {
+  private static void saveImageToGallery(Activity activity, Bitmap bmp, String fileName) {
     if (bmp == null) {
       Toast.makeText(activity.getApplicationContext(), " 照片读取失败 ", Toast.LENGTH_SHORT).show();
       return;

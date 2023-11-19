@@ -1,3 +1,4 @@
+
 package sword
 
 import android.content.res.Resources
