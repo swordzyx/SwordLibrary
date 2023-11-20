@@ -14,7 +14,7 @@ android {
 	defaultConfig {
 		applicationId "com.example.swordlibrary"
 		minSdk 21 //minSdkVersion 被丢弃
-		targetSdkVersion 34 //targetSdkVersion 被丢弃
+		targetSdkVersion 29 //targetSdkVersion 被丢弃
 		versionCode 1
 		versionName "1.0"
 

@@ -1,21 +1,16 @@
 package sword.photo;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.example.swordlibrary.R;
 
@@ -48,15 +43,7 @@ public class XlcwPhotoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ||
-                Build.VERSION.SDK_INT >= 30) {
-            pickPhoto();
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_CODE_REQUEST_PERMISSION);
-        }
+        pickPhoto();
 
         setContentView(R.layout.activity_photo);
         photoImageView = findViewById(R.id.photo);
@@ -68,15 +55,6 @@ public class XlcwPhotoActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_CODE_REQUEST_PERMISSION && Manifest.permission.READ_EXTERNAL_STORAGE.equals(permissions[0])) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                pickPhoto();
-            } else {
-                Toast.makeText(this, "storage permission is not authorized.", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
     }
 
     @Override

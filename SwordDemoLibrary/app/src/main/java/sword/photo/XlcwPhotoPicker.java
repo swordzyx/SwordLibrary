@@ -1,21 +1,20 @@
 package sword.photo;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.swordlibrary.R;
@@ -35,9 +34,12 @@ import sword.logger.SwordLog;
  */
 public class XlcwPhotoPicker {
 
+    private static final XlcwPhotoPicker xlcwPhotoPicker = new XlcwPhotoPicker();
     private final static String tag = "XlcwPhotoPicker";
+    ImageView imageView;
 
     public static View mainView(Activity activity) {
+        
         FrameLayout view = new FrameLayout(activity) {
             private int marginInternal = ScreenSize.dp(5);
 
@@ -50,27 +52,44 @@ public class XlcwPhotoPicker {
 
                 for (int i = 0; i < getChildCount(); i++) {
                     View child = getChildAt(i);
-                    if ((i & 1) == 0) {
-                        child.layout(0, childTop,
+                    if (child instanceof ImageView) {
+                        child.layout(marginInternal, 
+                            childTop, 
+                            getMeasuredWidth() - marginInternal, 
+                            childTop + child.getMeasuredHeight());
+                        childTop += child.getMeasuredHeight();
+                    } else {
+                        if ((i & 1) == 0) {
+                            child.layout(0, childTop,
                                 halfWidth - marginInternal,
                                 childTop + child.getMeasuredHeight());
 
-                    } else {
-                        child.layout(
+                        } else {
+                            child.layout(
                                 getMeasuredWidth() >> 1,
                                 childTop,
                                 getMeasuredWidth() - marginInternal,
                                 childTop + child.getMeasuredHeight()
-                        );
-                        childTop += child.getMeasuredHeight() + marginInternal;
+                            );
+                            childTop += child.getMeasuredHeight() + marginInternal;
+                        }
                     }
                 }
 
             }
         };
 
-        Button buttonShowPhoneAlbum = createButton(activity, "选取图片", v -> ShowPhoneAlbum(activity, true));
+        Button buttonShowPhoneAlbum = createButton(activity, "选取图片", v -> ShowPhoneAlbum(activity, false));
         view.addView(buttonShowPhoneAlbum);
+
+        Button buttonSelectPictureAndCrop = createButton(activity, "选取图片并裁剪", v -> ShowPhoneAlbum(activity, true));
+        view.addView(buttonSelectPictureAndCrop);
+
+        Button pickIntentWithCrop = createButton(activity, "pick 图片并裁剪", v -> ShowPhoneAlbum(activity, Intent.ACTION_PICK, true));
+        view.addView(pickIntentWithCrop);
+
+        Button getContentIntentWithCrop = createButton(activity, "get content 图片并裁剪", v -> ShowPhoneAlbum(activity, Intent.ACTION_GET_CONTENT, true));
+        view.addView(getContentIntentWithCrop);
 
         //todo: 填充参数
         JSONObject paramJson = new JSONObject();
@@ -81,7 +100,7 @@ public class XlcwPhotoPicker {
 
         Button buttonSelectAvtar = createButton(activity, "选取头像", v -> {
             //todo：查看平台工程里面的 flag 传的是什么？
-            selectAvatar(activity);
+            xlcwPhotoPicker.selectAvatar(activity);
         });
         view.addView(buttonSelectAvtar);
 
@@ -98,6 +117,12 @@ public class XlcwPhotoPicker {
             saveImageToGallery(activity, bitmap, fileName);
         });
         view.addView(buttonSaveImageToGallery);
+
+        xlcwPhotoPicker.imageView = new ImageView(activity);
+        xlcwPhotoPicker.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        xlcwPhotoPicker.imageView.setBackground(ResourcesCompat.getDrawable(activity.getResources(), 
+            R.drawable.background_circle_corner_border, null));
+        view.addView(xlcwPhotoPicker.imageView);
         return view;
     }
 
@@ -117,16 +142,31 @@ public class XlcwPhotoPicker {
         return button;
     }
 
-
     /**
      * 选取图片
      */
     public static void ShowPhoneAlbum(Activity activity, boolean cropPhoto) {
+        ShowPhoneAlbum(activity, "", cropPhoto);
+    }
+
+    /**
+     * 选取图片
+     */
+    public static void ShowPhoneAlbum(Activity activity, String action, boolean cropPhoto) {
+        XlcwGalleryActivity.setCallback(resultUri -> {
+            SwordLog.debug(tag, "图片选取成功：" + resultUri);
+            if (xlcwPhotoPicker.imageView != null) {
+                xlcwPhotoPicker.imageView.setImageURI(resultUri);
+                
+            }
+        });
         Intent intent = new Intent(activity, XlcwGalleryActivity.class);
+        if (!TextUtils.isEmpty(action)) {
+            intent.putExtra(XlcwGalleryActivity.EXTRA_KEY_SELECT_ACTION, action);
+        }
         intent.putExtra("crop_photo", cropPhoto);
         activity.startActivity(intent);
     }
-
 
     /**
      * 图片压缩
@@ -168,7 +208,11 @@ public class XlcwPhotoPicker {
     /**
      * 从相册选择头像
      */
-    public static void selectAvatar(Activity activity) {
+    public void selectAvatar(Activity activity) {
+        XlcwGalleryActivity.setCallback(resultUri -> {
+            SwordLog.debug(tag, "头像选择成功：" + resultUri);
+            
+        });
         Intent intent = new Intent(activity, XlcwAvatarActivity.class);
         intent.putExtra("FLAG", XlcwAvatarActivity.CODE_GALLERY_REQUEST);
         activity.startActivity(intent);

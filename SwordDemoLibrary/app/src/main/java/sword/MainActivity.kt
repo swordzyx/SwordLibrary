@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     initWindowSize(this)
 
 
-    /*if (ActivityCompat.checkSelfPermission(
+    if (ActivityCompat.checkSelfPermission(
         this,
         Manifest.permission.WRITE_EXTERNAL_STORAGE
       ) != PackageManager.PERMISSION_GRANTED
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE),
         111
       )
-    }*/
+    }
 
     if (ActivityCompat.checkSelfPermission(
         this,
