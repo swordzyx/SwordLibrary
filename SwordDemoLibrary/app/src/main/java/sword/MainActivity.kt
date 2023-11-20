@@ -1,16 +1,16 @@
 package sword
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.children
-import com.example.swordlibrary.R
+import androidx.core.app.ActivityCompat
 import sword.logger.SwordLog
 import sword.pages.HomePage
+import sword.photo.XlcwPhotoPicker
 import sword.view.*
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +21,34 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     initWindowSize(this)
-    
+
+
+    /*if (ActivityCompat.checkSelfPermission(
+        this,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+      ) != PackageManager.PERMISSION_GRANTED
+    ) {
+      SwordLog.debug(tag, "申请读权限")
+      ActivityCompat.requestPermissions(
+        this,
+        arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+        111
+      )
+    }*/
+
+    if (ActivityCompat.checkSelfPermission(
+        this,
+        Manifest.permission.READ_MEDIA_IMAGES
+      ) != PackageManager.PERMISSION_GRANTED
+    ) {
+      SwordLog.debug(tag, "申请读权限")
+      ActivityCompat.requestPermissions(
+        this,
+        arrayOf<String>(Manifest.permission.READ_MEDIA_IMAGES),
+        111
+      )
+    }
+
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
       fullScreenByFlag(window)
     }

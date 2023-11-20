@@ -27,14 +27,14 @@ public class XlcwAvatarActivity extends Activity {
     public static final String tag = "AvatarActivity";
     public static String MANIFEST_AUTHOR_NAME = "";
 
-    private static final int CODE_CAMERA_REQUEST = 0; // 打开相机
-    private static final int CODE_GALLERY_REQUEST = 1; // 打开相册
+    static final int CODE_CAMERA_REQUEST = 0; // 打开相机
+    static final int CODE_GALLERY_REQUEST = 1; // 打开相册
     private static final int CODE_RESULT_REQUEST = 2; //剪裁图片
 
     //拍照保存的照片路径
-    private final File file = new File(Environment.getExternalStorageDirectory().getPath() + "/photo.jpg");
+    private final File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),  "photo.jpg");
     //剪裁图片保存的路径
-    private final File fileCrop = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
+    private final File fileCrop = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "crop_photo.jpg");
     private Uri cropImageUri;
 
     @Override
@@ -79,7 +79,7 @@ public class XlcwAvatarActivity extends Activity {
         } else {
             Toast.makeText(this, "设备没有SD卡！", Toast.LENGTH_SHORT).show();
             SwordLog.error(tag, "设备没有SD卡");
-            SwordLog.error(tag, "结果通知：" + XlcwPhotoUtility.ToJson("OnSelectAvatar", 1, ""));
+            XlcwPhotoUtility.ToJson("OnSelectAvatar", 1, "");
             finish();
         }
     }
@@ -107,12 +107,13 @@ public class XlcwAvatarActivity extends Activity {
      */
     public void getAlbumPhoto() {
         try {
-            Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            Intent photoPickerIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            photoPickerIntent.addCategory(Intent.CATEGORY_OPENABLE);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, CODE_GALLERY_REQUEST);
         } catch (Exception e) {
             SwordLog.error(tag, "getAlbumPhoto failed:" + e.getMessage());
-            SwordLog.error(tag, "结果通知：" + XlcwPhotoUtility.ToJson("OnSelectAvatar", 1, ""));
+            XlcwPhotoUtility.ToJson("OnSelectAvatar", 1, "");
         }
     }
 
@@ -137,15 +138,12 @@ public class XlcwAvatarActivity extends Activity {
 
                         //2018年7月28日19:11:24 更换选照片后裁剪方法测试
                         cropImageUri = Uri.fromFile(fileCrop);
-                        Uri newUri = Uri.parse(XlcwPhotoUtility.getPath(this, data.getData()));
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            newUri = FileProvider.getUriForFile(this, MANIFEST_AUTHOR_NAME, new File(newUri.getPath()));
-                        }
-                        XlcwPhotoUtility.cropImageUri(this, newUri, cropImageUri, 1, 1, output_X, output_Y, CODE_RESULT_REQUEST);
+                        SwordLog.debug(tag, "选择图片：" + data.getData());
+                        XlcwPhotoUtility.cropImageUri(this, data.getData(), cropImageUri, 1, 1, output_X, output_Y, CODE_RESULT_REQUEST);
 
                     } else {
                         Toast.makeText(this, "设备没有SD卡!", Toast.LENGTH_SHORT).show();
-                        SwordLog.error(tag, "结果通知：" + XlcwPhotoUtility.ToJson("OnSelectAvatar", 1, ""));
+                        XlcwPhotoUtility.ToJson("OnSelectAvatar", 1, "");
                         finish();
                     }
                     break;
@@ -173,7 +171,7 @@ public class XlcwAvatarActivity extends Activity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        SwordLog.debug(tag, "结果通知：" + XlcwPhotoUtility.ToJson("OnSelectAvatar", 0, obj.toString()));
+        XlcwPhotoUtility.ToJson("OnSelectAvatar", 0, obj.toString());
         finish();
     }
 

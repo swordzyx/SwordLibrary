@@ -179,14 +179,14 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
 
     //distanceX 和 distanceY 是这次事件距离上次事件的距离
     override fun onScroll(
-      downEvent: MotionEvent,
+      downEvent: MotionEvent?,
       currentEvent: MotionEvent,
       distanceX: Float,
       distanceY: Float
     ): Boolean {
       SwordLog.debug(tag, "onScroll distanceX: $distanceX, distanceY: $distanceY，" +
-              "x 总偏移：${currentEvent.x - downEvent.x}, " +
-              "y 总偏移：${currentEvent.y - downEvent.y}")
+              "x 总偏移：${currentEvent.x - downEvent!!.x}, " +
+              "y 总偏移：${currentEvent.y - downEvent!!.y}")
       if (big) {
         offsetX -= distanceX
         offsetY -= distanceY
@@ -204,7 +204,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
     }
 
     override fun onFling(
-      e1: MotionEvent,
+      e1: MotionEvent?,
       e2: MotionEvent,
       velocityX: Float,
       velocityY: Float

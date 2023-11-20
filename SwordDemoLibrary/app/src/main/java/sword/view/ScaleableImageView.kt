@@ -157,7 +157,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
 
     //distanceX 和 distanceY 是这次事件距离上次事件的距离
     override fun onScroll(
-      e1: MotionEvent,
+      e1: MotionEvent?,
       e2: MotionEvent,
       distanceX: Float,
       distanceY: Float
@@ -174,7 +174,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
     }
 
     override fun onFling(
-      e1: MotionEvent,
+      e1: MotionEvent?,
       e2: MotionEvent,
       velocityX: Float,
       velocityY: Float

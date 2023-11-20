@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,7 +27,7 @@ import java.io.InputStreamReader;
  */
 public class XlcwGalleryActivity extends Activity {
 
-  public static final String LOG_TAG = "AlbumActivity";
+  public static final String tag = "AlbumActivity";
   public static final int ALBUM_CODE = 1;
   public static final int CODE_RESULT_REQUEST = 2;
   public String m_imagePath = null;
@@ -52,7 +50,7 @@ public class XlcwGalleryActivity extends Activity {
     if (m_imagePath != null) {
       return;
     }
-    SwordLog.debug(LOG_TAG, "Sdk层:打开系统相册");
+    SwordLog.debug(tag, "Sdk层:打开系统相册");
     super.onCreate(savedInstanceState);
 
     fileCrop = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "crop_photo.jpg");
@@ -64,7 +62,7 @@ public class XlcwGalleryActivity extends Activity {
       doOpenAlbum();
     } else {
       //系统重建Activity,不执行逻辑，但不能finish,重启后才会执行onActivityResult
-      SwordLog.debug(LOG_TAG, "Sdk层: bundle不为空，不打开相册");
+      SwordLog.debug(tag, "Sdk层: bundle不为空，不打开相册");
     }
   }
 
@@ -80,11 +78,12 @@ public class XlcwGalleryActivity extends Activity {
       CompressMiniWidth = jsonObject.getInt("CompressMiniWidth");
       CompressMiniHeight = jsonObject.getInt("CompressMiniHeight");
 
-      Intent intent = new Intent("android.intent.action.PICK", null);
+      Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT, null);
+      intent.addCategory(Intent.CATEGORY_OPENABLE);
       intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
       startActivityForResult(intent, ALBUM_CODE);
     } catch (Exception e) {
-      SwordLog.debug(LOG_TAG, "Sdk层:Sdk层:打开系统相册 错误" + e);
+      SwordLog.debug(tag, "Sdk层:Sdk层:打开系统相册 错误" + e);
     }
   }
 
@@ -100,21 +99,23 @@ public class XlcwGalleryActivity extends Activity {
     }
     //选择图片后返回Uri
     if (requestCode == ALBUM_CODE) {
+      SwordLog.debug(tag, "图片选取成功");
       Uri uri = data.getData();
       if (uri == null) {
         //没有在相册选中图片
-        SwordLog.debug(LOG_TAG, "Sdk层:没有选择相片");
+        SwordLog.debug(tag, "Sdk层:没有选择相片");
         finish();
       } else if (hasSdcard()) {
         if (cropPhoto) {
           //调用系统裁剪功能
+          SwordLog.debug(tag, "裁剪图片");
           cropUri = Uri.fromFile(fileCrop);
           XlcwPhotoUtility.cropImageUri(this, uri, cropUri, 1, 1, 400, 400, CODE_RESULT_REQUEST);
         } else {
           returnImgToGame(uri);
         }
       } else {
-        SwordLog.debug(LOG_TAG, "SDK层：设备没有 SD 卡");
+        SwordLog.debug(tag, "SDK层：设备没有 SD 卡");
         finish();
       }
     } else if (requestCode == CODE_RESULT_REQUEST) {
@@ -183,7 +184,7 @@ public class XlcwGalleryActivity extends Activity {
       obj.put("path", getImagePath(uri));
       
       SwordLog.debug("object: " + obj);
-      ToastUtilKt.snackBar(getParent(), obj.toString(), true);
+      ToastUtilKt.snackBar(this, obj.toString(), true);
     } catch (Exception e) {
       e.printStackTrace();
     }

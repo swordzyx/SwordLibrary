@@ -9,12 +9,12 @@ apply plugin: 'kotlin-android'
 
 android {
 	namespace 'com.example.swordlibrary'
-	compileSdkVersion 33 //compileSdkVersion 被丢弃
+	compileSdkVersion 34 //compileSdkVersion 被丢弃
 	//buildToolsVersion 函数被丢弃
 	defaultConfig {
 		applicationId "com.example.swordlibrary"
 		minSdk 21 //minSdkVersion 被丢弃
-		targetSdkVersion 30 //targetSdkVersion 被丢弃
+		targetSdkVersion 34 //targetSdkVersion 被丢弃
 		versionCode 1
 		versionName "1.0"
 
@@ -133,7 +133,7 @@ dependencies {
 
 	
     testImplementation 'junit:junit:4.13.2'
-	//Robolectric 依赖，用于测试
+	//Robolectric 依赖，用于测试©
 	testImplementation 'org.robolectric:robolectric:4.9'
 	testImplementation 'org.jetbrains.kotlin:kotlin-test'
 	

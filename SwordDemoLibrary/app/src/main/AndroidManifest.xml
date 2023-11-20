@@ -2,34 +2,62 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.swordlibrary">
-    
+
+    <uses-sdk tools:overrideLibrary="com.sword.lib_processor" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
     <application
         android:name="sword.SwordApplication"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:networkSecurityConfig="@xml/network_security_config"
         tools:ignore="AllowBackup,UnusedAttribute">
         <activity
             android:name="sword.MainActivity"
+            android:enabled="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:enabled="true"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="sword.ChangeUIOnThreadActivity"/>
+        <activity
+            android:name="sword.ChangeUIOnThreadActivity"
+            android:exported="false" />
 
-        <activity android:name="sword.photo.XlcwGalleryActivity" />
+        <activity
+            android:name="sword.photo.XlcwGalleryActivity"
+            android:exported="false" />
 
-        <activity android:name="sword.annotation.AnnotationActivity"/>
+        <activity
+            android:name="sword.photo.XlcwAvatarActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="sword.photo.XlcwPhotoActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="sword.annotation.AnnotationActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.squareup.leakcanary.internal.DisplayLeakActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="com.github.moduth.blockcanary.ui.DisplayActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -17,7 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.swordlibrary.R;
+
 import java.io.IOException;
+
 import sword.logger.SwordLog;
 
 
@@ -25,10 +28,10 @@ public class XlcwPhotoActivity extends AppCompatActivity {
     private final String tag = "XlcwPhotoActivity";
     private static final int REQUEST_CODE_SELECT_PICTURE = 1;
     private static final int REQUEST_CODE_REQUEST_PERMISSION = 7701;
-    
+
     private ImageView photoImageView;
     private Uri selectPhotoUri;
-    
+
     private final View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -46,7 +49,8 @@ public class XlcwPhotoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ||
+                Build.VERSION.SDK_INT >= 30) {
             pickPhoto();
         } else {
             ActivityCompat.requestPermissions(this,
@@ -89,7 +93,8 @@ public class XlcwPhotoActivity extends AppCompatActivity {
     }
 
     private void pickPhoto() {
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent pickIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        pickIntent.addCategory(Intent.CATEGORY_OPENABLE);
         pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(pickIntent, REQUEST_CODE_SELECT_PICTURE);
     }
@@ -104,7 +109,7 @@ public class XlcwPhotoActivity extends AppCompatActivity {
             finish();
         }
     }
-    
+
     private void showPhoto(Uri uri) {
         if (uri == null || photoImageView == null) {
             finish();

@@ -1,5 +1,6 @@
 package sword.view.viewpager;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class ViewPagerAdapter extends PagerAdapter {
       if (viewLayoutResList[position] != INVALID_LAYOUT_ID) {
         int layoutId = viewLayoutResList[position];
         if (layoutId == R.layout.view_photo_picker) {
-          HomeView homeView = new HomeView(container.getContext(), R.layout.view_photo_picker);
+          HomeView homeView = new HomeView((Activity) container.getContext(), R.layout.view_photo_picker);
           view = homeView.view();
         } else {
           view = LayoutInflater.from(container.getContext()).inflate(layoutId, null);
