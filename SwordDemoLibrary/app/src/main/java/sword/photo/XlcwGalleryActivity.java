@@ -1,9 +1,12 @@
 package sword.photo;
 
 import android.app.Activity;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,8 +34,8 @@ import java.io.InputStreamReader;
 public class XlcwGalleryActivity extends Activity {
 
   public static final String tag = "AlbumActivity";
-  public static final int SELECT_PICTURE = 1;
-  public static final int CODE_RESULT_REQUEST = 2;
+  public static final int REQUEST_PICK_PHOTO = 1;
+  public static final int REQUEST_CROP_PHOTO = 2;
   public String m_imagePath = null;
   public int CompressSize = 40;
   public int CompressWidth = 800;
@@ -42,6 +45,7 @@ public class XlcwGalleryActivity extends Activity {
   public int CompressMiniHeight = 150;
 
   private File uploadFile = null;
+  private File cropTempFile = null;
   private Uri cropUri = null;
   /**
    * 是否裁剪选择的图片，默认为 true，即裁剪
@@ -59,26 +63,30 @@ public class XlcwGalleryActivity extends Activity {
     SwordLog.debug(tag, "Sdk层:打开系统相册");
     super.onCreate(savedInstanceState);
 
-    //uploadFile = new File(getExternalCacheDir(), "upload_image.jpg");
-    uploadFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "upload_image.jpg");
     if (getIntent().hasExtra(EXTRA_KEY_SELECT_ACTION)) {
       selectPictureAction = getIntent().getStringExtra(EXTRA_KEY_SELECT_ACTION);
     } else {
       selectPictureAction = Intent.ACTION_OPEN_DOCUMENT;
     }
-    
+
     //防止OppoR11s等机型出现重复选择相片的问题
     if (savedInstanceState == null) {
       //打开系统相册
       cropPhoto = getIntent().getBooleanExtra(EXTRA_KEY_CROP_IMAGE, true);
-      doOpenAlbum();
+      if (cropPhoto) {
+        cropTempFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "upload_image.jpg");
+      }
+
+      uploadFile = new File(getExternalCacheDir(), "upload_image.jpg");
+
+      pickPhoto();
     }
   }
 
   //打开相册
-  private void doOpenAlbum() {
+  private void pickPhoto() {
     try {
-      Intent intent = null;
+      Intent intent;
       if (TextUtils.isEmpty(selectPictureAction)) {
         intent = new Intent(Intent.ACTION_OPEN_DOCUMENT, null);
       } else {
@@ -88,7 +96,7 @@ public class XlcwGalleryActivity extends Activity {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
       }
       intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-      startActivityForResult(intent, SELECT_PICTURE);
+      startActivityForResult(intent, REQUEST_PICK_PHOTO);
     } catch (Exception e) {
       SwordLog.debug(tag, "Sdk层:Sdk层:打开系统相册 错误" + e);
     }
@@ -105,50 +113,163 @@ public class XlcwGalleryActivity extends Activity {
       return;
     }
     //选择图片后返回Uri
-    if (requestCode == SELECT_PICTURE) {
+    if (requestCode == REQUEST_PICK_PHOTO) {
       Uri uri = data.getData();
-      SwordLog.debug(tag, "图片选取成功，action 为： " + selectPictureAction + "，选取的图片 Uri：" + uri);
       if (uri == null) {
         //没有在相册选中图片
         SwordLog.debug(tag, "Sdk层:没有选择相片");
         finish();
-      } else {
-        if (cropPhoto) {
-          //调用系统裁剪功能
-          SwordLog.debug(tag, "裁剪图片, 裁剪的图片 Uri：" + uri);
-          cropUri = Uri.fromFile(uploadFile);
-          XlcwPhotoUtility.cropImageUri(this, uri, cropUri, 1, 1, 400, 400, CODE_RESULT_REQUEST);
-        } else {
-          SwordLog.debug(tag, "不裁剪图片，直接返回，返回的图片 uri：" + uri);
-          uploadFile = new File(getExternalCacheDir(), "upload_image.jpg");
-          if (!uploadFile.exists()) {
-            try {
-              uploadFile.createNewFile();
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
-          }
-          try (BufferedInputStream input = new BufferedInputStream(getContentResolver().openInputStream(uri));
-               BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(uploadFile))) {
-            JavaFileIO.copyFile(input, output);
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-          returnImgToGame(uri);
-        }
+        return;
       }
-    } else if (requestCode == CODE_RESULT_REQUEST) {
-      if (cropUri != null) {
-        returnImgToGame(cropUri);
+      SwordLog.debug(tag, "图片选取成功，action 为： " + selectPictureAction + "，选取的图片 Uri：" + uri);
+
+      if (cropPhoto) {
+        if (cropTempFile.exists()) {
+          cropTempFile.delete();
+        }
+
+        //调用系统裁剪功能
+        SwordLog.debug(tag, "裁剪图片, 裁剪的图片 Uri：" + uri);
+        cropTempUri = addCropTempFileToMediaStore(Environment.DIRECTORY_DCIM + File.separator, "upload_image.jpg");
+        SwordLog.debug(tag, "将 dcim 下的文件添加到 MediaStore 中：" + cropTempUri);
+
+        XlcwPhotoUtility.cropImageUri(this, uri, Uri.fromFile(cropTempFile), 1, 1, 400, 400, REQUEST_CROP_PHOTO);
+      } else {
+        SwordLog.debug(tag, "不裁剪图片，直接返回，返回的图片 uri：" + uri);
+        photoPickFinish(data.getData());
+      }
+    } else if (requestCode == REQUEST_CROP_PHOTO) {
+      //todo: 将 DCIM 下的内容拷贝到 uploadFile 中
+      if (copyImageFromDcmiToCache() && uploadFile.exists()) {
+        returnImgToGame(uploadFile.getAbsolutePath());
+      } else {
+        returnImgToGame(cropTempFile.getAbsolutePath());
       }
     }
+  }
+
+  private boolean copyImageFromDcmiToCache() {
+    try {
+      if (uploadFile.exists()) {
+        uploadFile.delete();
+      }
+      uploadFile.createNewFile();
+
+      if (cropTempUri == null) {
+        cropTempUri = getDcimUri("upload_image.jpg", Environment.DIRECTORY_DCIM + File.separator);
+        SwordLog.debug(tag, "重新获取 dcim uri：" + cropTempUri);
+      }
+      SwordLog.debug(tag, "cropTempUri: " + cropTempUri);
+
+      if (cropTempUri == null) {
+        return false;
+      }
+
+      try (BufferedInputStream input = new BufferedInputStream(getContentResolver().openInputStream(cropTempUri));
+           BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(uploadFile))) {
+        JavaFileIO.copyFile(input, output);
+      }
+      return true;
+
+    } catch (IOException exception) {
+      exception.printStackTrace();
+      return false;
+    }
+  }
+
+  private Uri getDcimUri(String fileName, String dcimPath) {
+    Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+    String[] projections = new String[]{MediaStore.Images.Media._ID};
+    String selection = MediaStore.Images.Media.DISPLAY_NAME + "=? AND " + MediaStore.Images.Media.RELATIVE_PATH + "=?";
+    String[] selectionsArgs = new String[]{"upload_image.jpg", Environment.DIRECTORY_DCIM + File.separator};
+
+    Cursor cursor = getContentResolver().query(contentUri, projections, selection, selectionsArgs, null);
+    try {
+      if (cursor != null && cursor.moveToFirst()) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+        return ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      if (cursor != null) {
+        cursor.close();
+      }
+    }
+    return null;
+  }
+
+  Uri cropTempUri = null;
+
+  private void photoPickFinish(Uri uri) {
+    if (uri == null) {
+      return;
+    }
+
+    BufferedInputStream input = null;
+    BufferedOutputStream output = null;
+    try {
+      if (uploadFile.exists()) {
+        uploadFile.delete();
+      }
+      uploadFile.createNewFile();
+
+      input = new BufferedInputStream(getContentResolver().openInputStream(uri));
+      output = new BufferedOutputStream(new FileOutputStream(uploadFile));
+      JavaFileIO.copyFile(input, output);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        if (input != null) {
+          input.close();
+        }
+
+        if (output != null) {
+          output.close();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    returnImgToGame(uploadFile.getAbsolutePath());
+  }
+
+  private Uri addCropTempFileToMediaStore(String relativePath, String fileName) {
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+    contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+    contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, relativePath);
+    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+    return uri;
+  }
+
+  /**
+   * 图片返回给unity,只需要返回图片路径，通过c# www获取
+   */
+  private void returnImgToGame(String filePath) {
+    JSONObject obj = new JSONObject();
+    try {
+      SwordLog.debug(tag, "上传图片路径：" + filePath);
+      obj.put("path", filePath);
+
+      SwordLog.debug("object: " + obj);
+      ToastUtilKt.snackBar(this, obj.toString(), true);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (callback != null) {
+      callback.onFinish(Uri.fromFile(new File(filePath)));
+    }
+    finish();
   }
 
   private boolean hasSdcard() {
     return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
   }
 
-  
+
   private void readCropSizeConfig() {
     try {
       String data = getJson(this.getApplicationContext(), "AlbumConfiguration.txt");
@@ -163,6 +284,7 @@ public class XlcwGalleryActivity extends Activity {
       e.printStackTrace();
     }
   }
+
   /**
    * 读取配置文件
    */
@@ -181,7 +303,7 @@ public class XlcwGalleryActivity extends Activity {
     }
     return sb.toString().trim();
   }
-  
+
 
   interface Callback {
     void onFinish(Uri resultUri);
@@ -193,25 +315,5 @@ public class XlcwGalleryActivity extends Activity {
     XlcwGalleryActivity.callback = callback;
   }
 
-  /**
-   * 图片返回给unity,只需要返回图片路径，通过c# www获取
-   */
-  private void returnImgToGame(Uri uri) {
-    JSONObject obj = new JSONObject();
-    try {
-      String path = getImagePath(uri);
-      SwordLog.debug(tag, "uri 转 path：" + path);
-      obj.put("path", path);
-
-      SwordLog.debug("object: " + obj);
-      ToastUtilKt.snackBar(this, obj.toString(), true);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    if (callback != null) {
-      callback.onFinish(uri);
-    }
-    finish();
-  }
 }
 
