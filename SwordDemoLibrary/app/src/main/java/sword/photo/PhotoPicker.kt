@@ -154,13 +154,8 @@ object PhotoPicker {
     intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
     context.startActivityForResult(intent, ALBUM_CODE)
   }
-
-  fun showGallery(context: Context, isCrop: Boolean) {
-    val intent: Intent = Intent(context, XlcwGalleryActivity::class.java)
-    intent.putExtra("crop_photo", isCrop)
-    context.startActivity(intent)
-  }
-
+  
+  
   interface Callback<R> {
     fun onResult(result: R, errorCode: Int, msg: String)
   }
