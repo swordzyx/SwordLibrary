@@ -153,9 +153,7 @@ fun getStatusHeight(context: Context): Int {
  * 打印设备屏幕信息
  */
 private fun printDisplayInfo(activity: Activity) {
-
   SwordLog.debug(tag, "onCreate configuration: " + activity.resources.configuration)
-  
   SwordLog.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
     val dm = activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -184,9 +182,9 @@ private suspend fun printFlodInfo(activity: Activity) {
     for (df in windowLayoutInfo.displayFeatures) {
       if (df is FoldingFeature) {
         SwordLog.debug(tag, "Folding State")
-        SwordLog.debug(tag, "State: " + (df as FoldingFeature).state)
-        SwordLog.debug(tag, "OcclusionType: " + (df as FoldingFeature).occlusionType)
-        SwordLog.debug(tag, "Orientation: " + (df as FoldingFeature).orientation)
+        SwordLog.debug(tag, "State: " + df.state)
+        SwordLog.debug(tag, "OcclusionType: " + df.occlusionType)
+        SwordLog.debug(tag, "Orientation: " + df.orientation)
       }
     }
   }
