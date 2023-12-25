@@ -1,70 +1,62 @@
 package sword
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
+import sword.devicedetail.getCpuModel
 import sword.logger.SwordLog
-import sword.pages.HomePage
-import sword.photo.XlcwPhotoPicker
+import sword.pages.ContentPage
 import sword.view.*
+import java.util.Stack
 
 class MainActivity : AppCompatActivity() {
   private val tag = "MainActivity"
-  private lateinit var rootView: View
+  private var contentPage: ContentPage? = null
+  private val rootView: View?
+    get() {
+      return contentPage?.rootView
+    }
+  private val backPressedListenerList = mutableListOf<BackPressedListener>()
 
   @SuppressLint("SetTextI18n", "InflateParams")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     initWindowSize(this)
-
-
-    if (ActivityCompat.checkSelfPermission(
-        this,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
-      ) != PackageManager.PERMISSION_GRANTED
-    ) {
-      SwordLog.debug(tag, "申请读权限")
-      ActivityCompat.requestPermissions(
-        this,
-        arrayOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-        111
-      )
-    }
-
-    if (ActivityCompat.checkSelfPermission(
-        this,
-        Manifest.permission.READ_MEDIA_IMAGES
-      ) != PackageManager.PERMISSION_GRANTED
-    ) {
-      SwordLog.debug(tag, "申请读权限")
-      ActivityCompat.requestPermissions(
-        this,
-        arrayOf<String>(Manifest.permission.READ_MEDIA_IMAGES),
-        111
-      )
-    }
-
+    
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
       fullScreenByFlag(window)
     }
 
-    rootView = HomePage(this).rootView
+    contentPage = ContentPage(this)
     setContentView(rootView)
     
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       fullScreenByInsetController(window)
     }
+    
+    SwordLog.debug(tag, getCpuModel())
   }
+  
+  fun addBackListener(listener: BackPressedListener) {
+    backPressedListenerList.add(listener)
+  } 
   
   
   @Deprecated("Deprecated in Java")
   override fun onBackPressed() {
-    super.onBackPressed()
     SwordLog.debug(tag, "onBackPress")
+    
+    for (i in backPressedListenerList.size - 1 downTo 0) {
+      if (backPressedListenerList[i].onBackPressed()) {
+        return
+      }
+    }
+    super.onBackPressed()
+  }
+  
+  fun interface BackPressedListener {
+    fun onBackPressed(): Boolean
   }
 }

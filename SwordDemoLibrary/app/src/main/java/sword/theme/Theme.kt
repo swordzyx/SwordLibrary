@@ -2,6 +2,7 @@ package sword.theme
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.view.Gravity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatEditText
@@ -19,7 +20,9 @@ class Theme {
                 setTextColor(Color.WHITE)
                 textSize = dp2px(10f)
                 gravity = Gravity.CENTER
-                foreground = null
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    foreground = null
+                }
             }
         }
         

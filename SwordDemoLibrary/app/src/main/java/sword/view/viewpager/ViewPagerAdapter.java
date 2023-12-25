@@ -35,7 +35,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         int layoutId = viewLayoutResList[position];
         if (layoutId == R.layout.view_photo_picker) {
           HomeView homeView = new HomeView((Activity) container.getContext(), R.layout.view_photo_picker);
-          view = homeView.view();
+          view = homeView.getMainContainer();
         } else {
           view = LayoutInflater.from(container.getContext()).inflate(layoutId, null);
         }
