@@ -6,8 +6,8 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import com.example.swordlibrary.R
+import sword.BitmapUtil
 import sword.logger.SwordLog
-import sword.createBitmap1
 import sword.dp2px
 
 
@@ -26,7 +26,7 @@ class TextReadView(context: Context, attrs: AttributeSet) : View(context, attrs)
     }
     private val measureResult = floatArrayOf(0f)
     private val bitmap =
-        createBitmap1(resources, R.drawable.avatar_rengwuxian, imageWidth, imageWidth)
+        BitmapUtil.createBitmap(resources, R.drawable.avatar_rengwuxian, imageWidth, imageWidth)
     private val imageMarginTop = dp2px(50f)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

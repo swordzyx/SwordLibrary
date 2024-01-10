@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.example.swordlibrary.R
 import sword.MainActivity
@@ -14,7 +15,7 @@ import sword.logger.SwordLog
 import sword.theme.Theme
 import sword.view.ViewModuleMainPage
 
-class HomeView(private val activity: Activity, private val layoutId: Int){
+class HomeView(private val activity: Activity){
   private val tag = "HomeView"
   init {
     if (activity is MainActivity) {
@@ -45,15 +46,14 @@ class HomeView(private val activity: Activity, private val layoutId: Int){
       val decorView = activity.window.decorView
       if (decorView is ViewGroup) {
         if (field != null) {
-          mainContainer.visibility = View.GONE
           val layoutParams = field!!.layoutParams ?: LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-          decorView.addView(field, layoutParams)
+          (activity.window.decorView as FrameLayout).addView(field, layoutParams)
         }
       }
     }
   
   @SuppressLint("SetTextI18n", "InflateParams")
-  private fun mainView(): View {
+  private fun mainView(): ViewGroup {
     val resultView = LinearLayout(activity).apply { 
       orientation = LinearLayout.VERTICAL
     }

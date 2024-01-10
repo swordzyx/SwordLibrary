@@ -1,7 +1,5 @@
 package sword;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,7 +15,6 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.YuvImage;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -27,31 +24,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 
+import sword.logger.SwordLog;
+
 /**
 * 图像工具类
 **/
 public class BitmapUtils {
-
-	Context mContext;
-	int screenWidth;
-	int screenHeight;
-	int screenSize;
-	private Activity mActivity;
-
-	public void init(Context context, Activity activity) {
-		mContext = context;
-		mActivity = activity;
-
-		//获取屏幕分辨率
-		DisplayMetrics dm = new DisplayMetrics();
-		activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-		screenWidth = dm.widthPixels;
-		screenHeight = dm.heightPixels;
-		screenSize = screenWidth * screenHeight;
-	}
-
-
-
 	/**
 	* 将 bitmap1 和 bitmap2 合成一个图像，将 bitmap2 放到 bitmap1 的左下角
 	*
@@ -77,7 +55,7 @@ public class BitmapUtils {
 
 
 	/**
-	* 将图片缩放到指定的宽高
+	* 将 Bitmap 缩放到指定的宽高
 	*
 	* @param bitmap 原始图像
 	* @param w 目标宽
@@ -208,7 +186,6 @@ public class BitmapUtils {
 
 	/**
 	* 为 Bitmap 添加一个倒影
-	*
 	**/
 	public static Bitmap createReflectionBitmap(Bitmap bitmap, float region) {
 		int width = bitmap.getWidth();
@@ -233,7 +210,6 @@ public class BitmapUtils {
 
 	/**
 	* 图片质量压缩
-	*
 	**/
 	public static Bitmap compressBitmap(Bitmap bitmap, float many){
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -245,7 +221,6 @@ public class BitmapUtils {
 
 	/**
 	* 高级图片质量压缩
-	* 
 	* @param bitmap 位图
 	* @param maxSize 压缩后的大小，单位kb
 	*/
@@ -256,7 +231,7 @@ public class BitmapUtils {
 		bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
 		byte[] b = baos.toByteArray();
 		// 将字节换成KB
-		double mid = b.length / 1024;
+		double mid = b.length / 1024.00;
 		// 获取bitmap大小 是允许最大大小的多少倍
 		double i = mid / maxSize;
 		// 判断bitmap占用空间是否大于允许最大空间 如果大于则压缩 小于则不压缩
@@ -293,10 +268,10 @@ public class BitmapUtils {
 	}
 
 	/**
-	* YUV视频流格式转bitmap
+	* YUV数据转（width，height）的 bitmap
 	* @param data YUV视频流格式
-	* @return width 设置宽度
-	* @return width 设置高度
+	* @param width 设置宽度
+	* @param height 设置高度
 	*/
 	public static Bitmap getBitmap(byte[] data, int width, int height) {
 		Bitmap bitmap;
@@ -317,14 +292,13 @@ public class BitmapUtils {
 
 	/**
 	* 图片路径转bitmap
-	* @param file 图片的绝对路径
+	* @param filePath 图片的绝对路径
 	* @return bitmap
 	*/
-	public Bitmap getAssetImage(String file) {
+	public Bitmap getAssetImage(AssetManager am, String filePath) {
 		Bitmap bitmap = null;
-		AssetManager am = mActivity.getAssets();
 		try {
-			InputStream is = am.open(file);
+			InputStream is = am.open(filePath);
 			bitmap = BitmapFactory.decodeStream(is);
 			is.close();
 		} catch (IOException e) {
@@ -336,19 +310,20 @@ public class BitmapUtils {
 
 	/**
 	* bitmap 保存到指定路径
-	* @param file 图片的绝对路径
+	* @param filePath 图片的绝对路径
 	* @param bmp 位图
 	* @return bitmap
 	*/
-	public static boolean saveFile(String file, Bitmap bmp) {
-		if(TextUtils.isEmpty(file) || bmp == null) return false;
-		File f = new File(file);
+	public static boolean saveFile(String filePath, Bitmap bmp) {
+		if(TextUtils.isEmpty(filePath) || bmp == null) return false;
+		File f = new File(filePath);
 		if (f.exists()) {
-			f.delete();
-		}else {
+			SwordLog.debug("BitmapUtil", "删除已存在的文件：" + filePath + "，删除结果：" + f.delete());
+		} else {
 			File p = f.getParentFile();
+			assert p != null;
 			if(!p.exists()) {
-				p.mkdirs();
+				SwordLog.debug("BitmapUtil", "创建图片所在目录：" + p.mkdirs());
 			}
 		}
 		try {

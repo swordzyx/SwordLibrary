@@ -15,17 +15,17 @@ object AndroidFileSystem {
   /**
    * 打印 Android 文件系统相关信息
    */
-  fun Activity.printFileSystemInfo(activity: Activity) {
-    SwordLog.debug(tag, "FilesDir: ${filesDir.absolutePath}")
-    SwordLog.debug(tag, "cacheDir: ${cacheDir.absolutePath}")
+  fun printFileSystemInfo(activity: Activity) {
+    SwordLog.debug(tag, "FilesDir: ${activity.filesDir.absolutePath}")
+    SwordLog.debug(tag, "cacheDir: ${activity.cacheDir.absolutePath}")
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      SwordLog.debug(tag, "dataDir: ${dataDir.absolutePath}")
+      SwordLog.debug(tag, "dataDir: ${activity.dataDir.absolutePath}")
     }
-    SwordLog.debug(tag, "codeCacheDir: ${codeCacheDir.absolutePath}")
-    externalCacheDirs?.forEach {
+    SwordLog.debug(tag, "codeCacheDir: ${activity.codeCacheDir.absolutePath}")
+    activity.externalCacheDirs?.forEach {
       SwordLog.debug(tag, "externalCacheDir: ${it.absolutePath}")
     }
-    externalMediaDirs?.forEach {
+    activity.externalMediaDirs?.forEach {
       SwordLog.debug(tag, "externalMediaDir: ${it.absolutePath}")
     }
   }

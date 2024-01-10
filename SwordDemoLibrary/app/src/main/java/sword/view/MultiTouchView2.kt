@@ -8,8 +8,8 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import com.example.swordlibrary.R
+import sword.BitmapUtil
 import sword.logger.SwordLog
-import sword.createBitmap1
 import sword.dp
 
 /**
@@ -19,7 +19,7 @@ class MultiTouchView2(context: Context, attrs: AttributeSet? = null): View(conte
   private val tag = "MultiTouchView2【接力型】"
   private val imageWidth = 200f.dp
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-  private val bitmap = createBitmap1(resources, R.drawable.avatar_rengwuxian, imageWidth, imageWidth)
+  private val bitmap = BitmapUtil.createBitmap(resources, R.drawable.avatar_rengwuxian, imageWidth, imageWidth)
   
   private var originalOffsetX = 0f
   private var originalOffsetY = 0f

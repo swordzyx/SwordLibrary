@@ -6,12 +6,12 @@ import android.graphics.Paint.Style
 import android.util.AttributeSet
 import android.view.View
 import com.example.swordlibrary.R
+import sword.BitmapUtil
 import sword.logger.SwordLog
-import sword.createBitmap1
 import sword.dp
 import sword.dp2px
 
-class CircleXfermodeView(context: Context, attrs: AttributeSet) : View(context, attrs) {
+class CircleXfermodeView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
     private val tag = "CircleXfermodeView"
     private val radius = 100.dp
     private val proterDuffXfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
@@ -47,7 +47,7 @@ class CircleXfermodeView(context: Context, attrs: AttributeSet) : View(context, 
     }
 
     fun setBitmap(resId: Int) {
-        setBitmap(createBitmap1(resources, resId, radius * 2f, radius * 2f))
+        setBitmap(BitmapUtil.createBitmap(resources, resId, radius * 2f, radius * 2f))
     }
 
     override fun onDraw(canvas: Canvas) {

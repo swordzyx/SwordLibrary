@@ -20,6 +20,7 @@ import sword.view.dashboard.DashBoardView
 import sword.view.pie.PieView
 
 class ViewModuleMainPage(val activity: Activity) {
+  private val defaultMargin = 2.dp
   private var currentView: View? = null
 
   val mainContainer: ViewGroup = FrameLayout(activity).apply {
@@ -33,6 +34,7 @@ class ViewModuleMainPage(val activity: Activity) {
       ViewGroup.LayoutParams.MATCH_PARENT,
       ViewGroup.LayoutParams.MATCH_PARENT
     )
+    setBackgroundColor(Color.GRAY)
   }
   
   init {
@@ -60,6 +62,8 @@ class ViewModuleMainPage(val activity: Activity) {
   private val tag = "ViewModuleMainPage"
 
   private fun initButtonViews() {
+    addCircleXfermode()
+    
     addPieView()
 
     addDashboardView()
@@ -92,6 +96,16 @@ class ViewModuleMainPage(val activity: Activity) {
     addMotionLayoutContainer()
   }
 
+  private fun addCircleXfermode() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("Xfermode 合成图片", CircleXfermodeView(activity)),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+  
   private fun addPieView() {
     buttonContainer.addView(
       createButtonToShowViewInContainer("饼图", PieView(activity)),
@@ -362,10 +376,9 @@ class ViewModuleMainPage(val activity: Activity) {
     }
   }
 
-  private val defaultMargin = 2.dp
+  
   private fun LinearLayout.LayoutParams.setVerticalMargin(margin: Int = defaultMargin): LinearLayout.LayoutParams {
     setMargins(0, margin, 0, margin)
-    SwordLog.debug(tag, "defaultMargin: $defaultMargin")
     return this
   }
 }

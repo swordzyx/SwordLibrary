@@ -15,8 +15,8 @@ import android.widget.OverScroller
 import androidx.core.animation.doOnEnd
 import androidx.core.view.GestureDetectorCompat
 import com.example.swordlibrary.R
+import sword.BitmapUtil
 import sword.logger.SwordLog
-import sword.createBitmap1
 import sword.dp
 
 class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
@@ -25,7 +25,7 @@ class ScaleableImageView(context: Context, attributeSet: AttributeSet? = null) :
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
   private val IMAGE_SIZE = 300.dp
   private val SCALE_FACTOR = 2
-  private val bitmap = createBitmap1(
+  private val bitmap = BitmapUtil.createBitmap(
     context.resources,
     R.drawable.avatar_rengwuxian,
     IMAGE_SIZE.toFloat(),

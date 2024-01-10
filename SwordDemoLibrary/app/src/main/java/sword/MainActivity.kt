@@ -3,11 +3,14 @@ package sword
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import sword.devicedetail.getCpuModel
 import sword.logger.SwordLog
 import sword.pages.ContentPage
+import sword.utils.AndroidFileSystem
 import sword.view.*
 import java.util.Stack
 
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
     
     SwordLog.debug(tag, getCpuModel())
+    AndroidFileSystem.printFileSystemInfo(this)
   }
   
   fun addBackListener(listener: BackPressedListener) {

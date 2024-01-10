@@ -10,8 +10,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.graphics.withSave
 import com.example.swordlibrary.R
+import sword.BitmapUtil
 import sword.logger.SwordLog
-import sword.createBitmap1
 import sword.dp2px
 
 /**
@@ -22,7 +22,7 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
     private val angle = 30f
     private val imageWidth = dp2px(200f)
     private val imageBitmap =
-        createBitmap1(resources, R.drawable.avatar_rengwuxian, imageWidth, imageWidth)
+        BitmapUtil.createBitmap(resources, R.drawable.avatar_rengwuxian, imageWidth, imageWidth)
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private val camera = Camera().apply {

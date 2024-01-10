@@ -47,6 +47,7 @@ fun publicApiTest(activity: Activity, window: Window) {
 
 
 fun test(activity: Activity) {
+  //打印屏幕分辨率信息
   var point: Point
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
     point = getScreenSizeByMetrics(activity)
@@ -57,13 +58,15 @@ fun test(activity: Activity) {
   point = getScreenSizeByDisplay(activity)
   SwordLog.debug(tag, "getScreenSizeByDisplay: ${point.x} - ${point.y}")
   
+  //获取刘海屏、挖孔屏等屏幕中 UI 无法显示的部分
   getCutoutRect(activity)?.forEachIndexed { index, rect ->  
     SwordLog.debug(tag, "getCutoutRect-$index, rect: $rect")
   }
 
+  //打印屏幕的显示信息
   printDisplayInfo(activity)
   
-  //启动一个协程
+  //使用 Jetpack 的 WindowManager 库中的 WindowInfoTracker 获取折叠屏的状态
   val scope = CoroutineScope(Dispatchers.Main)
   scope.launch { 
     printFlodInfo(activity)
@@ -143,7 +146,7 @@ fun Int.dp(): Int {
 /**
  * 获取状态栏高度
  */
-@SuppressLint("InternalInsetResource")
+@SuppressLint("InternalInsetResource", "DiscouragedApi")
 fun getStatusHeight(context: Context): Int {
   val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
   return if (resourceId > 0) context.resources.getDimensionPixelSize(resourceId) else 0
@@ -155,13 +158,9 @@ fun getStatusHeight(context: Context): Int {
 private fun printDisplayInfo(activity: Activity) {
   SwordLog.debug(tag, "onCreate configuration: " + activity.resources.configuration)
   SwordLog.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-    val dm = activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-    for (d: Display in dm.displays) {
-      SwordLog.debug(tag, d.toString())
-    }
-  } else {
-    SwordLog.debug(tag, "Android 系统版本小于 4.2（API 17），不支持 Display Api")
+  val dm = activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+  for (d: Display in dm.displays) {
+    SwordLog.debug(tag, d.toString())
   }
   SwordLog.debug(tag, "--------------------- DisplayManager.getDisplays --------------------")
 }

@@ -19,8 +19,8 @@ import androidx.core.view.NestedScrollingChild3
 import androidx.core.view.NestedScrollingChildHelper
 import androidx.core.view.ViewCompat
 import com.example.swordlibrary.R
+import sword.BitmapUtil
 import sword.logger.SwordLog
-import sword.createBitmap1
 import sword.dp
 
 class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSet) :
@@ -29,7 +29,7 @@ class NestedScrollScaleableImageView(context: Context, attributeSet: AttributeSe
   private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
   private val IMAGE_SIZE = 300.dp
   private val SCALE_FACTOR = 2
-  private val bitmap = createBitmap1(
+  private val bitmap = BitmapUtil.createBitmap(
     context.resources,
     R.drawable.avatar_rengwuxian,
     IMAGE_SIZE.toFloat(),
