@@ -1,6 +1,7 @@
 package com.sword.kotlin
 
 import sword.kotlin.Caculator
+import sword.utils.FLOAT_EPSILON
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -24,6 +25,11 @@ class TestCaculatorSample {
         //用例：-91-90
 
         //用例：91-98
+    }
+    
+    @Test
+    fun utilTest() {
+        println("FLOAT_EPSILON: $FLOAT_EPSILON")
     }
 
 }

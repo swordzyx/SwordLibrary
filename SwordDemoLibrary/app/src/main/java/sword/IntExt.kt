@@ -14,3 +14,22 @@ val Int.dp: Int
 
 val Float.dp
     get() = dp2px(this)
+
+/**
+ * 1 度对应的弧度
+ */
+private const val PI_DIV_180 = Math.PI / 180f
+
+/**
+ * 计算弧长对应的角度
+ */
+fun arcToAngle(arcLength: Int, radius: Float): Float {
+    return (arcLength.toFloat() / PI_DIV_180 * radius).toFloat()
+}
+
+/**
+ * 角度转弧度
+ */
+fun angleToArcLength(angle: Float): Float {
+    return (angle * PI_DIV_180).toFloat()
+}

@@ -55,7 +55,4 @@ public class Theme {
     public static String getString(Context context, int resId) {
         return context.getResources().getString(resId);
     }
-    
-    
-
 }

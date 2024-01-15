@@ -34,7 +34,7 @@ class CircleView(context: Context, attrs: AttributeSet? = null) : View(context, 
             invalidate()
         }
 
-    //private val bitmap = createBitmap1(resources, R.drawable.avatar_rengwuxian, radius * 2, radius * 2)
+    //private val bitmap = createBitmap(resources, R.drawable.avatar_rengwuxian, radius * 2, radius * 2)
     val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
         color = Color.parseColor("#00796B")

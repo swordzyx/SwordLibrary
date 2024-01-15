@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     
     SwordLog.debug(tag, getCpuModel())
     AndroidFileSystem.printFileSystemInfo(this)
+    
   }
   
   fun addBackListener(listener: BackPressedListener) {

@@ -27,6 +27,7 @@ class ViewModuleMainPage(val activity: Activity) {
     layoutParams = ViewGroup.LayoutParams(
       ViewGroup.LayoutParams.MATCH_PARENT,
       ViewGroup.LayoutParams.MATCH_PARENT)
+    setBackgroundColor(Color.DKGRAY)
   }
   private val buttonContainer = LinearLayout(activity).apply {
     orientation = LinearLayout.VERTICAL
@@ -46,10 +47,8 @@ class ViewModuleMainPage(val activity: Activity) {
           if (buttonContainer.visibility != View.VISIBLE) {
             buttonContainer.visibility = View.VISIBLE
           }
-          
           return@BackPressedListener true
         }
-
         false
       })
       
