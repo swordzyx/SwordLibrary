@@ -107,7 +107,9 @@ class ViewModuleMainPage(val activity: Activity) {
   
   private fun addPieView() {
     buttonContainer.addView(
-      createButtonToShowViewInContainer("饼图", PieView(activity)),
+      createButtonToShowViewInContainer("饼图", PieView(activity).apply { 
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
       LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
         LinearLayout.LayoutParams.WRAP_CONTENT

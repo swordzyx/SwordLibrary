@@ -3,7 +3,6 @@ package sword
 
 import android.content.res.Resources
 import android.util.TypedValue
-import sword.logger.SwordLog
 
 private val displayMetrics = Resources.getSystem().displayMetrics
 
@@ -18,7 +17,7 @@ val Float.dp
 /**
  * 1 度对应的弧度
  */
-private const val PI_DIV_180 = Math.PI / 180f
+const val PI_DIV_180 = Math.PI / 180f
 
 /**
  * 计算弧长对应的角度
@@ -30,6 +29,6 @@ fun arcToAngle(arcLength: Int, radius: Float): Float {
 /**
  * 角度转弧度
  */
-fun angleToArcLength(angle: Float): Float {
+fun angleToRadian(angle: Float): Float {
     return (angle * PI_DIV_180).toFloat()
 }
