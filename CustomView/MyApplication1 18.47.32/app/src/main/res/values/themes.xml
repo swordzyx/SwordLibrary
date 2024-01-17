@@ -1,6 +1,0 @@
-<resources>
-    <style name="Theme.MyApplication" parent="android:Theme.Material.Light.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="android:colorPrimary">@color/purple_500</item>
-    </style>
-</resources>

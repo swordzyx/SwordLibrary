@@ -1,3 +1,0 @@
-rootProject.name='Practise1'
-include ':app'
-include ':breakpad'
