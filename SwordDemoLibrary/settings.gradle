@@ -2,7 +2,6 @@ rootProject.name = "SwordDemoLibrary"
 include ':app'
 include ":compose"
 include ':leetcode'
-//include ':datastruct'
 
 println "Hello setting.gradle"
 include ':processor'

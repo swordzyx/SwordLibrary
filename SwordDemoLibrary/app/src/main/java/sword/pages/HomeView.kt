@@ -73,7 +73,7 @@ class HomeView(private val activity: Activity){
     val customViewModuleButton = Theme.createCircleButton(activity).apply { 
       text = "自定义View"
       setOnClickListener { 
-        currentView = ViewModuleMainPage(activity).mainContainer
+        currentView = ViewModuleMainPage(activity).container
       }
     }
     resultView.addView(customViewModuleButton, originLayoutParams)

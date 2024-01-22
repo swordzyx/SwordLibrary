@@ -11,8 +11,10 @@ class TextDisplayView(context: Context, attrs: AttributeSet): View(context, attr
     private val tag = "TextDisplayView"
     private val ringWidth = dp2px(10f)
     private val radius = dp2px(100f)
+    
     private val ringBackgroundColor = Color.rgb(144,158, 167)
     private val ringForegroundColor = Color.rgb(235, 83, 129)
+    
     private val centerText = "abab"
     private val startAngle = -90f
     private val sweepAngle = 210f

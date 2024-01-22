@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.widget.NestedScrollView
 import com.example.swordlibrary.R
@@ -23,12 +24,19 @@ class ViewModuleMainPage(val activity: Activity) {
   private val defaultMargin = 2.dp
   private var currentView: View? = null
 
-  val mainContainer: ViewGroup = FrameLayout(activity).apply {
+  private val mainContainer = FrameLayout(activity).apply {
     layoutParams = ViewGroup.LayoutParams(
       ViewGroup.LayoutParams.MATCH_PARENT,
       ViewGroup.LayoutParams.MATCH_PARENT)
     setBackgroundColor(Color.DKGRAY)
   }
+
+  val container: ScrollView = ScrollView(activity).apply {
+    addView(mainContainer, ViewGroup.LayoutParams(
+      ViewGroup.LayoutParams.MATCH_PARENT,
+      ViewGroup.LayoutParams.MATCH_PARENT))
+  }
+
   private val buttonContainer = LinearLayout(activity).apply {
     orientation = LinearLayout.VERTICAL
     layoutParams = ViewGroup.LayoutParams(
@@ -64,6 +72,8 @@ class ViewModuleMainPage(val activity: Activity) {
     addCircleXfermode()
     
     addPieView()
+    
+    addShaderSampleView()
 
     addDashboardView()
 
@@ -93,6 +103,18 @@ class ViewModuleMainPage(val activity: Activity) {
 
     //MotionLayout 示例
     addMotionLayoutContainer()
+  }
+
+  private fun addShaderSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("Shader 着色器示例", ShaderSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
   }
 
   private fun addCircleXfermode() {

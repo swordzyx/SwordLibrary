@@ -6,6 +6,14 @@ apply plugin: 'kotlin-android'
 //微信应用性能检测插件
 //apply plugin: 'com.tencent.matrix-plugin'
 
+repositories {
+	flatDir {
+		dirs(
+				project(":compose").getProjectDir().absolutePath + File.separator + "libs",
+				project(":networklib").getProjectDir().absolutePath + File.separator + "libs",
+		)
+	}
+}
 
 android {
 	namespace 'com.example.swordlibrary'
