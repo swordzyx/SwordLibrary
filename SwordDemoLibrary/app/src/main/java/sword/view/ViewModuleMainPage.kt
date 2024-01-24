@@ -70,12 +70,16 @@ class ViewModuleMainPage(val activity: Activity) {
 
   private fun initButtonViews() {
     addCircleXfermode()
-    
     addPieView()
-    
     addShaderSampleView()
-
+    addColorFilerSampleView()
+    addStrokeConfigSampleView()
     addDashboardView()
+    addPathEffectSampleView()
+    addShadowSampleView()
+    addMaskFilterSampleView()
+    addFillPathSampleView()
+    addTextPathSampleView()
 
     //自定义 View 触摸反馈：多点触控的原理和写法全解析练习代码
     addMultiTouchView1()
@@ -105,6 +109,90 @@ class ViewModuleMainPage(val activity: Activity) {
     addMotionLayoutContainer()
   }
 
+  private fun addTextPathSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("TextPath 效果示例", TextPathSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+
+  private fun addFillPathSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("FillPath 效果示例", FillPathSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+
+  private fun addMaskFilterSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("MaskFilter 效果示例", MaskFilterSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+
+  private fun addShadowSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("ShadowLayer 效果示例", ShadowLayerSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+
+  private fun addPathEffectSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("PathEffect 效果示例", PathEffectSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+
+  private fun addStrokeConfigSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("线条样式示例", StrokeConfigSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+
+  private fun addColorFilerSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("ColorFilter 示例", ColorFilterSampleView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
+  }
+
   private fun addShaderSampleView() {
     buttonContainer.addView(
       createButtonToShowViewInContainer("Shader 着色器示例", ShaderSampleView(activity).apply {
@@ -119,7 +207,7 @@ class ViewModuleMainPage(val activity: Activity) {
 
   private fun addCircleXfermode() {
     buttonContainer.addView(
-      createButtonToShowViewInContainer("Xfermode 合成图片", CircleXfermodeView(activity)),
+      createButtonToShowViewInContainer("Xfermode 示例", XfermodeViewSampleView(activity)),
       LinearLayout.LayoutParams(
         LinearLayout.LayoutParams.WRAP_CONTENT,
         LinearLayout.LayoutParams.WRAP_CONTENT
