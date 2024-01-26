@@ -3,6 +3,7 @@ package sword
 
 import android.content.res.Resources
 import android.util.TypedValue
+import java.text.DecimalFormat
 
 private val displayMetrics = Resources.getSystem().displayMetrics
 
@@ -32,3 +33,4 @@ fun arcToAngle(arcLength: Int, radius: Float): Float {
 fun angleToRadian(angle: Float): Float {
     return (angle * PI_DIV_180).toFloat()
 }
+

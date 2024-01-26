@@ -7,15 +7,16 @@ import android.graphics.Paint
 import android.graphics.Paint.Style
 import android.graphics.Path
 import android.graphics.PointF
+import android.graphics.Rect
 import android.graphics.RectF
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import sword.PI_DIV_180
 import sword.angleToRadian
 import sword.dp
 import sword.logger.SwordLog
 import sword.utils.Colors
+import sword.utils.toPercent
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -28,10 +29,20 @@ import kotlin.random.Random
  */
 class PieView(context: Context, attrs: AttributeSet? = null): View(context, attrs) {
     private val tag = "PieView"
+    private val pieDataSet = PieDataSet()
+
     private val selectableColors = Colors.allColorsList()
     private val angles = floatArrayOf(77.87238f, 136.67133f, 39.114487f, 106.341774f)
+    private val angleSum = angles.sum()
+
     private val pieRenderPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Style.FILL_AND_STROKE
+    }
+    private val sliceValueLinePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Style.STROKE
+        strokeWidth = pieDataSet.valueLineWidth
+        color = Color.BLACK
+        textSize = 10f.dp
     }
     
     private val arcRadius = 100f.dp
@@ -41,12 +52,21 @@ class PieView(context: Context, attrs: AttributeSet? = null): View(context, attr
     private val centerPoint = PointF()
     private val selectedArcOffset = 15.dp
     private val selectArcIndex = 2
+    private val valueOffset = 5f.dp
+    private var valueTextHeight: Float = 0f
+
+    init {
+        val textBounds = Rect()
+        sliceValueLinePaint.getTextBounds("Q", 0, 1, textBounds)
+        valueTextHeight = (textBounds.top + textBounds.bottom) / 2f
+    }
     
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        //饼图宽度 + 线的宽度 + 文字的宽度
         setMeasuredDimension(
-            (paddingLeft + 2 * arcRadius + paddingRight + (selectedArcOffset shl 1)).toInt(),
-            (paddingTop + 2 * arcRadius + paddingBottom + (selectedArcOffset shl 1)).toInt()
+            (paddingLeft + 3 * arcRadius + paddingRight + (selectedArcOffset shl 1)).toInt(),
+            (paddingTop + 3 * arcRadius + paddingBottom + (selectedArcOffset shl 1)).toInt()
         )
     }
 
@@ -54,10 +74,10 @@ class PieView(context: Context, attrs: AttributeSet? = null): View(context, attr
         SwordLog.debug(tag, "width: $w, height: $h")
         SwordLog.debug(tag, "onSizeChanged left: $left, top: $top, right: $right, bottom: $bottom")
         pieBoundRectF.set(
-            (paddingLeft + selectedArcOffset).toFloat(),
-            (paddingTop + selectedArcOffset).toFloat(),
-            (paddingLeft + selectedArcOffset + 2 * arcRadius),
-            (paddingTop + selectedArcOffset + 2 * arcRadius)
+            (paddingLeft + selectedArcOffset + arcRadius / 2),
+            (paddingTop + selectedArcOffset + arcRadius / 2),
+            (paddingLeft + selectedArcOffset + 2.5f * arcRadius),
+            (paddingTop + selectedArcOffset + 2.5f * arcRadius)
         )
         centerPoint.set(pieBoundRectF.centerX(), pieBoundRectF.centerY())
     }
@@ -68,13 +88,16 @@ class PieView(context: Context, attrs: AttributeSet? = null): View(context, attr
         //绘制扇形
         var startAngle: Float
         var drawedAngle = 0f
+
         
         angles.forEachIndexed { index, angle ->
             pieRenderPaint.color = color(index)
             
             startAngle = drawedAngle + sliceAngle / 2f
             val sweepAngle = angle - sliceAngle
-            val middleArcRadian = (startAngle + sweepAngle / 2) * (Math.PI / 180)
+            //计算弧度
+            val middleAngle = startAngle + sweepAngle / 2
+            val middleArcRadian = middleAngle * (Math.PI / 180)
             
             piePath.reset()
             
@@ -108,9 +131,45 @@ class PieView(context: Context, attrs: AttributeSet? = null): View(context, attr
             drawedAngle += angle
             piePath.close()
             canvas.drawPath(piePath, pieRenderPaint)
+
+            drawValue(canvas, ((angle / angleSum) * 100).toPercent(), middleArcRadian.toFloat(), middleAngle)
         }
     }
-    
+
+    private fun drawValue(canvas: Canvas, value: String, valuePositionRadian: Float, valuePositionAngle: Float) {
+        SwordLog.debug(tag, "drawValue >> value: $value, valuePositionRadian: $valuePositionRadian, valuePositionAngle: $valuePositionAngle")
+        //1. 绘制线条，线条分两段，计算每一段线条的起点和终点，lineRadius 为线段的起点距圆心的距离
+        val lineRadius = arcRadius * (pieDataSet.valueLinePart1OffsetPercentage / 100)
+        val pt0x = centerPoint.x + cos(valuePositionRadian) * lineRadius
+        val pt0y = centerPoint.y + sin(valuePositionRadian) * lineRadius
+
+        val pt1x = centerPoint.x + cos(valuePositionRadian) * (lineRadius + lineRadius * pieDataSet.valueLinePart1Percent)
+        val pt1y = centerPoint.y + sin(valuePositionRadian) * (lineRadius + lineRadius * pieDataSet.valueLinePart1Percent)
+
+        val pt2x = if (valuePositionAngle <= 90f || valuePositionAngle >= 270f ) {
+            pt1x + lineRadius * pieDataSet.valueLinePart2Percent
+        } else {
+            pt1x - lineRadius * pieDataSet.valueLinePart2Percent
+        }
+        val pt2y = pt1y
+
+        SwordLog.debug(tag, "lineRadius: $lineRadius, 中心x：${centerPoint.x}, 中心y：${centerPoint.y}, 点1：($pt0x, $pt0y), 点2：($pt1x, $pt1y), 点3：($pt2x, $pt2y)")
+
+        canvas.drawLine(pt0x, pt0y, pt1x, pt1y, sliceValueLinePaint)
+        canvas.drawLine(pt1x, pt1y, pt2x, pt2y, sliceValueLinePaint)
+
+        //2. 绘制百分比
+        val valueX = if (valuePositionAngle <= 90f || valuePositionAngle >= 270f ) {
+            sliceValueLinePaint.textAlign = Paint.Align.LEFT
+            pt2x + valueOffset
+        } else {
+            sliceValueLinePaint.textAlign = Paint.Align.RIGHT
+            pt2x - valueOffset
+        }
+        val valueY = pt2y - valueTextHeight
+        canvas.drawText(value, valueX, valueY, sliceValueLinePaint)
+    }
+
     private fun culcateArcCenterOffset(arcBoundRectF: RectF, startAngle: Float, sweepAngle: Float, radius: Float, sliceAngle: Float): Float {
         val centerX = arcBoundRectF.centerX()
         val centerY = arcBoundRectF.centerY()
