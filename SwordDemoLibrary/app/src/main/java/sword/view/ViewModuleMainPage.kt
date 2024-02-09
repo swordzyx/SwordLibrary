@@ -80,6 +80,7 @@ class ViewModuleMainPage(val activity: Activity) {
     addMaskFilterSampleView()
     addFillPathSampleView()
     addTextPathSampleView()
+    addFlipPageSampleView()
 
     //自定义 View 触摸反馈：多点触控的原理和写法全解析练习代码
     addMultiTouchView1()
@@ -107,6 +108,18 @@ class ViewModuleMainPage(val activity: Activity) {
 
     //MotionLayout 示例
     addMotionLayoutContainer()
+  }
+
+  private fun addFlipPageSampleView() {
+    buttonContainer.addView(
+      createButtonToShowViewInContainer("翻页效果效果示例", FlipPageView(activity).apply {
+        setPadding(defaultMargin * 2, defaultMargin * 2, defaultMargin * 2, defaultMargin * 2)
+      }),
+      LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams.WRAP_CONTENT,
+        LinearLayout.LayoutParams.WRAP_CONTENT
+      ).setVerticalMargin()
+    )
   }
 
   private fun addTextPathSampleView() {

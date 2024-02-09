@@ -1,6 +1,10 @@
 package sword.view
 
-import android.animation.*
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Camera
@@ -11,8 +15,8 @@ import android.view.View
 import androidx.core.graphics.withSave
 import com.example.swordlibrary.R
 import sword.BitmapUtil
-import sword.logger.SwordLog
 import sword.dp2px
+import sword.logger.SwordLog
 
 /**
  * 翻页效果 View
@@ -29,10 +33,12 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
         setLocation(0f, 0f, locationZ * Resources.getSystem().displayMetrics.density)
     }
 
+
+
     /**
      * 底部旋转的角度
      */
-    var bottomFlip = 0f
+    private var bottomFlip = 0f
         set(value) {
             field = value
             invalidate()
@@ -65,6 +71,10 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
         setPadding(100, 100, 0, 0)
         initAnimationByAnimatorSet()
         //initAnimationByPropertyValuesHolder()
+
+        setOnClickListener {
+            startSequentiallyAnimate()
+        }
     }
 
     /**
@@ -141,6 +151,7 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
 
     override fun onDraw(canvas: Canvas) {
         //绘制上半部分
+        //todo：改为 canvas.saveLayer(...) 开启离屏缓冲试试，不过需要先计算这个 View 的最大绘制范围，然后开启这个范围的离屏缓冲
         canvas.withSave {
             canvas.translate(paddingLeft + imageWidth / 2, paddingTop + imageWidth / 2)
             canvas.rotate(-tangentAngle)
@@ -177,11 +188,22 @@ class FlipPageView(context: Context, attrs: AttributeSet? = null) : View(context
         }
     }
 
-    fun startSequentiallyAnimate() {
+    private fun startSequentiallyAnimate() {
         if (animatorSet != null) {
             animatorSet!!.start()
         } else if (valueHolderAnimator != null) {
             valueHolderAnimator!!.start()
+        }
+    }
+
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        super.onVisibilityChanged(changedView, visibility)
+        if (visibility == GONE) {
+            if (animatorSet != null) {
+                animatorSet!!.cancel()
+            } else if (valueHolderAnimator != null) {
+                valueHolderAnimator!!.cancel()
+            }
         }
     }
 }
