@@ -18,6 +18,12 @@ fun toast(context: Context, msg: String, duration: Int = Toast.LENGTH_SHORT, cal
     toast.show()
 }
 
+
+fun toast(context: Context, text: String) {
+    val toast = Toast.makeText(context.applicationContext, text, Toast.LENGTH_SHORT)
+    toast.show()
+}
+
 //todo：会出现 snakeBar 无法显示的情况
 fun snackBar(activity: Activity, msg: String, isLong: Boolean) {
     snackBar(activity.window.decorView, msg, isLong)

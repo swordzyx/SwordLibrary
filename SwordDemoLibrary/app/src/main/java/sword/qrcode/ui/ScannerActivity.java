@@ -1,11 +1,10 @@
-package sword.camera;
+package sword.qrcode.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -14,111 +13,106 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.swordlibrary.R;
 import com.google.zxing.Result;
 
-import sword.PermissionUtilKt;
+import sword.ToastUtilKt;
+import sword.ViewUtilKt;
 import sword.logger.SwordLog;
+import sword.qrcode.api.ScanResultCallback;
+import sword.qrcode.capture.CameraManager;
+import sword.qrcode.capture.CaptureHandler;
 
-import java.io.IOException;
+public class ScannerActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 7700;
 
-import sword.camera.zxing.CameraManager;
-import sword.camera.zxing.CaptureHandler;
-
-public class CameraContainerActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+    private static ScanResultCallback callback;
 
     private CameraManager cameraManager;
     private ViewFinderView viewfinderView;
-    private boolean hasSurface = false;
-
     private CaptureHandler handler;
     private Result lastResult;
+
+    private SurfaceHolder surfaceHolder;
+    private boolean hasSurface = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SwordLog.debug("onCreate");
+
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            ToastUtilKt.toast(this, getResources().getString(R.string.scancode_camera_not_support));
+            finish();
+        }
 
         //设置屏幕常亮
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_camera_container);
+        setContentView(R.layout.activity_scanner);
 
-        if (!PermissionUtilKt.isPermissionGranted(this, Manifest.permission.CAMERA)) {
-            PermissionUtilKt.requestSinglePermission(this, Manifest.permission.CAMERA, 0);
-        }
-        
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            Toast.makeText(this, "当前设备不支持相机", Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        SurfaceView surfaceView = findViewById(R.id.preview_view);
+        surfaceView.setVisibility(View.VISIBLE);
+        surfaceHolder = surfaceView.getHolder();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SwordLog.debug("onResume");
-        
+
         setRequestedOrientation(getCurrentOrientation());
 
-        //宽高的测量需要在 Activity 显示了之后在进行。因此 CameraManager 在此处初始化
-        cameraManager = new CameraManager(getApplication());
-        viewfinderView = findViewById(R.id.view_finder_view);
-        viewfinderView.setCameraManager(cameraManager);
-        viewfinderView.setVisibility(View.VISIBLE);
+        if (cameraManager == null) {
+            //宽高的测量需要在 Activity 显示了之后在进行。因此 CameraManager 在此处初始化
+            cameraManager = new CameraManager(getApplication());
+            viewfinderView = findViewById(R.id.view_finder_view);
+            viewfinderView.setCameraManager(cameraManager);
+            viewfinderView.setVisibility(View.VISIBLE);
+        }
 
         //onResume 会在 surfaceCreated 之前调用，因为执行了 addCallback 之后，才会触发 surfaceCreated 的执行。
         SwordLog.debug("hasSurface: " + hasSurface);
 
-        SurfaceView surfaceView = findViewById(R.id.preview_view);
-        surfaceView.setVisibility(View.VISIBLE);
-        SurfaceHolder surfaceHolder = surfaceView.getHolder();
-        if(hasSurface) {
-            initCamera(surfaceHolder);
+        //系统弹出权限申请框，用户选择允许之后，会再次回到 onResume()，但此时执行 surfaceHolder.addCallback() 之后不会立刻回调 surfaceCreated() 函数，因为此时 surfaceView 已经初始化成功了，因此 surfaceCreated() 不会被触发。
+        // 将 surfaceHolder.addCallback() 放到 onCreate() 中则可以成功回调 surfaceCreated() 方法。
+        //因此初次启用扫码模块并申请权限时，系统会弹出权限申请框，此时生命周期回调是：onResume -> onPause -> 系统权限申请框 -> onResume，整个流程中不会有 surfaceCreated() 和 surfaceDestroyed() 的回调。因此当用户成功授予权限之后，需要初始化相机，并开启预览。
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
         } else {
-            surfaceHolder.addCallback(this);
+            if (hasSurface) {
+                initCamera(surfaceHolder);
+            } else {
+                surfaceHolder.addCallback(this);
+            }
         }
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
-        SwordLog.debug("onPause");
         if (handler != null) {
             handler.quitSync();
             handler = null;
         }
-        cameraManager.closeDriver();
-
-        //关闭相机，释放对应资源
-        //surfaceDestroyed 会在 onPause 之前执行.
-        if (!hasSurface) {
-            SurfaceView surfaceView = findViewById(R.id.preview_view);
-            SurfaceHolder holder = surfaceView.getHolder();
-            holder.removeCallback(this);
+        //关闭相机，释放相机资源
+        if (cameraManager != null) {
+            cameraManager.closeDriver();
         }
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        SwordLog.debug("onDestroy");
-        super.onDestroy();
+        if (!hasSurface) {
+            surfaceHolder.removeCallback(this);
+        }
     }
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
-        SwordLog.debug("surfaceCreated");
         if (!hasSurface) {
             hasSurface = true;
-            //初始化相机
             initCamera(holder);
         }
     }
@@ -144,7 +138,7 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
 
     public void restartPreviewAfterDelay(long delayMs) {
         if (handler != null) {
-            handler.sendEmptyMessageDelayed(R.id.restart_preview, delayMs);
+            handler.sendEmptyMessageDelayed(CaptureHandler.RESTART_PREVIEW, delayMs);
         }
     }
 
@@ -154,6 +148,10 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
 
     public CaptureHandler getHandler() {
         return handler;
+    }
+
+    public static void setScanResultCallback(ScanResultCallback callback) {
+        ScannerActivity.callback = callback;
     }
 
     private void initCamera(SurfaceHolder holder) {
@@ -167,21 +165,20 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
             SwordLog.warn("camera has been open");
             return;
         }
-        
+
         //打开相机
         try {
             cameraManager.openDriver(holder);
             if (handler == null) {
                 handler = new CaptureHandler(this);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            callback.scanFinish(null);
+            this.finish();
         }
     }
 
-    /**
-     * 这个方法还不是很懂
-     */
     @SuppressLint("SwitchIntDef")
     private int getCurrentOrientation() {
         int rotation = getWindowManager().getDefaultDisplay().getRotation();
@@ -205,27 +202,31 @@ public class CameraContainerActivity extends AppCompatActivity implements Surfac
         }
     }
 
-    //绘制矩形扫描区
+    /**
+     * 绘制矩形扫描区
+     */
     public void drawViewFinder() {
         viewfinderView.drawViewFinder();
     }
-    
+
     public void handleDecode(Result result) {
         lastResult = result;
         String rawResultString = String.valueOf(result);
-        Toast.makeText(this, rawResultString, Toast.LENGTH_SHORT).show();
-        //finish();
+        callback.scanFinish(rawResultString);
+        finish();
     }
 
-    public void setCodeImage(Bitmap barcode) {
-        SwordLog.debug("bitmap.width: " + barcode.getWidth() + "---bitmap.height: " + barcode.getHeight());
-        ((ImageView)findViewById(R.id.code_image)).setVisibility(View.VISIBLE);
-        ((ImageView)findViewById(R.id.code_image)).setImageBitmap(barcode);
-    }
-
-    public void setOriginalCapture(Bitmap bitmap) {
-        SwordLog.debug("original width: " + bitmap.getWidth() + "---original height: " + bitmap.getHeight());
-        ((ImageView)findViewById(R.id.source_image)).setVisibility(View.VISIBLE);
-        ((ImageView)findViewById(R.id.source_image)).setImageBitmap(bitmap);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                initCamera(surfaceHolder);
+            } else {
+                ToastUtilKt.toast(this, getResources().getString(R.string.scancode_camera_unauthorized));
+                finish();
+            }
+        }
     }
 }

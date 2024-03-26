@@ -1,4 +1,4 @@
-package sword.camera;
+package sword.qrcode.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,13 +17,9 @@ import com.google.zxing.ResultPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-import sword.camera.zxing.CameraManager;
+import sword.qrcode.capture.CameraManager;
 
-/**
- * 预览页面二维码选取框
- */
 public class ViewFinderView extends View {
-
     private static final int[] SCANNER_ALPHA = {0, 64, 128, 192, 255, 192, 128, 64};
     private static final int CURRENT_POINT_OPACITY = 0xA0;
     private static final int POINT_SIZE = 6;

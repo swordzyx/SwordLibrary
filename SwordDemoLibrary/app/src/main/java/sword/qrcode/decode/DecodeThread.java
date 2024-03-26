@@ -1,26 +1,20 @@
-package sword.camera.zxing;
+package sword.qrcode.decode;
 
 import android.os.Handler;
 import android.os.Looper;
 
-
 import java.util.concurrent.CountDownLatch;
 
-import sword.camera.CameraContainerActivity;
+import sword.qrcode.ui.ScannerActivity;
 
-public class DecodeThread extends Thread{
-    public static final String BARCODE_BITMAP = "barcode_bitmap";
-    public static final String BARCODE_SCALED_FACTOR = "barcode_scaled_factor";
-    
+public class DecodeThread extends Thread {
     private DecodeHandler decodeHandler;
     private final CountDownLatch handlerInitLatch;
-    private final CameraManager cameraManager;
-    private final CameraContainerActivity activity;
+    private final ScannerActivity activity;
 
-    public DecodeThread(CameraContainerActivity activity) {
+    public DecodeThread(ScannerActivity activity) {
         handlerInitLatch = new CountDownLatch(1);
         this.activity = activity;
-        this.cameraManager = activity.getCameraManager();
     }
 
     public Handler getHandler() {

@@ -1,4 +1,4 @@
-package sword.camera.zxing;
+package sword.qrcode.capture;
 
 import android.app.Application;
 import android.graphics.Point;
@@ -7,22 +7,24 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.view.SurfaceHolder;
 
-import com.google.zxing.PlanarYUVLuminanceSource;
-import sword.logger.SwordLog;
-
 import java.io.IOException;
 
+import sword.logger.SwordLog;
+import sword.qrcode.cameraconfig.CameraConfigurationManager;
+import sword.qrcode.cameraconfig.OpenCamera;
+import sword.qrcode.cameraconfig.OpenCameraInterface;
+
 public class CameraManager {
-    private static final int MIN_FRAME_WIDTH = 240;
-    private static final int MIN_FRAME_HEIGHT = 240;
-    private static final int MAX_FRAME_WIDTH = 1200;
-    private static final int MAX_FRAME_HEIGHT = 675;
-    
+    /**
+     * 扫描框尺寸范围
+     */
+    private static final int MIN_FRAME_SIZE = 240;
+    private static final int MAX_FRAME_SIZE = 1200;
+
     private final CameraConfigurationManager configurationManager;
     private OpenCamera camera;
-    private int cameraId = OpenCameraInterface.NO_REQUEST_CAMERA;
     private final PreviewCallback previewCallback;
-    
+
     private Rect framingRectInPreview;
     private Rect framingRect;
     private boolean isPreviewing = false;
@@ -37,6 +39,7 @@ public class CameraManager {
         //打开相机
         OpenCamera openCamera = camera;
         if (openCamera == null) {
+            int cameraId = OpenCameraInterface.NO_REQUEST_CAMERA;
             openCamera = OpenCameraInterface.openCamera(cameraId);
             if (openCamera == null) {
                 throw new IOException("Camera open() failed, return null to driver");
@@ -60,8 +63,8 @@ public class CameraManager {
             configurationManager.setDesiredCameraParameters(camera, false);
         } catch (RuntimeException re) {
             SwordLog.warn("Camera reject parameters. Setting only minimal safe-mode parameters");
-            SwordLog.debug("Resetting to saved camera params: " + paramFlattened);
-            
+            SwordLog.warn("Resetting to saved camera params: " + paramFlattened);
+
             re.printStackTrace();
             if (paramFlattened != null) {
                 parameters.unflatten(paramFlattened);
@@ -75,7 +78,7 @@ public class CameraManager {
         }
 
         //设置预览界面
-        camera.setPreviewDisplay(holder);
+        openCamera.getCamera().setPreviewDisplay(holder);
     }
 
     public synchronized boolean isOpen() {
@@ -90,17 +93,6 @@ public class CameraManager {
             framingRectInPreview = null;
         }
     }
-    
-    public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data, int width, int height) {
-        //获取预览界面上的扫描区域
-        Rect rect = getFramingRectInPreview();
-        if (rect == null) {
-            return null;
-        }
-        //返回 PlanarYUVLuminanceSource 对象，代表一个二维码扫描源，传入对应的数据，以及扫描区域的尺寸
-        SwordLog.debug("build srouce width: " + width + "----height: " + height);
-        return new PlanarYUVLuminanceSource(data, width, height, rect.left, rect.top, rect.width(), rect.height(), false);
-    }
 
     /**
      * 获取预览界面上的矩形扫描区域的宽高
@@ -114,28 +106,18 @@ public class CameraManager {
             if (framingRect == null) {
                 return null;
             }
-//            LogUtil.debug("framingRect.left: " + framingRect.left + "---framingRect.right: " + framingRect.right + "----framingRect.top: " + framingRect.top + "---framingRect.bottom: " + framingRect.bottom + "---framingRect.width: " + framingRect.width() + "----framingRect.height: " + framingRect.height());
 
             //获取屏幕和相机预览尺寸
             Rect rect = new Rect(framingRect);
             Point cameraResolution = configurationManager.getCameraResolution();
-            Point screenResolution = configurationManager.getScreenResolution();
-            SwordLog.debug("cameraResolution x: " + cameraResolution.x + "----y: " + cameraResolution.y);
-            SwordLog.debug("screenResolution x: " + screenResolution.x + "----y: " + screenResolution.y);
 
-            //计算矩形扫描区域的显示位置
-            SwordLog.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
+            //计算矩形扫描区域的显示位置，当摄像头旋转了 90 度或者 270 而屏幕未旋转时，摄像头捕获的图片相对于预览时的图像也会旋转 90 度或 270 度，矩形扫描框在图像中的实际位置也会旋转对应的角度。
             rect.top = (cameraResolution.y - framingRect.height()) / 2;
             rect.bottom = rect.top + framingRect.height();
             rect.left = (cameraResolution.x - framingRect.width()) / 2;
             rect.right = rect.left + framingRect.width();
-            SwordLog.debug("rect.left: " + rect.left + "---rect.right: " + rect.right + "----rect.top: " + rect.top + "---rect.bottom: " + rect.bottom + "---rect.width: " + rect.width() + "----rect.height: " + rect.height());
 
             framingRectInPreview = rect;
-//            LogUtil.debug("ratio x: " + scaleX);
-//            LogUtil.debug("ratio y: " + scaleY);
-
-
             SwordLog.debug("framingRectInPreview.left: " + framingRectInPreview.left + "---framingRectInPreview.right: " + framingRectInPreview.right + "----framingRectInPreview.top: " + framingRectInPreview.top + "---framingRectInPreview.bottom: " + framingRectInPreview.bottom + "---framingRectInPreview.width: " + framingRectInPreview.width() + "----framingRectInPreview.height: " + framingRectInPreview.height());
         }
         return framingRectInPreview;
@@ -153,24 +135,23 @@ public class CameraManager {
             if (screenResolution == null) {
                 return null;
             }
-            
+
             //获取扫描区域的宽高 width: 5/8 * screenResolution.x, height: 5/8 * screenResolution.y
-            int width = findDesiredDimensionInRange(screenResolution.x, MIN_FRAME_WIDTH, MAX_FRAME_WIDTH);
-            //int height = findDesiredDimensionInRange(screenResolution.y, MIN_FRAME_HEIGHT, MAX_FRAME_HEIGHT);
-            
+            int width = findDesiredDimensionInRange(Math.min(screenResolution.x, screenResolution.y));
+
             int leftOffset = (screenResolution.x - width) / 2;
             int topOffset = (screenResolution.y - width) / 2;
             framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + width);
         }
         return framingRect;
     }
-    
-    private int findDesiredDimensionInRange(int resolution, int min, int max) {
+
+    private int findDesiredDimensionInRange(int resolution) {
         int dim = resolution / 2;
-        if (dim < min) {
-            return min;
+        if (dim < MIN_FRAME_SIZE) {
+            return MIN_FRAME_SIZE;
         }
-        return Math.min(dim, max);
+        return Math.min(dim, MAX_FRAME_SIZE);
     }
 
     public void startPreview() {
@@ -178,8 +159,6 @@ public class CameraManager {
         if (camera != null && !isPreviewing) {
             tmpCamera.getCamera().startPreview();
             isPreviewing = true;
-            //管理自动聚焦
-            //autoFocusManager = new AutoFocusManager();
         }
     }
 
@@ -193,8 +172,6 @@ public class CameraManager {
 
     /**
      * 请求预览帧数据
-     * @param handler
-     * @param message
      */
     public synchronized void requestPreviewFrame(Handler handler, int message) {
         OpenCamera theCamera = camera;
@@ -204,5 +181,4 @@ public class CameraManager {
             theCamera.getCamera().setOneShotPreviewCallback(previewCallback);
         }
     }
-    
 }

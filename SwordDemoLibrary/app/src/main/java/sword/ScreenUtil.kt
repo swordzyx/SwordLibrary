@@ -19,7 +19,7 @@ import androidx.window.layout.WindowInfoTracker
 import kotlinx.coroutines.*
 import sword.logger.SwordLog
 
-private const val tag = "ScreenSizeUtil"
+private const val tag = "ScreenUtil"
 
 private val windowSize: Point = getWindowSizeExcludeSystem(SwordApplication.globalContext!!) 
 

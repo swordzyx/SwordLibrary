@@ -1,13 +1,12 @@
-package sword.camera.zxing;
-
+package sword.qrcode.cameraconfig;
 
 import android.hardware.Camera;
 
 import sword.logger.SwordLog;
 
-public class OpenCameraInterface {
+public interface OpenCameraInterface {
     public static final int NO_REQUEST_CAMERA = -1;
-    
+
     //打开相机
     public static OpenCamera openCamera(int cameraId) {
         //获取当前设备的相机数量，检测 cameraId 是否有效，获取要打开的相机的 cameraId
@@ -16,12 +15,12 @@ public class OpenCameraInterface {
             SwordLog.warn("could not found camera on device");
             return null;
         }
-        
+
         if (cameraId >= cameraNums) {
             SwordLog.warn("Requested camera not exist: " + cameraId);
             return null;
         }
-        
+
         if (cameraId == NO_REQUEST_CAMERA) {
             cameraId = 0;
             while (cameraId < cameraNums) {
@@ -37,7 +36,7 @@ public class OpenCameraInterface {
                 cameraId = 0;
             }
         }
-        
+
         //通过 Camera.open(cameraId) 打开相机
         Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
         Camera.getCameraInfo(cameraId, cameraInfo);
@@ -46,8 +45,8 @@ public class OpenCameraInterface {
             SwordLog.warn("camera open failed, return null");
             return null;
         }
-        
+
         //返回 OpenCamera 对象
-        return new OpenCamera(cameraId, camera, cameraInfo.facing, cameraInfo.orientation);
+        return new OpenCamera(camera, cameraInfo.facing, cameraInfo.orientation);
     }
 }
