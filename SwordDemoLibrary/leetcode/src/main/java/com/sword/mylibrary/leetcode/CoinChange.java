@@ -1,36 +1,40 @@
 package com.sword.mylibrary.leetcode;
-
-
 /**
  * https://leetcode.cn/problems/coin-change/
  *
  * 给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
  */
+
+
 public class CoinChange {
-    int[] coins1 = new int[]{1, 5, 25, 20};
-    int amount1 = 40;
+    public final int[] coins1 = new int[]{1, 5, 25, 20};
+    public final int amount1 = 40;
+
+    public final int[] coins2 = new int[]{1, 2, 5};
+    public final int amount2 = 11;
+
+    public final int[] coins3 = new int[]{2};
+    public final int amount3 = 3;
 
 
-    int[] coins2 = new int[]{1, 2, 5};
-    int amount2 = 11;
-
-    int[] coins3 = new int[]{2};
-    int amount3 = 3;
-
-
-    int[] coins4 = new int[]{1};
-    int amount4 = 0;
-
-
-    public static void main(String[] args) {
-
-    }
+    public final int[] coins4 = new int[]{1,2};
+    public final int amount4 = 2;
 
 
     /**
      * 动态规划，不使用递归
+     *
+     * 结果：14 ms 击败 38.02% 使用 Java 的用户
      */
-    private int coinChange1(int[] coins, int amount) {
+    public int coinChange1(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+
+        if (amount < 0) {
+            return -1;
+        }
+
         int[] results = new int[amount + 1];
 
         for (int i = 0; i < results.length; i++) {
@@ -45,9 +49,14 @@ public class CoinChange {
                 if (prevResult < 0 || prevResult >= tempResult) continue;
                 tempResult = prevResult;
             }
+
+            if (results[i] > 0) {
+                continue;
+            }
+
             if (tempResult != Integer.MAX_VALUE) {
                 results[i] = tempResult + 1;
-            } else {
+            } else if (results[i] <= 0){
                 results[i] = -1;
             }
         }
@@ -58,7 +67,7 @@ public class CoinChange {
     /**
      * 暴力递归
      */
-    private int coinChange(int[] coins, int amount) {
+    public int coinChange(int[] coins, int amount) {
         if (amount < 0) {
             return 0;
         }
@@ -86,7 +95,7 @@ public class CoinChange {
     /**
      * 记忆化搜索，用一个数组存储计算过的值
      */
-    private int coinChange2(int[] coins, int amount ) {
+    public int coinChange2(int[] coins, int amount ) {
         //init
         int[] results = new int[amount + 1];
         for (int coin: coins) {
