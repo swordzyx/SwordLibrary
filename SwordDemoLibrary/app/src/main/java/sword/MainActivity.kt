@@ -60,10 +60,10 @@ class MainActivity : AppCompatActivity() {
           val md = MessageDigest.getInstance("SHA")
           md.update(signature.toByteArray())
           val signatureBase64: String = Base64.encodeToString(md.digest(), Base64.DEFAULT)
-          Log.d(tag, "Signature (Base64): $signatureBase64")
+          SwordLog.debug(tag, "Signature (Base64): $signatureBase64")
 
           val md5: String = getMD5(signature.toByteArray())
-          Log.d(tag, "md5: $md5")
+          SwordLog.debug(tag, "md5: $md5")
         }
       }
     } catch (e: PackageManager.NameNotFoundException) {
