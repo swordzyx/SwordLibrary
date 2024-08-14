@@ -36,18 +36,6 @@
             android:exported="false" />
 
         <activity
-            android:name="sword.photo.XlcwGalleryActivity"
-            android:exported="false" />
-
-        <activity
-            android:name="sword.photo.XlcwAvatarActivity"
-            android:exported="false" />
-
-        <activity
-            android:name="sword.photo.XlcwPhotoActivity"
-            android:exported="false" />
-
-        <activity
             android:name="sword.annotation.AnnotationActivity"
             android:exported="false" />
 
