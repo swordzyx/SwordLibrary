@@ -1,4 +1,4 @@
-package sword.androidapi;
+package sword;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;

@@ -1,4 +1,4 @@
-package sword.androidapi;
+package sword;
 
 import android.util.Log;
 
@@ -26,7 +26,9 @@ public class NetworkInterfaceUtil {
         return null;
     }
 
-    //获取 mac 地址
+    /**
+     * 获取 mac 地址
+     */
     public static String getMacAddressFromIp(String ipAddress) {
         String mac_s= "";
         StringBuilder buf = new StringBuilder();
@@ -47,5 +49,4 @@ public class NetworkInterfaceUtil {
 
         return mac_s;
     }
-
 }
