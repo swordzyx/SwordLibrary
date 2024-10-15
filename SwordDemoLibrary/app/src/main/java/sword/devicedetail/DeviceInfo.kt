@@ -109,7 +109,6 @@ fun getLocal(): String {
   return "language: ${locale.language}, Country: ${locale.country}, languageTag: ${locale.toLanguageTag()}, displayCountry: ${locale.displayCountry}, getDisplayLanguage: ${locale.displayLanguage}, getDisplayName: ${locale.displayName}, getDisplayScript: ${locale.displayScript}, getDisplayVariant: ${locale.displayVariant}, getISO3Country: ${locale.isO3Country}, getISO3Language: ${locale.isO3Language}, getScript: ${locale.script}, getVariant: ${locale.variant}"
 }
 
-
 /**
  * 获取设备 IP 地址
  */
