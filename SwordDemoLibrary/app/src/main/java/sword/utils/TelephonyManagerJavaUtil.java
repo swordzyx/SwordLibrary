@@ -1,4 +1,4 @@
-package sword;
+package sword.utils;
 
 import android.Manifest;
 import android.app.Activity;
@@ -12,8 +12,6 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-
-import java.lang.reflect.Method;
 
 public class TelephonyManagerJavaUtil {
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -29,9 +27,10 @@ public class TelephonyManagerJavaUtil {
         try {
             Log.d("sword_debug", "getIMEI: " + getIMEI(context));
             Log.d("sword_debug", "getProviderName: " + getProvidersName(context));
-//            Log.d("sword_debug", "getRawDeviceId: " + getRawDeviceId(context));
+            //Log.d("sword_debug", "getRawDeviceId: " + getRawDeviceId(context));
         } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 
