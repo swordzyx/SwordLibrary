@@ -30,7 +30,6 @@ public class TelephonyManagerJavaUtil {
             //Log.d("sword_debug", "getRawDeviceId: " + getRawDeviceId(context));
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 
