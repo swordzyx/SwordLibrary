@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# 指定 ProGuard 输出混淆前后的类、方法和字段的映射关系到 proguardMapping.txt 文件。
+-printmapping proguardMapping.txt
+
+# 配置混淆后的固定包名前缀
+-repackageclasses 'com.sword.internal'
