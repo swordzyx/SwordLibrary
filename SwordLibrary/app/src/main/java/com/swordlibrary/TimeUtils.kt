@@ -8,16 +8,13 @@ import java.util.Locale
  * - https://github.com/Blankj/AndroidUtilCode  ---  TimeUtils
  */
 object TimeUtils {
-
-
-
     /**
      * timeString: 例如 "2024-11-11 17:52:24", "23:45"
      * pattern: 例如 "yyyy-MM-dd HH:mm:ss"、"HH:mm"
      */
-    fun hhmmToTimeMillis(timeString: String, pattern: String): Long {
+    fun hhmmToTimeMillis(timeString: String): Long {
         //将时间字符串解析成 Date 对象
-        val targetDate = SimpleDateFormat(pattern, Locale.getDefault()).parse(timeString)
+        val targetDate = SimpleDateFormat("HH:mm", Locale.getDefault()).parse(timeString)
 
         val resultCalendar = Calendar.getInstance()
         targetDate?.let {
