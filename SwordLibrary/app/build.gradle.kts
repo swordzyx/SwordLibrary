@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.swordlibrary"
-        minSdk = 24
+        minSdk = 19
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -40,4 +40,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.core.ktx)
+
+
 }

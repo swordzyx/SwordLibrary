@@ -46,8 +46,16 @@ object LogUtils {
         log(Log.DEBUG, head, msg)
     }
 
+    fun w(msg: String) {
+        log(Log.WARN, "", msg)
+    }
+
     fun w(head: String, msg: String) {
         log(Log.WARN, head, msg)
+    }
+
+    fun e(msg: String) {
+        log(Log.ERROR, "", msg)
     }
 
     fun e(head: String, msg: String) {
@@ -59,18 +67,21 @@ object LogUtils {
         when(priority) {
             Log.VERBOSE -> if(isDebug) Log.v(publicTag, logContent)
             Log.DEBUG -> if (isDebug) Log.d(publicTag, logContent)
-            Log.INFO -> if (isDebug) Log.i(publicTag, logContent)
+            Log.INFO -> if (isDebug) {
+                Log.i(publicTag, logContent)
+            }
             Log.WARN -> {
                 Log.w(publicTag, logContent)
-                //警告日志写入文件
                 writeToFile(priority, head, msg)
             }
             Log.ERROR -> {
                 Log.e(publicTag, logContent)
-                //错误日志写入文件
-                writeToFile(priority, head, msg)
             }
+        }
 
+        if (isDebug || priority == Log.WARN || priority == Log.ERROR) {
+            Log.d(publicTag, "write $priority - $head - $msg to file")
+            writeToFile(priority, head, msg)
         }
     }
 
