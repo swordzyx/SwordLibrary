@@ -20,8 +20,8 @@ public class PackageInfoUtil {
             MessageDigest md = MessageDigest.getInstance("SHA1");
             byte[] publicKey = md.digest(cert);
             StringBuilder hexString = new StringBuilder();
-            for (int i = 0; i < publicKey.length; i++) {
-                String appendString = Integer.toHexString(0xFF & publicKey[i]).toUpperCase(Locale.US);
+            for (byte b : publicKey) {
+                String appendString = Integer.toHexString(0xFF & b).toUpperCase(Locale.US);
                 if (appendString.length() == 1) {
                     hexString.append("0");
                 }

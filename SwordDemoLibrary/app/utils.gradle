@@ -36,3 +36,13 @@ def getGitCommitId() {
     println "commitId: ${commitId.toString()}"
     return commitId.toString()
 }
+
+
+def modifyPackageName() {
+    android.libraryVariants.configureEach { variant ->
+        variant.outputs.all { output ->
+            String date = new Date().format("yyyyMMdd", TimeZone.getDefault())
+            outputFileName = "${project.name}_${android.defaultConfig.versionName}_${android.defaultConfig.versionCode}_${getGitCommitId()}_${date}.aar"
+        }
+    }
+}

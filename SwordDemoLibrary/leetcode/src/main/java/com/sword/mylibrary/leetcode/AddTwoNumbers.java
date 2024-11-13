@@ -1,7 +1,5 @@
 package com.sword.mylibrary.leetcode;
 
-import java.util.Objects;
-
 /**
  * <a href="https://leetcode.cn/problems/add-two-numbers/description/">两数相加</a>
  */

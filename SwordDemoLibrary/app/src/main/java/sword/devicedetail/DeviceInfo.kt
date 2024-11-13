@@ -2,17 +2,16 @@
 package sword.devicedetail
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
+import android.provider.Settings
 import android.text.TextUtils
-import kotlinx.coroutines.suspendCancellableCoroutine
 import sword.CommandExecutor
-import sword.CommandExecutor.Callback
-import sword.TextUtil
-import sword.logger.SwordLog
 import sword.io.JavaFileIO
+import sword.logger.SwordLog
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.util.*
+import java.util.Locale
 
 private const val tag = "DeviceDetail"
 
@@ -102,7 +101,6 @@ private fun getSystemPropertiesByShell(propNames: List<String>): Map<String, Str
 }
 
 
-
 /**
  * 打印设备所在地区信息
  */
@@ -110,7 +108,6 @@ fun getLocal(): String {
   val locale = Locale.getDefault()
   return "language: ${locale.language}, Country: ${locale.country}, languageTag: ${locale.toLanguageTag()}, displayCountry: ${locale.displayCountry}, getDisplayLanguage: ${locale.displayLanguage}, getDisplayName: ${locale.displayName}, getDisplayScript: ${locale.displayScript}, getDisplayVariant: ${locale.displayVariant}, getISO3Country: ${locale.isO3Country}, getISO3Language: ${locale.isO3Language}, getScript: ${locale.script}, getVariant: ${locale.variant}"
 }
-
 
 /**
  * 获取设备 IP 地址
@@ -128,4 +125,15 @@ fun getIpAddress() {
           http://ip.chinaz.com/getip.aspx
     */
   SwordLog.debug(tag, "shell 获取外网 ip：${CommandExecutor.execShellCommand(false, "curl ifconfig.me").successString}")
+}
+
+fun getAndroidId(context: Context): String {
+  return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+}
+
+fun getBuildInfo(): String {
+  return "Brand" + Build.BRAND + "/" +
+          Build.PRODUCT + "/" +
+          Build.DEVICE + "/" +
+          Build.ID + "/"
 }
