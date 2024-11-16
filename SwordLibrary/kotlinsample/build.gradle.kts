@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "com.swordlibrary"
+    namespace = "com.sword.kotlinsample"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.swordlibrary"
-        minSdk = 19
+        applicationId = "com.sword.kotlinsample"
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -27,14 +27,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 
 dependencies {
+    implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-
-    implementation(libs.core.ktx)
 }
