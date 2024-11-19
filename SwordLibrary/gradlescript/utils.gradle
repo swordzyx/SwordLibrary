@@ -1,3 +1,4 @@
+System.setProperty('file.encoding', 'UTF-8')
 def jarName = "AVProVideo-V2"
 def jarFile = new File("libs/${jarName}.jar")
 def unzipDir = new File("libs/${jarName}/")
