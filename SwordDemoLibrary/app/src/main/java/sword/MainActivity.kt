@@ -48,6 +48,9 @@ class MainActivity : AppCompatActivity() {
       getAppSignatureApi28("com.aiwinn.faceattendance")
     }
 
+    SwordLog.debug(tag,
+      aesEncrypt("yx_test_clint_id:0cf3e9a6dd7758514d03b7f372edba0f:bca005d19bec4f1fad68dda57e1fcabe:1730702647523", "7Vg8sgmGs2Hr4WWA", "4pxKEQNuFMwXhtTC")
+    )
   }
 
   @RequiresApi(api = Build.VERSION_CODES.P)
