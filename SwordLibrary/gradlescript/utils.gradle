@@ -1,33 +1,36 @@
+// 设置文件编码为 UTF-8
 System.setProperty('file.encoding', 'UTF-8')
+
+// 定义 jar 包相关变量
 def jarName = "AVProVideo-V2"
 def jarFile = new File("libs/${jarName}.jar")
 def unzipDir = new File("libs/${jarName}/")
 def removePackage = "google"
 
-//解压 jar 包
+// 解压 jar 包的任务
 task unZipJar(type: Copy) {
     from zipTree(jarFile)
     into "${unzipDir}"
     doLast {
-        delete jarFile
+        delete jarFile  // 解压完成后删除原始 jar 文件
     }
 }
 
-//打 jar 包。
+// 重新打包 jar 文件的任务
 task zipJar(type: Jar) {
-    dependsOn "unZipJar"
+    dependsOn "unZipJar"  // 依赖解压任务
     archivesBaseName = jarName
     from unzipDir
     destinationDirectory = file("libs")
-    exclude "com.google.android.*"
+    exclude "com.google.android.*"  // 排除 Google Android 相关类
 }
 
 /**
  * 获取并返回当前代码库的 Git commit id
- * @return 代码库的 commit id
+ * @return 代码库的 commit id（完整的 SHA-1 值）
  */
 def getGitCommitId() {
-    def process = "git rev-parse HEAD".execute()
+    def process = "git rev-parse HEAD".execute()  // 执行 git 命令获取 HEAD 的 commit id
     def bufferedReader = new BufferedReader(new InputStreamReader(process.inputStream))
     def commitId = new StringBuilder()
     def line = ""
@@ -38,8 +41,11 @@ def getGitCommitId() {
     return commitId.toString()
 }
 
-
-def modifyPackageName() {
+/**
+ * 修改生成的 AAR 文件名，添加版本信息、构建时间等
+ * 生成格式：项目名_版本号_版本码_Git提交ID_日期.aar
+ */
+def modifyLibraryPackageName() {
     android.libraryVariants.configureEach { variant ->
         variant.outputs.all { output ->
             String date = new Date().format("yyyyMMdd", TimeZone.getDefault())
