@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <attr name="radius" format="integer"/>
-
-    <declare-styleable name="MaterialEditText">
-        <attr name="enableFloatLabel" format="boolean"/>
-    </declare-styleable>
-</resources>

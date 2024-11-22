@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="scancode_camera_not_support">Could not find available camera.</string>
-    <string name="scancode_camera_unauthorized">Camera permission is not authorized.</string>
-    <string name="storage_permission_unauthorized">storage permission is not authorized.</string>
-    <string name="cancel">cancel</string>
-    <string name="scancode_import">import</string>
-</resources>

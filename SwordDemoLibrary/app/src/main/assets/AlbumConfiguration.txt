@@ -1,8 +1,0 @@
-{
-"CompressSize":40,
-"CompressWidth":800,
-"CompressHeight":500,
-"CompressMiniSize":40,
-"CompressMiniWidth":250,
-"CompressMiniHeight":150
-}
