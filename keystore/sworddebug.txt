@@ -1,0 +1,3 @@
+Password：swordzhoudebug
+Alias：sworddebug
+alias Pass：swordzhoudebug
