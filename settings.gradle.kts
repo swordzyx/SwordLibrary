@@ -22,3 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "SwordLibrary"
 include(":app")
 include(":kotlinsample")
+include(":logger")
+ 
