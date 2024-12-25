@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":logger"))
+    
     implementation(libs.appcompat)
     implementation(libs.material)
 

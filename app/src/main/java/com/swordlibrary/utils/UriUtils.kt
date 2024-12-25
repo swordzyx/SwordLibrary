@@ -6,7 +6,7 @@ import android.net.Uri
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.TypedValue
-import com.swordlibrary.LogUtils
+import com.sword.logger.LogUtils
 
 class UriUtils {
 

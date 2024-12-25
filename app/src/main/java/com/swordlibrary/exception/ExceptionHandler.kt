@@ -1,6 +1,6 @@
 package com.swordlibrary.exception
 
-import com.swordlibrary.LogUtils
+import com.sword.logger.LogUtils;
 
 object ExceptionHandler {
     private const val tag = "ExceptionHandler"

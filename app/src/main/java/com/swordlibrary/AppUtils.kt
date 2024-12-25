@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import kotlin.system.exitProcess
+import com.sword.logger.LogUtils
 
 object AppUtils {
     private const val TAG = "AppUtils"
