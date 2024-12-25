@@ -37,6 +37,8 @@ dependencies {
     
     implementation(libs.appcompat)
     implementation(libs.material)
-
     implementation(libs.core.ktx)
+
+    //日志显示库：https://github.com/getActivity/Logcat
+    debugImplementation(libs.logcat)
 }
