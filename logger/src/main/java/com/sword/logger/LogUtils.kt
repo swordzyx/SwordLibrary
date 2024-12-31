@@ -129,7 +129,7 @@ object LogUtils {
         if (priority == Log.WARN || priority == Log.ERROR) {
             logQueue?.let {
                 it.offer(LogMessage(priority, publicTag, logContent))
-                Log.d(publicTag, "write $logContent to file")
+                Log.v(publicTag, "write $logContent to file")
             }
         }
     }
