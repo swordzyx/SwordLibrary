@@ -75,8 +75,10 @@ object LogUtils {
     }
 
     fun openFileLog() {
-        logToFile = true
-        initFileLog()
+        if (!logToFile) {
+            logToFile = true
+            initFileLog()
+        }
     }
 
     fun d(msg: String) {
