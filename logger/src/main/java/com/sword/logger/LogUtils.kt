@@ -24,6 +24,11 @@ import java.util.concurrent.LinkedBlockingQueue
 /**
  * 参考：
  * - https://github.com/Blankj/AndroidUtilCode  ---  LogUtils
+ * 
+ * 使用方法
+ * - 在 Application 的 onCreate 方法中执行 LogUtils.init(this) 初始化日志模块
+ * - 使用 LogUtils.d(..)、LogUtils.i(..)、LogUtils.w(..)、LogUtils.e(..) 等方法打印日志
+ * - 使用 LogUtils.openFileLog() 开启日志写入文件功能，日志文件保存在应用的 /data/data/${package name}/files/logs 目录下，文件名格式为 yyyyMMdd.log
  */
 object LogUtils {
     private var publicTag = "SwordLibrary"
