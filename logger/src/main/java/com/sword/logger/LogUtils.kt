@@ -36,6 +36,7 @@ object LogUtils {
     private const val MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
     private const val BUFFER_SIZE = 8192 // 8KB
     private const val MAX_BATCH_SIZE = 100 //最大批量写入日志条数
+    private const val WRITE_PERIOD: Long = 1000 * 5 // 5秒写一次日志
 
     private var logFileDirPath: String? = null
     private var coroutineScope: CoroutineScope? = null
@@ -206,7 +207,7 @@ object LogUtils {
         coroutineScope?.launch {
             while (true) {
                 flushMaxLogToFile()
-                delay(1000) // 延迟1秒
+                delay(WRITE_PERIOD)
             }
         }
     }
