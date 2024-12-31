@@ -251,7 +251,7 @@ object LogUtils {
 
         val logFile = File(
             logFileDirPath,
-            LOG_FILE_PREFIX + fileNameDateFormat.format(Date()) + LOG_FILE_SUFFIX
+            fileNameDateFormat.format(Date()) + LOG_FILE_SUFFIX
         )
 
         try {
