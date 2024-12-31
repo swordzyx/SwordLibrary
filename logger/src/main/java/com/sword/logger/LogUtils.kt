@@ -63,7 +63,6 @@ object LogUtils {
     
     fun init(application: Application) {
         logFileDirPath = "${application.filesDir.absolutePath}/logs"
-        coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
         application.registerActivityLifecycleCallbacks(
             AppLifecycleObserver(
@@ -136,6 +135,10 @@ object LogUtils {
     }
 
     private fun initFileLog() {
+        if (logQueue != null && coroutineScope != null) {
+            return
+        }
+        
         if (logFileDirPath.isNullOrEmpty()) {
             return
         }
@@ -149,6 +152,7 @@ object LogUtils {
         }
 
         logQueue = LinkedBlockingQueue<LogMessage>(10000)
+        coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         startPeriodicFlush()
         d(publicTag, "logger init success, log path: $logFileDirPath")
         clearOldLog()
