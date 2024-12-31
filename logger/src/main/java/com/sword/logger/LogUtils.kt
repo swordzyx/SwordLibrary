@@ -72,6 +72,7 @@ object LogUtils {
                     release()
                 })
         )
+        Log.d(publicTag, "logger init success, log file dir: $logFileDirPath")
     }
 
     fun openFileLog() {
