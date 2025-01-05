@@ -8,7 +8,7 @@ plugins {
 var versionName = "1.0.0"
 android {
     namespace = "com.sword.logger"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
