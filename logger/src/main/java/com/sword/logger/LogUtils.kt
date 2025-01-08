@@ -67,7 +67,11 @@ object LogUtils {
         val timestamp: String = logDateFormat.format(Date()),
     )
     
-    fun init(application: Application) {
+    fun init(application: Application, publicTag: String? = null) {
+        if (!publicTag.isNullOrEmpty()) {
+            this.publicTag = publicTag
+        }
+
         logFileDirPath = "${application.filesDir.absolutePath}/logs"
 
         application.registerActivityLifecycleCallbacks(

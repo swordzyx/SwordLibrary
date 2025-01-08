@@ -1,11 +1,14 @@
+import com.android.build.gradle.tasks.BundleAar
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
 
+var versionName = "1.0.0"
 android {
     namespace = "com.sword.logger"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 24
@@ -32,12 +35,12 @@ android {
     }
 }
 
-dependencies {
+tasks.withType<BundleAar>().configureEach {
+    val fileName = "${project.name}-${versionName}.aar"
+    archiveFileName.set(fileName)
+}
 
-    implementation(libs.core.ktx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+
+dependencies {
+    implementation(libs.kotlinx.coroutines.core)
 }
