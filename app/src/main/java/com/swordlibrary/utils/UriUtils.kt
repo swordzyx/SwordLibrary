@@ -11,7 +11,7 @@ import com.sword.logger.LogUtils
 class UriUtils {
 
     /**
-     * 通过Uri获取文件路径
+     * 通过 Uri 获取文件路径
      * 示例：content://com.android.providers.media.documents/document/image%3A1000000315 ，返回 /storage/emulated/0/Pictures/black/3-7-2.png
      */
     fun getPathFromUri(context: Context, uri: Uri): String? {
