@@ -44,5 +44,5 @@ dependencies {
     implementation(libs.core.ktx)
 
     //日志显示库：https://github.com/getActivity/Logcat
-    debugImplementation(libs.logcat)
+    //debugImplementation(libs.logcat)
 }
