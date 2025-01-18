@@ -8,21 +8,21 @@ def unzipDir = new File("libs/${jarName}/")
 def removePackage = "google"
 
 // 解压 jar 包的任务
-task unZipJar(type: Copy) {
+tasks.register('unZipJar', Copy) {
     from zipTree(jarFile)
     into "${unzipDir}"
     doLast {
-        delete jarFile  // 解压完成后删除原始 jar 文件
+        delete jarFile // 解压完成后删除原始 jar 文件
     }
 }
 
 // 重新打包 jar 文件的任务
-task zipJar(type: Jar) {
-    dependsOn "unZipJar"  // 依赖解压任务
+tasks.register('zipJar', Jar) {
+    dependsOn "unZipJar" // 依赖解压任务
     archivesBaseName = jarName
     from unzipDir
     destinationDirectory = file("libs")
-    exclude "com.google.android.*"  // 排除 Google Android 相关类
+    exclude "com.google.android.*" // 排除 Google Android 相关类
 }
 
 /**
