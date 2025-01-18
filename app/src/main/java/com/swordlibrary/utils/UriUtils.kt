@@ -23,14 +23,19 @@ class UriUtils {
             val type = split[0]
 
             var contentUri: Uri? = null
-            if ("image" == type) {
-                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            } else if ("video" == type) {
-                contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            } else if ("audio" == type) {
-                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            } else if ("primary" == type) {
-                return "/storage/emulated/0/${split[1]}"
+            when (type) {
+                "image" -> {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                }
+                "video" -> {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                }
+                "audio" -> {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                }
+                "primary" -> {
+                    return "/storage/emulated/0/${split[1]}"
+                }
             }
 
             val selection = "_id=?"
@@ -59,7 +64,7 @@ class UriUtils {
         var path: String? = null
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         
-        context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
+        context.contentResolver.query(uri, projection, selection, selectionArgs, null)
             .use { cursor ->
                 if (cursor != null && cursor.moveToFirst()) {
                     val columnIndex = cursor.getColumnIndexOrThrow(projection[0])
