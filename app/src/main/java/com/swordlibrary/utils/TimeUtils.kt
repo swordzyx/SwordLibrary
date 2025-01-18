@@ -1,4 +1,4 @@
-package com.swordlibrary
+package com.swordlibrary.utils
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
