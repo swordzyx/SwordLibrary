@@ -6,7 +6,10 @@ extern "C" JNIEXPORT jstring JNICALL
 stringFromJNI(
         JNIEnv* env,
         jobject /* this */) {
+    // Trace 跟踪
+    ATrace_beginSection_ptr("stringFromJNI");
     std::string hello = "Hello from C++";
+    ATrace_endSection_ptr();
     return env->NewStringUTF(hello.c_str());
 }
 
