@@ -24,4 +24,5 @@ include(":app")
 include(":kotlinsample")
 include(":logger")
 include(":utils")
+include(":nativelearning")
  
