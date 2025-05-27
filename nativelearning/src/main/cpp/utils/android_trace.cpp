@@ -1,6 +1,9 @@
 #include "android_trace.h"
 #include <dlfcn.h>
 
+/**
+* 参考 https://developer.android.com/topic/performance/tracing/custom-events-native
+*/
 // 定义函数指针
 void (*ATrace_beginSection_ptr)(const char*) = nullptr;
 void (*ATrace_endSection_ptr)(void) = nullptr;
