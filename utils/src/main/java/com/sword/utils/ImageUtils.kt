@@ -1,7 +1,7 @@
 package com.sword.utils
 
 import android.media.Image
-import com.sword.logger.LogUtils
+import com.sword.logger.Logger
 
 fun yuv420888ToNv21(image: Image): ByteArray? {
     // 获取图像的宽度和高度
@@ -22,7 +22,7 @@ fun yuv420888ToNv21(image: Image): ByteArray? {
 
     // 检查 Y 平面的像素步幅是否为 1
     if (image.planes[0].pixelStride != 1) {
-        LogUtils.e("yuv420888ToNv21", "error pixelStride")
+        Logger.e("yuv420888ToNv21", "error pixelStride")
         return null
     }
 
@@ -53,7 +53,7 @@ fun yuv420888ToNv21(image: Image): ByteArray? {
 
     // 检查 U 和 V 平面的行步幅和像素步幅是否一致
     if (rowStride != image.planes[1].rowStride || pixelStride != image.planes[1].pixelStride) {
-        LogUtils.e("yuv420888ToNv21", "pixel stride of u and v plane are different")
+        Logger.e("yuv420888ToNv21", "pixel stride of u and v plane are different")
         return null
     }
 

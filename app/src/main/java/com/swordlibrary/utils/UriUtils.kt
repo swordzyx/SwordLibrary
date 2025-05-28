@@ -6,7 +6,7 @@ import android.net.Uri
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.TypedValue
-import com.sword.logger.LogUtils
+import com.sword.logger.Logger
 
 class UriUtils {
 
@@ -41,7 +41,7 @@ class UriUtils {
             val selection = "_id=?"
             val selectionArgs = arrayOf(split[1])
             if (contentUri == null) {
-                LogUtils.e("get content uri failed, docId: $docId")
+                Logger.e("get content uri failed, docId: $docId")
                 return null
             }
 

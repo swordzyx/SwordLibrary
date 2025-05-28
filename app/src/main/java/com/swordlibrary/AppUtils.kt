@@ -6,14 +6,14 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import kotlin.system.exitProcess
-import com.sword.logger.LogUtils
+import com.sword.logger.Logger
 
 object AppUtils {
     private const val TAG = "AppUtils"
 
     fun isAppRunning(packageName: String): Boolean {
         if (packageName.isEmpty()) {
-            LogUtils.e("package name is empty")
+            Logger.e("package name is empty")
             return false
         }
 
@@ -21,7 +21,7 @@ object AppUtils {
 
         //获取正在运行 app 的任务栈   getRunningTask 于 API 21 废弃 Android 5.0
         am.getRunningTasks(Int.MAX_VALUE).forEach { runningTaskInfo ->
-            LogUtils.d(TAG, "app name: ${runningTaskInfo?.baseActivity?.className}")
+            Logger.d(TAG, "app name: ${runningTaskInfo?.baseActivity?.className}")
             if (packageName == runningTaskInfo?.baseActivity?.packageName) {
                 return true
             }
@@ -29,7 +29,7 @@ object AppUtils {
 
         //获取正在运行的服务  getRunningServices 于 API 21 废弃 Android 5.0
         am.getRunningServices(Int.MAX_VALUE).forEach { runningServiceInfo ->
-            LogUtils.d(TAG, "running service name: ${runningServiceInfo?.service?.className}")
+            Logger.d(TAG, "running service name: ${runningServiceInfo?.service?.className}")
             if (packageName == runningServiceInfo?.service?.packageName) {
                 return true
             }

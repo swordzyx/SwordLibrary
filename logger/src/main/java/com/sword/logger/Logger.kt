@@ -30,7 +30,7 @@ import java.util.concurrent.LinkedBlockingQueue
  * - 使用 LogUtils.d(..)、LogUtils.i(..)、LogUtils.w(..)、LogUtils.e(..) 等方法打印日志
  * - 使用 LogUtils.openFileLog() 开启日志写入文件功能，日志文件保存在应用的 /data/data/${package name}/files/logs 目录下，文件名格式为 yyyyMMdd.log
  */
-object LogUtils {
+object Logger {
     private var publicTag = "SwordLibrary"
     private val tag = "Log"
     private val isDebug = true
@@ -92,44 +92,110 @@ object LogUtils {
     }
 
     fun d(msg: String) {
-        log(Log.DEBUG, "", msg)
+        log(Log.DEBUG, "", msg, null)
+    }
+
+    fun d(msg: String, throws: Throwable) {
+        log(Log.DEBUG, "", msg, throws)
     }
 
     fun d(head: String, msg: String) {
-        log(Log.DEBUG, head, msg)
+        log(Log.DEBUG, head, msg, null)
+    }
+
+    fun d(head: String, msg: String, throws: Throwable) {
+        log(Log.DEBUG, head, msg, throws)
     }
 
     fun w(msg: String) {
-        log(Log.WARN, "", msg)
+        log(Log.WARN, "", msg, null)
+    }
+
+    fun w(msg: String, throws: Throwable) {
+        log(Log.WARN, "", msg, throws)
     }
 
     fun w(head: String, msg: String) {
-        log(Log.WARN, head, msg)
+        log(Log.WARN, head, msg, null)
+    }
+
+    fun w(head: String, msg: String, throws: Throwable) {
+        log(Log.WARN, "", msg, throws)
+    }
+
+    fun i(msg: String) {
+        log(Log.INFO, "", msg, null)
+    }
+
+    fun i(msg: String, throws: Throwable) {
+        log(Log.INFO, "", msg, throws)
+    }
+
+    fun i(head: String, msg: String) {
+        log(Log.INFO, head, msg, null)
+    }
+
+    fun i(head: String, msg: String, throws: Throwable) {
+        log(Log.INFO, head, msg, throws)
     }
 
     fun e(msg: String) {
-        log(Log.ERROR, "", msg)
+        log(Log.ERROR, "", msg, null)
+    }
+
+    fun e(msg: String, throws: Throwable) {
+        log(Log.ERROR, "", msg, throws)
     }
 
     fun e(head: String, msg: String) {
-        log(Log.ERROR, head, msg)
+        log(Log.ERROR, head, msg, null)
     }
 
-    private fun log(priority: Int, head: String, msg: String) {
+    fun e(head: String, msg: String, throws: Throwable) {
+        log(Log.ERROR, head, msg, throws)
+    }
+
+    private fun log(priority: Int, head: String, msg: String, throws: Throwable?) {
         val logContent = if (head.isEmpty()) msg else "[$head] $msg"
         when (priority) {
-            Log.VERBOSE -> if (isDebug) Log.v(publicTag, logContent)
-            Log.DEBUG -> if (isDebug) Log.d(publicTag, logContent)
+            Log.VERBOSE -> {
+                if (isDebug) {
+                    if (throws == null) {
+                        Log.v(publicTag, logContent)
+                    } else {
+                        Log.v(publicTag, logContent, throws)
+                    }
+                }
+            }
+            Log.DEBUG -> {
+                if (isDebug) {
+                    if (throws == null) {
+                        Log.d(publicTag, logContent)
+                    } else {
+                        Log.d(publicTag, logContent, throws)
+                    }
+                }
+            }
             Log.INFO -> if (isDebug) {
-                Log.i(publicTag, logContent)
+                if (throws == null) {
+                    Log.i(publicTag, logContent)
+                } else {
+                    Log.i(publicTag, logContent, throws)
+                }
             }
-
             Log.WARN -> {
-                Log.w(publicTag, logContent)
+                if (throws == null) {
+                    Log.w(publicTag, logContent)
+                } else {
+                    Log.w(publicTag, logContent, throws)
+                }
             }
-
             Log.ERROR -> {
-                Log.e(publicTag, logContent)
+                if (throws == null) {
+                    Log.e(publicTag, logContent)
+                } else {
+                    Log.e(publicTag, logContent, throws)
+                }
             }
         }
 
